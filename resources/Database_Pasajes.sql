@@ -130,3 +130,5 @@ on vh.idmodelo = mvh.idmodelo and
 vh.dniconductor = co.dniconductor;
 
 update tb_vehiculo set detalle = '123', dniconductor = 'sdasd' where placa = '123564';
+
+-- prueba
