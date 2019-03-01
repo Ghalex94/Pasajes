@@ -32,7 +32,7 @@ import javax.swing.Box;
 import javax.swing.JSeparator;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 
-public class viSeleccionAsientos1 extends JInternalFrame implements ActionListener {
+public class viSeleccionAsientos2 extends JInternalFrame implements ActionListener {
 	private JTextField txtSelecinDeAsientos;
 	private JLabel lblOrigen;
 	private JComboBox cbOrigen;
@@ -69,7 +69,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					viSeleccionAsientos1 frame = new viSeleccionAsientos1(null);
+					viSeleccionAsientos2 frame = new viSeleccionAsientos2(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -79,7 +79,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 	}
 
 	
-	public viSeleccionAsientos1(vPrincipal temp) {
+	public viSeleccionAsientos2(vPrincipal temp) {
 		getContentPane().setForeground(Color.WHITE);
 		getContentPane().setFont(new Font("Segoe UI", Font.BOLD, 30));
 		vp = temp;
@@ -95,7 +95,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		getContentPane().setBackground(SystemColor.textInactiveText);
 		
 		txtSelecinDeAsientos = new JTextField();
-		txtSelecinDeAsientos.setText("SELECCI\u00D3N DE ASIENTOS CHEVROLET N300");
+		txtSelecinDeAsientos.setText("SELECCI\u00D3N DE ASIENTOS JAC Refine 2017");
 		txtSelecinDeAsientos.setRequestFocusEnabled(false);
 		txtSelecinDeAsientos.setIgnoreRepaint(true);
 		txtSelecinDeAsientos.setHorizontalAlignment(SwingConstants.CENTER);
@@ -414,82 +414,82 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		
 	}
 	protected void actionPerformedBtnConductor(ActionEvent arg0) {
-		vdConductor vdc = new vdConductor(vp, this, null, null, null);
+		vdConductor vdc = new vdConductor(vp, null, this, null, null);
 		vdc.setVisible(true);
 		vp.setEnabled(false);
 	}
 	protected void actionPerformedBtnA1(ActionEvent arg0) {
-		vdPasajero vdp = new vdPasajero(vp, 1, this, null, null, null);
+		vdPasajero vdp = new vdPasajero(vp, 1, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA2(ActionEvent arg0) {
-		vdPasajero vdp = new vdPasajero(vp, 2, this, null, null, null);
+		vdPasajero vdp = new vdPasajero(vp, 2, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA3(ActionEvent arg0) {
-		vdPasajero vdp = new vdPasajero(vp, 3, this, null, null, null);
+		vdPasajero vdp = new vdPasajero(vp, 3, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA4(ActionEvent arg0) {
-		vdPasajero vdp = new vdPasajero(vp, 4, this, null, null, null);
+		vdPasajero vdp = new vdPasajero(vp, 4, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA5(ActionEvent arg0) {
-		vdPasajero vdp = new vdPasajero(vp, 5, this, null, null, null);
+		vdPasajero vdp = new vdPasajero(vp, 5, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA6(ActionEvent arg0) {
-		vdPasajero vdp = new vdPasajero(vp, 6, this, null, null, null);
+		vdPasajero vdp = new vdPasajero(vp, 6, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA7(ActionEvent arg0) {
-		vdPasajero vdp = new vdPasajero(vp, 7, this, null, null, null);
+		vdPasajero vdp = new vdPasajero(vp, 7, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA8(ActionEvent arg0) {
-		vdPasajero vdp = new vdPasajero(vp, 8, this, null, null, null);
+		vdPasajero vdp = new vdPasajero(vp, 8, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA9(ActionEvent arg0) {
-		vdPasajero vdp = new vdPasajero(vp, 9, this, null, null, null);
+		vdPasajero vdp = new vdPasajero(vp, 9, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA10(ActionEvent arg0) {
-		vdPasajero vdp = new vdPasajero(vp, 10, this, null, null, null);
+		vdPasajero vdp = new vdPasajero(vp, 10, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA11(ActionEvent arg0) {
-		vdPasajero vdp = new vdPasajero(vp, 11, this, null, null, null);
+		vdPasajero vdp = new vdPasajero(vp, 11, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA12(ActionEvent arg0) {
-		vdPasajero vdp = new vdPasajero(vp, 12, this, null, null, null);
+		vdPasajero vdp = new vdPasajero(vp, 12, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA13(ActionEvent arg0) {
-		vdPasajero vdp = new vdPasajero(vp, 13, this, null, null, null);
+		vdPasajero vdp = new vdPasajero(vp, 13, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA14(ActionEvent arg0) {
-		vdPasajero vdp = new vdPasajero(vp, 14, this, null, null, null);
+		vdPasajero vdp = new vdPasajero(vp, 14, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA15(ActionEvent arg0) {
-		vdPasajero vdp = new vdPasajero(vp, 15, this, null, null, null);
+		vdPasajero vdp = new vdPasajero(vp, 15, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}

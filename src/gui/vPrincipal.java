@@ -24,24 +24,28 @@ import java.awt.event.WindowEvent;
 public class vPrincipal extends JFrame implements ActionListener, WindowListener {
 
 	private JPanel contentPane;
-	private JMenuBar menuBar;
-	private JMenu mnArchivo;
-	private JMenu mnSalidas;
-	private JMenu mnClientes;
-	private JMenu mnReportes;
+	public JMenuBar menuBar;
+	public JMenu mnArchivo;
+	public JMenu mnSalidas;
+	public JMenu mnClientes;
+	public JMenu mnReportes;
 	private JDesktopPane desktopPane;
-	private JMenuItem mntmCrearNuevaSalida;
-	private JMenuItem mntmSalir;
-	private JMenu mnVehiculosConductores;
-	private JMenuItem mntmCerrarSesin;
-	private JMenuItem mntmListaDeVehiculos;
-    private JMenuItem mntmListaDeDestinos;
-    private JMenuItem mntmGastos;
-    
+	public JMenuItem mntmCrearNuevaSalida;
+	public JMenuItem mntmSalir;
+	public JMenu mnVehiculosConductores;
+	public JMenuItem mntmCerrarSesin;
+	public JMenuItem mntmListaDeVehiculos;
+	public JMenuItem mntmListaDeDestinos;
+    public JMenuItem mntmGastos;
+    public JMenuItem mntmContinuarPreparacion;
+    public JMenuItem mntmCancelarSalida;
     
 	viLogin lg = new viLogin(this);
 	viDatos1 d1 = new viDatos1(this);
 	viSeleccionAsientos1 sa1 = new viSeleccionAsientos1(this);
+	viSeleccionAsientos2 sa2 = new viSeleccionAsientos2(this);
+	viSeleccionAsientos3 sa3 = new viSeleccionAsientos3(this);
+	viSeleccionAsientos4 sa4 = new viSeleccionAsientos4(this);
 	viVehiculos lvc = new viVehiculos(this);
 	
 	int estado = 0; // 0: No existe ventas pentdientes  1: Existen ventas pendientes
@@ -53,6 +57,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
     //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     int ancho = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
     int alto = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
+    
     
 	
 	public static void main(String[] args) {
@@ -98,13 +103,23 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mnArchivo.add(mntmCerrarSesin);
 		mnArchivo.add(mntmSalir);
 		
-		mnSalidas = new JMenu("SALIDAS");
+		mnSalidas = new JMenu("SALIDAS DE VEHICULOS");
 		mnSalidas.setEnabled(false);
 		menuBar.add(mnSalidas);
 		
 		mntmCrearNuevaSalida = new JMenuItem("Crear nueva salida bus");
 		mntmCrearNuevaSalida.addActionListener(this);
 		mnSalidas.add(mntmCrearNuevaSalida);
+		
+		mntmContinuarPreparacion = new JMenuItem("Continuar con la preparaci\u00F3n");
+		mntmContinuarPreparacion.addActionListener(this);
+		mntmContinuarPreparacion.setEnabled(false);
+		mnSalidas.add(mntmContinuarPreparacion);
+		
+		mntmCancelarSalida = new JMenuItem("Cancelar salida");
+		mntmCancelarSalida.addActionListener(this);
+		mntmCancelarSalida.setEnabled(false);
+		mnSalidas.add(mntmCancelarSalida);
 		
 		mnVehiculosConductores = new JMenu("VEHICULOS Y CONDUCTORES");
 		mnVehiculosConductores.setEnabled(false);
@@ -138,7 +153,10 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		
 		desktopPane.add(lg);//LOGIN
 		desktopPane.add(d1);//DETALLES 1 (DESELECCION DE CARRO)
-		desktopPane.add(sa1);//SELECCION DE ASIENTOS 1 
+		desktopPane.add(sa1);//SELECCION DE ASIENTOS 1
+		desktopPane.add(sa2);//SELECCION DE ASIENTOS 2 
+		desktopPane.add(sa3);//SELECCION DE ASIENTOS 3 
+		desktopPane.add(sa4);//SELECCION DE ASIENTOS 4 
 		desktopPane.add(lvc);//LISTA DE VEHICULOS
 		
 		cargar();
@@ -146,6 +164,12 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == mntmCancelarSalida) {
+			actionPerformedMntmCancelarSalida(arg0);
+		}
+		if (arg0.getSource() == mntmContinuarPreparacion) {
+			actionPerformedMntmContinuarPreparacion(arg0);
+		}
 		if (arg0.getSource() == mntmListaDeVehiculos) {
 			actionPerformedMntmListaDeVehiculos(arg0);
 		}
@@ -199,6 +223,9 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		lg.hide();
 		d1.hide();
 		sa1.hide();
+		sa2.hide();
+		sa3.hide();
+		sa4.hide();
 	}
 	
 	public void desactivarMenu(){
@@ -244,6 +271,41 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		d1.setLocation((ancho - FrameSize.width)/2, (alto - FrameSize.height)/4);
 		d1.show();
 	}
+	
+	protected void actionPerformedMntmContinuarPreparacion(ActionEvent arg0) {
+		int modelo = 5;
+		esconderVentanas();
+		switch(modelo){
+		case 1:
+			sa1.show();
+			try{
+				sa1.setMaximum(true);
+			}catch(Exception f){}
+			break;
+		case 2:
+			sa2.show();
+			try{
+				sa2.setMaximum(true);
+			}catch(Exception f){}
+			break;
+		case 3:
+			sa3.show();
+			try{
+				sa3.setMaximum(true);
+			}catch(Exception f){}
+			break;
+		case 4:
+			sa4.show();
+			try{
+				sa4.setMaximum(true);
+			}catch(Exception f){}
+			break;
+		}
+	}
+	
+	protected void actionPerformedMntmCancelarSalida(ActionEvent arg0) {
+	}
+	
 	protected void actionPerformedMntmListaDeVehiculos(ActionEvent arg0) {
 		esconderVentanas();
 		lvc.show();
@@ -252,6 +314,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		}catch(Exception f){}
 		
 	}
+	
 }
 
 

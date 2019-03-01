@@ -99,29 +99,35 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 	protected void actionPerformedBtnContinuar(ActionEvent e) {
 		
 		int modelo = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getIdmodelo();
-		
+		vp.esconderVentanas();
 		switch(modelo){
 		case 1:
-			vp.esconderVentanas();
 			vp.sa1.show();
 			try{
 				vp.sa1.setMaximum(true);
 			}catch(Exception f){}
 			break;
 		case 2:
-			JOptionPane.showMessageDialog(null, "AUN NO EXISTE MODELO DE VEHICULO");
+			vp.sa2.show();
+			try{
+				vp.sa2.setMaximum(true);
+			}catch(Exception f){}
 			break;
 		case 3:
-			JOptionPane.showMessageDialog(null, "AUN NO EXISTE MODELO DE VEHICULO");
+			vp.sa3.show();
+			try{
+				vp.sa3.setMaximum(true);
+			}catch(Exception f){}
 			break;
 		case 4:
-			JOptionPane.showMessageDialog(null, "AUN NO EXISTE MODELO DE VEHICULO");
+			vp.sa4.show();
+			try{
+				vp.sa4.setMaximum(true);
+			}catch(Exception f){}
 			break;
 		}
-	
-		
-		
-		
-		
+		vp.mntmCrearNuevaSalida.setEnabled(false);
+		vp.mntmContinuarPreparacion.setEnabled(true);
+		vp.mntmCancelarSalida.setEnabled(true);
 	}
 }

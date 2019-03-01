@@ -24,16 +24,20 @@ public class vdPasajero extends JDialog implements ActionListener {
 	private JTextField textField_4;
 	private JButton btnCancelar;
 	private JButton btnGuardar;
-	
-	vPrincipal vp;
-	viSeleccionAsientos1 vsa1;
-	int asiento = 0;
 	private JLabel lblAsiento;
 	private JLabel lblNAsiento;
 	
+	vPrincipal vp;
+	int asiento = 0;
+	viSeleccionAsientos1 vsa1;
+	viSeleccionAsientos2 vsa2;
+	viSeleccionAsientos3 vsa3;
+	viSeleccionAsientos4 vsa4;
+	
+	
 	public static void main(String[] args) {
 		try {
-			vdPasajero dialog = new vdPasajero(null, null, 0);
+			vdPasajero dialog = new vdPasajero(null, 0, null, null, null, null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -41,11 +45,15 @@ public class vdPasajero extends JDialog implements ActionListener {
 		}
 	}
 
-	public vdPasajero(vPrincipal temp, viSeleccionAsientos1 temp2, int temp3) {
+	public vdPasajero(vPrincipal temp, int temp2, viSeleccionAsientos1 temp3, viSeleccionAsientos2 temp4, viSeleccionAsientos3 temp5, viSeleccionAsientos4 temp6) {
 		getContentPane().setBackground(Color.LIGHT_GRAY);
-		vsa1 = temp2;
 		vp = temp;
-		asiento = temp3;
+		asiento = temp2;
+		vsa1 = temp3;
+		vsa2 = temp4;
+		vsa3 = temp5;
+		vsa4 = temp6;
+		
 		
 		setLocationRelativeTo(null);
 		setUndecorated(true);
