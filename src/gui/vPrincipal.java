@@ -7,10 +7,15 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
+
+import mysql.Consultas;
+
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JDesktopPane;
 import javax.swing.JMenuItem;
@@ -49,7 +54,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	viVehiculos lvc = new viVehiculos(this);
 	
 	int estado = 0; // 0: No existe ventas pentdientes  1: Existen ventas pendientes
-	
+	ResultSet rs;
 	//RESOLUCION MONITOR
 	//Dimension desktopSize = desktopPane.getSize();
     Dimension FrameSize = lg.getSize();
@@ -214,6 +219,16 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	}
 		
 	public void cargar(){
+		Consultas consulta = new Consultas();
+		rs = consulta.cagarVentaTemporal();
+		try {
+			while(rs.next())
+				//cb.addItem(rs.getString("modelo"));
+			{}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		esconderVentanas();
         lg.setLocation((ancho - FrameSize.width)/2, (alto - FrameSize.height)/4);
 		lg.show();

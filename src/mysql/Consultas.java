@@ -159,4 +159,17 @@ public class Consultas {
 		return rs;
 	}
 	
+	public ResultSet cagarVentaTemporal(){
+		Connection con = MySQLConexion.getConection();
+		java.sql.Statement st;
+		ResultSet rs = null;
+		try {
+			st = con.createStatement();
+			rs = st.executeQuery("select * from tb_venta_temporal");
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		return rs;
+	}
+	
 }

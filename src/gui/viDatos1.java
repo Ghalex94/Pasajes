@@ -97,7 +97,6 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 		}
 	}
 	protected void actionPerformedBtnContinuar(ActionEvent e) {
-		
 		int modelo = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getIdmodelo();
 		vp.esconderVentanas();
 		switch(modelo){
