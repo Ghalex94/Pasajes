@@ -11,18 +11,21 @@ public class Vehiculo {
 	String detalle;
 	int dniconductor;
 	ResultSet rs;
+	String conductor;
 	
 	public Vehiculo(){}
-	public Vehiculo(String placa, int idmodelo, String detalle, int dniconductor){
+	public Vehiculo(String placa, int idmodelo, String detalle, int dniconductor, String conductor){
 		this.placa = placa;
 		this.idmodelo = idmodelo;
 		this.detalle = detalle;
 		this.dniconductor = dniconductor;
+		this.conductor = conductor;
 	}
+	
 	
 	public void cargarVehiculo(JComboBox<Vehiculo> cbVehiculo){
 		Consultas consult = new Consultas();
-		rs = consult.cargarVehiculos();
+		rs = consult.cargarVehiculosConductores();
 		try {
 			while(rs.next())
 				cbVehiculo.addItem(
@@ -30,7 +33,8 @@ public class Vehiculo {
 								rs.getString("placa"),
 								rs.getInt("idmodelo"),
 								rs.getString("detalle"),
-								rs.getInt("dniconductor")
+								rs.getInt("dniconductor"),
+								rs.getString("conductor")
 								)
 				);
 		} catch (Exception e) {
@@ -43,16 +47,16 @@ public class Vehiculo {
 		String t = "";
 		switch(idmodelo){
 		case 1:
-			t = placa + " (Chevrolet N300)";
+			t = "Chevrolet N300    -  " + placa + "  -  " + conductor;
 			break;
 		case 2:
-			t = placa + " (JAC Refine 2017)";
+			t = "JAC Refine 2017   -  " + placa + "  -  " + conductor;
 			break;
 		case 3:
-			t = placa + " (Volkswagen Routan)";
+			t = "Volkswagen R.     -  " + placa + "  -  " + conductor;
 			break;
 		case 4:
-			t = placa + " (Hyundai H1 2016)";
+			t = "Hyundai H1 2016   -  " + placa + "  -  " + conductor;
 			break;
 		}
 		return t;
@@ -88,6 +92,12 @@ public class Vehiculo {
 	public void setRs(ResultSet rs) {
 		this.rs = rs;
 	}	
+	public String getConductor() {
+		return conductor;
+	}
+	public void setConductor(String conductor) {
+		this.conductor = conductor;
+	}
 	
 
 }

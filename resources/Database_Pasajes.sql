@@ -68,11 +68,12 @@ primary key (nviaje, dnipasajero)
 );
 
 create table tb_venta_temporal(
-id				int primary key auto_increment,
+id				int not null primary key,
 estado			int, -- 0Nuevo 1En creacion
-empresa			int,  -- 1MERMA 2SIGUEL
+empresa			int,  -- 0NULL 1MERMA 2SIGUEL
 dniconductor	int,
 placa			varchar(7),
+modelovh		int,
 origen			varchar(20),
 destino			varchar(20),
 fpardida		datetime,
@@ -95,22 +96,43 @@ insert into tb_usuario values('admin', 'admin', 'ADMINISTRADOR', 0);
 
 insert into tb_conductor values(48562548, 'Pablo Ramirez Valderrama');
 insert into tb_conductor values(78561565, 'Carlos Choque Paredes');
+insert into tb_conductor values(49581622, 'Martin Olivares');
+insert into tb_conductor values(84951655, 'Joaquin Cardenas');
+insert into tb_conductor values(84589125, 'Andres Torres');
+insert into tb_conductor values(52048699, 'Marco Villanueva');
+insert into tb_conductor values(84566618, 'Carlos Casas');
+insert into tb_conductor values(12667848, 'Carlos Ventura');
 
-insert into tb_modelo_vehiculo values(null, 'Chevrolet N300');
-insert into tb_modelo_vehiculo values(null, 'JAC Refine 2017');
-insert into tb_modelo_vehiculo values(null, 'Volkswagen Routan');
-insert into tb_modelo_vehiculo values(null, 'Hyundai H1 2016');
+insert into tb_modelo_vehiculo values(null, 'Chevrolet N300');    -- 1
+insert into tb_modelo_vehiculo values(null, 'JAC Refine 2017');   -- 2
+insert into tb_modelo_vehiculo values(null, 'Volkswagen R.'); -- 3
+insert into tb_modelo_vehiculo values(null, 'Hyundai H1 2016');   -- 4
 
-insert into tb_vehiculo values('A13-F8X', 1, 'Blanco', 48562548);
-insert into tb_vehiculo values('H81-D5C', 3, 'Rojo', 78561565);
+insert into tb_vehiculo values('A13-F8X', 1, 'Blanco', 			48562548);
+insert into tb_vehiculo values('H81-D5C', 2, 'Rojo', 			78561565);
+insert into tb_vehiculo values('J7A-1S1', 3, 'Gris ',			49581622);
+insert into tb_vehiculo values('GR2-A7G', 4, 'Negro', 			84951655);
+insert into tb_vehiculo values('AD8-E4F', 1, 'Blanco c/azul', 	84589125);
+insert into tb_vehiculo values('J84-GD4', 2, 'Rojo obscuro', 	52048699);
+insert into tb_vehiculo values('B94-C84', 3, 'Plomo',			84566618);
+insert into tb_vehiculo values('FP3-SV3', 4, 'Negro mate', 		12667848);
 
+insert into tb_venta_temporal values(1, 0, 0, 0, null, 0, null, null, null, null, null);
 
--- drop database db_venta_pasajes;
+-- ELIMINAR TABLAS Y DB -----------------------------------------------------------
+drop database db_venta_pasajes; -- ----------------------------------------------
+drop table tb_usuario;
+drop table tb_conductor;
+drop table tb_modelo_vehiculo;
 drop table tb_vehiculo;
+drop table tb_pasajero;
+drop table tb_destinos;
 drop table tb_viaje;
 drop table tb_detalle_viaje;
--- eliminar
+drop table tb_venta_temporal;
+drop table tb_pasajeros_temporal;
 
+-- SELECT TABLAS -----------------------------------------------------------------
 use db_venta_pasajes;
 select * from tb_usuario;
 select * from tb_conductor;
@@ -120,7 +142,11 @@ select * from tb_pasajero;
 select * from tb_destinos;
 select * from tb_viaje;
 select * from tb_detalle_viaje;
+select * from tb_venta_temporal;
+select * from tb_pasajeros_temporal;
 
+
+-- PRUEBAS ------------------------------------------------------------------------
 
 select vh.placa, mvh.modelo, vh.detalle, co.dniconductor, co.conductor
 from tb_vehiculo vh
@@ -131,4 +157,13 @@ vh.dniconductor = co.dniconductor;
 
 update tb_vehiculo set detalle = '123', dniconductor = 'sdasd' where placa = '123564';
 
--- prueba
+select vh.placa, vh.idmodelo, vh.detalle, vh.dniconductor, c.conductor
+from tb_vehiculo vh
+inner join tb_conductor c
+on vh.dniconductor = c.dniconductor
+order by vh.idmodelo;
+
+update tb_venta_temporal set estado = 0 where id = 1;
+
+
+

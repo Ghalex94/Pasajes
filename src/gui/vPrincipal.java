@@ -53,7 +53,6 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	viSeleccionAsientos4 sa4 = new viSeleccionAsientos4(this);
 	viVehiculos lvc = new viVehiculos(this);
 	
-	int estado = 0; // 0: No existe ventas pentdientes  1: Existen ventas pendientes
 	ResultSet rs;
 	//RESOLUCION MONITOR
 	//Dimension desktopSize = desktopPane.getSize();
@@ -167,6 +166,32 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		cargar();
 		//JOptionPane.showMessageDialog(null, "" + ancho + "  " + alto);
 	}
+	
+	public void cargar(){
+		Consultas consulta = new Consultas();
+		rs = consulta.cagarVentaTemporal();
+		int estado;
+		try {
+			rs.next();
+			estado = rs.getInt("estado");
+			if(estado == 0){
+				mntmCrearNuevaSalida.setEnabled(true);
+				mntmContinuarPreparacion.setEnabled(false);
+				mntmCancelarSalida.setEnabled(false);
+			}
+			else{
+				mntmCrearNuevaSalida.setEnabled(false);
+				mntmContinuarPreparacion.setEnabled(true);
+				mntmCancelarSalida.setEnabled(true);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		esconderVentanas();
+        lg.setLocation((ancho - FrameSize.width)/2, (alto - FrameSize.height)/4);
+		lg.show();
+	}
 
 	public void actionPerformed(ActionEvent arg0) {
 		if (arg0.getSource() == mntmCancelarSalida) {
@@ -217,22 +242,6 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		if (opc == 0)
 			System.exit(0);
 	}
-		
-	public void cargar(){
-		Consultas consulta = new Consultas();
-		rs = consulta.cagarVentaTemporal();
-		try {
-			while(rs.next())
-				//cb.addItem(rs.getString("modelo"));
-			{}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		esconderVentanas();
-        lg.setLocation((ancho - FrameSize.width)/2, (alto - FrameSize.height)/4);
-		lg.show();
-	}
 	
 	public void esconderVentanas(){
 		lg.hide();
@@ -267,10 +276,6 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		}	
 	}
 	
-	public int verificarEstado(){
-		return estado;
-	}
-	
 	protected void actionPerformedMntmCerrarSesin(ActionEvent arg0) {
 		int opc = JOptionPane.showConfirmDialog(null, "¿Cerrar Sesión?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (opc == 0){
@@ -288,9 +293,19 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	}
 	
 	protected void actionPerformedMntmContinuarPreparacion(ActionEvent arg0) {
-		int modelo = 5;
+		Consultas consulta = new Consultas();
+		rs = consulta.cagarVentaTemporal();
+		int modelovh = 0;
+		try {
+			rs.next();
+			modelovh = rs.getInt("modelovh");
+		} catch (SQLException e1) {	e1.printStackTrace(); }
+		
+		
+		
+		
 		esconderVentanas();
-		switch(modelo){
+		switch(modelovh){
 		case 1:
 			sa1.show();
 			try{
@@ -319,6 +334,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	}
 	
 	protected void actionPerformedMntmCancelarSalida(ActionEvent arg0) {
+		
 	}
 	
 	protected void actionPerformedMntmListaDeVehiculos(ActionEvent arg0) {

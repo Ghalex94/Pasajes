@@ -20,6 +20,8 @@ import clases.Vehiculo;
 import mysql.Consultas;
 
 import java.awt.Color;
+import org.eclipse.wb.swing.FocusTraversalOnArray;
+import java.awt.Component;
 
 public class viDatos1 extends JInternalFrame implements ActionListener {
 	private JLabel lblNewLabel;
@@ -30,6 +32,9 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 	
 	vPrincipal  vp = null;
 	ResultSet rs;
+	private JButton btnCancelar;
+	private JLabel lblPrecioDePasaje;
+	private JTextField txtPrePasaje;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -48,9 +53,10 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public viDatos1(vPrincipal temp) {
+		getContentPane().setBackground(Color.LIGHT_GRAY);
 		setTitle("SELECCIONE");
 		vp = temp;
-		setBounds(100, 100, 489, 237);
+		setBounds(100, 100, 667, 307);
 		getContentPane().setLayout(null);
 		
 		lblNewLabel = new JLabel("Empresa:");
@@ -70,19 +76,40 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 		btnContinuar.setBackground(Color.DARK_GRAY);
 		btnContinuar.setFont(new Font("USAngel", Font.PLAIN, 20));
 		btnContinuar.addActionListener(this);
-		btnContinuar.setBounds(162, 153, 282, 31);
+		btnContinuar.setBounds(412, 235, 229, 31);
 		getContentPane().add(btnContinuar);
 		
 		cbEmpresa = new JComboBox();
 		cbEmpresa.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		cbEmpresa.setModel(new DefaultComboBoxModel(new String[] {"MERMA HERMANOS S.R.L", "ZIGUEL E.I.R.L"}));
-		cbEmpresa.setBounds(162, 49, 282, 23);
+		cbEmpresa.setBounds(162, 49, 479, 23);
 		getContentPane().add(cbEmpresa);
 		
 		cbVehiculo = new JComboBox();
 		cbVehiculo.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-		cbVehiculo.setBounds(162, 109, 282, 23);
+		cbVehiculo.setBounds(162, 109, 479, 23);
 		getContentPane().add(cbVehiculo);
+		
+		btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(this);
+		btnCancelar.setForeground(Color.WHITE);
+		btnCancelar.setFont(new Font("USAngel", Font.PLAIN, 20));
+		btnCancelar.setBackground(Color.DARK_GRAY);
+		btnCancelar.setBounds(160, 235, 221, 31);
+		getContentPane().add(btnCancelar);
+		
+		lblPrecioDePasaje = new JLabel("Precio de pasaje:");
+		lblPrecioDePasaje.setHorizontalAlignment(SwingConstants.LEFT);
+		lblPrecioDePasaje.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+		lblPrecioDePasaje.setBounds(35, 166, 229, 20);
+		getContentPane().add(lblPrecioDePasaje);
+		
+		txtPrePasaje = new JTextField();
+		txtPrePasaje.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		txtPrePasaje.setColumns(10);
+		txtPrePasaje.setBounds(250, 164, 131, 25);
+		getContentPane().add(txtPrePasaje);
+		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{cbEmpresa, cbVehiculo, txtPrePasaje, btnContinuar, btnCancelar}));
 		cargar();
 	}
 	
@@ -92,14 +119,41 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnCancelar) {
+			actionPerformedBtnCancelar(e);
+		}
 		if (e.getSource() == btnContinuar) {
 			actionPerformedBtnContinuar(e);
 		}
 	}
+	
+	protected void actionPerformedBtnCancelar(ActionEvent e) {
+		this.setVisible(false);
+		cbEmpresa.setSelectedIndex(0);
+		cbVehiculo.setSelectedIndex(0);
+	}
+	
 	protected void actionPerformedBtnContinuar(ActionEvent e) {
-		int modelo = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getIdmodelo();
 		vp.esconderVentanas();
-		switch(modelo){
+		
+		int empresa = 0;
+		if(cbEmpresa.getSelectedIndex() == 0)
+			empresa = 1; //MERMA
+		if(cbEmpresa.getSelectedIndex() == 1)
+			empresa = 2; //SIGUEL
+		int dniconductor = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getDniconductor();
+		String placa = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getPlaca();
+		int modelovh = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getIdmodelo();
+		float prepasaje = Float.parseFloat(txtPrePasaje.getText());
+		
+		Consultas consulta = new Consultas();
+		consulta.actualizarVentaTemporal01(1, empresa, dniconductor, placa, modelovh, prepasaje);
+		
+		vp.mntmCrearNuevaSalida.setEnabled(false);
+		vp.mntmContinuarPreparacion.setEnabled(true);
+		vp.mntmCancelarSalida.setEnabled(true);
+		
+		switch(modelovh){
 		case 1:
 			vp.sa1.show();
 			try{
@@ -125,8 +179,5 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 			}catch(Exception f){}
 			break;
 		}
-		vp.mntmCrearNuevaSalida.setEnabled(false);
-		vp.mntmContinuarPreparacion.setEnabled(true);
-		vp.mntmCancelarSalida.setEnabled(true);
 	}
 }

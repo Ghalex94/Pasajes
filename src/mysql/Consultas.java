@@ -39,7 +39,7 @@ public class Consultas {
 		ResultSet rs = null;
 		try {
 			st = con.createStatement();
-			rs = st.executeQuery("select vh.placa, mvh.modelo, vh.detalle, co.dniconductor, co.conductor from tb_vehiculo vh inner join tb_modelo_vehiculo mvh  inner join tb_conductor co on vh.idmodelo = mvh.idmodelo and vh.dniconductor = co.dniconductor order by mvh.modelo");
+			rs = st.executeQuery("select vh.placa, mvh.idmodelo, mvh.modelo, vh.detalle, co.dniconductor, co.conductor from tb_vehiculo vh inner join tb_modelo_vehiculo mvh  inner join tb_conductor co on vh.idmodelo = mvh.idmodelo and vh.dniconductor = co.dniconductor order by mvh.modelo");		
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
@@ -146,19 +146,6 @@ public class Consultas {
 		}
 	}
 	
-	public ResultSet cargarVehiculos(){
-		Connection con = MySQLConexion.getConection();
-		java.sql.Statement st;
-		ResultSet rs = null;
-		try {
-			st = con.createStatement();
-			rs = st.executeQuery("select * from tb_vehiculo order by placa");
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "ERROR: " + e);
-		}
-		return rs;
-	}
-	
 	public ResultSet cagarVentaTemporal(){
 		Connection con = MySQLConexion.getConection();
 		java.sql.Statement st;
@@ -166,6 +153,41 @@ public class Consultas {
 		try {
 			st = con.createStatement();
 			rs = st.executeQuery("select * from tb_venta_temporal");
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		return rs;
+	}
+	
+	public static void actualizarVentaTemporal01(int estado, int empresa, int dniconductor, String placa, int modelovh, float prepasaje){ //1MERMA 2SIGUEL
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "update tb_venta_temporal set estado=? , empresa=?, dniconductor=?, placa=?, modelovh=?, prepasaje=? where id=1";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, estado);
+			prepareStmt.setInt(2, empresa);
+			prepareStmt.setInt(3, dniconductor);
+			prepareStmt.setString(4, placa);
+			prepareStmt.setInt(5, modelovh);
+			prepareStmt.setFloat(6, prepasaje);
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+	}
+	
+	public ResultSet buscarVehiculo(String placa){
+		Connection con = MySQLConexion.getConection();
+		java.sql.Statement st;
+		ResultSet rs = null;
+		PreparedStatement pst = null;
+		try {
+			st = con.createStatement();
+			String sql = "select * from tb_vehiculo where placa = ?";
+			
+			pst = con.prepareStatement(sql);
+			pst.setString(1, placa);
+			rs = pst.executeQuery();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
