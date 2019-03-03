@@ -301,9 +301,6 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			modelovh = rs.getInt("modelovh");
 		} catch (SQLException e1) {	e1.printStackTrace(); }
 		
-		
-		
-		
 		esconderVentanas();
 		switch(modelovh){
 		case 1:
@@ -334,7 +331,16 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	}
 	
 	protected void actionPerformedMntmCancelarSalida(ActionEvent arg0) {
-		
+		int opc = JOptionPane.showConfirmDialog(null, "¿Cancelar salida?\nSi lo hace toda la preparación se eliminará permanentemente", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		if (opc == 0){
+			Consultas consulta = new Consultas();
+			consulta.eliminarSalidaVehiculo();
+			
+			desactivarMenu();
+			esconderVentanas();
+			lg.show();
+			lg.cursor();
+		}
 	}
 	
 	protected void actionPerformedMntmListaDeVehiculos(ActionEvent arg0) {

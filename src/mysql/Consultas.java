@@ -194,4 +194,16 @@ public class Consultas {
 		return rs;
 	}
 	
+	public static void eliminarSalidaVehiculo(){
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "update tb_venta_temporal set estado=? , empresa=?, dniconductor=?, placa=?, modelovh=?, prepasaje=? where id=1";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, 4);
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+	}
+	
 }
