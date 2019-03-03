@@ -197,10 +197,12 @@ public class Consultas {
 	public static void eliminarSalidaVehiculo(){
 		Connection con = MySQLConexion.getConection();
 		try {
-			String sql = "update tb_venta_temporal set estado=? , empresa=?, dniconductor=?, placa=?, modelovh=?, prepasaje=? where id=1";
-			PreparedStatement prepareStmt = con.prepareStatement(sql);
-			prepareStmt.setInt(1, 4);
+			String sql1 = "delete from tb_venta_temporal where id = 1";
+			String sql2 = "insert into tb_venta_temporal values(1, 0, 0, 0, null, 0, null, null, null, null, null)";
+			PreparedStatement prepareStmt = con.prepareStatement(sql1);
 			prepareStmt.execute();
+			PreparedStatement prepareStmt2 = con.prepareStatement(sql2);
+			prepareStmt2.execute();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}

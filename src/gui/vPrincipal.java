@@ -335,11 +335,11 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		if (opc == 0){
 			Consultas consulta = new Consultas();
 			consulta.eliminarSalidaVehiculo();
-			
-			desactivarMenu();
 			esconderVentanas();
-			lg.show();
-			lg.cursor();
+			mntmCrearNuevaSalida.setEnabled(true);
+			mntmContinuarPreparacion.setEnabled(false);
+			mntmCancelarSalida.setEnabled(false);
+			JOptionPane.showMessageDialog(null, "Salida cancelada");
 		}
 	}
 	
@@ -351,7 +351,6 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		}catch(Exception f){}
 		
 	}
-	
 }
 
 
