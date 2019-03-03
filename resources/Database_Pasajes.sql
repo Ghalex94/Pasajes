@@ -82,14 +82,15 @@ prepasaje		float
 );
 
 create table tb_pasajeros_temporal(
+id				int not null primary key,
 asiento 		int,
 estado			int, -- 0Libre 1Ocupado
 nombre			varchar(50),
 dni				int,
 edad			int,
 precio 			float
-);
 
+);
 
 insert into tb_usuario values('alex', 'Aa123', 'Alexander Gamarra', 1);
 insert into tb_usuario values('admin', 'admin', 'ADMINISTRADOR', 0);
@@ -164,6 +165,9 @@ on vh.dniconductor = c.dniconductor
 order by vh.idmodelo;
 
 update tb_venta_temporal set estado = 0 where id = 1;
+
+delete from  tb_venta_temporal where id = 1;
+
 
 
 
