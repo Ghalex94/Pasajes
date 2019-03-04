@@ -146,7 +146,7 @@ public class Consultas {
 		}
 	}
 	
-	public ResultSet cagarVentaTemporal(){
+	public ResultSet cargarVentaTemporal(){
 		Connection con = MySQLConexion.getConection();
 		java.sql.Statement st;
 		ResultSet rs = null;
@@ -159,7 +159,9 @@ public class Consultas {
 		return rs;
 	}
 	
-	public static void actualizarVentaTemporal01(int estado, int empresa, int dniconductor, String placa, int modelovh, float prepasaje){ //1MERMA 2SIGUEL
+	//1MERMA 2SIGUEL
+	//VIENE DE DATOS1
+	public static void actualizarVentaTemporal01(int estado, int empresa, int dniconductor, String placa, int modelovh, float prepasaje){ 
 		Connection con = MySQLConexion.getConection();
 		try {
 			String sql = "update tb_venta_temporal set estado=? , empresa=?, dniconductor=?, placa=?, modelovh=?, prepasaje=? where id=1";
@@ -170,6 +172,20 @@ public class Consultas {
 			prepareStmt.setString(4, placa);
 			prepareStmt.setInt(5, modelovh);
 			prepareStmt.setFloat(6, prepasaje);
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+	}
+	
+	//VIENE DE MODIFICACION A CONDUCTOR
+	public static void actualizarVentaTemporal02(int dniconductor, float prepasaje){
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "update tb_venta_temporal set dniconductor=?, prepasaje=? where id=1";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, dniconductor);
+			prepareStmt.setFloat(2, prepasaje);
 			prepareStmt.execute();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
@@ -207,5 +223,6 @@ public class Consultas {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
 	}
+	
 	
 }

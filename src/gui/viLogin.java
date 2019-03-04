@@ -160,11 +160,11 @@ public class viLogin extends JInternalFrame implements ActionListener, KeyListen
 			txtPass.setText(null);
 			
 			if(ingresante.getTipo() == 0){
-				vp.esconderVentanas();
+				vp.lg.setVisible(false);
 				vp.activarMenu(0);//admin
 			}
 			if(ingresante.getTipo() == 1){
-				vp.esconderVentanas();
+				vp.lg.setVisible(false);
 				vp.activarMenu(1);//personal
 			}
 		}	

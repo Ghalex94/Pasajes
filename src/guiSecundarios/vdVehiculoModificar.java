@@ -296,7 +296,7 @@ public class vdVehiculoModificar extends JDialog implements ActionListener {
 		txtDni.setText("" + cbConductor.getItemAt(cbConductor.getSelectedIndex()).getDni());
 	}
 	protected void actionPerformedBtnNewConductor(ActionEvent e) {
-		vdConductorNuevo vncon = new vdConductorNuevo(null, this);
+		vdConductorNuevo vncon = new vdConductorNuevo(null, this, null);
 		vncon.setVisible(true);
 		this.setVisible(false);
 		this.setAlwaysOnTop(false);

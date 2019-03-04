@@ -270,7 +270,7 @@ public class vdVehiculoNuevo extends JDialog implements ActionListener {
 		txtDni.setText("" + cbConductor.getItemAt(cbConductor.getSelectedIndex()).getDni());
 	}
 	protected void actionPerformedBtnNewConductor(ActionEvent e) {
-		vdConductorNuevo vncon = new vdConductorNuevo(this, null);
+		vdConductorNuevo vncon = new vdConductorNuevo(this, null, null);
 		vncon.setVisible(true);
 		this.setVisible(false);
 		this.setAlwaysOnTop(false);

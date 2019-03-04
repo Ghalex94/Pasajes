@@ -185,7 +185,7 @@ public class vdPasajero extends JDialog implements ActionListener {
 		
 	}
 	protected void actionPerformedBtnGuardar(ActionEvent arg0) {
-		vsa1.cambiarColorAsiento(asiento);		
+		vsa1.cambiarColorAsiento(asiento);
 		vp.enable(true);
 		this.dispose();
 	}

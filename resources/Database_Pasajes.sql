@@ -82,14 +82,12 @@ prepasaje		float
 );
 
 create table tb_pasajeros_temporal(
-id				int not null primary key,
-asiento 		int,
+asiento 		int not null primary key,
 estado			int, -- 0Libre 1Ocupado
 nombre			varchar(50),
 dni				int,
 edad			int,
 precio 			float
-
 );
 
 insert into tb_usuario values('alex', 'Aa123', 'Alexander Gamarra', 1);

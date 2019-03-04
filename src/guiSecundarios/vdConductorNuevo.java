@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import clases.Conductor;
+import gui.vdConductor;
 import mysql.Consultas;
 
 import java.awt.Window.Type;
@@ -32,13 +33,13 @@ public class vdConductorNuevo extends JDialog implements ActionListener {
 	private JTextField txtConductor;
 
 	
-	vdVehiculoNuevo vnvh; // Ventana nuevo vehiculo
-	vdVehiculoModificar vmvh; // Ventana modificar vehiculo
-	
+	vdVehiculoNuevo vnvh = null; // Ventana nuevo vehiculo
+	vdVehiculoModificar vmvh = null; // Ventana modificar vehiculo
+	vdConductor cndtr = null;
 	
 	public static void main(String[] args) {
 		try {
-			vdConductorNuevo dialog = new vdConductorNuevo(null, null);
+			vdConductorNuevo dialog = new vdConductorNuevo(null, null, null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -49,9 +50,10 @@ public class vdConductorNuevo extends JDialog implements ActionListener {
 	/**
 	 * Create the dialog.
 	 */
-	public vdConductorNuevo(vdVehiculoNuevo temp, vdVehiculoModificar temp2) {
+	public vdConductorNuevo(vdVehiculoNuevo temp, vdVehiculoModificar temp2, vdConductor temp3) {
 		vnvh = temp;
 		vmvh = temp2;
+		cndtr = temp3;
 		
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		setUndecorated(true);
@@ -125,8 +127,14 @@ public class vdConductorNuevo extends JDialog implements ActionListener {
 	}
 	
 	protected void actionPerformedBtnCancelar(ActionEvent arg0) {
-		vnvh.setVisible(true);
-		vnvh.setAlwaysOnTop(true);
+		if(vnvh != null){
+			vnvh.setVisible(true);
+			vnvh.setAlwaysOnTop(true);
+		}
+		if(cndtr != null){
+			cndtr.setVisible(true);
+			cndtr.setAlwaysOnTop(true);
+		}
 		this.dispose();
 	}
 	
@@ -144,20 +152,26 @@ public class vdConductorNuevo extends JDialog implements ActionListener {
 				this.setAlwaysOnTop(false);
 				Consultas.crearConductor(dni, nomconductor);
 				Conductor conductor = new Conductor(dni, nomconductor);
-				
-				if(vmvh == null){
+				if(vnvh != null){
 					vnvh.cbConductor.addItem(conductor);
 					int cantitems = vnvh.cbConductor.getItemCount();
 					vnvh.cbConductor.setSelectedIndex(cantitems-1);
 					vnvh.setVisible(true);
 					vnvh.setAlwaysOnTop(true);
 				}
-				else{
+				if(vmvh != null){
 					vmvh.cbConductor.addItem(conductor);
 					int cantitems = vmvh.cbConductor.getItemCount();
 					vmvh.cbConductor.setSelectedIndex(cantitems-1);
 					vmvh.setVisible(true);
 					vmvh.setAlwaysOnTop(true);
+				}
+				if(cndtr != null){
+					cndtr.cbConductor.addItem(conductor);
+					int cantitems = cndtr.cbConductor.getItemCount();
+					cndtr.cbConductor.setSelectedIndex(cantitems-1);
+					cndtr.setVisible(true);
+					cndtr.setAlwaysOnTop(true);
 				}
 				this.dispose();
 			}

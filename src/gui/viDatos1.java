@@ -127,57 +127,68 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 		}
 	}
 	
-	protected void actionPerformedBtnCancelar(ActionEvent e) {
+	protected void actionPerformedBtnCancelar(ActionEvent e){		
 		this.setVisible(false);
-		cbEmpresa.setSelectedIndex(0);
-		cbVehiculo.setSelectedIndex(0);
+		vp.esconderVentanas();
+		vp.cerrarVentanas();
 	}
 	
 	protected void actionPerformedBtnContinuar(ActionEvent e) {
-		vp.esconderVentanas();
-		
-		int empresa = 0;
-		if(cbEmpresa.getSelectedIndex() == 0)
-			empresa = 1; //MERMA
-		if(cbEmpresa.getSelectedIndex() == 1)
-			empresa = 2; //SIGUEL
-		int dniconductor = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getDniconductor();
-		String placa = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getPlaca();
-		int modelovh = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getIdmodelo();
-		float prepasaje = Float.parseFloat(txtPrePasaje.getText());
-		
-		Consultas consulta = new Consultas();
-		consulta.actualizarVentaTemporal01(1, empresa, dniconductor, placa, modelovh, prepasaje);
-		
-		vp.mntmCrearNuevaSalida.setEnabled(false);
-		vp.mntmContinuarPreparacion.setEnabled(true);
-		vp.mntmCancelarSalida.setEnabled(true);
-		
-		switch(modelovh){
-		case 1:
-			vp.sa1.show();
-			try{
-				vp.sa1.setMaximum(true);
-			}catch(Exception f){}
-			break;
-		case 2:
-			vp.sa2.show();
-			try{
-				vp.sa2.setMaximum(true);
-			}catch(Exception f){}
-			break;
-		case 3:
-			vp.sa3.show();
-			try{
-				vp.sa3.setMaximum(true);
-			}catch(Exception f){}
-			break;
-		case 4:
-			vp.sa4.show();
-			try{
-				vp.sa4.setMaximum(true);
-			}catch(Exception f){}
-			break;
+		if(txtPrePasaje.getText().length() <=0)
+			JOptionPane.showMessageDialog(null, "Ingrese el precio del pasaje");
+		else{
+			vp.esconderVentanas();
+			vp.cerrarVentanas();
+			int empresa = 0;
+			if(cbEmpresa.getSelectedIndex() == 0)
+				empresa = 1; //MERMA
+			if(cbEmpresa.getSelectedIndex() == 1)
+				empresa = 2; //SIGUEL
+			int dniconductor = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getDniconductor();
+			String placa = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getPlaca();
+			int modelovh = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getIdmodelo();
+			float prepasaje = Float.parseFloat(txtPrePasaje.getText());
+			
+			Consultas consulta = new Consultas();
+			consulta.actualizarVentaTemporal01(1, empresa, dniconductor, placa, modelovh, prepasaje);
+			vp.mntmCrearNuevaSalida.setEnabled(false);
+			vp.mntmContinuarPreparacion.setEnabled(true);
+			vp.mntmCancelarSalida.setEnabled(true);
+			
+			switch(modelovh){
+			case 1:
+				vp.sa1 = new viSeleccionAsientos1(vp);
+				vp.desktopPane.add(vp.sa1);
+				vp.sa1.show();
+				try{
+					vp.sa1.setMaximum(true);
+				}catch(Exception f){}
+				break;
+			case 2:
+				vp.sa2 = new viSeleccionAsientos2(vp);
+				vp.desktopPane.add(vp.sa2);
+				vp.sa2.show();
+				try{
+					vp.sa2.setMaximum(true);
+				}catch(Exception f){}
+				break;
+			case 3:
+				vp.sa3 = new viSeleccionAsientos3(vp);
+				vp.desktopPane.add(vp.sa3);
+				vp.sa3.show();
+				try{
+					vp.sa3.setMaximum(true);
+				}catch(Exception f){}
+				break;
+			case 4:
+				vp.sa4 = new viSeleccionAsientos4(vp);
+				vp.desktopPane.add(vp.sa4);
+				vp.sa4.show();
+				try{
+					vp.sa4.setMaximum(true);
+				}catch(Exception f){}
+				break;
+			}
 		}
 	}
 }
