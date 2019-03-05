@@ -224,5 +224,55 @@ public class Consultas {
 		}
 	}
 	
+	public static void crearPasajero(int dni, int ruc, String fnacimiento, int edad, String nombre, String razsocial){
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "insert into tb_pasajero (dnipasajero, ruc, fnacimiento, edad, nombre, razsocial)" + " values (?, ?, ?, ?, ?, ?)";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, dni);
+			prepareStmt.setInt(2, ruc);
+			prepareStmt.setString(3, fnacimiento);
+			prepareStmt.setInt(4, edad);
+			prepareStmt.setString(5, nombre);
+			prepareStmt.setString(6, razsocial);
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR" + e);
+		}
+	}
+	
+	public static void asignarAsiento(int asiento, String nombre, int dni, int edad, float precio){
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "insert into tb_pasajeros_temporal (asiento, estado, nombre, dni, edad, precio)" + " values (?, ?, ?, ?, ?, ?)";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, asiento);
+			prepareStmt.setInt(2, 1);
+			prepareStmt.setString(3, nombre);
+			prepareStmt.setInt(4, dni);
+			prepareStmt.setInt(5, edad);
+			prepareStmt.setFloat(6, precio);
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR" + e);
+		}
+	}
+	
+	public ResultSet buscarPasajero(int dni){
+		Connection con = MySQLConexion.getConection();
+		java.sql.Statement st;
+		ResultSet rs = null;
+		PreparedStatement pst = null;
+		try {
+			st = con.createStatement();
+			String sql = "select * from tb_pasajero where dnipasajero = ?";
+			pst = con.prepareStatement(sql);
+			pst.setInt(1, dni);
+			rs = pst.executeQuery();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		return rs;
+	}
 	
 }
