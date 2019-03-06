@@ -21,11 +21,14 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Scanner;
 import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.KeyListener;
+import java.math.BigInteger;
 import java.awt.event.KeyEvent;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
@@ -52,16 +55,17 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 	
 	vPrincipal vp;
 	int asiento = 0;
-	viSeleccionAsientos1 vsa1;
-	viSeleccionAsientos2 vsa2;
-	viSeleccionAsientos3 vsa3;
-	viSeleccionAsientos4 vsa4;
+	int estado = 0;
+	viSeleccionAsientos1 vsa1 = null;
+	viSeleccionAsientos2 vsa2 = null;
+	viSeleccionAsientos3 vsa3 = null;
+	viSeleccionAsientos4 vsa4 = null;
 	float prepasajeoriginal = 0;
 	
 	
 	public static void main(String[] args) {
 		try {
-			vdAsiento dialog = new vdAsiento(null, 0, null, null, null, null);
+			vdAsiento dialog = new vdAsiento(null, 0, 0, null, null, null, null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -69,10 +73,11 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		}
 	}
 
-	public vdAsiento(vPrincipal temp, int temp2, viSeleccionAsientos1 temp3, viSeleccionAsientos2 temp4, viSeleccionAsientos3 temp5, viSeleccionAsientos4 temp6) {
+	public vdAsiento(vPrincipal temp, int temp2, int temp22, viSeleccionAsientos1 temp3, viSeleccionAsientos2 temp4, viSeleccionAsientos3 temp5, viSeleccionAsientos4 temp6) {
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		vp = temp;
 		asiento = temp2;
+		estado = temp22;
 		vsa1 = temp3;
 		vsa2 = temp4;
 		vsa3 = temp5;
@@ -156,6 +161,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		}
 		{
 			txtEdad = new JTextField();
+			txtEdad.setEditable(false);
 			txtEdad.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 			txtEdad.setColumns(10);
 			txtEdad.setBounds(127, 296, 107, 23);
@@ -195,18 +201,21 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		}
 		
 		cbDia = new JComboBox();
+		cbDia.addActionListener(this);
 		cbDia.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
 		cbDia.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		cbDia.setBounds(326, 253, 65, 27);
 		getContentPane().add(cbDia);
 		
 		cbMes = new JComboBox();
+		cbMes.addActionListener(this);
 		cbMes.setModel(new DefaultComboBoxModel(new String[] {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SETIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"}));
 		cbMes.setFont(new Font("Segoe UI", Font.BOLD, 15));
 		cbMes.setBounds(401, 253, 112, 27);
 		getContentPane().add(cbMes);
 		
 		cbAnio = new JComboBox();
+		cbAnio.addActionListener(this);
 		cbAnio.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		cbAnio.setBounds(523, 253, 65, 27);
 		getContentPane().add(cbAnio);
@@ -247,6 +256,15 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == cbAnio) {
+			actionPerformedCbAnio(arg0);
+		}
+		if (arg0.getSource() == cbMes) {
+			actionPerformedCbMes(arg0);
+		}
+		if (arg0.getSource() == cbDia) {
+			actionPerformedCbDia(arg0);
+		}
 		if (arg0.getSource() == btnGuardar) {
 			actionPerformedBtnGuardar(arg0);
 		}
@@ -258,8 +276,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 	public void cargar(){
 		this.setAlwaysOnTop(true);
 		setLocationRelativeTo(null);
-		lblNAsiento.setText("11");
-		
+		lblNAsiento.setText(""+asiento);
 		Consultas consulta = new Consultas();
 		ResultSet rs = consulta.cargarVentaTemporal();
 		try {
@@ -267,7 +284,6 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			txtPrecio.setText(rs.getString("prepasaje"));
 			prepasajeoriginal = Float.parseFloat(rs.getString("prepasaje"));
 		} catch (SQLException e) {	e.printStackTrace(); }
-		
 		//LLENAR COMBOS DE FECHA
 		/*for(int i = 1; i<=31; i++) //DIA
 			cbDia.addItem(i);*/
@@ -275,6 +291,21 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		int anio= cal.get(Calendar.YEAR);
 		for(int i = anio; i>=1900; i--) //AÑO
 			cbAnio.addItem(i);
+		
+		
+		if(estado == 1){ // OCUPADO
+			try {
+				Consultas consulta2 = new Consultas();
+				ResultSet rs2 = consulta2.buscarPasajerosTemporal(asiento);
+				rs2.next();
+				txtEdad.setText(rs2.getString("edad").toString());
+				txtPrecio.setText(rs2.getString("prepasaje").toString());
+			} catch (Exception e) {
+			}
+		}
+			
+				
+		
 	}
 	
 	protected void actionPerformedBtnCancelar(ActionEvent arg0) {
@@ -283,28 +314,69 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		
 	}
 	protected void actionPerformedBtnGuardar(ActionEvent arg0) {
-		if(txtDni.getText().length() == 0 || txtNombre.getText().length() == 0 || txtEdad.getText().length() == 0 || txtPrecio.getText().length() == 0)
+		if(txtDni.getText().length() == 0 || txtNombre.getText().length() == 0 || txtEdad.getText().length() == 0 || txtPrecio.getText().length() == 0 || txtDni.getText().length() != 8){
+			this.setAlwaysOnTop(false);		
 			JOptionPane.showMessageDialog(null, "Ingrese los datos necesarios correctamente");
+			this.setAlwaysOnTop(true);
+		}
 		else{
-			int dni = Integer.parseInt(txtDni.getText());
-			int ruc = 0;
-			if(txtRuc.getText().length()>0)
-				ruc = Integer.parseInt(txtRuc.getText());
-			String nombre = txtNombre.getText();
-			String razsocial = null;
-			if(txtRazsocial.getText().length()>0)
-				razsocial = txtRazsocial.getText();
-			int dia = Integer.parseInt(cbDia.getSelectedItem().toString());
-			int mes = cbMes.getSelectedIndex() + 1;
-			int anio = Integer.parseInt(cbAnio.getSelectedItem().toString());
-			String fnacimiento = anio+"-"+mes+"-"+dia;
-			int edad = Integer.parseInt(txtEdad.getText());
-			float prepasaje = Float.parseFloat(txtPrecio.getText());
-			
-			
-			vsa1.cambiarColorAsiento(asiento);
-			vp.enable(true);
-			this.dispose();
+			this.setAlwaysOnTop(false);
+			int opc = JOptionPane.showConfirmDialog(null, "¿Vender pasaje?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			this.setAlwaysOnTop(true);
+			if (opc == 0){
+				int dnipasajero = Integer.parseInt(txtDni.getText());
+				String ruc = "";
+				if(txtRuc.getText().length()>0)
+					ruc = txtRuc.getText();
+				String nombre = txtNombre.getText();
+				String razsocial = null;
+				if(txtRazsocial.getText().length()>0)
+					razsocial = txtRazsocial.getText();
+				int dia = Integer.parseInt(cbDia.getSelectedItem().toString());
+				int mes = cbMes.getSelectedIndex() + 1;
+				int anio = Integer.parseInt(cbAnio.getSelectedItem().toString());
+				int edad = Integer.parseInt(txtEdad.getText());
+				String fnacimiento = "" + anio + "-" + mes + "-" + dia;
+				float prepasaje = Float.parseFloat(txtPrecio.getText());
+				
+				try {
+					Consultas consulta = new Consultas();
+					ResultSet rs = consulta.buscarPasajero(dnipasajero);
+					if(rs.next()){// SE ACTUALIZARÁ LOS DATOS DEL PASAJERO
+						Consultas consulta2 = new Consultas();
+						consulta2.actualizarPasajero(dnipasajero, ruc, fnacimiento, nombre, razsocial);
+					}
+					else{// SE CREARÁ UN PASAJERO NUEVO
+						this.setAlwaysOnTop(false);
+						Consultas consulta2 = new Consultas();
+						consulta2.crearPasajero(dnipasajero, ruc, fnacimiento, nombre, razsocial);					
+					}
+				} catch (SQLException ex) {
+					this.setAlwaysOnTop(false);
+					JOptionPane.showMessageDialog(null, "ERROR: " + ex);
+					this.setAlwaysOnTop(true);
+				}
+				
+				try {
+					Consultas consulta3 = new Consultas();
+					this.setAlwaysOnTop(false);
+					consulta3.asignarAsiento(asiento, dnipasajero, edad, prepasaje);
+					
+					if(vsa1 != null)
+						vsa1.cambiarColorAsiento(asiento);
+					if(vsa2 != null)
+						vsa2.cambiarColorAsiento(asiento);
+					if(vsa3 != null)
+						vsa3.cambiarColorAsiento(asiento);
+					if(vsa4 != null)
+						vsa4.cambiarColorAsiento(asiento);
+					vp.enable(true);
+					this.dispose();
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "ERROR: " + e);
+				}
+				
+			}
 		}
 	}
 	public void keyPressed(KeyEvent arg0) {
@@ -334,6 +406,20 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 					txtRuc.setText(rs.getString("ruc"));
 					txtNombre.setText(rs.getString("nombre"));
 					txtRazsocial.setText(rs.getString("razsocial"));
+					String fnacimiento =  rs.getString("fnacimiento").toString();
+					String[] parts = fnacimiento.split("-");
+					int anio = Integer.parseInt(parts[0]); //año
+					int mes = Integer.parseInt(parts[1]); //mes
+					int dia = Integer.parseInt(parts[2]); //dia
+					
+					cbDia.setSelectedIndex(dia-1);
+					cbMes.setSelectedIndex(mes-1);
+					for(int i = 0 ; i<cbAnio.getItemCount(); i++){
+						if(Integer.parseInt(cbAnio.getItemAt(i).toString()) == anio)
+							cbAnio.setSelectedIndex(i);
+					}
+					int edad = calcularEdad(dia, mes, anio);
+					txtEdad.setText(""+edad);					
 				} catch (SQLException ex) {
 					this.setAlwaysOnTop(false);
 					JOptionPane.showMessageDialog(null, "No existe el pasajero, se creará uno nuevo.");
@@ -348,11 +434,54 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 					txtEdad.setText(null);
 					txtPrecio.setText(""+prepasajeoriginal);
 				}
-				
-				
 			}
 		}
-		
+	}
+	
+	public int calcularEdad(int dia, int mes, int anio){
+		Scanner sca = new Scanner(System.in);
+        Calendar cal = new GregorianCalendar();
+        int mesActual = cal.get(Calendar.MONTH) + 1;
+        int anioActual = cal.get(Calendar.YEAR);
+        int diaActual = cal.get(Calendar.DAY_OF_MONTH);
+        
+        int mesResultado, diaResultado, anioResultado;
+        
+        anioResultado = anioActual - anio;
+        mesResultado = mesActual - mes;
+        diaResultado = diaActual - dia;
+        		            
+        if(mesResultado < 0 // Aún no es el mes de su cumpleaños
+                || (mesResultado==0 && diaResultado < 0)) { // o es el mes pero no ha llegado el día.
+        	anioResultado--;
+             }
+        /*
+        this.setAlwaysOnTop(false);
+        JOptionPane.showMessageDialog(null, "Tienes " + anioResultado + " años" + ", " + mesResultado
+                + " meses " + " y " + diaResultado + " días");
+        */
+        return anioResultado;
+	}
+	protected void actionPerformedCbDia(ActionEvent arg0) {
+		int dia = Integer.parseInt(cbDia.getSelectedItem().toString());
+		int mes = cbMes.getSelectedIndex() + 1;
+		int anio = Integer.parseInt(cbAnio.getSelectedItem().toString());
+		int edad = calcularEdad(dia, mes, anio);
+		txtEdad.setText(""+edad);
+	}
+	protected void actionPerformedCbMes(ActionEvent arg0) {
+		int dia = Integer.parseInt(cbDia.getSelectedItem().toString());
+		int mes = cbMes.getSelectedIndex() + 1;
+		int anio = Integer.parseInt(cbAnio.getSelectedItem().toString());
+		int edad = calcularEdad(dia, mes, anio);
+		txtEdad.setText(""+edad);
+	}
+	protected void actionPerformedCbAnio(ActionEvent arg0) {
+		int dia = Integer.parseInt(cbDia.getSelectedItem().toString());
+		int mes = cbMes.getSelectedIndex() + 1;
+		int anio = Integer.parseInt(cbAnio.getSelectedItem().toString());
+		int edad = calcularEdad(dia, mes, anio);
+		txtEdad.setText(""+edad);
 	}
 }
 

@@ -23,6 +23,7 @@ import javax.swing.ImageIcon;
 
 import java.awt.SystemColor;
 import java.awt.event.MouseListener;
+import java.sql.ResultSet;
 import java.awt.event.MouseEvent;
 import javax.swing.JCheckBox;
 import java.awt.event.ActionListener;
@@ -31,6 +32,8 @@ import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.JSeparator;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
+
+import mysql.Consultas;
 
 public class viSeleccionAsientos4 extends JInternalFrame implements ActionListener {
 	private JTextField txtSelecinDeAsientos;
@@ -44,22 +47,22 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 	private JLabel lblS;
 
 	vPrincipal vp;
-	private JButton btnA1;
-	private JButton btnA2;
-	private JButton btnConductor;
-	private JButton btnA3;
-	private JButton btnA4;
-	private JButton btnA5;
-	private JButton btnA6;
-	private JButton btnA7;
-	private JButton btnA9;
-	private JButton btnA10;
-	private JButton btnA12;
-	private JButton btnA13;
-	private JButton btnA14;
-	private JButton btnA15;
-	private JButton btnA11;
-	private JButton btnA8;
+	public JButton btnConductor;
+	public JButton btnA1;
+	public JButton btnA2;
+	public JButton btnA3;
+	public JButton btnA4;
+	public JButton btnA5;
+	public JButton btnA6;
+	public JButton btnA7;
+	public JButton btnA8;
+	public JButton btnA9;
+	public JButton btnA10;
+	public JButton btnA11;
+	public JButton btnA12;
+	public JButton btnA13;
+	public JButton btnA14;
+	public JButton btnA15;
 	private JLabel lblPasadizo;
 	private JLabel lblpuerta;
 	private JLabel lblBanner;
@@ -95,7 +98,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		getContentPane().setBackground(SystemColor.textInactiveText);
 		
 		txtSelecinDeAsientos = new JTextField();
-		txtSelecinDeAsientos.setText("SELECCI\u00D3N DE ASIENTOS Hyundai H1 2016");
+		txtSelecinDeAsientos.setText("SELECCI\u00D3N DE ASIENTOS CHEVROLET N300");
 		txtSelecinDeAsientos.setRequestFocusEnabled(false);
 		txtSelecinDeAsientos.setIgnoreRepaint(true);
 		txtSelecinDeAsientos.setHorizontalAlignment(SwingConstants.CENTER);
@@ -113,47 +116,47 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		lblOrigen.setForeground(Color.WHITE);
 		lblOrigen.setHorizontalAlignment(SwingConstants.LEFT);
 		lblOrigen.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblOrigen.setBounds(669, 460, 213, 32);
+		lblOrigen.setBounds(579, 469, 213, 32);
 		getContentPane().add(lblOrigen);
 		
 		cbOrigen = new JComboBox();
 		cbOrigen.setModel(new DefaultComboBoxModel(new String[] {"AREQUIPA", "PUNO", "JULIACA", "SICUANI"}));
 		cbOrigen.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-		cbOrigen.setBounds(669, 496, 302, 40);
+		cbOrigen.setBounds(579, 505, 302, 40);
 		getContentPane().add(cbOrigen);
 		
 		lblDestino = new JLabel("Destino:");
 		lblDestino.setForeground(Color.WHITE);
 		lblDestino.setHorizontalAlignment(SwingConstants.LEFT);
 		lblDestino.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblDestino.setBounds(669, 548, 213, 32);
+		lblDestino.setBounds(579, 557, 213, 32);
 		getContentPane().add(lblDestino);
 		
 		lblCuentaTotal = new JLabel("Cuenta Total:");
 		lblCuentaTotal.setForeground(Color.WHITE);
 		lblCuentaTotal.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCuentaTotal.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblCuentaTotal.setBounds(987, 387, 258, 32);
+		lblCuentaTotal.setBounds(897, 396, 258, 32);
 		getContentPane().add(lblCuentaTotal);
 		
 		btnFormatos = new JButton("<html>\u00A0\u00A0Llenar<br>formatos</html>");
 		btnFormatos.setBackground(new Color(255, 255, 255));
 		btnFormatos.setForeground(new Color(220, 20, 60));
 		btnFormatos.setFont(new Font("USAngel", Font.PLAIN, 20));
-		btnFormatos.setBounds(987, 496, 282, 62);
+		btnFormatos.setBounds(897, 505, 282, 62);
 		getContentPane().add(btnFormatos);
 		
 		btnfinalizarEImprimir = new JButton("<html>FINALIZAR E <br>\u00A0\u00A0IMPRIMIR </html>");
 		btnfinalizarEImprimir.setForeground(new Color(255, 255, 255));
 		btnfinalizarEImprimir.setBackground(Color.DARK_GRAY);
 		btnfinalizarEImprimir.setFont(new Font("USAngel", Font.PLAIN, 20));
-		btnfinalizarEImprimir.setBounds(987, 568, 282, 62);
+		btnfinalizarEImprimir.setBounds(897, 577, 282, 62);
 		getContentPane().add(btnfinalizarEImprimir);
 		
 		cbDestino = new JComboBox();
 		cbDestino.setModel(new DefaultComboBoxModel(new String[] {"AREQUIPA", "PUNO", "JULIACA", "SICUANI"}));
 		cbDestino.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-		cbDestino.setBounds(669, 590, 302, 40);
+		cbDestino.setBounds(579, 599, 302, 40);
 		getContentPane().add(cbDestino);
 		
 		lblS = new JLabel("S/ ");
@@ -161,7 +164,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		lblS.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblS.setHorizontalAlignment(SwingConstants.LEFT);
 		lblS.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblS.setBounds(987, 431, 60, 32);
+		lblS.setBounds(897, 440, 60, 32);
 		getContentPane().add(lblS);
 		
 		Image imgChofer = new ImageIcon(this.getClass().getResource("/chofer.png")).getImage();
@@ -172,14 +175,14 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		btnConductor.setHorizontalAlignment(SwingConstants.CENTER);
 		btnConductor.setIcon(new ImageIcon(imgChofer));
 		btnConductor.addActionListener(this);
-		btnConductor.setBounds(76, 86, 168, 90);
+		btnConductor.setBounds(10, 86, 168, 90);
 		getContentPane().add(btnConductor);
 		
 		btnA3 = new JButton("");
 		btnA3.setBackground(Color.GREEN);
 		btnA3.setIcon(new ImageIcon(imgAsiento));
 		btnA3.addActionListener(this);
-		btnA3.setBounds(76, 187, 100, 100);
+		btnA3.setBounds(10, 187, 100, 100);
 		getContentPane().add(btnA3);
 		
 		btnA4 = new JButton("");
@@ -187,7 +190,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		btnA4.setBackground(Color.GREEN);
 		btnA4.setIcon(new ImageIcon(imgAsiento));
 		btnA4.addActionListener(this);
-		btnA4.setBounds(196, 187, 100, 100);
+		btnA4.setBounds(130, 187, 100, 100);
 		getContentPane().add(btnA4);
 		
 		btnA5 = new JButton("");
@@ -195,7 +198,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		btnA5.setBackground(Color.GREEN);
 		btnA5.setIcon(new ImageIcon(imgAsiento));
 		btnA5.addActionListener(this);
-		btnA5.setBounds(313, 188, 100, 100);
+		btnA5.setBounds(247, 188, 100, 100);
 		getContentPane().add(btnA5);
 		
 		btnA6 = new JButton("");
@@ -203,7 +206,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		btnA6.setIcon(new ImageIcon(imgAsiento));
 		btnA6.addActionListener(this);
 		btnA6.setBackground(Color.GREEN);
-		btnA6.setBounds(76, 297, 100, 100);
+		btnA6.setBounds(10, 297, 100, 100);
 		getContentPane().add(btnA6);
 		
 		btnA7 = new JButton("");
@@ -211,7 +214,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		btnA7.setIcon(new ImageIcon(imgAsiento));
 		btnA7.addActionListener(this);
 		btnA7.setBackground(Color.GREEN);
-		btnA7.setBounds(196, 297, 100, 100);
+		btnA7.setBounds(130, 297, 100, 100);
 		getContentPane().add(btnA7);
 		
 		btnA8 = new JButton("");
@@ -219,7 +222,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		btnA8.setIcon(new ImageIcon(imgAsiento));
 		btnA8.addActionListener(this);
 		btnA8.setBackground(Color.GREEN);
-		btnA8.setBounds(455, 297, 100, 100);
+		btnA8.setBounds(389, 297, 100, 100);
 		getContentPane().add(btnA8);
 		
 		btnA9 = new JButton("");
@@ -227,7 +230,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		btnA9.setIcon(new ImageIcon(imgAsiento));
 		btnA9.addActionListener(this);
 		btnA9.setBackground(Color.GREEN);
-		btnA9.setBounds(76, 412, 100, 100);
+		btnA9.setBounds(10, 412, 100, 100);
 		getContentPane().add(btnA9);
 		
 		btnA10 = new JButton("");
@@ -235,7 +238,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		btnA10.setIcon(new ImageIcon(imgAsiento));
 		btnA10.addActionListener(this);
 		btnA10.setBackground(Color.GREEN);
-		btnA10.setBounds(196, 412, 100, 100);
+		btnA10.setBounds(130, 412, 100, 100);
 		getContentPane().add(btnA10);
 		
 		btnA11 = new JButton("");
@@ -243,7 +246,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		btnA11.setIcon(new ImageIcon(imgAsiento));
 		btnA11.addActionListener(this);
 		btnA11.setBackground(Color.GREEN);
-		btnA11.setBounds(455, 412, 100, 100);
+		btnA11.setBounds(389, 412, 100, 100);
 		getContentPane().add(btnA11);
 		
 		btnA12 = new JButton("");
@@ -251,7 +254,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		btnA12.setIcon(new ImageIcon(imgAsiento));
 		btnA12.addActionListener(this);
 		btnA12.setBackground(Color.GREEN);
-		btnA12.setBounds(76, 527, 100, 100);
+		btnA12.setBounds(10, 527, 100, 100);
 		getContentPane().add(btnA12);
 		
 		btnA13 = new JButton("");
@@ -259,7 +262,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		btnA13.setIcon(new ImageIcon(imgAsiento));
 		btnA13.addActionListener(this);
 		btnA13.setBackground(Color.GREEN);
-		btnA13.setBounds(196, 527, 100, 100);
+		btnA13.setBounds(130, 527, 100, 100);
 		getContentPane().add(btnA13);
 		
 		btnA14 = new JButton("");
@@ -267,7 +270,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		btnA14.setIcon(new ImageIcon(imgAsiento));
 		btnA14.addActionListener(this);
 		btnA14.setBackground(Color.GREEN);
-		btnA14.setBounds(326, 527, 100, 100);
+		btnA14.setBounds(260, 527, 100, 100);
 		getContentPane().add(btnA14);
 		
 		btnA15 = new JButton("");
@@ -275,26 +278,26 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		btnA15.setIcon(new ImageIcon(imgAsiento));
 		btnA15.addActionListener(this);
 		btnA15.setBackground(Color.GREEN);
-		btnA15.setBounds(455, 527, 100, 100);
+		btnA15.setBounds(389, 527, 100, 100);
 		getContentPane().add(btnA15);
 		
 		lblPasadizo = new JLabel("<html>P<br>A<br>S<br>A<br>D<br>I<br>Z<br>O</html>");
 		lblPasadizo.setFont(new Font("Segoe UI", Font.BOLD, 15));
 		lblPasadizo.setForeground(SystemColor.window);
-		lblPasadizo.setBounds(380, 326, 22, 179);
+		lblPasadizo.setBounds(314, 326, 22, 179);
 		getContentPane().add(lblPasadizo);
 		
 		lblpuerta = new JLabel("<html>P<br>U<br>E<br>R<br>T<br>A</html>");
 		lblpuerta.setForeground(Color.WHITE);
 		lblpuerta.setFont(new Font("Segoe UI", Font.BOLD, 11));
-		lblpuerta.setBounds(558, 182, 22, 95);
+		lblpuerta.setBounds(492, 182, 22, 95);
 		getContentPane().add(lblpuerta);
 		
 		lblBanner = new JLabel("");
 		lblBanner.setHorizontalAlignment(SwingConstants.CENTER);
 		Image imBanner = new ImageIcon(this.getClass().getResource("/multivan2.png")).getImage();
 		lblBanner.setIcon(new ImageIcon(imBanner));
-		lblBanner.setBounds(681, 87, 600, 300);
+		lblBanner.setBounds(579, 86, 600, 300);
 		getContentPane().add(lblBanner);
 		
 		lblTotal = new JLabel("345.00");
@@ -302,7 +305,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		lblTotal.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblTotal.setHorizontalAlignment(SwingConstants.LEFT);
 		lblTotal.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblTotal.setBounds(1057, 431, 188, 32);
+		lblTotal.setBounds(967, 440, 188, 32);
 		getContentPane().add(lblTotal);
 		
 		btnA1 = new JButton("");
@@ -310,7 +313,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		btnA1.setBackground(Color.GREEN);
 		btnA1.setHorizontalAlignment(SwingConstants.CENTER);
 		btnA1.setIcon(new ImageIcon(imgAsiento));
-		btnA1.setBounds(246, 86, 167, 90);
+		btnA1.setBounds(180, 86, 167, 90);
 		getContentPane().add(btnA1);
 		
 		btnA2 = new JButton("");
@@ -318,11 +321,25 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		btnA2.setHorizontalAlignment(SwingConstants.CENTER);
 		btnA2.setIcon(new ImageIcon(imgAsiento));
 		btnA2.addActionListener(this);
-		btnA2.setBounds(413, 86, 167, 90);
+		btnA2.setBounds(347, 86, 167, 90);
 		getContentPane().add(btnA2);
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtSelecinDeAsientos, cbOrigen, btnFormatos, btnfinalizarEImprimir, cbDestino, btnConductor, btnA3, btnA4, btnA5, btnA6, btnA7, btnA8, btnA9, btnA10, btnA11, btnA12, btnA13, btnA14, btnA15, btnA1, btnA2}));
-		
-
+		cargar();
+		}
+	
+	public void cargar(){
+		try {
+			Consultas consulta = new Consultas();
+			ResultSet rs = consulta.cargarPasajerosTemporal();
+			while(rs.next()){
+				if(rs.getInt("estado") == 1);{
+					int asiento = rs.getInt("asiento");
+					cambiarColorAsiento(asiento);
+				}
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Ningun pasajero registrado");
+		}
 	}
 	
 	
@@ -419,77 +436,122 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		vp.setEnabled(false);
 	}
 	protected void actionPerformedBtnA1(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 1, null, null, null, this);
+		int estado = 0;
+		if(btnA1.getBackground() == Color.RED)
+			estado = 1;
+		vdAsiento vdp = new vdAsiento(vp, 1, estado, null, null, null, this);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA2(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 1, null, null, null, this);
+		int estado = 0;
+		if(btnA2.getBackground() == Color.RED)
+			estado = 1;
+		vdAsiento vdp = new vdAsiento(vp, 2, estado, null, null, null, this);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA3(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 1, null, null, null, this);
+		int estado = 0;
+		if(btnA3.getBackground() == Color.RED)
+			estado = 1;
+		vdAsiento vdp = new vdAsiento(vp, 3, estado, null, null, null, this);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA4(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 1, null, null, null, this);
+		int estado = 0;
+		if(btnA4.getBackground() == Color.RED)
+			estado = 1;
+		vdAsiento vdp = new vdAsiento(vp, 4, estado, null, null, null, this);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA5(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 1, null, null, null, this);
+		int estado = 0;
+		if(btnA5.getBackground() == Color.RED)
+			estado = 1;
+		vdAsiento vdp = new vdAsiento(vp, 5, estado, null, null, null, this);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA6(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 1, null, null, null, this);
+		int estado = 0;
+		if(btnA6.getBackground() == Color.RED)
+			estado = 1;
+		vdAsiento vdp = new vdAsiento(vp, 6, estado, null, null, null, this);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA7(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 1, null, null, null, this);
+		int estado = 0;
+		if(btnA7.getBackground() == Color.RED)
+			estado = 1;
+		vdAsiento vdp = new vdAsiento(vp, 7, estado, null, null, null, this);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA8(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 1, null, null, null, this);
+		int estado = 0;
+		if(btnA8.getBackground() == Color.RED)
+			estado = 1;
+		vdAsiento vdp = new vdAsiento(vp, 8, estado, null, null, null, this);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA9(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 1, null, null, null, this);
+		int estado = 0;
+		if(btnA9.getBackground() == Color.RED)
+			estado = 1;
+		vdAsiento vdp = new vdAsiento(vp, 9, estado, null, null, null, this);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA10(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 1, null, null, null, this);
+		int estado = 0;
+		if(btnA10.getBackground() == Color.RED)
+			estado = 1;
+		vdAsiento vdp = new vdAsiento(vp, 10, estado, null, null, null, this);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA11(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 1, null, null, null, this);
+		int estado = 0;
+		if(btnA11.getBackground() == Color.RED)
+			estado = 1;
+		vdAsiento vdp = new vdAsiento(vp, 11, estado, null, null, null, this);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA12(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 1, null, null, null, this);
+		int estado = 0;
+		if(btnA12.getBackground() == Color.RED)
+			estado = 1;
+		vdAsiento vdp = new vdAsiento(vp, 12, estado, null, null, null, this);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA13(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 1, null, null, null, this);
+		int estado = 0;
+		if(btnA13.getBackground() == Color.RED)
+			estado = 1;
+		vdAsiento vdp = new vdAsiento(vp, 13, estado, null, null, null, this);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA14(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 1, null, null, null, this);
+		int estado = 0;
+		if(btnA14.getBackground() == Color.RED)
+			estado = 1;
+		vdAsiento vdp = new vdAsiento(vp, 14, estado, null, null, null, this);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA15(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 1, null, null, null, this);
+		int estado = 0;
+		if(btnA15.getBackground() == Color.RED)
+			estado = 1;
+		vdAsiento vdp = new vdAsiento(vp, 15, estado, null, null, null, this);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}

@@ -30,11 +30,10 @@ foreign key (idmodelo) references tb_modelo_vehiculo(idmodelo)
 
 create table tb_pasajero(
 dnipasajero		int not null primary key,
-ruc				int,
+ruc				varchar(11),
 fnacimiento		date,
-edad			int,
 nombre			varchar(50),
-razsocial		varchar(60)
+razsocial		varchar(80)
 );
 
 create table tb_destinos(
@@ -84,10 +83,10 @@ prepasaje		float
 create table tb_pasajeros_temporal(
 asiento 		int not null primary key,
 estado			int, -- 0Libre 1Ocupado
-nombre			varchar(50),
-dni				int,
+dnipasajero		int,
 edad			int,
-precio 			float
+prepasaje 			float,
+foreign key (dnipasajero) references tb_pasajero(dnipasajero)
 );
 
 insert into tb_usuario values('alex', 'Aa123', 'Alexander Gamarra', 1);
@@ -117,6 +116,12 @@ insert into tb_vehiculo values('B94-C84', 3, 'Plomo',			84566618);
 insert into tb_vehiculo values('FP3-SV3', 4, 'Negro mate', 		12667848);
 
 insert into tb_venta_temporal values(1, 0, 0, 0, null, 0, null, null, null, null, null);
+
+insert into tb_pasajero values(76784966, '10767849660', '1994-10-30', 'Alexander Gamarra', 'Byte x Byte');
+insert into tb_pasajero values(76784955, '10767849550', '1995-01-28', 'Melany G', 'BxB');
+insert into tb_pasajero values(76784944, '10767849440', '1997-12-31', 'Jean Carlos', 'Sin oficio');
+insert into tb_pasajero values(76784933, '10767849330', '1995-03-05', 'Andrea Perez', 'Imagenes SRL');
+insert into tb_pasajeros_temporal values(1, 1, 76784966, 10767849660, 'Alexander Gamarra', 'BxB', 30, 10, 1994, 24, 19.90);
 
 -- ELIMINAR TABLAS Y DB -----------------------------------------------------------
 drop database db_venta_pasajes; -- ----------------------------------------------
@@ -166,6 +171,8 @@ update tb_venta_temporal set estado = 0 where id = 1;
 
 delete from  tb_venta_temporal where id = 1;
 
+select * from tb_pasajeros_temporal where dni = 76784968;
 
+select * from tb_pasajeros_temporal where asiento = 6;
 
 

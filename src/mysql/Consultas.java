@@ -200,7 +200,6 @@ public class Consultas {
 		try {
 			st = con.createStatement();
 			String sql = "select * from tb_vehiculo where placa = ?";
-			
 			pst = con.prepareStatement(sql);
 			pst.setString(1, placa);
 			rs = pst.executeQuery();
@@ -241,23 +240,6 @@ public class Consultas {
 		}
 	}
 	
-	public static void asignarAsiento(int asiento, String nombre, int dni, int edad, float precio){
-		Connection con = MySQLConexion.getConection();
-		try {
-			String sql = "insert into tb_pasajeros_temporal (asiento, estado, nombre, dni, edad, precio)" + " values (?, ?, ?, ?, ?, ?)";
-			PreparedStatement prepareStmt = con.prepareStatement(sql);
-			prepareStmt.setInt(1, asiento);
-			prepareStmt.setInt(2, 1);
-			prepareStmt.setString(3, nombre);
-			prepareStmt.setInt(4, dni);
-			prepareStmt.setInt(5, edad);
-			prepareStmt.setFloat(6, precio);
-			prepareStmt.execute();
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "ERROR" + e);
-		}
-	}
-	
 	public ResultSet buscarPasajero(int dni){
 		Connection con = MySQLConexion.getConection();
 		java.sql.Statement st;
@@ -268,6 +250,89 @@ public class Consultas {
 			String sql = "select * from tb_pasajero where dnipasajero = ?";
 			pst = con.prepareStatement(sql);
 			pst.setInt(1, dni);
+			rs = pst.executeQuery();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		return rs;
+	}
+	
+	public static void crearPasajero(int dnipasajero, String ruc, String fnacimiento, String nombre, String razsocial){
+		Object fn = fnacimiento;
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "insert into tb_pasajero (dnipasajero, ruc, fnacimiento, nombre, razsocial)" + " values (?, ?, ?, ?, ?)";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, dnipasajero);
+			prepareStmt.setString(2, ruc);
+			prepareStmt.setObject(3, fn);
+			prepareStmt.setString(4, nombre);
+			prepareStmt.setString(5, razsocial);
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR" + e);
+		}
+	}
+	
+	public static void actualizarPasajero(int dnipasajero, String ruc, String fnacimiento, String nombre, String razsocial){
+		Object fn = fnacimiento;
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "update tb_pasajero set ruc=?, fnacimiento=?, nombre=?, razsocial=? where dnipasajero=?";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setString(1, ruc);
+			prepareStmt.setObject(2, fn);
+			prepareStmt.setString(3, nombre);
+			prepareStmt.setString(4, razsocial);
+			prepareStmt.setInt(5, dnipasajero);
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERRORnbvnb: " + e);
+		}
+	}
+	
+	public static void asignarAsiento(int asiento, int dnipasajero, int edad, float prepasaje){
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "insert into tb_pasajeros_temporal (asiento, estado, dnipasajero, edad, prepasaje)" + " values (?, ?, ?, ?, ?)";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, asiento);
+			prepareStmt.setInt(2, 1);
+			prepareStmt.setInt(3, dnipasajero);
+			prepareStmt.setInt(4, edad);
+			prepareStmt.setFloat(5, prepasaje);
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR" + e);
+		}
+	}
+	
+	public ResultSet cargarPasajerosTemporal(){
+		Connection con = MySQLConexion.getConection();
+		java.sql.Statement st;
+		ResultSet rs = null;
+		PreparedStatement pst = null;
+		try {
+			st = con.createStatement();
+			String sql = "select * from tb_pasajeros_temporal";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		return rs;
+	}
+	
+	public ResultSet buscarPasajerosTemporal(int asiento){
+		Connection con = MySQLConexion.getConection();
+		java.sql.Statement st;
+		ResultSet rs = null;
+		PreparedStatement pst = null;
+		try {
+			st = con.createStatement();
+			String sql = "select * from tb_pasajeros_temporal where asiento = ?";
+			pst = con.prepareStatement(sql);
+			pst.setInt(1, asiento);
 			rs = pst.executeQuery();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
