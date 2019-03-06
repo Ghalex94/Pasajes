@@ -37,7 +37,7 @@ razsocial		varchar(80)
 );
 
 create table tb_destinos(
-iddesdino		int primary key auto_increment,
+iddestino		int primary key auto_increment,
 destino			varchar(20)
 );
 
@@ -85,7 +85,7 @@ asiento 		int not null primary key,
 estado			int, -- 0Libre 1Ocupado
 dnipasajero		int,
 edad			int,
-prepasaje 			float,
+prepasaje 		float,
 foreign key (dnipasajero) references tb_pasajero(dnipasajero)
 );
 
@@ -122,6 +122,8 @@ insert into tb_pasajero values(76784955, '10767849550', '1995-01-28', 'Melany G'
 insert into tb_pasajero values(76784944, '10767849440', '1997-12-31', 'Jean Carlos', 'Sin oficio');
 insert into tb_pasajero values(76784933, '10767849330', '1995-03-05', 'Andrea Perez', 'Imagenes SRL');
 insert into tb_pasajeros_temporal values(1, 1, 76784966, 10767849660, 'Alexander Gamarra', 'BxB', 30, 10, 1994, 24, 19.90);
+
+insert into tb_destinos values(null, 'Arequipa');
 
 -- ELIMINAR TABLAS Y DB -----------------------------------------------------------
 drop database db_venta_pasajes; -- ----------------------------------------------
@@ -175,4 +177,4 @@ select * from tb_pasajeros_temporal where dni = 76784968;
 
 select * from tb_pasajeros_temporal where asiento = 6;
 
-
+delete from tb_pasajeros_temporal where asiento = 11;
