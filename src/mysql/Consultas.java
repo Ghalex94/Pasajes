@@ -177,7 +177,6 @@ public class Consultas {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
 	}
-	
 	//VIENE DE MODIFICACION A CONDUCTOR
 	public static void actualizarVentaTemporal02(int dniconductor, float prepasaje){
 		Connection con = MySQLConexion.getConection();
@@ -190,6 +189,30 @@ public class Consultas {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
+	}
+	//VIENE DE VENTA PASAJES
+	public static void actualizarVentaTemporal03(int idorigen, String origen){
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "update tb_venta_temporal set origen=? where id=1";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setString(1, origen);
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+	}
+	public static void actualizarVentaTemporal04(int iddestino, String destino){
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "update tb_venta_temporal set destino=? where id=1";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setString(1, destino);
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		
 	}
 	
 	public ResultSet buscarVehiculo(String placa){
@@ -214,10 +237,13 @@ public class Consultas {
 		try {
 			String sql1 = "delete from tb_venta_temporal where id = 1";
 			String sql2 = "insert into tb_venta_temporal values(1, 0, 0, 0, null, 0, null, null, null, null, null)";
+			String sql3 = "delete from tb_pasajeros_temporal where asiento < 50";
 			PreparedStatement prepareStmt = con.prepareStatement(sql1);
 			prepareStmt.execute();
 			PreparedStatement prepareStmt2 = con.prepareStatement(sql2);
 			prepareStmt2.execute();
+			PreparedStatement prepareStmt3 = con.prepareStatement(sql3);
+			prepareStmt3.execute();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
@@ -340,4 +366,68 @@ public class Consultas {
 		return rs;
 	}
 	
+	public static void eliminarAsiento(int asiento){
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "delete from tb_pasajeros_temporal where asiento = ?";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, asiento);
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR" + e);
+		}
+	}
+	
+	public ResultSet cargarDestinos(){
+		Connection con = MySQLConexion.getConection();
+		ResultSet rs = null;
+		PreparedStatement pst = null;
+		try {
+			String sql = "select * from tb_destinos";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		return rs;
+	}
+	
+	public static void crearDestino(String destino){
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "insert into tb_destinos (destino)" + " values (?)";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setString(1, destino);
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR" + e);
+		}
+	}
+	
+	public static void eliminarDestino(int iddestino){
+		Connection con = MySQLConexion.getConection();
+		ResultSet rs = null;
+		try {
+			String sql = "delete from tb_destinos where iddestino = ?";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, iddestino);		
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+	}
+	
+	public ResultSet cargarPasajeros(){
+		Connection con = MySQLConexion.getConection();
+		ResultSet rs = null;
+		PreparedStatement pst = null;
+		try {
+			String sql = "select * from tb_pasajero";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		return rs;
+	}
 }

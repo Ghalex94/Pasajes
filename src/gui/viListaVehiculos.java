@@ -24,7 +24,7 @@ import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class viVehiculos extends JInternalFrame implements ActionListener {
+public class viListaVehiculos extends JInternalFrame implements ActionListener {
 	private JTextField txtVehiculos;
 	private JButton btnAnadirVehiculo;
 	private JButton btnModificarVehiculo;
@@ -40,7 +40,7 @@ public class viVehiculos extends JInternalFrame implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					viVehiculos frame = new viVehiculos(null);
+					viListaVehiculos frame = new viListaVehiculos(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -52,7 +52,7 @@ public class viVehiculos extends JInternalFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public viVehiculos(vPrincipal temp) {
+	public viListaVehiculos(vPrincipal temp) {
 		
 		vp = temp;
 		

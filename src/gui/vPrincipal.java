@@ -24,6 +24,7 @@ import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowEvent;
+import java.awt.Color;
 
 
 public class vPrincipal extends JFrame implements ActionListener, WindowListener {
@@ -51,7 +52,9 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	viSeleccionAsientos2 sa2 = null;	//Seleccion de asientos 2
 	viSeleccionAsientos3 sa3 = null;	//Seleccion de asientos 3
 	viSeleccionAsientos4 sa4 = null;	//Seleccion de asientos 4
-	viVehiculos lvc = null;				//Lista de vehiculos
+	viListaVehiculos lvc = null;		//Lista de vehiculos
+	viListaDestinos ldest = null;		//Lista destinos 
+	viListaPasajeros lpjr = null;		//Lista de pasajeros
 	
 	ResultSet rs;
 	//RESOLUCION MONITOR
@@ -61,6 +64,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
     //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     int ancho = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
     int alto = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
+    private JMenuItem mntmListaDeClientes;
     
     
 	
@@ -88,6 +92,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		setBounds(100, 100, 823, 563);
 		
 		menuBar = new JMenuBar();
+		menuBar.setBackground(new Color(30, 144, 255));
 		setJMenuBar(menuBar);
 		
 		mnArchivo = new JMenu("ARCHIVO");
@@ -142,6 +147,14 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mnClientes = new JMenu("CLIENTES");
 		mnClientes.setEnabled(false);
 		menuBar.add(mnClientes);
+		
+		mntmListaDeClientes = new JMenuItem("Lista de Clientes");
+		mntmListaDeClientes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmListaDeClientes(e);
+			}
+		});
+		mnClientes.add(mntmListaDeClientes);
 		
 		mnReportes = new JMenu("REPORTES");
 		mnReportes.setEnabled(false);
@@ -375,7 +388,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	protected void actionPerformedMntmListaDeVehiculos(ActionEvent arg0) {
 		esconderVentanas();
 		cerrarVentanas();
-		lvc = new viVehiculos(this);
+		lvc = new viListaVehiculos(this);
 		desktopPane.add(lvc);
 		lvc.show();
 		try{
@@ -383,6 +396,24 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		}catch(Exception f){}
 	}
 	protected void actionPerformedMntmListaDeDestinos(ActionEvent arg0) {
+		esconderVentanas();
+		cerrarVentanas();
+		ldest = new viListaDestinos(this);
+		desktopPane.add(ldest);
+		ldest.show();
+		try{
+			ldest.setMaximum(true);
+		}catch(Exception f){}
+	}
+	protected void actionPerformedMntmListaDeClientes(ActionEvent e) {
+		esconderVentanas();
+		cerrarVentanas();
+		lpjr = new viListaPasajeros(this);
+		desktopPane.add(lpjr);
+		lpjr.show();
+		try{
+			lpjr.setMaximum(true);
+		}catch(Exception f){}
 	}
 }
 

@@ -10,7 +10,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import clases.Conductor;
 import gui.vPrincipal;
-import gui.viVehiculos;
+import gui.viListaVehiculos;
 import mysql.Consultas;
 import javax.swing.JTextField;
 import java.awt.Color;
@@ -41,7 +41,7 @@ public class vdVehiculoModificar extends JDialog implements ActionListener {
 	private JTextField txtDni;
 	
 	vPrincipal vp = null;
-	viVehiculos vnvh = null;
+	viListaVehiculos vnvh = null;
 	String[ ] vehiculo = null;
 	ResultSet rs;
 	
@@ -58,7 +58,7 @@ public class vdVehiculoModificar extends JDialog implements ActionListener {
 	/**
 	 * Create the dialog.
 	 */
-	public vdVehiculoModificar(vPrincipal temp, viVehiculos temp2, String[ ] temp3) {
+	public vdVehiculoModificar(vPrincipal temp, viListaVehiculos temp2, String[ ] temp3) {
 		
 		vp = temp;
 		vnvh = temp2;

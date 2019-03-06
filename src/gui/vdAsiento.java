@@ -55,17 +55,17 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 	
 	vPrincipal vp;
 	int asiento = 0;
-	int estado = 0;
 	viSeleccionAsientos1 vsa1 = null;
 	viSeleccionAsientos2 vsa2 = null;
 	viSeleccionAsientos3 vsa3 = null;
 	viSeleccionAsientos4 vsa4 = null;
 	float prepasajeoriginal = 0;
+	private JButton btnEliminar;
 	
 	
 	public static void main(String[] args) {
 		try {
-			vdAsiento dialog = new vdAsiento(null, 0, 0, null, null, null, null);
+			vdAsiento dialog = new vdAsiento(null, 0, null, null, null, null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -73,11 +73,10 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		}
 	}
 
-	public vdAsiento(vPrincipal temp, int temp2, int temp22, viSeleccionAsientos1 temp3, viSeleccionAsientos2 temp4, viSeleccionAsientos3 temp5, viSeleccionAsientos4 temp6) {
+	public vdAsiento(vPrincipal temp, int temp2, viSeleccionAsientos1 temp3, viSeleccionAsientos2 temp4, viSeleccionAsientos3 temp5, viSeleccionAsientos4 temp6) {
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		vp = temp;
 		asiento = temp2;
-		estado = temp22;
 		vsa1 = temp3;
 		vsa2 = temp4;
 		vsa3 = temp5;
@@ -135,7 +134,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			btnGuardar.setForeground(Color.WHITE);
 			btnGuardar.setFont(new Font("USAngel", Font.PLAIN, 20));
 			btnGuardar.setBackground(Color.DARK_GRAY);
-			btnGuardar.setBounds(317, 342, 220, 53);
+			btnGuardar.setBounds(368, 342, 220, 53);
 			getContentPane().add(btnGuardar);
 		}
 		{
@@ -173,7 +172,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			btnCancelar.setForeground(Color.WHITE);
 			btnCancelar.setFont(new Font("USAngel", Font.PLAIN, 20));
 			btnCancelar.setBackground(Color.DARK_GRAY);
-			btnCancelar.setBounds(64, 342, 220, 53);
+			btnCancelar.setBounds(39, 342, 220, 53);
 			getContentPane().add(btnCancelar);
 		}
 		{
@@ -251,6 +250,19 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			lblOpcional.setBounds(10, 44, 251, 20);
 			getContentPane().add(lblOpcional);
 		}
+		
+		btnEliminar = new JButton("X");
+		btnEliminar.setVisible(false);
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				actionPerformedBtnEliminar(arg0);
+			}
+		});
+		btnEliminar.setForeground(Color.WHITE);
+		btnEliminar.setFont(new Font("Dialog", Font.PLAIN, 20));
+		btnEliminar.setBackground(Color.RED);
+		btnEliminar.setBounds(269, 342, 89, 53);
+		getContentPane().add(btnEliminar);
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtDni, txtRuc, txtNombre, txtRazsocial, cbDia, cbMes, cbAnio, txtEdad, txtPrecio, btnGuardar, btnCancelar}));
 		cargar();
 	}
@@ -293,19 +305,52 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			cbAnio.addItem(i);
 		
 		
-		if(estado == 1){ // OCUPADO
-			try {
-				Consultas consulta2 = new Consultas();
-				ResultSet rs2 = consulta2.buscarPasajerosTemporal(asiento);
-				rs2.next();
-				txtEdad.setText(rs2.getString("edad").toString());
-				txtPrecio.setText(rs2.getString("prepasaje").toString());
-			} catch (Exception e) {
-			}
-		}
+		try {
+			Consultas consulta2 = new Consultas();
+			ResultSet rs2 = consulta2.buscarPasajerosTemporal(asiento);
+			rs2.next();
+			int dnipasajero = rs2.getInt("dnipasajero");
+			txtDni.setText(""+dnipasajero);
+			txtEdad.setText("" + rs2.getInt("edad"));
+			txtPrecio.setText("" + rs2.getFloat("prepasaje"));
+			int estado = rs.getInt("estado");
+			Consultas consulta3 = new Consultas();
+			ResultSet rs3 = consulta3.buscarPasajero(dnipasajero);
+			rs3.next();
+			txtRuc.setText(rs3.getString("ruc"));
+			txtNombre.setText(rs3.getString("nombre"));
+			txtRazsocial.setText(rs3.getString("razsocial"));
 			
-				
-		
+			String fnacimiento =  rs3.getString("fnacimiento").toString();
+			String[] parts = fnacimiento.split("-");
+			int a = Integer.parseInt(parts[0]); //año
+			int m = Integer.parseInt(parts[1]); //mes
+			int d = Integer.parseInt(parts[2]); //dia
+			this.setAlwaysOnTop(false);
+			//JOptionPane.showMessageDialog(null, a+" "+m+" "+d);
+			cbDia.setSelectedIndex(d-1);
+			cbMes.setSelectedIndex(m-1);
+			for(int i = 0 ; i<cbAnio.getItemCount(); i++){
+				if(Integer.parseInt(cbAnio.getItemAt(i).toString()) == a)
+					cbAnio.setSelectedIndex(i);
+			}
+			if(estado == 1){
+				txtDni.setEditable(false);
+				txtRuc.setEditable(false);
+				txtNombre.setEditable(false);
+				txtRazsocial.setEditable(false);
+				txtEdad.setEditable(false);
+				txtPrecio.setEditable(false);
+				cbDia.setEnabled(false);
+				cbMes.setEnabled(false);
+				cbAnio.setEnabled(false);
+				btnGuardar.setEnabled(false);
+				btnEliminar.setVisible(true);
+			}
+			
+			
+		} catch (Exception e) {
+		}
 	}
 	
 	protected void actionPerformedBtnCancelar(ActionEvent arg0) {
@@ -377,6 +422,28 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 				}
 				
 			}
+			sumarTotalPasajes();
+		}
+	}
+	
+	public void sumarTotalPasajes(){
+		try {
+			Consultas consulta = new Consultas();
+			ResultSet rs = consulta.cargarPasajerosTemporal();
+			float tot = 0 ;
+			while(rs.next()){
+				tot = tot + rs.getFloat("prepasaje");
+			}
+			if(vsa1!= null)
+				vsa1.lblTotal.setText(""+tot);
+			if(vsa2!= null)
+				vsa2.lblTotal.setText(""+tot);
+			if(vsa3!= null)
+				vsa3.lblTotal.setText(""+tot);
+			if(vsa4!= null)
+				vsa4.lblTotal.setText(""+tot);
+		}
+		catch (Exception e) {
 		}
 	}
 	public void keyPressed(KeyEvent arg0) {
@@ -482,6 +549,29 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		int anio = Integer.parseInt(cbAnio.getSelectedItem().toString());
 		int edad = calcularEdad(dia, mes, anio);
 		txtEdad.setText(""+edad);
+	}
+	protected void actionPerformedBtnEliminar(ActionEvent arg0) {
+		this.setAlwaysOnTop(false);
+		int opc = JOptionPane.showConfirmDialog(null, "¿Liberar asiento?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		this.setAlwaysOnTop(true);
+		if (opc == 0){
+			Consultas consulta = new Consultas();
+			consulta.eliminarAsiento(asiento);
+			this.setAlwaysOnTop(false);
+			JOptionPane.showMessageDialog(null, "Liberado");
+			
+			if(vsa1!= null)
+				vsa1.cambiarColorAsientoVerde(asiento);;
+			if(vsa2!= null)
+				vsa2.cambiarColorAsientoVerde(asiento);;
+			if(vsa3!= null)
+				vsa3.cambiarColorAsientoVerde(asiento);;
+			if(vsa4!= null)
+				vsa4.cambiarColorAsientoVerde(asiento);;
+			sumarTotalPasajes();
+			vp.enable(true);
+			this.dispose();
+		}
 	}
 }
 
