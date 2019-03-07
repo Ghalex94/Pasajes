@@ -23,6 +23,7 @@ import javax.swing.JOptionPane;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.WindowListener;
+import java.awt.print.PrinterJob;
 import java.awt.event.WindowEvent;
 import java.awt.Color;
 
@@ -55,6 +56,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	viListaVehiculos lvc = null;		//Lista de vehiculos
 	viListaDestinos ldest = null;		//Lista destinos 
 	viListaPasajeros lpjr = null;		//Lista de pasajeros
+	viFormatos format = null;
 	
 	ResultSet rs;
 	//RESOLUCION MONITOR
@@ -261,6 +263,8 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		sa3 = null;
 		sa4 = null;
 		lvc = null;
+		ldest = null;
+		lpjr = null;
 	}
 	
 	public void esconderVentanas(){
@@ -276,6 +280,10 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			sa4.setVisible(false);
 		if (lvc!=null)
 			lvc.setVisible(false);
+		if (ldest!=null)
+			ldest.setVisible(false);
+		if (lpjr!=null)
+			lpjr.setVisible(false);
 	}
 	
 	public void desactivarMenu(){
@@ -415,6 +423,9 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			lpjr.setMaximum(true);
 		}catch(Exception f){}
 	}
+	
+		
+	
 }
 
 

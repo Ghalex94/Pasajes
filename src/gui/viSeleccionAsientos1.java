@@ -5,6 +5,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.SwingConstants;
@@ -19,6 +20,10 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import java.awt.SystemColor;
 import java.awt.event.MouseListener;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.sql.ResultSet;
 import java.awt.event.MouseEvent;
 import javax.swing.JCheckBox;
@@ -33,6 +38,13 @@ import clases.Conductor;
 import clases.Destinos;
 import mysql.Consultas;
 import java.awt.event.MouseAdapter;
+import com.toedter.components.JSpinField;
+import com.toedter.components.JLocaleChooser;
+import com.toedter.calendar.JDayChooser;
+import com.toedter.calendar.JMonthChooser;
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JYearChooser;
 
 public class viSeleccionAsientos1 extends JInternalFrame implements ActionListener {
 	private JTextField txtSelecinDeAsientos;
@@ -40,7 +52,6 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 	private JComboBox <Destinos> cbOrigen;
 	private JLabel lblDestino;
 	private JLabel lblCuentaTotal;
-	private JButton btnFormatos;
 	private JButton btnfinalizarEImprimir;
 	private JComboBox <Destinos> cbDestino ;
 	private JLabel lblS;
@@ -64,18 +75,19 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 	private JLabel lblpuerta;
 	private JLabel lblBanner;
 	public JLabel lblTotal;
+	private JComboBox cbDiaOrigen;
+	private JComboBox cbMesOrigen;
+	private JComboBox cbAnioOrigen;
+	private JComboBox cbHoraOrigen;
+	private JComboBox cbMinutoOrigen;
+	private JComboBox cbDiaDestino;
+	private JComboBox cbMesDestino;
+	private JComboBox cbAnioDestino;
+	private JComboBox cbHoraDestino;
+	private JComboBox cbMinutoDestino;
 	
-	vPrincipal vp;
-	private JComboBox comboBox;
-	private JComboBox comboBox_1;
-	private JComboBox comboBox_2;
-	private JComboBox comboBox_3;
-	private JComboBox comboBox_4;
-	private JComboBox comboBox_5;
-	private JComboBox comboBox_6;
-	private JComboBox comboBox_7;
-	private JComboBox comboBox_8;
-	private JComboBox comboBox_9;
+	vPrincipal vp;	
+	private JDateChooser dateChooser;
 	
 	
 	public static void main(String[] args) {
@@ -126,7 +138,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		lblOrigen.setForeground(Color.WHITE);
 		lblOrigen.setHorizontalAlignment(SwingConstants.LEFT);
 		lblOrigen.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblOrigen.setBounds(579, 396, 120, 32);
+		lblOrigen.setBounds(580, 443, 120, 32);
 		getContentPane().add(lblOrigen);
 		
 		cbOrigen = new JComboBox();
@@ -136,7 +148,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 			}
 		});
 		cbOrigen.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-		cbOrigen.setBounds(579, 432, 441, 40);
+		cbOrigen.setBounds(580, 479, 441, 40);
 		getContentPane().add(cbOrigen);
 		
 		lblDestino = new JLabel("Destino:");
@@ -156,15 +168,8 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		lblCuentaTotal.setForeground(Color.WHITE);
 		lblCuentaTotal.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCuentaTotal.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblCuentaTotal.setBounds(1050, 396, 258, 32);
+		lblCuentaTotal.setBounds(1051, 443, 258, 32);
 		getContentPane().add(lblCuentaTotal);
-		
-		btnFormatos = new JButton("<html>\u00A0\u00A0Llenar<br>formatos</html>");
-		btnFormatos.setBackground(new Color(255, 255, 255));
-		btnFormatos.setForeground(new Color(220, 20, 60));
-		btnFormatos.setFont(new Font("USAngel", Font.PLAIN, 20));
-		btnFormatos.setBounds(1050, 505, 282, 62);
-		getContentPane().add(btnFormatos);
 		
 		btnfinalizarEImprimir = new JButton("<html>FINALIZAR E <br>\u00A0\u00A0IMPRIMIR </html>");
 		btnfinalizarEImprimir.setForeground(new Color(255, 255, 255));
@@ -188,7 +193,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		lblS.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblS.setHorizontalAlignment(SwingConstants.LEFT);
 		lblS.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblS.setBounds(1050, 440, 60, 32);
+		lblS.setBounds(1051, 487, 60, 32);
 		getContentPane().add(lblS);
 		
 		Image imgChofer = new ImageIcon(this.getClass().getResource("/chofer.png")).getImage();
@@ -330,7 +335,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		lblTotal.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblTotal.setHorizontalAlignment(SwingConstants.LEFT);
 		lblTotal.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblTotal.setBounds(1120, 440, 188, 32);
+		lblTotal.setBounds(1121, 487, 188, 32);
 		getContentPane().add(lblTotal);
 		
 		btnA1 = new JButton("");
@@ -349,56 +354,60 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		btnA2.setBounds(347, 86, 167, 90);
 		getContentPane().add(btnA2);
 		
-		comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
-		comboBox.setBounds(697, 401, 52, 27);
-		getContentPane().add(comboBox);
+		cbDiaOrigen = new JComboBox();
+		cbDiaOrigen.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
+		cbDiaOrigen.setBounds(698, 448, 52, 27);
+		getContentPane().add(cbDiaOrigen);
 		
-		comboBox_1 = new JComboBox();
-		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SETIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"}));
-		comboBox_1.setBounds(753, 401, 77, 27);
-		getContentPane().add(comboBox_1);
+		cbMesOrigen = new JComboBox();
+		cbMesOrigen.setModel(new DefaultComboBoxModel(new String[] {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SETIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"}));
+		cbMesOrigen.setBounds(754, 448, 77, 27);
+		getContentPane().add(cbMesOrigen);
 		
-		comboBox_2 = new JComboBox();
-		comboBox_2.setModel(new DefaultComboBoxModel(new String[] {"2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"}));
-		comboBox_2.setBounds(835, 401, 58, 27);
-		getContentPane().add(comboBox_2);
+		cbAnioOrigen = new JComboBox();
+		cbAnioOrigen.setModel(new DefaultComboBoxModel(new String[] {"2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"}));
+		cbAnioOrigen.setBounds(836, 448, 58, 27);
+		getContentPane().add(cbAnioOrigen);
 		
-		comboBox_3 = new JComboBox();
-		comboBox_3.setModel(new DefaultComboBoxModel(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
-		comboBox_3.setBounds(911, 401, 52, 27);
-		getContentPane().add(comboBox_3);
+		cbHoraOrigen = new JComboBox();
+		cbHoraOrigen.setModel(new DefaultComboBoxModel(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
+		cbHoraOrigen.setBounds(912, 448, 52, 27);
+		getContentPane().add(cbHoraOrigen);
 		
-		comboBox_4 = new JComboBox();
-		comboBox_4.setModel(new DefaultComboBoxModel(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"}));
-		comboBox_4.setBounds(968, 401, 52, 27);
-		getContentPane().add(comboBox_4);
+		cbMinutoOrigen = new JComboBox();
+		cbMinutoOrigen.setModel(new DefaultComboBoxModel(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"}));
+		cbMinutoOrigen.setBounds(969, 448, 52, 27);
+		getContentPane().add(cbMinutoOrigen);
 		
-		comboBox_5 = new JComboBox();
-		comboBox_5.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
-		comboBox_5.setBounds(697, 562, 52, 27);
-		getContentPane().add(comboBox_5);
+		cbDiaDestino = new JComboBox();
+		cbDiaDestino.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
+		cbDiaDestino.setBounds(697, 562, 52, 27);
+		getContentPane().add(cbDiaDestino);
 		
-		comboBox_6 = new JComboBox();
-		comboBox_6.setModel(new DefaultComboBoxModel(new String[] {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SETIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"}));
-		comboBox_6.setBounds(753, 562, 77, 27);
-		getContentPane().add(comboBox_6);
+		cbMesDestino = new JComboBox();
+		cbMesDestino.setModel(new DefaultComboBoxModel(new String[] {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SETIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"}));
+		cbMesDestino.setBounds(753, 562, 77, 27);
+		getContentPane().add(cbMesDestino);
 		
-		comboBox_7 = new JComboBox();
-		comboBox_7.setModel(new DefaultComboBoxModel(new String[] {"2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"}));
-		comboBox_7.setBounds(835, 562, 58, 27);
-		getContentPane().add(comboBox_7);
+		cbAnioDestino = new JComboBox();
+		cbAnioDestino.setModel(new DefaultComboBoxModel(new String[] {"2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"}));
+		cbAnioDestino.setBounds(835, 562, 58, 27);
+		getContentPane().add(cbAnioDestino);
 		
-		comboBox_8 = new JComboBox();
-		comboBox_8.setModel(new DefaultComboBoxModel(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
-		comboBox_8.setBounds(911, 562, 52, 27);
-		getContentPane().add(comboBox_8);
+		cbHoraDestino = new JComboBox();
+		cbHoraDestino.setModel(new DefaultComboBoxModel(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
+		cbHoraDestino.setBounds(911, 562, 52, 27);
+		getContentPane().add(cbHoraDestino);
 		
-		comboBox_9 = new JComboBox();
-		comboBox_9.setModel(new DefaultComboBoxModel(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"}));
-		comboBox_9.setBounds(968, 562, 52, 27);
-		getContentPane().add(comboBox_9);
-		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtSelecinDeAsientos, cbOrigen, btnFormatos, btnfinalizarEImprimir, cbDestino, btnConductor, btnA3, btnA4, btnA5, btnA6, btnA7, btnA8, btnA9, btnA10, btnA11, btnA12, btnA13, btnA14, btnA15, btnA1, btnA2}));
+		cbMinutoDestino = new JComboBox();
+		cbMinutoDestino.setModel(new DefaultComboBoxModel(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"}));
+		cbMinutoDestino.setBounds(968, 562, 52, 27);
+		getContentPane().add(cbMinutoDestino);
+		
+		dateChooser = new JDateChooser();
+		dateChooser.setBounds(712, 654, 100, 27);
+		getContentPane().add(dateChooser);
+		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtSelecinDeAsientos, cbOrigen, btnfinalizarEImprimir, cbDestino, btnConductor, btnA3, btnA4, btnA5, btnA6, btnA7, btnA8, btnA9, btnA10, btnA11, btnA12, btnA13, btnA14, btnA15, btnA1, btnA2}));
 		cargar();
 		}
 	
@@ -435,7 +444,6 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 			Destinos destinos = new Destinos();
 			destinos.cargarDestinos(cbDestino);
 		
-		
 			for(int i = 0; i < cbOrigen.getItemCount(); i++){
 				if(origen.equals(cbOrigen.getItemAt(i).getDestino()))
 					cbOrigen.setSelectedIndex(i);
@@ -444,11 +452,8 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 			}	
 			
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+			//JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
-		
-		
-		
 	}
 	
 	public void sumarTotalPasajes(){
