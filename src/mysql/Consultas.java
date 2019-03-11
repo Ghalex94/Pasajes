@@ -212,7 +212,17 @@ public class Consultas {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
-		
+	}
+	public static void actualizarVentaTemporal05(String fOrigen){
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "update tb_venta_temporal set fpardida=? where id=1";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setString(1, fOrigen);
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
 	}
 	
 	public ResultSet buscarVehiculo(String placa){
