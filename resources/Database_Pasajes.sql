@@ -14,15 +14,22 @@ dniconductor	int not null primary key,
 conductor		varchar(50)
 );
 
+create table tb_empresa(
+idempresa		int primary key auto_increment,
+ruc 			varchar(11),
+empresa 		varchar(60),
+mtc				varchar(20)
+);
+
 create table tb_modelo_vehiculo(
 idmodelo		int primary key auto_increment,
-modelo 			varchar(30)
+modelo 			varchar(50)
 );
 
 create table tb_vehiculo(
 placa			varchar(7) not null primary key,
 idmodelo		int,
-detalle			varchar(60),
+detalle			varchar(100),
 dniconductor	int,
 foreign key (dniconductor) references tb_conductor(dniconductor),
 foreign key (idmodelo) references tb_modelo_vehiculo(idmodelo)
@@ -38,13 +45,13 @@ razsocial		varchar(80)
 
 create table tb_destinos(
 iddestino		int primary key auto_increment,
-destino			varchar(20)
+destino			varchar(50)
 );
 
 create table tb_viaje( 
 nviaje			int primary key auto_increment,
-origen			varchar(20),
-destino			varchar(20),
+origen			varchar(50),
+destino			varchar(50),
 fhsalida		datetime,
 fhllegada		datetime,
 placa			varchar(7),
@@ -73,9 +80,9 @@ empresa			int,  -- 0NULL 1MERMA 2SIGUEL
 dniconductor	int,
 placa			varchar(7),
 modelovh		int,
-origen			varchar(20),
-destino			varchar(20),
-fpardida		datetime,
+origen			varchar(50),
+destino			varchar(50),
+fpartida		datetime,
 fllegada		datetime,
 prepasaje		float
 );
@@ -92,38 +99,43 @@ foreign key (dnipasajero) references tb_pasajero(dnipasajero)
 insert into tb_usuario values('alex', 'Aa123', 'Alexander Gamarra', 1);
 insert into tb_usuario values('admin', 'admin', 'ADMINISTRADOR', 0);
 
+insert into tb_venta_temporal values(1, 0, 0, 0, null, 0, null, null, null, null, null);
+
+insert into tb_modelo_vehiculo values(null, 'Renault Master 2012 15 Asientos');   	-- 1
+insert into tb_modelo_vehiculo values(null, 'Renault Master Moderna 15 Asientos');	-- 2
+insert into tb_modelo_vehiculo values(null, 'Wolkswagen Crafter 20+1 Asientos'); 	-- 3
+insert into tb_modelo_vehiculo values(null, 'Mercedes Sprinter 413 19+1 Asientos'); -- 4
+insert into tb_modelo_vehiculo values(null, 'Mercedes Sprinter 515 19+1 Asientos'); -- 5
+insert into tb_modelo_vehiculo values(null, 'Mercedes Sprinter 515 20+1 Asientos'); -- 6
+
+insert into tb_destinos values(null, 'Arequipa');
+insert into tb_destinos values(null, 'Puno');
+insert into tb_destinos values(null, 'Juliaca');
+insert into tb_destinos values(null, 'Sicuani');
+
 insert into tb_conductor values(48562548, 'Pablo Ramirez Valderrama');
 insert into tb_conductor values(78561565, 'Carlos Choque Paredes');
 insert into tb_conductor values(49581622, 'Martin Olivares');
 insert into tb_conductor values(84951655, 'Joaquin Cardenas');
 insert into tb_conductor values(84589125, 'Andres Torres');
 insert into tb_conductor values(52048699, 'Marco Villanueva');
-insert into tb_conductor values(84566618, 'Carlos Casas');
-insert into tb_conductor values(12667848, 'Carlos Ventura');
 
-insert into tb_modelo_vehiculo values(null, 'Chevrolet N300');    -- 1
-insert into tb_modelo_vehiculo values(null, 'JAC Refine 2017');   -- 2
-insert into tb_modelo_vehiculo values(null, 'Volkswagen R.'); -- 3
-insert into tb_modelo_vehiculo values(null, 'Hyundai H1 2016');   -- 4
+insert into tb_vehiculo values('D8G-FV4', 1, 'Blanco', 48562548);
+insert into tb_vehiculo values('F8F-8F4', 2, 'Blanco', 78561565);
+insert into tb_vehiculo values('D8C-D4F', 3, 'Blanco', 49581622);
+insert into tb_vehiculo values('G7V-D5C', 4, 'Blanco', 84951655);
+insert into tb_vehiculo values('H8I-G5F', 5, 'Blanco', 84589125);
+insert into tb_vehiculo values('F7Q-G4Y', 6, 'Blanco', 52048699);
 
-insert into tb_vehiculo values('A13-F8X', 1, 'Blanco', 			48562548);
-insert into tb_vehiculo values('H81-D5C', 2, 'Rojo', 			78561565);
-insert into tb_vehiculo values('J7A-1S1', 3, 'Gris ',			49581622);
-insert into tb_vehiculo values('GR2-A7G', 4, 'Negro', 			84951655);
-insert into tb_vehiculo values('AD8-E4F', 1, 'Blanco c/azul', 	84589125);
-insert into tb_vehiculo values('J84-GD4', 2, 'Rojo obscuro', 	52048699);
-insert into tb_vehiculo values('B94-C84', 3, 'Plomo',			84566618);
-insert into tb_vehiculo values('FP3-SV3', 4, 'Negro mate', 		12667848);
 
-insert into tb_venta_temporal values(1, 0, 0, 0, null, 0, null, null, null, null, null);
 
 insert into tb_pasajero values(76784966, '10767849660', '1994-10-30', 'Alexander Gamarra', 'Byte x Byte');
 insert into tb_pasajero values(76784955, '10767849550', '1995-01-28', 'Melany G', 'BxB');
 insert into tb_pasajero values(76784944, '10767849440', '1997-12-31', 'Jean Carlos', 'Sin oficio');
 insert into tb_pasajero values(76784933, '10767849330', '1995-03-05', 'Andrea Perez', 'Imagenes SRL');
+
 insert into tb_pasajeros_temporal values(1, 1, 76784966, 10767849660, 'Alexander Gamarra', 'BxB', 30, 10, 1994, 24, 19.90);
 
-insert into tb_destinos values(null, 'Arequipa');
 
 -- ELIMINAR TABLAS Y DB -----------------------------------------------------------
 drop database db_venta_pasajes; -- ----------------------------------------------
@@ -178,3 +190,5 @@ select * from tb_pasajeros_temporal where dni = 76784968;
 select * from tb_pasajeros_temporal where asiento = 6;
 
 delete from tb_pasajeros_temporal where asiento = 11;
+
+select vh.placa, mvh.idmodelo, mvh.modelo, vh.detalle, co.dniconductor, co.conductor from tb_vehiculo vh inner join tb_modelo_vehiculo mvh  inner join tb_conductor co on vh.idmodelo = mvh.idmodelo and vh.dniconductor = co.dniconductor order by mvh.modelo

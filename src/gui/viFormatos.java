@@ -41,6 +41,15 @@ public class viFormatos extends JInternalFrame implements ActionListener {
 	vPrincipal  vp = null;
 	viSeleccionAsientos1 vsa1 = null;
 	ResultSet rs;
+	private JLabel label;
+	private JButton button;
+	private JButton button_1;
+	private JLabel label_1;
+	private JButton button_2;
+	private JButton button_3;
+	private JLabel label_2;
+	private JButton button_4;
+	private JButton button_5;
 	
 	
 	public static void main(String[] args) {
@@ -110,6 +119,66 @@ public class viFormatos extends JInternalFrame implements ActionListener {
 		txtFormatos.setBackground(new Color(30, 144, 255));
 		txtFormatos.setBounds(0, 0, 658, 68);
 		getContentPane().add(txtFormatos);
+		
+		label = new JLabel("Manifiesto de pasajeros:");
+		label.setHorizontalAlignment(SwingConstants.LEFT);
+		label.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+		label.setBounds(35, 148, 606, 20);
+		getContentPane().add(label);
+		
+		button = new JButton("LLenar");
+		button.setForeground(Color.WHITE);
+		button.setFont(new Font("USAngel", Font.PLAIN, 20));
+		button.setBackground(Color.DARK_GRAY);
+		button.setBounds(35, 179, 229, 31);
+		getContentPane().add(button);
+		
+		button_1 = new JButton("Imprimir");
+		button_1.setForeground(Color.WHITE);
+		button_1.setFont(new Font("USAngel", Font.PLAIN, 20));
+		button_1.setBackground(Color.DARK_GRAY);
+		button_1.setBounds(363, 179, 229, 31);
+		getContentPane().add(button_1);
+		
+		label_1 = new JLabel("Manifiesto de pasajeros:");
+		label_1.setHorizontalAlignment(SwingConstants.LEFT);
+		label_1.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+		label_1.setBounds(45, 221, 606, 20);
+		getContentPane().add(label_1);
+		
+		button_2 = new JButton("LLenar");
+		button_2.setForeground(Color.WHITE);
+		button_2.setFont(new Font("USAngel", Font.PLAIN, 20));
+		button_2.setBackground(Color.DARK_GRAY);
+		button_2.setBounds(45, 252, 229, 31);
+		getContentPane().add(button_2);
+		
+		button_3 = new JButton("Imprimir");
+		button_3.setForeground(Color.WHITE);
+		button_3.setFont(new Font("USAngel", Font.PLAIN, 20));
+		button_3.setBackground(Color.DARK_GRAY);
+		button_3.setBounds(373, 252, 229, 31);
+		getContentPane().add(button_3);
+		
+		label_2 = new JLabel("Manifiesto de pasajeros:");
+		label_2.setHorizontalAlignment(SwingConstants.LEFT);
+		label_2.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+		label_2.setBounds(35, 294, 606, 20);
+		getContentPane().add(label_2);
+		
+		button_4 = new JButton("LLenar");
+		button_4.setForeground(Color.WHITE);
+		button_4.setFont(new Font("USAngel", Font.PLAIN, 20));
+		button_4.setBackground(Color.DARK_GRAY);
+		button_4.setBounds(35, 325, 229, 31);
+		getContentPane().add(button_4);
+		
+		button_5 = new JButton("Imprimir");
+		button_5.setForeground(Color.WHITE);
+		button_5.setFont(new Font("USAngel", Font.PLAIN, 20));
+		button_5.setBackground(Color.DARK_GRAY);
+		button_5.setBounds(363, 325, 229, 31);
+		getContentPane().add(button_5);
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{btnLlenarMP, btnCancelar}));
 		cargar();
 	}
@@ -143,5 +212,4 @@ public class viFormatos extends JInternalFrame implements ActionListener {
 	protected void actionPerformedBtnImprimirMP(ActionEvent e) {
 		
 	}
-	
 }

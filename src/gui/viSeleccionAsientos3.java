@@ -1,15 +1,13 @@
 package gui;
 
 import java.awt.EventQueue;
-
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
-
 import javax.swing.SwingConstants;
 import javax.swing.JTable;
 import javax.swing.JButton;
@@ -20,10 +18,15 @@ import javax.swing.JComboBox;
 import javax.swing.JTree;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-
 import java.awt.SystemColor;
 import java.awt.event.MouseListener;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.awt.event.MouseEvent;
 import javax.swing.JCheckBox;
 import java.awt.event.ActionListener;
@@ -33,21 +36,31 @@ import javax.swing.Box;
 import javax.swing.JSeparator;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 
+import clases.Conductor;
 import clases.Destinos;
 import mysql.Consultas;
+import java.awt.event.MouseAdapter;
+import com.toedter.components.JSpinField;
+import com.toedter.components.JLocaleChooser;
+import com.toedter.calendar.JDayChooser;
+import com.toedter.calendar.JMonthChooser;
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JYearChooser;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 
-public class viSeleccionAsientos3 extends JInternalFrame implements ActionListener {
-	private JTextField txtSelecinDeAsientos;
+public class viSeleccionAsientos3 extends JInternalFrame implements ActionListener, PropertyChangeListener {
+	public JTextField txtTitulo;
 	private JLabel lblOrigen;
-	private JComboBox <Destinos>  cbOrigen;
+	private JComboBox <Destinos> cbOrigen;
 	private JLabel lblDestino;
 	private JLabel lblCuentaTotal;
-	private JButton btnFormatos;
 	private JButton btnfinalizarEImprimir;
-	private JComboBox <Destinos>  cbDestino;
+	private JComboBox <Destinos> cbDestino ;
 	private JLabel lblS;
-
-	vPrincipal vp;
 	public JButton btnConductor;
 	public JButton btnA1;
 	public JButton btnA2;
@@ -66,8 +79,24 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 	public JButton btnA15;
 	private JLabel lblPasadizo;
 	private JLabel lblpuerta;
-	private JLabel lblBanner;
+	public JLabel lblBanner;
 	public JLabel lblTotal;
+	private JComboBox cbHoraOrigen;
+	private JComboBox cbMinutoOrigen;
+	private JComboBox cbHoraDestino;
+	private JComboBox cbMinutoDestino;
+	private JComboBox cbMOrigen;
+	private JComboBox cbMDestino;
+	private JDateChooser dchOrigen;
+	private JDateChooser dchDestino;
+	
+	vPrincipal vp;	
+	private JButton button;
+	private JButton button_1;
+	private JButton button_2;
+	private JButton button_3;
+	private JButton button_4;
+
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -93,69 +122,78 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
         int ancho = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
         int alto = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
 		
-		setBounds(100, 100, 1492, 988);
+		setBounds(100, 100, 1361, 922);
 		getContentPane().setLayout(null);
 		
 		getContentPane().setBackground(SystemColor.textInactiveText);
 		
-		txtSelecinDeAsientos = new JTextField();
-		txtSelecinDeAsientos.setText("SELECCI\u00D3N DE ASIENTOS CHEVROLET N300");
-		txtSelecinDeAsientos.setRequestFocusEnabled(false);
-		txtSelecinDeAsientos.setIgnoreRepaint(true);
-		txtSelecinDeAsientos.setHorizontalAlignment(SwingConstants.CENTER);
-		txtSelecinDeAsientos.setForeground(Color.WHITE);
-		txtSelecinDeAsientos.setFont(new Font("USAngel", Font.BOLD, 32));
-		txtSelecinDeAsientos.setFocusable(false);
-		txtSelecinDeAsientos.setFocusTraversalKeysEnabled(false);
-		txtSelecinDeAsientos.setEditable(false);
-		txtSelecinDeAsientos.setColumns(10);
-		txtSelecinDeAsientos.setBackground(Color.DARK_GRAY);
-		txtSelecinDeAsientos.setBounds(0, 0, ancho, 75);
-		getContentPane().add(txtSelecinDeAsientos);
+		txtTitulo = new JTextField();
+		txtTitulo.setText("SELECCI\u00D3N DE ASIENTOS");
+		txtTitulo.setRequestFocusEnabled(false);
+		txtTitulo.setIgnoreRepaint(true);
+		txtTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+		txtTitulo.setForeground(Color.WHITE);
+		txtTitulo.setFont(new Font("USAngel", Font.BOLD, 32));
+		txtTitulo.setFocusable(false);
+		txtTitulo.setFocusTraversalKeysEnabled(false);
+		txtTitulo.setEditable(false);
+		txtTitulo.setColumns(10);
+		txtTitulo.setBackground(Color.DARK_GRAY);
+		txtTitulo.setBounds(0, 0, ancho, 75);
+		getContentPane().add(txtTitulo);
 		
 		lblOrigen = new JLabel("Origen:");
 		lblOrigen.setForeground(Color.WHITE);
 		lblOrigen.setHorizontalAlignment(SwingConstants.LEFT);
 		lblOrigen.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblOrigen.setBounds(579, 469, 213, 32);
+		lblOrigen.setBounds(580, 443, 120, 32);
 		getContentPane().add(lblOrigen);
 		
 		cbOrigen = new JComboBox();
+		cbOrigen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				actionPerformedCbOrigen(arg0);
+			}
+		});
 		cbOrigen.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-		cbOrigen.setBounds(579, 505, 302, 40);
+		cbOrigen.setBounds(580, 479, 441, 40);
 		getContentPane().add(cbOrigen);
 		
 		lblDestino = new JLabel("Destino:");
 		lblDestino.setForeground(Color.WHITE);
 		lblDestino.setHorizontalAlignment(SwingConstants.LEFT);
 		lblDestino.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblDestino.setBounds(579, 557, 213, 32);
+		lblDestino.setBounds(579, 557, 134, 32);
 		getContentPane().add(lblDestino);
 		
 		lblCuentaTotal = new JLabel("Cuenta Total:");
+		lblCuentaTotal.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				mouseClickedLblCuentaTotal(e);
+			}
+		});
 		lblCuentaTotal.setForeground(Color.WHITE);
 		lblCuentaTotal.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCuentaTotal.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblCuentaTotal.setBounds(897, 396, 258, 32);
+		lblCuentaTotal.setBounds(1051, 443, 258, 32);
 		getContentPane().add(lblCuentaTotal);
-		
-		btnFormatos = new JButton("<html>\u00A0\u00A0Llenar<br>formatos</html>");
-		btnFormatos.setBackground(new Color(255, 255, 255));
-		btnFormatos.setForeground(new Color(220, 20, 60));
-		btnFormatos.setFont(new Font("USAngel", Font.PLAIN, 20));
-		btnFormatos.setBounds(897, 505, 282, 62);
-		getContentPane().add(btnFormatos);
 		
 		btnfinalizarEImprimir = new JButton("<html>FINALIZAR E <br>\u00A0\u00A0IMPRIMIR </html>");
 		btnfinalizarEImprimir.setForeground(new Color(255, 255, 255));
 		btnfinalizarEImprimir.setBackground(Color.DARK_GRAY);
 		btnfinalizarEImprimir.setFont(new Font("USAngel", Font.PLAIN, 20));
-		btnfinalizarEImprimir.setBounds(897, 577, 282, 62);
+		btnfinalizarEImprimir.setBounds(1050, 577, 282, 62);
 		getContentPane().add(btnfinalizarEImprimir);
 		
 		cbDestino = new JComboBox();
+		cbDestino.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedCbDestino(e);
+			}
+		});
 		cbDestino.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-		cbDestino.setBounds(579, 599, 302, 40);
+		cbDestino.setBounds(579, 599, 441, 40);
 		getContentPane().add(cbDestino);
 		
 		lblS = new JLabel("S/ ");
@@ -163,7 +201,7 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		lblS.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblS.setHorizontalAlignment(SwingConstants.LEFT);
 		lblS.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblS.setBounds(897, 440, 60, 32);
+		lblS.setBounds(1051, 487, 60, 32);
 		getContentPane().add(lblS);
 		
 		Image imgChofer = new ImageIcon(this.getClass().getResource("/chofer.png")).getImage();
@@ -189,7 +227,7 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		btnA4.setBackground(Color.GREEN);
 		btnA4.setIcon(new ImageIcon(imgAsiento));
 		btnA4.addActionListener(this);
-		btnA4.setBounds(130, 187, 100, 100);
+		btnA4.setBounds(166, 187, 100, 100);
 		getContentPane().add(btnA4);
 		
 		btnA5 = new JButton("");
@@ -197,7 +235,7 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		btnA5.setBackground(Color.GREEN);
 		btnA5.setIcon(new ImageIcon(imgAsiento));
 		btnA5.addActionListener(this);
-		btnA5.setBounds(247, 188, 100, 100);
+		btnA5.setBounds(312, 187, 100, 100);
 		getContentPane().add(btnA5);
 		
 		btnA6 = new JButton("");
@@ -213,7 +251,7 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		btnA7.setIcon(new ImageIcon(imgAsiento));
 		btnA7.addActionListener(this);
 		btnA7.setBackground(Color.GREEN);
-		btnA7.setBounds(130, 297, 100, 100);
+		btnA7.setBounds(166, 297, 100, 100);
 		getContentPane().add(btnA7);
 		
 		btnA8 = new JButton("");
@@ -221,7 +259,7 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		btnA8.setIcon(new ImageIcon(imgAsiento));
 		btnA8.addActionListener(this);
 		btnA8.setBackground(Color.GREEN);
-		btnA8.setBounds(389, 297, 100, 100);
+		btnA8.setBounds(10, 408, 100, 100);
 		getContentPane().add(btnA8);
 		
 		btnA9 = new JButton("");
@@ -229,7 +267,7 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		btnA9.setIcon(new ImageIcon(imgAsiento));
 		btnA9.addActionListener(this);
 		btnA9.setBackground(Color.GREEN);
-		btnA9.setBounds(10, 412, 100, 100);
+		btnA9.setBounds(166, 408, 100, 100);
 		getContentPane().add(btnA9);
 		
 		btnA10 = new JButton("");
@@ -237,7 +275,7 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		btnA10.setIcon(new ImageIcon(imgAsiento));
 		btnA10.addActionListener(this);
 		btnA10.setBackground(Color.GREEN);
-		btnA10.setBounds(130, 412, 100, 100);
+		btnA10.setBounds(414, 408, 100, 100);
 		getContentPane().add(btnA10);
 		
 		btnA11 = new JButton("");
@@ -245,7 +283,7 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		btnA11.setIcon(new ImageIcon(imgAsiento));
 		btnA11.addActionListener(this);
 		btnA11.setBackground(Color.GREEN);
-		btnA11.setBounds(389, 412, 100, 100);
+		btnA11.setBounds(10, 527, 100, 100);
 		getContentPane().add(btnA11);
 		
 		btnA12 = new JButton("");
@@ -253,7 +291,7 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		btnA12.setIcon(new ImageIcon(imgAsiento));
 		btnA12.addActionListener(this);
 		btnA12.setBackground(Color.GREEN);
-		btnA12.setBounds(10, 527, 100, 100);
+		btnA12.setBounds(166, 527, 100, 100);
 		getContentPane().add(btnA12);
 		
 		btnA13 = new JButton("");
@@ -261,7 +299,7 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		btnA13.setIcon(new ImageIcon(imgAsiento));
 		btnA13.addActionListener(this);
 		btnA13.setBackground(Color.GREEN);
-		btnA13.setBounds(130, 527, 100, 100);
+		btnA13.setBounds(414, 527, 100, 100);
 		getContentPane().add(btnA13);
 		
 		btnA14 = new JButton("");
@@ -269,7 +307,7 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		btnA14.setIcon(new ImageIcon(imgAsiento));
 		btnA14.addActionListener(this);
 		btnA14.setBackground(Color.GREEN);
-		btnA14.setBounds(260, 527, 100, 100);
+		btnA14.setBounds(10, 645, 100, 100);
 		getContentPane().add(btnA14);
 		
 		btnA15 = new JButton("");
@@ -277,7 +315,7 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		btnA15.setIcon(new ImageIcon(imgAsiento));
 		btnA15.addActionListener(this);
 		btnA15.setBackground(Color.GREEN);
-		btnA15.setBounds(389, 527, 100, 100);
+		btnA15.setBounds(166, 645, 100, 100);
 		getContentPane().add(btnA15);
 		
 		lblPasadizo = new JLabel("<html>P<br>A<br>S<br>A<br>D<br>I<br>Z<br>O</html>");
@@ -294,17 +332,18 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		
 		lblBanner = new JLabel("");
 		lblBanner.setHorizontalAlignment(SwingConstants.CENTER);
-		Image imBanner = new ImageIcon(this.getClass().getResource("/multivan2.png")).getImage();
+		Image imBanner = new ImageIcon(this.getClass().getResource("/mvwolkswagencrafter.png")).getImage();
 		lblBanner.setIcon(new ImageIcon(imBanner));
-		lblBanner.setBounds(579, 86, 600, 300);
+		lblBanner.setBounds(580, 86, 750, 350);
 		getContentPane().add(lblBanner);
 		
 		lblTotal = new JLabel("");
+		lblTotal.setVisible(false);
 		lblTotal.setForeground(Color.WHITE);
 		lblTotal.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblTotal.setHorizontalAlignment(SwingConstants.LEFT);
 		lblTotal.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblTotal.setBounds(967, 440, 188, 32);
+		lblTotal.setBounds(1121, 487, 188, 32);
 		getContentPane().add(lblTotal);
 		
 		btnA1 = new JButton("");
@@ -322,30 +361,172 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		btnA2.addActionListener(this);
 		btnA2.setBounds(347, 86, 167, 90);
 		getContentPane().add(btnA2);
-		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtSelecinDeAsientos, cbOrigen, btnFormatos, btnfinalizarEImprimir, cbDestino, btnConductor, btnA3, btnA4, btnA5, btnA6, btnA7, btnA8, btnA9, btnA10, btnA11, btnA12, btnA13, btnA14, btnA15, btnA1, btnA2}));
+		
+		cbHoraOrigen = new JComboBox();
+		cbHoraOrigen.addActionListener(this);
+		cbHoraOrigen.setModel(new DefaultComboBoxModel(new String[] {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
+		cbHoraOrigen.setBounds(864, 443, 52, 32);
+		getContentPane().add(cbHoraOrigen);
+		
+		cbMinutoOrigen = new JComboBox();
+		cbMinutoOrigen.addActionListener(this);
+		cbMinutoOrigen.setModel(new DefaultComboBoxModel(new String[] {"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
+		cbMinutoOrigen.setBounds(916, 443, 52, 32);
+		getContentPane().add(cbMinutoOrigen);
+		
+		cbHoraDestino = new JComboBox();
+		cbHoraDestino.addActionListener(this);
+		cbHoraDestino.setModel(new DefaultComboBoxModel(new String[] {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
+		cbHoraDestino.setBounds(863, 557, 52, 32);
+		getContentPane().add(cbHoraDestino);
+		
+		cbMinutoDestino = new JComboBox();
+		cbMinutoDestino.addActionListener(this);
+		cbMinutoDestino.setModel(new DefaultComboBoxModel(new String[] {"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
+		cbMinutoDestino.setBounds(916, 557, 52, 32);
+		getContentPane().add(cbMinutoDestino);
+		
+		dchOrigen = new JDateChooser();
+		dchOrigen.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent arg0) {
+				propertyChangeDchOrigen(arg0);
+			}
+		});
+		dchOrigen.setBounds(732, 443, 126, 32);
+		getContentPane().add(dchOrigen);
+		
+		dchDestino = new JDateChooser();
+		dchDestino.addPropertyChangeListener(this);
+		dchDestino.setBounds(732, 557, 126, 32);
+		getContentPane().add(dchDestino);
+		
+		cbMOrigen = new JComboBox();
+		cbMOrigen.setVisible(false);
+		cbMOrigen.addActionListener(this);
+		cbMOrigen.setModel(new DefaultComboBoxModel(new String[] {"am", "pm"}));
+		cbMOrigen.setBounds(969, 443, 52, 32);
+		getContentPane().add(cbMOrigen);
+		
+		cbMDestino = new JComboBox();
+		cbMDestino.setVisible(false);
+		cbMDestino.setModel(new DefaultComboBoxModel(new String[] {"am", "pm"}));
+		cbMDestino.setBounds(969, 557, 52, 32);
+		getContentPane().add(cbMDestino);
+		
+		button = new JButton("");
+		button.setHorizontalAlignment(SwingConstants.CENTER);
+		button.setBackground(Color.GREEN);
+		button.setBounds(414, 645, 100, 100);
+		getContentPane().add(button);
+		
+		button_1 = new JButton("");
+		button_1.setHorizontalAlignment(SwingConstants.CENTER);
+		button_1.setBackground(Color.GREEN);
+		button_1.setBounds(10, 756, 100, 100);
+		getContentPane().add(button_1);
+		
+		button_2 = new JButton("");
+		button_2.setHorizontalAlignment(SwingConstants.CENTER);
+		button_2.setBackground(Color.GREEN);
+		button_2.setBounds(166, 756, 100, 100);
+		getContentPane().add(button_2);
+		
+		button_3 = new JButton("");
+		button_3.setHorizontalAlignment(SwingConstants.CENTER);
+		button_3.setBackground(Color.GREEN);
+		button_3.setBounds(293, 756, 100, 100);
+		getContentPane().add(button_3);
+		
+		button_4 = new JButton("");
+		button_4.setHorizontalAlignment(SwingConstants.CENTER);
+		button_4.setBackground(Color.GREEN);
+		button_4.setBounds(414, 756, 100, 100);
+		getContentPane().add(button_4);
+		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtTitulo, cbOrigen, btnfinalizarEImprimir, cbDestino, btnConductor, btnA3, btnA4, btnA5, btnA6, btnA7, btnA8, btnA9, btnA10, btnA11, btnA12, btnA13, btnA14, btnA15, btnA1, btnA2}));
 		cargar();
 		}
 	
 	public void cargar(){
+		//seleccionar cbos
 		try {
 			Consultas consulta = new Consultas();
-			ResultSet rs = consulta.cargarPasajerosTemporal();
-			while(rs.next()){
-				if(rs.getInt("estado") == 1);{
-					int asiento = rs.getInt("asiento");
-					cambiarColorAsiento(asiento);
-				}
+			ResultSet rs = consulta.cargarVentaTemporal();
+			String origen = null;
+			String destino = null;
+			if(rs.next()){
+				origen = rs.getString("origen");
+				destino = rs.getString("destino");
 			}
-			sumarTotalPasajes();
+		
+			//Actualizar asientos y total
+			try {
+				Consultas consulta2 = new Consultas();
+				ResultSet rs2 = consulta2.cargarPasajerosTemporal();
+				while(rs2.next()){
+					if(rs2.getInt("estado") == 1);{
+						int asiento = rs2.getInt("asiento");
+						cambiarColorAsiento(asiento);
+					}
+				}
+				sumarTotalPasajes();
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Ningun pasajero registrado");
+			}
+			
+			//Llenar cbos de Destinos
+			Destinos destinos2 = new Destinos();
+			destinos2.cargarDestinos(cbOrigen);
+			Destinos destinos = new Destinos();
+			destinos.cargarDestinos(cbDestino);
+		
+			for(int i = 0; i < cbOrigen.getItemCount(); i++){
+				if(origen.equals(cbOrigen.getItemAt(i).getDestino()))
+					cbOrigen.setSelectedIndex(i);
+				if(destino.equals(cbDestino.getItemAt(i).getDestino()))
+					cbDestino.setSelectedIndex(i);
+			}
+			
+			//Cargar Horas
+			try {
+				Consultas consulta3 = new Consultas();
+				ResultSet rs3 = consulta3.cargarVentaTemporal();
+				rs3.next();
+				String fooriginal = rs3.getString("fpartida");  // FECHA ORIGEN ORIGINAL
+				String fdoriginal = rs3.getString("fllegada"); //  FECHA DESTINO ORIGIAL
+				
+				String[] partso = fooriginal.split(" ");
+				String diao = partso[0]; // 123
+				String horaso = partso[1]; // 654321
+				java.util.Date fechaParseadaOrigen= new SimpleDateFormat("yyyy-MM-dd").parse(diao);
+				dchOrigen.setDate(fechaParseadaOrigen);	
+				
+				String[] partshoraso = partso[1].split(":");
+				String horao = partshoraso[0];
+				String mino = partshoraso[1];
+				cbHoraOrigen.setSelectedItem(horao);
+				cbMinutoOrigen.setSelectedItem(mino);
+				
+				
+				String[] partsd = fdoriginal.split(" ");
+				String diad = partsd[0]; // 123
+				String horasd = partsd[1]; // 654321
+				java.util.Date fechaParseadaDestino= new SimpleDateFormat("yyyy-MM-dd").parse(diad);
+				dchDestino.setDate(fechaParseadaDestino);	
+				
+				String[] partshorasd = partsd[1].split(":");
+				String horad = partshorasd[0];
+				String mind = partshorasd[1];
+				cbHoraDestino.setSelectedItem(horad);
+				cbMinutoDestino.setSelectedItem(mind);
+				
+			} catch (Exception e) {
+				//JOptionPane.showMessageDialog(null, "Ninguna fecha registrada" + e);
+			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Ningun pasajero registrado");
+			//JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
-		Destinos destinos2 = new Destinos();
-		destinos2.cargarDestinos(cbOrigen);
-		Destinos destinos = new Destinos();
-		destinos.cargarDestinos(cbDestino);
 	}
-
+	
 	public void sumarTotalPasajes(){
 		try {
 			Consultas consulta = new Consultas();
@@ -358,9 +539,24 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		}
 		catch (Exception e) {
 		}
-	}	
+	}
 	
 	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == cbMinutoDestino) {
+			actionPerformedCbMinutoDestino(arg0);
+		}
+		if (arg0.getSource() == cbHoraDestino) {
+			actionPerformedCbHoraDestino(arg0);
+		}
+		if (arg0.getSource() == cbMOrigen) {
+			actionPerformedCbMOrigen(arg0);
+		}
+		if (arg0.getSource() == cbMinutoOrigen) {
+			actionPerformedCbMinutoOrigen(arg0);
+		}
+		if (arg0.getSource() == cbHoraOrigen) {
+			actionPerformedCbHoraOrigen(arg0);
+		}
 		if (arg0.getSource() == btnConductor) {
 			actionPerformedBtnConductor(arg0);
 		}
@@ -562,4 +758,89 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		vp.enable(false);
 	}
 	
+	protected void actionPerformedCbOrigen(ActionEvent arg0) {
+		int idorigen = cbOrigen.getItemAt(cbOrigen.getSelectedIndex()).getIddestino();
+		String origen = cbOrigen.getItemAt(cbOrigen.getSelectedIndex()).getDestino();
+		Consultas consulta = new Consultas();
+		consulta.actualizarVentaTemporal03(idorigen, origen);
+		
+	}
+	protected void actionPerformedCbDestino(ActionEvent e) {
+		int iddestino = cbDestino.getItemAt(cbDestino.getSelectedIndex()).getIddestino();
+		String destino = cbDestino.getItemAt(cbDestino.getSelectedIndex()).getDestino();
+		Consultas consulta = new Consultas();
+		consulta.actualizarVentaTemporal04(iddestino, destino);
+		
+	}
+	protected void mouseClickedLblCuentaTotal(MouseEvent e) {
+		if(lblTotal.isVisible())
+			lblTotal.setVisible(false);
+		else
+			lblTotal.setVisible(true);
+	}
+	protected void propertyChangeDchOrigen(PropertyChangeEvent arg0) {
+		actualizarFechaOrigen();
+	}
+	protected void actionPerformedCbHoraOrigen(ActionEvent arg0) {
+		actualizarFechaOrigen();
+	}
+	protected void actionPerformedCbMinutoOrigen(ActionEvent arg0) {
+		actualizarFechaOrigen();
+	}
+	protected void actionPerformedCbMOrigen(ActionEvent arg0) {
+		actualizarFechaOrigen();
+	}
+	public void actualizarFechaOrigen(){
+		try {
+			Date dateo = dchOrigen.getDate();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String fOrigen = String.valueOf(sdf.format(dateo));
+			int horao = Integer.parseInt(cbHoraOrigen.getSelectedItem().toString());
+			int mino = Integer.parseInt(cbMinutoOrigen.getSelectedItem().toString());
+			/*if(cbMOrigen.getSelectedItem().toString().equals("pm")){
+				if(cbHoraOrigen.getSelectedItem().toString().equals("12"))
+					horao = 0;
+				else
+					horao = horao + 12;
+			}*/
+			fOrigen = fOrigen + " " + horao+":"+mino+":00";
+			Consultas consulta = new Consultas();
+			consulta.actualizarVentaTemporal05(fOrigen);
+			
+			} catch (Exception e) {	}
+	}
+	
+	public void propertyChange(PropertyChangeEvent arg0) {
+		if (arg0.getSource() == dchDestino) {
+			propertyChangeDchDestino(arg0);
+		}
+	}
+	protected void propertyChangeDchDestino(PropertyChangeEvent arg0) {
+		actualizarFechaDestino();
+	}
+	protected void actionPerformedCbHoraDestino(ActionEvent arg0) {
+		actualizarFechaDestino();
+	}
+	
+	protected void actionPerformedCbMinutoDestino(ActionEvent arg0) {
+		actualizarFechaDestino();
+	}
+	public void actualizarFechaDestino(){
+		try {
+			Date dater = dchDestino.getDate();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String fDestino= String.valueOf(sdf.format(dater));
+			int horad = Integer.parseInt(cbHoraDestino.getSelectedItem().toString());
+			int mind = Integer.parseInt(cbMinutoDestino.getSelectedItem().toString());
+			/*if(cbMOrigen.getSelectedItem().toString().equals("pm")){
+				if(cbHoraOrigen.getSelectedItem().toString().equals("12"))
+					horao = 0;
+				else
+					horao = horao + 12;
+			}*/
+			fDestino = fDestino + " " + horad+":"+mind+":00";
+			Consultas consulta = new Consultas();
+			consulta.actualizarVentaTemporal06(fDestino);	
+			} catch (Exception e) {	}
+	}
 }

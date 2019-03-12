@@ -216,9 +216,20 @@ public class Consultas {
 	public static void actualizarVentaTemporal05(String fOrigen){
 		Connection con = MySQLConexion.getConection();
 		try {
-			String sql = "update tb_venta_temporal set fpardida=? where id=1";
+			String sql = "update tb_venta_temporal set fpartida=? where id=1";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setString(1, fOrigen);
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+	}
+	public static void actualizarVentaTemporal06(String fDestino){
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "update tb_venta_temporal set fllegada=? where id=1";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setString(1, fDestino);
 			prepareStmt.execute();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
@@ -256,23 +267,6 @@ public class Consultas {
 			prepareStmt3.execute();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
-		}
-	}
-	
-	public static void crearPasajero(int dni, int ruc, String fnacimiento, int edad, String nombre, String razsocial){
-		Connection con = MySQLConexion.getConection();
-		try {
-			String sql = "insert into tb_pasajero (dnipasajero, ruc, fnacimiento, edad, nombre, razsocial)" + " values (?, ?, ?, ?, ?, ?)";
-			PreparedStatement prepareStmt = con.prepareStatement(sql);
-			prepareStmt.setInt(1, dni);
-			prepareStmt.setInt(2, ruc);
-			prepareStmt.setString(3, fnacimiento);
-			prepareStmt.setInt(4, edad);
-			prepareStmt.setString(5, nombre);
-			prepareStmt.setString(6, razsocial);
-			prepareStmt.execute();
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "ERROR" + e);
 		}
 	}
 	
@@ -324,6 +318,19 @@ public class Consultas {
 			prepareStmt.execute();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERRORnbvnb: " + e);
+		}
+	}
+	
+	public static void eliminarPasajero(int dnipasajero){
+		Connection con = MySQLConexion.getConection();
+		ResultSet rs = null;
+		try {
+			String sql = "delete from tb_pasajero where dnipasajero = ?";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, dnipasajero);		
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
 	}
 	
@@ -432,7 +439,7 @@ public class Consultas {
 		ResultSet rs = null;
 		PreparedStatement pst = null;
 		try {
-			String sql = "select * from tb_pasajero";
+			String sql = "select * from tb_pasajero order by nombre";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 		} catch (Exception e) {

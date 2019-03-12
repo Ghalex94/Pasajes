@@ -87,6 +87,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	 * Create the frame.
 	 */
 	public vPrincipal() {
+		setBackground(Color.GRAY);
 		
 		addWindowListener(this);
 		setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -162,11 +163,13 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mnReportes.setEnabled(false);
 		menuBar.add(mnReportes);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.LIGHT_GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
 		desktopPane = new JDesktopPane();
+		desktopPane.setBackground(Color.GRAY);
 		contentPane.add(desktopPane, BorderLayout.CENTER);
 		
 		desktopPane.add(lg);//LOGIN		

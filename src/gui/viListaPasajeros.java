@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import guiSecundarios.vdDestinoNuevo;
+import guiSecundarios.vdPasajeroNuevo;
 import guiSecundarios.vdVehiculoModificar;
 import guiSecundarios.vdVehiculoNuevo;
 import mysql.Consultas;
@@ -37,6 +38,7 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 	JTable tb;
 	ResultSet rs;
 	vPrincipal vp = null;
+	private JButton btnModificarCliente;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -81,7 +83,7 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 		txtVehiculos.setBounds(0, 0, ancho, 75);
 		getContentPane().add(txtVehiculos);
 		
-		btnAnadirPasajero = new JButton("Anadir Destino");
+		btnAnadirPasajero = new JButton("A\u00F1adir Cliente");
 		btnAnadirPasajero.addActionListener(this);
 		btnAnadirPasajero.setForeground(Color.WHITE);
 		btnAnadirPasajero.setFont(new Font("EngraversGothic BT", Font.BOLD, 28));
@@ -89,12 +91,12 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 		btnAnadirPasajero.setBounds(1124, 86, 364, 98);
 		getContentPane().add(btnAnadirPasajero);
 		
-		btnEliminarPasajero = new JButton("Eliminar Destino");
+		btnEliminarPasajero = new JButton("Eliminar Cliente");
 		btnEliminarPasajero.addActionListener(this);
 		btnEliminarPasajero.setForeground(Color.WHITE);
 		btnEliminarPasajero.setFont(new Font("EngraversGothic BT", Font.BOLD, 28));
 		btnEliminarPasajero.setBackground(Color.DARK_GRAY);
-		btnEliminarPasajero.setBounds(1124, 227, 364, 98);
+		btnEliminarPasajero.setBounds(1124, 333, 364, 98);
 		getContentPane().add(btnEliminarPasajero);
 		
 		scrollPane = new JScrollPane();
@@ -103,6 +105,14 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 		
 		tbPasajeros = new JTable();
 		scrollPane.setViewportView(tbPasajeros);
+		
+		btnModificarCliente = new JButton("Modificar Cliente");
+		btnModificarCliente.addActionListener(this);
+		btnModificarCliente.setForeground(Color.WHITE);
+		btnModificarCliente.setFont(new Font("EngraversGothic BT", Font.BOLD, 28));
+		btnModificarCliente.setBackground(Color.DARK_GRAY);
+		btnModificarCliente.setBounds(1124, 209, 364, 98);
+		getContentPane().add(btnModificarCliente);
 
 		cargar();
 	}
@@ -125,6 +135,9 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 	}
 	
 	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == btnModificarCliente) {
+			actionPerformedBtnModificarCliente(arg0);
+		}
 		if (arg0.getSource() == btnEliminarPasajero) {
 			actionPerformedBtnEliminarDestino(arg0);
 		}
@@ -134,19 +147,32 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 	}
 	
 	protected void actionPerformedBtnAnadirDestino(ActionEvent arg0) {
-		/*vdDestinoNuevo ldest = new vdDestinoNuevo(vp, this);
-		ldest.setVisible(true);
-		vp.setEnabled(false);*/
+		vdPasajeroNuevo vdp = new vdPasajeroNuevo(vp, this, 1, 0); // 1 NUEVO --  2 MODIFICAR
+		vdp.setVisible(true);
+		vdp.setAlwaysOnTop(true);
+		vdp.setLocationRelativeTo(null);
+		vp.setEnabled(false);		
 	}
+	
+	protected void actionPerformedBtnModificarCliente(ActionEvent arg0) {
+		int dniPasajero = Integer.parseInt(tbPasajeros.getValueAt(tbPasajeros.getSelectedRow(), 0).toString()); 
+		vdPasajeroNuevo vdp = new vdPasajeroNuevo(vp, this, 2, dniPasajero); // 1 NUEVO --  2 MODIFICAR
+		vdp.setVisible(true);
+		vdp.setAlwaysOnTop(true);
+		vdp.setLocationRelativeTo(null);
+		vp.setEnabled(false);
+	}
+	
 	protected void actionPerformedBtnEliminarDestino(ActionEvent arg0) {
-		int opc = JOptionPane.showConfirmDialog(null, "¿Eliminar destino?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		int opc = JOptionPane.showConfirmDialog(null, "¿Eliminar Cliente?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (opc == 0){
-			int iddestino = Integer.parseInt(tbPasajeros.getValueAt(tbPasajeros.getSelectedRow(), 0).toString());
-			Consultas.eliminarDestino(iddestino);
+			int dniPasajero = Integer.parseInt(tbPasajeros.getValueAt(tbPasajeros.getSelectedRow(), 0).toString());
+			Consultas.eliminarPasajero(dniPasajero);
 			this.cargar();
 			JOptionPane.showMessageDialog(null, "Eliminado correctamente");
 		}
 	}
+	
 }
 
 

@@ -8,15 +8,17 @@ import mysql.Consultas;
 public class Vehiculo {
 	String placa;
 	int idmodelo;
+	String modelo;
 	String detalle;
 	int dniconductor;
 	ResultSet rs;
 	String conductor;
 	
 	public Vehiculo(){}
-	public Vehiculo(String placa, int idmodelo, String detalle, int dniconductor, String conductor){
+	public Vehiculo(String placa, int idmodelo, String modelo, String detalle, int dniconductor, String conductor){
 		this.placa = placa;
 		this.idmodelo = idmodelo;
+		this.modelo = modelo;
 		this.detalle = detalle;
 		this.dniconductor = dniconductor;
 		this.conductor = conductor;
@@ -32,6 +34,7 @@ public class Vehiculo {
 						new Vehiculo(
 								rs.getString("placa"),
 								rs.getInt("idmodelo"),
+								rs.getString("modelo"),
 								rs.getString("detalle"),
 								rs.getInt("dniconductor"),
 								rs.getString("conductor")
@@ -45,9 +48,10 @@ public class Vehiculo {
 	@Override
 	public String toString(){
 		String t = "";
+		t = modelo + " (" + placa + ") " + conductor;/*
 		switch(idmodelo){
 		case 1:
-			t = "Chevrolet N300    -  " + placa + "  -  " + conductor;
+			t = modelo + " " + placa + " - " + conductor;
 			break;
 		case 2:
 			t = "JAC Refine 2017   -  " + placa + "  -  " + conductor;
@@ -58,7 +62,7 @@ public class Vehiculo {
 		case 4:
 			t = "Hyundai H1 2016   -  " + placa + "  -  " + conductor;
 			break;
-		}
+		}*/
 		return t;
 	}
 	
@@ -73,6 +77,12 @@ public class Vehiculo {
 	}
 	public void setIdmodelo(int idmodelo) {
 		this.idmodelo = idmodelo;
+	}
+	public String getModelo() {
+		return modelo;
+	}
+	public void setModelo(String modelo) {
+		this.modelo = modelo;
 	}
 	public String getDetalle() {
 		return detalle;
