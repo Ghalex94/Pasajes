@@ -34,7 +34,7 @@ public class vdConductor extends JDialog implements ActionListener {
 	private JButton btnNewConductor;
 	
 	vPrincipal vp;
-	viSeleccionAsientos1 vsa1;
+	viSeleccionAsientos3 vsa1;
 	private JLabel lblEmpresa;
 	private JTextField txtEmpresa;
 	
@@ -48,7 +48,7 @@ public class vdConductor extends JDialog implements ActionListener {
 		}
 	}
 
-	public vdConductor(vPrincipal temp, viSeleccionAsientos1 temp2, viSeleccionAsientos2 temp3, viSeleccionAsientos3 temp4, viSeleccionAsientos4 temp5) {
+	public vdConductor(vPrincipal temp, viSeleccionAsientos3 temp2, viSeleccionAsientos4 temp3, viSeleccionAsientos2 temp4, viSeleccionAsientos1 temp5) {
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		vsa1 = temp2;
 		vp = temp;

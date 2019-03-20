@@ -99,14 +99,18 @@ foreign key (dnipasajero) references tb_pasajero(dnipasajero)
 insert into tb_usuario values('alex', 'Aa123', 'Alexander Gamarra', 1);
 insert into tb_usuario values('admin', 'admin', 'ADMINISTRADOR', 0);
 
+insert into tb_empresa values(null, '20406468683', 'MERMA HERMANOS S.R.L.', null);
+insert into tb_empresa values(null, '20601642124', 'ZIGUEL E.I.R.L.', null);
+
 insert into tb_venta_temporal values(1, 0, 0, 0, null, 0, null, null, null, null, null);
 
-insert into tb_modelo_vehiculo values(null, 'Renault Master 2012 15 Asientos');   	-- 1
-insert into tb_modelo_vehiculo values(null, 'Renault Master Moderna 15 Asientos');	-- 2
-insert into tb_modelo_vehiculo values(null, 'Wolkswagen Crafter 20+1 Asientos'); 	-- 3
-insert into tb_modelo_vehiculo values(null, 'Mercedes Sprinter 413 19+1 Asientos'); -- 4
-insert into tb_modelo_vehiculo values(null, 'Mercedes Sprinter 515 19+1 Asientos'); -- 5
-insert into tb_modelo_vehiculo values(null, 'Mercedes Sprinter 515 20+1 Asientos'); -- 6
+
+insert into tb_modelo_vehiculo values(null, 'Mercedes Sprinter 413 19+1 Asientos'); -- 1
+insert into tb_modelo_vehiculo values(null, 'Mercedes Sprinter 515 19+1 Asientos'); -- 2
+insert into tb_modelo_vehiculo values(null, 'Mercedes Sprinter 515 20+1 Asientos'); -- 3
+insert into tb_modelo_vehiculo values(null, 'Renault Master 2012 15 Asientos');   	-- 4
+insert into tb_modelo_vehiculo values(null, 'Renault Master Moderna 15 Asientos');	-- 5
+insert into tb_modelo_vehiculo values(null, 'Wolkswagen Crafter 20+1 Asientos'); 	-- 6
 
 insert into tb_destinos values(null, 'Arequipa');
 insert into tb_destinos values(null, 'Puno');
@@ -154,6 +158,7 @@ drop table tb_pasajeros_temporal;
 use db_venta_pasajes;
 select * from tb_usuario;
 select * from tb_conductor;
+select * from tb_empresa;
 select * from tb_modelo_vehiculo;
 select * from tb_vehiculo;
 select * from tb_pasajero;

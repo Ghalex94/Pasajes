@@ -79,23 +79,17 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 	public JButton btnA15;
 	private JLabel lblPasadizo;
 	private JLabel lblpuerta;
-	public JLabel lblBanner;
+	private JLabel lblBanner;
 	public JLabel lblTotal;
 	private JComboBox cbHoraOrigen;
 	private JComboBox cbMinutoOrigen;
 	private JComboBox cbHoraDestino;
 	private JComboBox cbMinutoDestino;
-	private JComboBox cbMOrigen;
-	private JComboBox cbMDestino;
 	private JDateChooser dchOrigen;
 	private JDateChooser dchDestino;
 	
 	vPrincipal vp;	
-	private JButton button;
-	private JButton button_1;
-	private JButton button_2;
-	private JButton button_3;
-	private JButton button_4;
+	private JLabel lblTV;
 
 	
 	public static void main(String[] args) {
@@ -122,7 +116,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
         int ancho = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
         int alto = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
 		
-		setBounds(100, 100, 1361, 854);
+		setBounds(100, 100, 1361, 729);
 		getContentPane().setLayout(null);
 		
 		getContentPane().setBackground(SystemColor.textInactiveText);
@@ -146,7 +140,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		lblOrigen.setForeground(Color.WHITE);
 		lblOrigen.setHorizontalAlignment(SwingConstants.LEFT);
 		lblOrigen.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblOrigen.setBounds(581, 505, 120, 32);
+		lblOrigen.setBounds(578, 463, 120, 32);
 		getContentPane().add(lblOrigen);
 		
 		cbOrigen = new JComboBox();
@@ -156,14 +150,14 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 			}
 		});
 		cbOrigen.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-		cbOrigen.setBounds(581, 541, 441, 40);
+		cbOrigen.setBounds(578, 499, 441, 40);
 		getContentPane().add(cbOrigen);
 		
 		lblDestino = new JLabel("Destino:");
 		lblDestino.setForeground(Color.WHITE);
 		lblDestino.setHorizontalAlignment(SwingConstants.LEFT);
 		lblDestino.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblDestino.setBounds(580, 619, 134, 32);
+		lblDestino.setBounds(577, 577, 134, 32);
 		getContentPane().add(lblDestino);
 		
 		lblCuentaTotal = new JLabel("Cuenta Total:");
@@ -176,14 +170,14 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		lblCuentaTotal.setForeground(Color.WHITE);
 		lblCuentaTotal.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCuentaTotal.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblCuentaTotal.setBounds(1052, 505, 258, 32);
+		lblCuentaTotal.setBounds(1072, 463, 258, 32);
 		getContentPane().add(lblCuentaTotal);
 		
 		btnfinalizarEImprimir = new JButton("<html>FINALIZAR E <br>\u00A0\u00A0IMPRIMIR </html>");
 		btnfinalizarEImprimir.setForeground(new Color(255, 255, 255));
 		btnfinalizarEImprimir.setBackground(Color.DARK_GRAY);
 		btnfinalizarEImprimir.setFont(new Font("USAngel", Font.PLAIN, 20));
-		btnfinalizarEImprimir.setBounds(1051, 639, 282, 62);
+		btnfinalizarEImprimir.setBounds(1048, 597, 282, 62);
 		getContentPane().add(btnfinalizarEImprimir);
 		
 		cbDestino = new JComboBox();
@@ -193,7 +187,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 			}
 		});
 		cbDestino.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-		cbDestino.setBounds(580, 661, 441, 40);
+		cbDestino.setBounds(577, 619, 441, 40);
 		getContentPane().add(cbDestino);
 		
 		lblS = new JLabel("S/ ");
@@ -201,140 +195,169 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		lblS.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblS.setHorizontalAlignment(SwingConstants.LEFT);
 		lblS.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblS.setBounds(1052, 549, 60, 32);
+		lblS.setBounds(1072, 507, 60, 32);
 		getContentPane().add(lblS);
 		
 		Image imgChofer = new ImageIcon(this.getClass().getResource("/chofer.png")).getImage();
-		Image imgAsiento = new ImageIcon(this.getClass().getResource("/asiento.png")).getImage();
-		
 		btnConductor = new JButton(" ");
 		btnConductor.setBackground(SystemColor.controlDkShadow);
 		btnConductor.setHorizontalAlignment(SwingConstants.CENTER);
 		btnConductor.setIcon(new ImageIcon(imgChofer));
 		btnConductor.addActionListener(this);
-		btnConductor.setBounds(20, 86, 168, 90);
+		btnConductor.setBounds(10, 86, 168, 90);
 		getContentPane().add(btnConductor);
-		
+
+		Image imgAsiento1 = new ImageIcon(this.getClass().getResource("/asiento01.png")).getImage();
+		btnA1 = new JButton("");
+		btnA1.addActionListener(this);
+		btnA1.setBackground(Color.GREEN);
+		btnA1.setHorizontalAlignment(SwingConstants.CENTER);
+		btnA1.setIcon(new ImageIcon(imgAsiento1));
+		btnA1.setBounds(182, 86, 160, 90);
+		getContentPane().add(btnA1);
+
+		Image imgAsiento2 = new ImageIcon(this.getClass().getResource("/asiento02.png")).getImage();
+		btnA2 = new JButton("");
+		btnA2.setBackground(Color.GREEN);
+		btnA2.setHorizontalAlignment(SwingConstants.CENTER);
+		btnA2.setIcon(new ImageIcon(imgAsiento2));
+		btnA2.addActionListener(this);
+		btnA2.setBounds(347, 86, 167, 90);
+		getContentPane().add(btnA2);
+
+		Image imgAsiento3 = new ImageIcon(this.getClass().getResource("/asiento03.png")).getImage();
 		btnA3 = new JButton("");
 		btnA3.setBackground(Color.GREEN);
-		btnA3.setIcon(new ImageIcon(imgAsiento));
+		btnA3.setIcon(new ImageIcon(imgAsiento3));
 		btnA3.addActionListener(this);
-		btnA3.setBounds(379, 212, 145, 85);
+		btnA3.setBounds(10, 219, 110, 100);
 		getContentPane().add(btnA3);
-		
+
+		Image imgAsiento4 = new ImageIcon(this.getClass().getResource("/asiento04.png")).getImage();
 		btnA4 = new JButton("");
 		btnA4.setHorizontalAlignment(SwingConstants.CENTER);
 		btnA4.setBackground(Color.GREEN);
-		btnA4.setIcon(new ImageIcon(imgAsiento));
+		btnA4.setIcon(new ImageIcon(imgAsiento4));
 		btnA4.addActionListener(this);
-		btnA4.setBounds(20, 282, 145, 90);
+		btnA4.setBounds(125, 219, 110, 100);
 		getContentPane().add(btnA4);
-		
+
+		Image imgAsiento5 = new ImageIcon(this.getClass().getResource("/asiento05.png")).getImage();
 		btnA5 = new JButton("");
 		btnA5.setHorizontalAlignment(SwingConstants.CENTER);
 		btnA5.setBackground(Color.GREEN);
-		btnA5.setIcon(new ImageIcon(imgAsiento));
+		btnA5.setIcon(new ImageIcon(imgAsiento5));
 		btnA5.addActionListener(this);
-		btnA5.setBounds(170, 282, 145, 90);
+		btnA5.setBounds(240, 220, 110, 100);
 		getContentPane().add(btnA5);
-		
+
+		Image imgAsiento6 = new ImageIcon(this.getClass().getResource("/asiento06.png")).getImage();
 		btnA6 = new JButton("");
 		btnA6.setHorizontalAlignment(SwingConstants.CENTER);
-		btnA6.setIcon(new ImageIcon(imgAsiento));
+		btnA6.setIcon(new ImageIcon(imgAsiento6));
 		btnA6.addActionListener(this);
 		btnA6.setBackground(Color.GREEN);
-		btnA6.setBounds(379, 302, 145, 85);
+		btnA6.setBounds(10, 329, 120, 100);
 		getContentPane().add(btnA6);
-		
+
+		Image imgAsiento7 = new ImageIcon(this.getClass().getResource("/asiento07.png")).getImage();
 		btnA7 = new JButton("");
 		btnA7.setHorizontalAlignment(SwingConstants.CENTER);
-		btnA7.setIcon(new ImageIcon(imgAsiento));
+		btnA7.setIcon(new ImageIcon(imgAsiento7));
 		btnA7.addActionListener(this);
 		btnA7.setBackground(Color.GREEN);
-		btnA7.setBounds(20, 377, 145, 90);
+		btnA7.setBounds(140, 329, 120, 100);
 		getContentPane().add(btnA7);
-		
+
+		Image imgAsiento8 = new ImageIcon(this.getClass().getResource("/asiento08.png")).getImage();
 		btnA8 = new JButton("");
 		btnA8.setHorizontalAlignment(SwingConstants.CENTER);
-		btnA8.setIcon(new ImageIcon(imgAsiento));
+		btnA8.setIcon(new ImageIcon(imgAsiento8));
 		btnA8.addActionListener(this);
 		btnA8.setBackground(Color.GREEN);
-		btnA8.setBounds(170, 377, 145, 90);
+		btnA8.setBounds(394, 329, 120, 100);
 		getContentPane().add(btnA8);
-		
+
+		Image imgAsiento9 = new ImageIcon(this.getClass().getResource("/asiento09.png")).getImage();
 		btnA9 = new JButton("");
 		btnA9.setHorizontalAlignment(SwingConstants.CENTER);
-		btnA9.setIcon(new ImageIcon(imgAsiento));
+		btnA9.setIcon(new ImageIcon(imgAsiento9));
 		btnA9.addActionListener(this);
 		btnA9.setBackground(Color.GREEN);
-		btnA9.setBounds(378, 392, 146, 85);
+		btnA9.setBounds(10, 444, 120, 100);
 		getContentPane().add(btnA9);
-		
+
+		Image imgAsiento10 = new ImageIcon(this.getClass().getResource("/asiento10.png")).getImage();
 		btnA10 = new JButton("");
 		btnA10.setHorizontalAlignment(SwingConstants.CENTER);
-		btnA10.setIcon(new ImageIcon(imgAsiento));
+		btnA10.setIcon(new ImageIcon(imgAsiento10));
 		btnA10.addActionListener(this);
 		btnA10.setBackground(Color.GREEN);
-		btnA10.setBounds(20, 472, 145, 90);
+		btnA10.setBounds(140, 444, 120, 100);
 		getContentPane().add(btnA10);
-		
+
+		Image imgAsiento11 = new ImageIcon(this.getClass().getResource("/asiento11.png")).getImage();
 		btnA11 = new JButton("");
 		btnA11.setHorizontalAlignment(SwingConstants.CENTER);
-		btnA11.setIcon(new ImageIcon(imgAsiento));
+		btnA11.setIcon(new ImageIcon(imgAsiento11));
 		btnA11.addActionListener(this);
 		btnA11.setBackground(Color.GREEN);
-		btnA11.setBounds(170, 474, 145, 88);
+		btnA11.setBounds(394, 444, 120, 100);
 		getContentPane().add(btnA11);
-		
+
+		Image imgAsiento12 = new ImageIcon(this.getClass().getResource("/asiento12.png")).getImage();
 		btnA12 = new JButton("");
 		btnA12.setHorizontalAlignment(SwingConstants.CENTER);
-		btnA12.setIcon(new ImageIcon(imgAsiento));
+		btnA12.setIcon(new ImageIcon(imgAsiento12));
 		btnA12.addActionListener(this);
 		btnA12.setBackground(Color.GREEN);
-		btnA12.setBounds(379, 482, 145, 85);
+		btnA12.setBounds(10, 559, 120, 100);
 		getContentPane().add(btnA12);
-		
+
+		Image imgAsiento13 = new ImageIcon(this.getClass().getResource("/asiento13.png")).getImage();
 		btnA13 = new JButton("");
 		btnA13.setHorizontalAlignment(SwingConstants.CENTER);
-		btnA13.setIcon(new ImageIcon(imgAsiento));
+		btnA13.setIcon(new ImageIcon(imgAsiento13));
 		btnA13.addActionListener(this);
 		btnA13.setBackground(Color.GREEN);
-		btnA13.setBounds(20, 567, 145, 90);
+		btnA13.setBounds(140, 559, 120, 100);
 		getContentPane().add(btnA13);
-		
+
+		Image imgAsiento14 = new ImageIcon(this.getClass().getResource("/asiento14.png")).getImage();
 		btnA14 = new JButton("");
 		btnA14.setHorizontalAlignment(SwingConstants.CENTER);
-		btnA14.setIcon(new ImageIcon(imgAsiento));
+		btnA14.setIcon(new ImageIcon(imgAsiento14));
 		btnA14.addActionListener(this);
 		btnA14.setBackground(Color.GREEN);
-		btnA14.setBounds(170, 567, 145, 90);
+		btnA14.setBounds(267, 559, 120, 100);
 		getContentPane().add(btnA14);
-		
+
+		Image imgAsiento15 = new ImageIcon(this.getClass().getResource("/asiento15.png")).getImage();
 		btnA15 = new JButton("");
 		btnA15.setHorizontalAlignment(SwingConstants.CENTER);
-		btnA15.setIcon(new ImageIcon(imgAsiento));
+		btnA15.setIcon(new ImageIcon(imgAsiento15));
 		btnA15.addActionListener(this);
 		btnA15.setBackground(Color.GREEN);
-		btnA15.setBounds(379, 572, 145, 85);
+		btnA15.setBounds(394, 559, 120, 100);
 		getContentPane().add(btnA15);
 		
-		lblPasadizo = new JLabel("<html>P<br>A<br>S<br>A<br>D<br>I<br>Z<br>O</html>");
-		lblPasadizo.setFont(new Font("Segoe UI", Font.BOLD, 15));
+		lblPasadizo = new JLabel("<html>P<br>A<br>S<br>I<br>L<br>L<br>O</html>");
+		lblPasadizo.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		lblPasadizo.setForeground(SystemColor.window);
-		lblPasadizo.setBounds(324, 306, 22, 179);
+		lblPasadizo.setBounds(324, 331, 22, 199);
 		getContentPane().add(lblPasadizo);
 		
-		lblpuerta = new JLabel("PUERTA");
+		lblpuerta = new JLabel("<html>P<br>U<br>E<br>R<br>T<br>A</html>");
 		lblpuerta.setForeground(Color.WHITE);
-		lblpuerta.setFont(new Font("Segoe UI", Font.BOLD, 11));
-		lblpuerta.setBounds(414, 110, 92, 40);
+		lblpuerta.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		lblpuerta.setBounds(481, 182, 33, 137);
 		getContentPane().add(lblpuerta);
 		
 		lblBanner = new JLabel("");
 		lblBanner.setHorizontalAlignment(SwingConstants.CENTER);
-		Image imBanner = new ImageIcon(this.getClass().getResource("/mvsprinter413_51519+1.png")).getImage();
+		Image imBanner = new ImageIcon(this.getClass().getResource("/mvrenaultmastermoderna.png")).getImage();
 		lblBanner.setIcon(new ImageIcon(imBanner));
-		lblBanner.setBounds(581, 125, 750, 350);
+		lblBanner.setBounds(580, 86, 750, 350);
 		getContentPane().add(lblBanner);
 		
 		lblTotal = new JLabel("");
@@ -343,47 +366,31 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		lblTotal.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblTotal.setHorizontalAlignment(SwingConstants.LEFT);
 		lblTotal.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblTotal.setBounds(1122, 549, 188, 32);
+		lblTotal.setBounds(1142, 507, 188, 32);
 		getContentPane().add(lblTotal);
-		
-		btnA1 = new JButton("");
-		btnA1.addActionListener(this);
-		btnA1.setBackground(Color.GREEN);
-		btnA1.setHorizontalAlignment(SwingConstants.CENTER);
-		btnA1.setIcon(new ImageIcon(imgAsiento));
-		btnA1.setBounds(20, 187, 145, 90);
-		getContentPane().add(btnA1);
-		
-		btnA2 = new JButton("");
-		btnA2.setBackground(Color.GREEN);
-		btnA2.setHorizontalAlignment(SwingConstants.CENTER);
-		btnA2.setIcon(new ImageIcon(imgAsiento));
-		btnA2.addActionListener(this);
-		btnA2.setBounds(170, 187, 145, 90);
-		getContentPane().add(btnA2);
 		
 		cbHoraOrigen = new JComboBox();
 		cbHoraOrigen.addActionListener(this);
 		cbHoraOrigen.setModel(new DefaultComboBoxModel(new String[] {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
-		cbHoraOrigen.setBounds(865, 505, 52, 32);
+		cbHoraOrigen.setBounds(915, 463, 52, 32);
 		getContentPane().add(cbHoraOrigen);
 		
 		cbMinutoOrigen = new JComboBox();
 		cbMinutoOrigen.addActionListener(this);
 		cbMinutoOrigen.setModel(new DefaultComboBoxModel(new String[] {"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
-		cbMinutoOrigen.setBounds(917, 505, 52, 32);
+		cbMinutoOrigen.setBounds(967, 463, 52, 32);
 		getContentPane().add(cbMinutoOrigen);
 		
 		cbHoraDestino = new JComboBox();
 		cbHoraDestino.addActionListener(this);
 		cbHoraDestino.setModel(new DefaultComboBoxModel(new String[] {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
-		cbHoraDestino.setBounds(864, 619, 52, 32);
+		cbHoraDestino.setBounds(914, 577, 52, 32);
 		getContentPane().add(cbHoraDestino);
 		
 		cbMinutoDestino = new JComboBox();
 		cbMinutoDestino.addActionListener(this);
 		cbMinutoDestino.setModel(new DefaultComboBoxModel(new String[] {"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
-		cbMinutoDestino.setBounds(917, 619, 52, 32);
+		cbMinutoDestino.setBounds(967, 577, 52, 32);
 		getContentPane().add(cbMinutoDestino);
 		
 		dchOrigen = new JDateChooser();
@@ -392,56 +399,21 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 				propertyChangeDchOrigen(arg0);
 			}
 		});
-		dchOrigen.setBounds(733, 505, 126, 32);
+		dchOrigen.setBounds(783, 463, 126, 32);
 		getContentPane().add(dchOrigen);
 		
 		dchDestino = new JDateChooser();
 		dchDestino.addPropertyChangeListener(this);
-		dchDestino.setBounds(733, 619, 126, 32);
+		dchDestino.setBounds(783, 577, 126, 32);
 		getContentPane().add(dchDestino);
 		
-		cbMOrigen = new JComboBox();
-		cbMOrigen.setVisible(false);
-		cbMOrigen.addActionListener(this);
-		cbMOrigen.setModel(new DefaultComboBoxModel(new String[] {"am", "pm"}));
-		cbMOrigen.setBounds(970, 505, 52, 32);
-		getContentPane().add(cbMOrigen);
+		lblTV = new JLabel("");
+		lblTV.setHorizontalAlignment(SwingConstants.CENTER);
+		Image imgTV = new ImageIcon(this.getClass().getResource("/tv.png")).getImage();
+		lblTV.setIcon(new ImageIcon(imgTV));
+		lblTV.setBounds(151, 187, 177, 28);
+		getContentPane().add(lblTV);
 		
-		cbMDestino = new JComboBox();
-		cbMDestino.setVisible(false);
-		cbMDestino.setModel(new DefaultComboBoxModel(new String[] {"am", "pm"}));
-		cbMDestino.setBounds(970, 619, 52, 32);
-		getContentPane().add(cbMDestino);
-		
-		button = new JButton("");
-		button.setHorizontalAlignment(SwingConstants.CENTER);
-		button.setBackground(Color.GREEN);
-		button.setBounds(192, 86, 154, 90);
-		getContentPane().add(button);
-		
-		button_1 = new JButton("");
-		button_1.setHorizontalAlignment(SwingConstants.CENTER);
-		button_1.setBackground(Color.GREEN);
-		button_1.setBounds(20, 661, 120, 90);
-		getContentPane().add(button_1);
-		
-		button_2 = new JButton("");
-		button_2.setHorizontalAlignment(SwingConstants.CENTER);
-		button_2.setBackground(Color.GREEN);
-		button_2.setBounds(148, 661, 120, 90);
-		getContentPane().add(button_2);
-		
-		button_3 = new JButton("");
-		button_3.setHorizontalAlignment(SwingConstants.CENTER);
-		button_3.setBackground(Color.GREEN);
-		button_3.setBounds(276, 661, 120, 90);
-		getContentPane().add(button_3);
-		
-		button_4 = new JButton("");
-		button_4.setHorizontalAlignment(SwingConstants.CENTER);
-		button_4.setBackground(Color.GREEN);
-		button_4.setBounds(404, 661, 120, 90);
-		getContentPane().add(button_4);
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtTitulo, cbOrigen, btnfinalizarEImprimir, cbDestino, btnConductor, btnA3, btnA4, btnA5, btnA6, btnA7, btnA8, btnA9, btnA10, btnA11, btnA12, btnA13, btnA14, btnA15, btnA1, btnA2}));
 		cargar();
 		}
@@ -547,9 +519,6 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		}
 		if (arg0.getSource() == cbHoraDestino) {
 			actionPerformedCbHoraDestino(arg0);
-		}
-		if (arg0.getSource() == cbMOrigen) {
-			actionPerformedCbMOrigen(arg0);
 		}
 		if (arg0.getSource() == cbMinutoOrigen) {
 			actionPerformedCbMinutoOrigen(arg0);
@@ -678,82 +647,82 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 	}
 	
 	protected void actionPerformedBtnConductor(ActionEvent arg0) {
-		vdConductor vdc = new vdConductor(vp, null, null, null, this);
+		vdConductor vdc = new vdConductor(vp, null, this, null, null);
 		vdc.setVisible(true);
 		vp.setEnabled(false);
 	}
 	protected void actionPerformedBtnA1(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 1, null, null, null, this);
+		vdAsiento vdp = new vdAsiento(vp, 1, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA2(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 2, null, null, null, this);
+		vdAsiento vdp = new vdAsiento(vp, 2, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA3(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 3, null, null, null, this);
+		vdAsiento vdp = new vdAsiento(vp, 3, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA4(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 4, null, null, null, this);
+		vdAsiento vdp = new vdAsiento(vp, 4, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA5(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 5, null, null, null, this);
+		vdAsiento vdp = new vdAsiento(vp, 5, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA6(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 6, null, null, null, this);
+		vdAsiento vdp = new vdAsiento(vp, 6, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA7(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 7, null, null, null, this);
+		vdAsiento vdp = new vdAsiento(vp, 7, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA8(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 8, null, null, null, this);
+		vdAsiento vdp = new vdAsiento(vp, 8, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA9(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 9, null, null, null, this);
+		vdAsiento vdp = new vdAsiento(vp, 9, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA10(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 10, null, null, null, this);
+		vdAsiento vdp = new vdAsiento(vp, 10, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA11(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 11, null, null, null, this);
+		vdAsiento vdp = new vdAsiento(vp, 11, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA12(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 12, null, null, null, this);
+		vdAsiento vdp = new vdAsiento(vp, 12, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA13(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 13, null, null, null, this);
+		vdAsiento vdp = new vdAsiento(vp, 13, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA14(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 14, null, null, null, this);
+		vdAsiento vdp = new vdAsiento(vp, 14, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA15(ActionEvent arg0) {
-		vdAsiento vdp = new vdAsiento(vp, 15, null, null, null, this);
+		vdAsiento vdp = new vdAsiento(vp, 15, null, this, null, null);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
@@ -785,9 +754,6 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		actualizarFechaOrigen();
 	}
 	protected void actionPerformedCbMinutoOrigen(ActionEvent arg0) {
-		actualizarFechaOrigen();
-	}
-	protected void actionPerformedCbMOrigen(ActionEvent arg0) {
 		actualizarFechaOrigen();
 	}
 	public void actualizarFechaOrigen(){

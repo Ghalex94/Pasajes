@@ -46,6 +46,22 @@ public class Consultas {
 		return rs;
 	}
 	
+	public ResultSet buscarModeloVehiculo(int idmodelovh){
+		Connection con = MySQLConexion.getConection();
+		java.sql.Statement st;
+		ResultSet rs = null;
+		try {
+			String sql = "select * from tb_modelo_vehiculo where idmodelo = ?";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, idmodelovh);
+			//prepareStmt.execute();
+			rs = prepareStmt.executeQuery();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		return rs;		
+	}
+	
 	public ResultSet cargarModelosVehiculos(){
 		Connection con = MySQLConexion.getConection();
 		java.sql.Statement st;
@@ -66,6 +82,19 @@ public class Consultas {
 		try {
 			st = con.createStatement();
 			rs = st.executeQuery("select * from tb_conductor order by conductor");
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		return rs;
+	}
+	
+	public ResultSet cargarEmpresas(){
+		Connection con = MySQLConexion.getConection();
+		java.sql.Statement st;
+		ResultSet rs = null;
+		try {
+			st = con.createStatement();
+			rs = st.executeQuery("select * from tb_empresa order by idempresa");
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}

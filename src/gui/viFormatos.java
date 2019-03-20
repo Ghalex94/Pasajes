@@ -39,7 +39,7 @@ public class viFormatos extends JInternalFrame implements ActionListener {
 	private JTextField txtFormatos;
 	
 	vPrincipal  vp = null;
-	viSeleccionAsientos1 vsa1 = null;
+	viSeleccionAsientos3 vsa1 = null;
 	ResultSet rs;
 	private JLabel label;
 	private JButton button;
@@ -68,7 +68,7 @@ public class viFormatos extends JInternalFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public viFormatos(vPrincipal temp, viSeleccionAsientos1 temp2) {
+	public viFormatos(vPrincipal temp, viSeleccionAsientos3 temp2) {
 		
 		vp = temp;
 		vsa1 = temp2;

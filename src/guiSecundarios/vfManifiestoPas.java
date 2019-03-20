@@ -11,6 +11,16 @@ import javax.swing.JTextField;
 import java.awt.Color;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import java.awt.Scrollbar;
+import javax.swing.JInternalFrame;
+import javax.swing.JDesktopPane;
+import javax.swing.JToggleButton;
+import javax.swing.JSlider;
+import javax.swing.JToolBar;
+import org.eclipse.wb.swing.FocusTraversalOnArray;
+import java.awt.Component;
+import javax.swing.Box;
 
 public class vfManifiestoPas extends JFrame {
 	private JLabel lblNewLabel;
@@ -43,8 +53,9 @@ public class vfManifiestoPas extends JFrame {
 	private JLabel label_10;
 	private JTextField textField_12;
 	private JLabel label_11;
-	private JButton btnNewButton;
 	private JButton btnManifiestoPasajeros;
+	private JPanel miPanel;
+	private JScrollPane scrollPane;
 
 	/**
 	 * Launch the application.
@@ -71,6 +82,8 @@ public class vfManifiestoPas extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 693, 777);
 		getContentPane().setLayout(null);
+		
+		
 		
 		lblNewLabel = new JLabel("Origen");
 		lblNewLabel.setBounds(37, 94, 46, 14);
@@ -222,12 +235,9 @@ public class vfManifiestoPas extends JFrame {
 		label_11.setBounds(37, 323, 46, 14);
 		getContentPane().add(label_11);
 		
-		btnNewButton = new JButton("PIE PAGINA");
-		btnNewButton.setBounds(51, 587, 582, 119);
-		getContentPane().add(btnNewButton);
-		
 		btnManifiestoPasajeros = new JButton("MANIFIESTO PASAJEROS");
 		btnManifiestoPasajeros.setBounds(37, 11, 596, 72);
 		getContentPane().add(btnManifiestoPasajeros);
+		getContentPane().setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblNewLabel, txtArequipa, lblFechaViaje, lblDestino, textField, txtPuno, label_1, textField_2, textField_1, textField_3, label, textField_6, label_5, textField_9, textField_12, label_2, label_3, textField_4, textField_5, label_4, label_6, textField_7, textField_8, label_7, label_8, label_9, textField_10, textField_11, label_10, label_11, btnManifiestoPasajeros}));
 	}
 }

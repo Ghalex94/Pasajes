@@ -19,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
 import clases.Conductor;
+import clases.Empresa;
 import clases.Vehiculo;
 import mysql.Consultas;
 
@@ -30,7 +31,7 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 	private JLabel lblNewLabel;
 	private JLabel lblVehiculo;
 	private JButton btnContinuar;
-	private JComboBox cbEmpresa;
+	private JComboBox <Empresa> cbEmpresa;
 	private JComboBox <Vehiculo> cbVehiculo;
 	
 	vPrincipal  vp = null;
@@ -84,7 +85,6 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 		
 		cbEmpresa = new JComboBox();
 		cbEmpresa.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-		cbEmpresa.setModel(new DefaultComboBoxModel(new String[] {"MERMA HERMANOS S.R.L", "ZIGUEL E.I.R.L"}));
 		cbEmpresa.setBounds(162, 49, 640, 23);
 		getContentPane().add(cbEmpresa);
 		
@@ -108,6 +108,7 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 		getContentPane().add(lblPrecioDePasaje);
 		
 		txtPrePasaje = new JTextField();
+		txtPrePasaje.setText("0");
 		txtPrePasaje.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtPrePasaje.setColumns(10);
 		txtPrePasaje.setBounds(250, 164, 103, 25);
@@ -119,6 +120,9 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 	public void cargar(){
 		Vehiculo vehiculo = new Vehiculo();
 		vehiculo.cargarVehiculo(cbVehiculo);
+		
+		Empresa empresa = new Empresa();
+		empresa.cargarEmpresas(cbEmpresa);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -143,10 +147,8 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 			vp.esconderVentanas();
 			vp.cerrarVentanas();
 			int empresa = 0;
-			if(cbEmpresa.getSelectedIndex() == 0)
-				empresa = 1; //MERMA
-			if(cbEmpresa.getSelectedIndex() == 1)
-				empresa = 2; //SIGUEL
+			empresa = cbEmpresa.getItemAt(cbEmpresa.getSelectedIndex()).getIdempresa(); //1MERMA  2SIGUEL
+			JOptionPane.showMessageDialog(null, ""+empresa);
 			int dniconductor = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getDniconductor();
 			String placa = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getPlaca();
 			int idmodelovh = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getIdmodelo();
@@ -162,7 +164,7 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 			
 			switch(idmodelovh){
 			case 1:
-				vp.sa1 = new viSeleccionAsientos1(vp);		// Renault Master 2012 15 Asientos
+				vp.sa1 = new viSeleccionAsientos1(vp);		// Mercedes Sprinter 413 19+1 Asientos
 				vp.desktopPane.add(vp.sa1);
 				vp.sa1.show();
 				vp.sa1.txtTitulo.setText(modelovh);
@@ -171,7 +173,18 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 				}catch(Exception f){}
 				break;
 			case 2:
-				vp.sa2 = new viSeleccionAsientos2(vp);     // Renault Master Moderna 15 Asientos
+				vp.sa1 = new viSeleccionAsientos1(vp);     // Mercedes sprinter 515 19+1 				
+				vp.desktopPane.add(vp.sa1);
+				vp.sa1.show();
+				vp.sa1.txtTitulo.setText(modelovh);
+				Image imBanner = new ImageIcon(this.getClass().getResource("/mvsprinter51519+1.png")).getImage();
+				vp.sa1.lblBanner.setIcon(new ImageIcon(imBanner));
+				try{
+					vp.sa1.setMaximum(true);
+				}catch(Exception f){}
+				break;
+			case 3:
+				vp.sa2 = new viSeleccionAsientos2(vp);     // Mercedes sprinter 515 20+1				
 				vp.desktopPane.add(vp.sa2);
 				vp.sa2.show();
 				vp.sa2.txtTitulo.setText(modelovh);
@@ -179,8 +192,8 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 					vp.sa2.setMaximum(true);
 				}catch(Exception f){}
 				break;
-			case 3:
-				vp.sa3 = new viSeleccionAsientos3(vp);     // Wolkswagen Crafter 20+1 Asientos
+			case 4:
+				vp.sa3 = new viSeleccionAsientos3(vp);    // Renault 2012 15
 				vp.desktopPane.add(vp.sa3);
 				vp.sa3.show();
 				vp.sa3.txtTitulo.setText(modelovh);
@@ -188,35 +201,24 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 					vp.sa3.setMaximum(true);
 				}catch(Exception f){}
 				break;
-			case 4:
-				vp.sa4 = new viSeleccionAsientos4(vp);    // Mercedes Sprinter 413 19+1 Asientos
-				vp.desktopPane.add(vp.sa4);
-				vp.sa4.show();
-				vp.sa4.txtTitulo.setText(modelovh);
-				try{
-					vp.sa4.setMaximum(true);
-				}catch(Exception f){}
-				break;
 			case 5:
-				vp.sa4 = new viSeleccionAsientos4(vp);     // Wolkswagen Crafter 20+1 Asientos
+				vp.sa4 = new viSeleccionAsientos4(vp);     // Renault master moderna
 				vp.desktopPane.add(vp.sa4);
 				vp.sa4.show();
 				vp.sa4.txtTitulo.setText(modelovh);
-				Image imBanner = new ImageIcon(this.getClass().getResource("/mvsprinter51519+1.png")).getImage();
-				vp.sa4.lblBanner.setIcon(new ImageIcon(imBanner));
 				try{
 					vp.sa4.setMaximum(true);
 				}catch(Exception f){}
 				break;
 			case 6:
-				vp.sa3 = new viSeleccionAsientos3(vp);     // Mercedes Sprinter 515 20+1 Asientos   REPITE DEL 3 
-				vp.desktopPane.add(vp.sa3);
-				vp.sa3.show();
-				vp.sa3.txtTitulo.setText(modelovh);
+				vp.sa2 = new viSeleccionAsientos2(vp);     // Wolskwagen Crafter
+				vp.desktopPane.add(vp.sa2);
+				vp.sa2.show();
+				vp.sa2.txtTitulo.setText(modelovh);
 				Image imBanner2 = new ImageIcon(this.getClass().getResource("/mvsprinter51520+1.png")).getImage();
-				vp.sa3.lblBanner.setIcon(new ImageIcon(imBanner2));
+				vp.sa2.lblBanner.setIcon(new ImageIcon(imBanner2));
 				try{
-					vp.sa3.setMaximum(true);
+					vp.sa2.setMaximum(true);
 				}catch(Exception f){}
 				break;
 			}

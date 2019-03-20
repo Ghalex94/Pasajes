@@ -17,10 +17,13 @@ import java.beans.PropertyVetoException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
+
+import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import java.awt.Frame;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.WindowListener;
 import java.awt.print.PrinterJob;
@@ -67,6 +70,12 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
     int ancho = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
     int alto = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
     private JMenuItem mntmListaDeClientes;
+    private JMenu mnFormatos;
+    private JMenuItem mntmFormato1;
+    private JMenuItem mntmFormato2;
+    private JMenuItem mntmFormato3;
+    private JMenuItem mntmContrato;
+    private JMenuItem mntmLlenarInformacion;
     
     
 	
@@ -127,6 +136,25 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mntmCancelarSalida.addActionListener(this);
 		mntmCancelarSalida.setEnabled(false);
 		mnSalidas.add(mntmCancelarSalida);
+		
+		mnFormatos = new JMenu("FORMATOS");
+		menuBar.add(mnFormatos);
+		
+		mntmLlenarInformacion = new JMenuItem("Llenar informaci\u00F3n faltante");
+		mntmLlenarInformacion.addActionListener(this);
+		mnFormatos.add(mntmLlenarInformacion);
+		
+		mntmFormato1 = new JMenuItem("Ver Formato 1");
+		mnFormatos.add(mntmFormato1);
+		
+		mntmFormato2 = new JMenuItem("Ver Formato 2");
+		mnFormatos.add(mntmFormato2);
+		
+		mntmFormato3 = new JMenuItem("Ver Formato 3");
+		mnFormatos.add(mntmFormato3);
+		
+		mntmContrato = new JMenuItem("Ver Contrato");
+		mnFormatos.add(mntmContrato);
 		
 		mnVehiculosConductores = new JMenu("VEHICULOS Y CONDUCTORES");
 		mnVehiculosConductores.setEnabled(false);
@@ -203,13 +231,16 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	public void integrar(){
 		desktopPane.add(d1);//DETALLES 1 (DESELECCION DE CARRO)
 		desktopPane.add(sa1);//SELECCION DE ASIENTOS 1
-		desktopPane.add(sa2);//SELECCION DE ASIENTOS 2 
+		desktopPane.add(sa1);//SELECCION DE ASIENTOS 2 
 		desktopPane.add(sa3);//SELECCION DE ASIENTOS 3 
 		desktopPane.add(sa4);//SELECCION DE ASIENTOS 4 
 		desktopPane.add(lvc);//LISTA DE VEHICULOS
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == mntmLlenarInformacion) {
+			actionPerformedMntmLlenarInformacion(arg0);
+		}
 		if (arg0.getSource() == mntmCancelarSalida) {
 			actionPerformedMntmCancelarSalida(arg0);
 		}
@@ -335,44 +366,78 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	protected void actionPerformedMntmContinuarPreparacion(ActionEvent arg0) {
 		Consultas consulta = new Consultas();
 		rs = consulta.cargarVentaTemporal();
-		int modelovh = 0;
+		int idmodelovh = 0;
+		String modelovh = null;
 		esconderVentanas();
 		cerrarVentanas();
 		try {
 			rs.next();
-			modelovh = rs.getInt("modelovh");
+			idmodelovh = rs.getInt("modelovh");
 		} catch (SQLException e1) {	e1.printStackTrace(); }
-		switch(modelovh){
+		
+		rs = consulta.buscarModeloVehiculo(idmodelovh);
+		try {
+			rs.next();
+			modelovh = rs.getString("modelo");
+		} catch (SQLException e1) {	e1.printStackTrace(); }
+		
+		switch(idmodelovh){
 		case 1:
-			sa1 = new viSeleccionAsientos1(this);
+			sa1 = new viSeleccionAsientos1(this);	// Mercedes Sprinter 413 19+1 Asientos
 			desktopPane.add(sa1);
 			sa1.show();
+			sa1.txtTitulo.setText(modelovh);
+			try{
+				sa1.setMaximum(true);
+			}catch(Exception f){}
+			break;			
+		case 2:
+			sa1 = new viSeleccionAsientos1(this);	// Mercedes sprinter 515 19+1 
+			desktopPane.add(sa1);
+			sa1.show();
+			sa1.txtTitulo.setText(modelovh);
+			Image imBanner = new ImageIcon(this.getClass().getResource("/mvsprinter51519+1.png")).getImage();
+			sa1.lblBanner.setIcon(new ImageIcon(imBanner));
 			try{
 				sa1.setMaximum(true);
 			}catch(Exception f){}
 			break;
-		case 2:
-			sa2 = new viSeleccionAsientos2(this);
+		case 3:
+			sa2 = new viSeleccionAsientos2(this);     // Mercedes sprinter 515 20+1	
 			desktopPane.add(sa2);
 			sa2.show();
+			sa2.txtTitulo.setText(modelovh);
 			try{
 				sa2.setMaximum(true);
 			}catch(Exception f){}
 			break;
-		case 3:
-			sa3 = new viSeleccionAsientos3(this);
+		case 4:
+			sa3 = new viSeleccionAsientos3(this);    // Renault 2012 15
 			desktopPane.add(sa3);
 			sa3.show();
+			sa3.txtTitulo.setText(modelovh);
 			try{
 				sa3.setMaximum(true);
 			}catch(Exception f){}
 			break;
-		case 4:
-			sa4 = new viSeleccionAsientos4(this);
+		case 5:
+			sa4 = new viSeleccionAsientos4(this);     // Renault master moderna
 			desktopPane.add(sa4);
 			sa4.show();
+			sa4.txtTitulo.setText(modelovh);
 			try{
 				sa4.setMaximum(true);
+			}catch(Exception f){}
+			break;
+		case 6:
+			sa2 = new viSeleccionAsientos2(this);     // Wolskwagen Crafter
+			desktopPane.add(sa2);
+			sa2.show();
+			sa2.txtTitulo.setText(modelovh);
+			Image imBanner2 = new ImageIcon(this.getClass().getResource("/mvsprinter51520+1.png")).getImage();
+			sa2.lblBanner.setIcon(new ImageIcon(imBanner2));
+			try{
+				sa2.setMaximum(true);
 			}catch(Exception f){}
 			break;
 		}
@@ -426,9 +491,11 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			lpjr.setMaximum(true);
 		}catch(Exception f){}
 	}
-	
+	protected void actionPerformedMntmLlenarInformacion(ActionEvent arg0) {
 		
-	
+		
+		
+	}
 }
 
 

@@ -55,10 +55,10 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 	
 	vPrincipal vp;
 	int asiento = 0;
-	viSeleccionAsientos1 vsa1 = null;
-	viSeleccionAsientos2 vsa2 = null;
-	viSeleccionAsientos3 vsa3 = null;
-	viSeleccionAsientos4 vsa4 = null;
+	viSeleccionAsientos3 vsa1 = null;
+	viSeleccionAsientos4 vsa2 = null;
+	viSeleccionAsientos2 vsa3 = null;
+	viSeleccionAsientos1 vsa4 = null;
 	float prepasajeoriginal = 0;
 	private JButton btnEliminar;
 	
@@ -73,7 +73,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		}
 	}
 
-	public vdAsiento(vPrincipal temp, int temp2, viSeleccionAsientos1 temp3, viSeleccionAsientos2 temp4, viSeleccionAsientos3 temp5, viSeleccionAsientos4 temp6) {
+	public vdAsiento(vPrincipal temp, int temp2, viSeleccionAsientos3 temp3, viSeleccionAsientos4 temp4, viSeleccionAsientos2 temp5, viSeleccionAsientos1 temp6) {
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		vp = temp;
 		asiento = temp2;
