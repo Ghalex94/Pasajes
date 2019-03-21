@@ -60,7 +60,7 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 		
 		vp = temp;
 		
-		setBounds(100, 100, 1514, 721);
+		setBounds(100, 100, 1361, 721);
 		getContentPane().setLayout(null);
 		
 		Toolkit t = Toolkit.getDefaultToolkit();
@@ -88,7 +88,7 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 		btnAnadirPasajero.setForeground(Color.WHITE);
 		btnAnadirPasajero.setFont(new Font("EngraversGothic BT", Font.BOLD, 28));
 		btnAnadirPasajero.setBackground(Color.DARK_GRAY);
-		btnAnadirPasajero.setBounds(1124, 86, 364, 98);
+		btnAnadirPasajero.setBounds(973, 86, 364, 98);
 		getContentPane().add(btnAnadirPasajero);
 		
 		btnEliminarPasajero = new JButton("Eliminar Cliente");
@@ -96,11 +96,11 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 		btnEliminarPasajero.setForeground(Color.WHITE);
 		btnEliminarPasajero.setFont(new Font("EngraversGothic BT", Font.BOLD, 28));
 		btnEliminarPasajero.setBackground(Color.DARK_GRAY);
-		btnEliminarPasajero.setBounds(1124, 333, 364, 98);
+		btnEliminarPasajero.setBounds(973, 333, 364, 98);
 		getContentPane().add(btnEliminarPasajero);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 86, 1104, 594);
+		scrollPane.setBounds(10, 86, 953, 594);
 		getContentPane().add(scrollPane);
 		
 		tbPasajeros = new JTable();
@@ -111,7 +111,7 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 		btnModificarCliente.setForeground(Color.WHITE);
 		btnModificarCliente.setFont(new Font("EngraversGothic BT", Font.BOLD, 28));
 		btnModificarCliente.setBackground(Color.DARK_GRAY);
-		btnModificarCliente.setBounds(1124, 209, 364, 98);
+		btnModificarCliente.setBounds(973, 209, 364, 98);
 		getContentPane().add(btnModificarCliente);
 
 		cargar();

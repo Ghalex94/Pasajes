@@ -757,7 +757,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 	}
 	protected void actionPerformedBtnA6(ActionEvent arg0) {
 		vdAsiento vdp = new vdAsiento(vp, 6, null, null, null, this);
-		vdp.setVisible(true);
+		vdp.setVisible(true); 
 		vp.enable(false);
 	}
 	protected void actionPerformedBtnA7(ActionEvent arg0) {
