@@ -148,7 +148,7 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 			vp.cerrarVentanas();
 			int empresa = 0;
 			empresa = cbEmpresa.getItemAt(cbEmpresa.getSelectedIndex()).getIdempresa(); //1MERMA  2SIGUEL
-			JOptionPane.showMessageDialog(null, ""+empresa);
+			//JOptionPane.showMessageDialog(null, ""+empresa);
 			int dniconductor = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getDniconductor();
 			String placa = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getPlaca();
 			int idmodelovh = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getIdmodelo();

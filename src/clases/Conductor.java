@@ -11,7 +11,7 @@ public class Conductor {
 	ResultSet rs;
 	
 	public Conductor(){}
-	public Conductor(int dni, String conductor){
+	public Conductor(int dni, String nlicencia, String conductor){
 		this.dni = dni;
 		this.conductor = conductor;
 	}
@@ -24,6 +24,7 @@ public class Conductor {
 				cbConductor.addItem(
 						new Conductor(
 								rs.getInt("dniconductor"),
+								rs.getString("licencia"),
 								rs.getString("conductor")
 								)
 				);

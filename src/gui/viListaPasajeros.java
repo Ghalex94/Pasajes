@@ -60,7 +60,7 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 		
 		vp = temp;
 		
-		setBounds(100, 100, 1361, 721);
+		setBounds(100, 100, 1361, 674);
 		getContentPane().setLayout(null);
 		
 		Toolkit t = Toolkit.getDefaultToolkit();
@@ -100,7 +100,7 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 		getContentPane().add(btnEliminarPasajero);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 86, 953, 594);
+		scrollPane.setBounds(10, 86, 953, 541);
 		getContentPane().add(scrollPane);
 		
 		tbPasajeros = new JTable();

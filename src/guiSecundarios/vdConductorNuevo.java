@@ -36,6 +36,8 @@ public class vdConductorNuevo extends JDialog implements ActionListener {
 	vdVehiculoNuevo vnvh = null; // Ventana nuevo vehiculo
 	vdVehiculoModificar vmvh = null; // Ventana modificar vehiculo
 	vdConductor cndtr = null;
+	private JLabel lblNLicencia;
+	private JTextField txtNlicencia;
 	
 	public static void main(String[] args) {
 		try {
@@ -57,7 +59,7 @@ public class vdConductorNuevo extends JDialog implements ActionListener {
 		
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		setUndecorated(true);
-		setBounds(100, 100, 559, 253);
+		setBounds(100, 100, 559, 303);
 		getContentPane().setLayout(null);
 		
 		txtAgregarConductor = new JTextField();
@@ -88,7 +90,7 @@ public class vdConductorNuevo extends JDialog implements ActionListener {
 		btnCancelar.setForeground(Color.WHITE);
 		btnCancelar.setFont(new Font("USAngel", Font.PLAIN, 20));
 		btnCancelar.setBackground(Color.DARK_GRAY);
-		btnCancelar.setBounds(30, 179, 220, 53);
+		btnCancelar.setBounds(30, 236, 220, 53);
 		getContentPane().add(btnCancelar);
 		
 		btnGuardar = new JButton("<html>Guardar</html>");
@@ -96,20 +98,32 @@ public class vdConductorNuevo extends JDialog implements ActionListener {
 		btnGuardar.setForeground(Color.WHITE);
 		btnGuardar.setFont(new Font("USAngel", Font.PLAIN, 20));
 		btnGuardar.setBackground(Color.DARK_GRAY);
-		btnGuardar.setBounds(303, 182, 220, 53);
+		btnGuardar.setBounds(303, 239, 220, 53);
 		getContentPane().add(btnGuardar);
 		
 		lblConductor = new JLabel("Conductor:");
 		lblConductor.setHorizontalAlignment(SwingConstants.LEFT);
 		lblConductor.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-		lblConductor.setBounds(30, 125, 132, 20);
+		lblConductor.setBounds(30, 182, 132, 20);
 		getContentPane().add(lblConductor);
 		
 		txtConductor = new JTextField();
 		txtConductor.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtConductor.setColumns(10);
-		txtConductor.setBounds(188, 120, 335, 25);
+		txtConductor.setBounds(188, 177, 335, 25);
 		getContentPane().add(txtConductor);
+		
+		lblNLicencia = new JLabel("N Licencia:");
+		lblNLicencia.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNLicencia.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+		lblNLicencia.setBounds(30, 125, 132, 20);
+		getContentPane().add(lblNLicencia);
+		
+		txtNlicencia = new JTextField();
+		txtNlicencia.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		txtNlicencia.setColumns(10);
+		txtNlicencia.setBounds(188, 123, 335, 25);
+		getContentPane().add(txtNlicencia);
 		cargar();
 	}
 	public void actionPerformed(ActionEvent arg0) {
@@ -141,17 +155,18 @@ public class vdConductorNuevo extends JDialog implements ActionListener {
 	protected void actionPerformedBtnGuardar(ActionEvent arg0) {
 		try {			
 			int dni = Integer.parseInt(txtDni.getText());
+			String nlicencia = txtNlicencia.getText();
 			String nomconductor = txtConductor.getText();
 			
-			if(txtDni.getText().length() == 0 || txtConductor.getText().length() == 0){
+			if(txtDni.getText().length() == 0 || txtNlicencia.getText().length() == 0 || txtConductor.getText().length() == 0){
 				this.setAlwaysOnTop(false);
-				JOptionPane.showMessageDialog(null, "Por favor, coloque el número de placa");
+				JOptionPane.showMessageDialog(null, "Por favor, complete los datos");
 				this.setAlwaysOnTop(true);
 			}
 			else{
 				this.setAlwaysOnTop(false);
-				Consultas.crearConductor(dni, nomconductor);
-				Conductor conductor = new Conductor(dni, nomconductor);
+				Consultas.crearConductor(dni, nlicencia, nomconductor);
+				Conductor conductor = new Conductor(dni, nlicencia, nomconductor);
 				if(vnvh != null){
 					vnvh.cbConductor.addItem(conductor);
 					int cantitems = vnvh.cbConductor.getItemCount();

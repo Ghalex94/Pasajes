@@ -62,7 +62,7 @@ public class viListaVehiculos extends JInternalFrame implements ActionListener {
 		
 		vp = temp;
 		
-		setBounds(100, 100, 1514, 721);
+		setBounds(100, 100, 1353, 677);
 		getContentPane().setLayout(null);
 		
 		Toolkit t = Toolkit.getDefaultToolkit();
@@ -90,7 +90,7 @@ public class viListaVehiculos extends JInternalFrame implements ActionListener {
 		btnAnadirVehiculo.setForeground(Color.WHITE);
 		btnAnadirVehiculo.setFont(new Font("EngraversGothic BT", Font.BOLD, 28));
 		btnAnadirVehiculo.setBackground(Color.DARK_GRAY);
-		btnAnadirVehiculo.setBounds(1124, 86, 364, 98);
+		btnAnadirVehiculo.setBounds(957, 88, 364, 98);
 		getContentPane().add(btnAnadirVehiculo);
 		
 		btnModificarVehiculo = new JButton("Modificar Vehiculo");
@@ -98,7 +98,7 @@ public class viListaVehiculos extends JInternalFrame implements ActionListener {
 		btnModificarVehiculo.setForeground(Color.WHITE);
 		btnModificarVehiculo.setFont(new Font("EngraversGothic BT", Font.BOLD, 28));
 		btnModificarVehiculo.setBackground(Color.DARK_GRAY);
-		btnModificarVehiculo.setBounds(1124, 222, 364, 98);
+		btnModificarVehiculo.setBounds(957, 224, 364, 98);
 		getContentPane().add(btnModificarVehiculo);
 		
 		btnDeshabilitarVehiculo = new JButton("Eliminar Vehiculo");
@@ -106,11 +106,11 @@ public class viListaVehiculos extends JInternalFrame implements ActionListener {
 		btnDeshabilitarVehiculo.setForeground(Color.WHITE);
 		btnDeshabilitarVehiculo.setFont(new Font("EngraversGothic BT", Font.BOLD, 28));
 		btnDeshabilitarVehiculo.setBackground(Color.DARK_GRAY);
-		btnDeshabilitarVehiculo.setBounds(1124, 363, 364, 98);
+		btnDeshabilitarVehiculo.setBounds(957, 365, 364, 98);
 		getContentPane().add(btnDeshabilitarVehiculo);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 86, 1104, 594);
+		scrollPane.setBounds(10, 86, 937, 544);
 		getContentPane().add(scrollPane);
 		
 		tbVehiculos = new JTable();

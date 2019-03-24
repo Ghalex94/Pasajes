@@ -120,14 +120,15 @@ public class Consultas {
 		}
 	}
 	
-	public static void crearConductor(int dni, String conductor){
+	public static void crearConductor(int dni, String nlicencia, String conductor){
 		Connection con = MySQLConexion.getConection();
 		try {
-			String sql = "insert into tb_conductor (dniconductor, conductor)" + " values (?, ?)";
+			String sql = "insert into tb_conductor (dniconductor, licencia, conductor)" + " values (?, ?, ?)";
 			//insert into tb_conductor values(48562548, 'Pablo Ramirez Valderrama');
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setInt(1, dni);
-			prepareStmt.setString(2, conductor);
+			prepareStmt.setString(2, nlicencia);
+			prepareStmt.setString(3, conductor);
 			prepareStmt.execute();
 			JOptionPane.showMessageDialog(null, "Conductor creado correctamente");
 		} catch (Exception e) {

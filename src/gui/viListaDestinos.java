@@ -58,7 +58,7 @@ public class viListaDestinos extends JInternalFrame implements ActionListener {
 		
 		vp = temp;
 		
-		setBounds(100, 100, 1514, 721);
+		setBounds(100, 100, 1368, 678);
 		getContentPane().setLayout(null);
 		
 		Toolkit t = Toolkit.getDefaultToolkit();
@@ -86,7 +86,7 @@ public class viListaDestinos extends JInternalFrame implements ActionListener {
 		btnAnadirDestino.setForeground(Color.WHITE);
 		btnAnadirDestino.setFont(new Font("EngraversGothic BT", Font.BOLD, 28));
 		btnAnadirDestino.setBackground(Color.DARK_GRAY);
-		btnAnadirDestino.setBounds(1124, 86, 364, 98);
+		btnAnadirDestino.setBounds(968, 86, 364, 98);
 		getContentPane().add(btnAnadirDestino);
 		
 		btnEliminarDestino = new JButton("Eliminar Destino");
@@ -94,11 +94,11 @@ public class viListaDestinos extends JInternalFrame implements ActionListener {
 		btnEliminarDestino.setForeground(Color.WHITE);
 		btnEliminarDestino.setFont(new Font("EngraversGothic BT", Font.BOLD, 28));
 		btnEliminarDestino.setBackground(Color.DARK_GRAY);
-		btnEliminarDestino.setBounds(1124, 227, 364, 98);
+		btnEliminarDestino.setBounds(968, 227, 364, 98);
 		getContentPane().add(btnEliminarDestino);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 86, 1104, 594);
+		scrollPane.setBounds(10, 86, 948, 549);
 		getContentPane().add(scrollPane);
 		
 		tbDestinos = new JTable();

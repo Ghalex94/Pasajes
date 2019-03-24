@@ -11,6 +11,7 @@ tipo 		 	int
 
 create table tb_conductor(
 dniconductor	int not null primary key,
+licencia		varchar(30),
 conductor		varchar(50)
 );
 
@@ -117,12 +118,12 @@ insert into tb_destinos values(null, 'Puno');
 insert into tb_destinos values(null, 'Juliaca');
 insert into tb_destinos values(null, 'Sicuani');
 
-insert into tb_conductor values(48562548, 'Pablo Ramirez Valderrama');
-insert into tb_conductor values(78561565, 'Carlos Choque Paredes');
-insert into tb_conductor values(49581622, 'Martin Olivares');
-insert into tb_conductor values(84951655, 'Joaquin Cardenas');
-insert into tb_conductor values(84589125, 'Andres Torres');
-insert into tb_conductor values(52048699, 'Marco Villanueva');
+insert into tb_conductor values(48562548, '468FD4F8', 'Pablo Ramirez Valderrama');
+insert into tb_conductor values(78561565, '8F4D45E5', 'Carlos Choque Paredes');
+insert into tb_conductor values(49581622, '845DFVC8', 'Martin Olivares');
+insert into tb_conductor values(84951655, 'SD4S8A4C', 'Joaquin Cardenas');
+insert into tb_conductor values(84589125, 'SD84CX52', 'Andres Torres');
+insert into tb_conductor values(52048699, 'RYT7843F', 'Marco Villanueva');
 
 insert into tb_vehiculo values('D8G-FV4', 1, 'Blanco', 48562548);
 insert into tb_vehiculo values('F8F-8F4', 2, 'Blanco', 78561565);
