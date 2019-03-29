@@ -86,13 +86,13 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 	private JComboBox cbMinutoOrigen;
 	private JComboBox cbHoraDestino;
 	private JComboBox cbMinutoDestino;
-	private JComboBox cbMOrigen;
-	private JComboBox cbMDestino;
 	private JDateChooser dchOrigen;
 	private JDateChooser dchDestino;
 	
 	vPrincipal vp;	
 	private JLabel lblTV;
+	private JLabel label;
+	private JTextField txtNviaje;
 
 	
 	public static void main(String[] args) {
@@ -153,7 +153,7 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 			}
 		});
 		cbOrigen.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-		cbOrigen.setBounds(580, 479, 441, 40);
+		cbOrigen.setBounds(579, 501, 441, 40);
 		getContentPane().add(cbOrigen);
 		
 		lblDestino = new JLabel("Destino:");
@@ -171,9 +171,9 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 			}
 		});
 		lblCuentaTotal.setForeground(Color.WHITE);
-		lblCuentaTotal.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCuentaTotal.setHorizontalAlignment(SwingConstants.LEFT);
 		lblCuentaTotal.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblCuentaTotal.setBounds(1051, 443, 258, 32);
+		lblCuentaTotal.setBounds(1050, 509, 258, 32);
 		getContentPane().add(lblCuentaTotal);
 		
 		btnfinalizarEImprimir = new JButton("<html>FINALIZAR E <br>\u00A0\u00A0IMPRIMIR </html>");
@@ -198,7 +198,7 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		lblS.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblS.setHorizontalAlignment(SwingConstants.LEFT);
 		lblS.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblS.setBounds(1051, 487, 60, 32);
+		lblS.setBounds(1050, 545, 52, 32);
 		getContentPane().add(lblS);
 		
 		Image imgChofer = new ImageIcon(this.getClass().getResource("/chofer.png")).getImage();		
@@ -207,7 +207,7 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		btnConductor.setHorizontalAlignment(SwingConstants.CENTER);
 		btnConductor.setIcon(new ImageIcon(imgChofer));
 		btnConductor.addActionListener(this);
-		btnConductor.setBounds(10, 86, 160, 90);
+		btnConductor.setBounds(10, 86, 150, 90);
 		getContentPane().add(btnConductor);
 		
 		Image imgAsiento1 = new ImageIcon(this.getClass().getResource("/asiento01.png")).getImage();
@@ -359,7 +359,7 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		
 		lblBanner = new JLabel("");
 		lblBanner.setHorizontalAlignment(SwingConstants.CENTER);
-		Image imBanner = new ImageIcon(this.getClass().getResource("/mvrenaultmaste2012.png")).getImage();
+		Image imBanner = new ImageIcon(this.getClass().getResource("/mv04.png")).getImage();
 		lblBanner.setIcon(new ImageIcon(imBanner));
 		lblBanner.setBounds(580, 86, 750, 350);
 		getContentPane().add(lblBanner);
@@ -370,31 +370,31 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		lblTotal.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblTotal.setHorizontalAlignment(SwingConstants.LEFT);
 		lblTotal.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblTotal.setBounds(1121, 487, 188, 32);
+		lblTotal.setBounds(1098, 545, 210, 32);
 		getContentPane().add(lblTotal);
 				
 		cbHoraOrigen = new JComboBox();
 		cbHoraOrigen.addActionListener(this);
 		cbHoraOrigen.setModel(new DefaultComboBoxModel(new String[] {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
-		cbHoraOrigen.setBounds(864, 443, 52, 32);
+		cbHoraOrigen.setBounds(916, 465, 52, 32);
 		getContentPane().add(cbHoraOrigen);
 		
 		cbMinutoOrigen = new JComboBox();
 		cbMinutoOrigen.addActionListener(this);
 		cbMinutoOrigen.setModel(new DefaultComboBoxModel(new String[] {"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
-		cbMinutoOrigen.setBounds(916, 443, 52, 32);
+		cbMinutoOrigen.setBounds(968, 465, 52, 32);
 		getContentPane().add(cbMinutoOrigen);
 		
 		cbHoraDestino = new JComboBox();
 		cbHoraDestino.addActionListener(this);
 		cbHoraDestino.setModel(new DefaultComboBoxModel(new String[] {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
-		cbHoraDestino.setBounds(863, 557, 52, 32);
+		cbHoraDestino.setBounds(916, 557, 52, 32);
 		getContentPane().add(cbHoraDestino);
 		
 		cbMinutoDestino = new JComboBox();
 		cbMinutoDestino.addActionListener(this);
 		cbMinutoDestino.setModel(new DefaultComboBoxModel(new String[] {"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
-		cbMinutoDestino.setBounds(916, 557, 52, 32);
+		cbMinutoDestino.setBounds(969, 557, 52, 32);
 		getContentPane().add(cbMinutoDestino);
 		
 		dchOrigen = new JDateChooser();
@@ -403,26 +403,13 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 				propertyChangeDchOrigen(arg0);
 			}
 		});
-		dchOrigen.setBounds(732, 443, 126, 32);
+		dchOrigen.setBounds(731, 465, 175, 32);
 		getContentPane().add(dchOrigen);
 		
 		dchDestino = new JDateChooser();
 		dchDestino.addPropertyChangeListener(this);
-		dchDestino.setBounds(732, 557, 126, 32);
+		dchDestino.setBounds(732, 557, 175, 32);
 		getContentPane().add(dchDestino);
-		
-		cbMOrigen = new JComboBox();
-		cbMOrigen.setVisible(false);
-		cbMOrigen.addActionListener(this);
-		cbMOrigen.setModel(new DefaultComboBoxModel(new String[] {"am", "pm"}));
-		cbMOrigen.setBounds(969, 443, 52, 32);
-		getContentPane().add(cbMOrigen);
-		
-		cbMDestino = new JComboBox();
-		cbMDestino.setVisible(false);
-		cbMDestino.setModel(new DefaultComboBoxModel(new String[] {"am", "pm"}));
-		cbMDestino.setBounds(969, 557, 52, 32);
-		getContentPane().add(cbMDestino);
 		
 		lblTV = new JLabel("");
 		lblTV.setHorizontalAlignment(SwingConstants.CENTER);
@@ -430,6 +417,21 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		lblTV.setIcon(new ImageIcon(imgTV));
 		lblTV.setBounds(152, 182, 177, 28);
 		getContentPane().add(lblTV);
+		
+		label = new JLabel("Viaje N\u00BA:");
+		label.setHorizontalAlignment(SwingConstants.LEFT);
+		label.setForeground(Color.WHITE);
+		label.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
+		label.setBounds(1050, 443, 258, 32);
+		getContentPane().add(label);
+		
+		txtNviaje = new JTextField();
+		txtNviaje.setText("0");
+		txtNviaje.setForeground(Color.RED);
+		txtNviaje.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 22));
+		txtNviaje.setColumns(10);
+		txtNviaje.setBounds(1050, 473, 202, 40);
+		getContentPane().add(txtNviaje);
 		
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtTitulo, cbOrigen, btnfinalizarEImprimir, cbDestino, btnConductor, btnA3, btnA4, btnA5, btnA6, btnA7, btnA8, btnA9, btnA10, btnA11, btnA12, btnA13, btnA14, btnA15, btnA1, btnA2}));
 		
@@ -537,9 +539,6 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		}
 		if (arg0.getSource() == cbHoraDestino) {
 			actionPerformedCbHoraDestino(arg0);
-		}
-		if (arg0.getSource() == cbMOrigen) {
-			actionPerformedCbMOrigen(arg0);
 		}
 		if (arg0.getSource() == cbMinutoOrigen) {
 			actionPerformedCbMinutoOrigen(arg0);
@@ -775,9 +774,6 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 		actualizarFechaOrigen();
 	}
 	protected void actionPerformedCbMinutoOrigen(ActionEvent arg0) {
-		actualizarFechaOrigen();
-	}
-	protected void actionPerformedCbMOrigen(ActionEvent arg0) {
 		actualizarFechaOrigen();
 	}
 	public void actualizarFechaOrigen(){

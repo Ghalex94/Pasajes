@@ -7,17 +7,19 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
-
+import clases.AbstractJasperReports;
 import mysql.Consultas;
-
+import mysql.MySQLConexion;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.awt.event.ActionEvent;
-
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JMenuItem;
@@ -59,7 +61,6 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	viListaVehiculos lvc = null;		//Lista de vehiculos
 	viListaDestinos ldest = null;		//Lista destinos 
 	viListaPasajeros lpjr = null;		//Lista de pasajeros
-	viFormatos format = null;
 	
 	ResultSet rs;
 	//RESOLUCION MONITOR
@@ -71,7 +72,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
     int alto = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
     private JMenuItem mntmListaDeClientes;
     private JMenu mnFormatos;
-    private JMenuItem mntmFormato1;
+    private JMenuItem mntmMDP;
     private JMenuItem mntmFormato2;
     private JMenuItem mntmFormato3;
     private JMenuItem mntmContrato;
@@ -144,8 +145,9 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mntmLlenarInformacion.addActionListener(this);
 		mnFormatos.add(mntmLlenarInformacion);
 		
-		mntmFormato1 = new JMenuItem("Ver Formato 1");
-		mnFormatos.add(mntmFormato1);
+		mntmMDP = new JMenuItem("Ver Manifiesto de pasajeros");
+		mntmMDP.addActionListener(this);
+		mnFormatos.add(mntmMDP);
 		
 		mntmFormato2 = new JMenuItem("Ver Formato 2");
 		mnFormatos.add(mntmFormato2);
@@ -238,6 +240,9 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == mntmMDP) {
+			actionPerformedMntmMDP(arg0);
+		}
 		if (arg0.getSource() == mntmLlenarInformacion) {
 			actionPerformedMntmLlenarInformacion(arg0);
 		}
@@ -396,7 +401,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			desktopPane.add(sa1);
 			sa1.show();
 			sa1.txtTitulo.setText(modelovh);
-			Image imBanner = new ImageIcon(this.getClass().getResource("/mvsprinter51519+1.png")).getImage();
+			Image imBanner = new ImageIcon(this.getClass().getResource("/mv02.png")).getImage();
 			sa1.lblBanner.setIcon(new ImageIcon(imBanner));
 			try{
 				sa1.setMaximum(true);
@@ -434,7 +439,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			desktopPane.add(sa2);
 			sa2.show();
 			sa2.txtTitulo.setText(modelovh);
-			Image imBanner2 = new ImageIcon(this.getClass().getResource("/mvsprinter51520+1.png")).getImage();
+			Image imBanner2 = new ImageIcon(this.getClass().getResource("/mv06.png")).getImage();
 			sa2.lblBanner.setIcon(new ImageIcon(imBanner2));
 			try{
 				sa2.setMaximum(true);
@@ -495,6 +500,27 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		
 		
 		
+		
+	}
+	
+	protected void actionPerformedMntmMDP(ActionEvent arg0) {
+		Consultas consulta = new Consultas();
+		rs = consulta.cantPasajeros();
+		int cantPasajeros = 0;
+		try {
+			rs.next();
+			cantPasajeros = rs.getInt("cantPasajeros");
+		} catch (SQLException e1) {	e1.printStackTrace(); }
+		
+		try {
+			Map<String, Object> parameters = new HashMap();
+			parameters.put("cantPasajeros", cantPasajeros);
+			Connection con = MySQLConexion.getConection();
+			new AbstractJasperReports().createReport( con, "rManifiestoPasajerosM.jasper", parameters);
+			AbstractJasperReports.showViewer();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error:. "+ e.getStackTrace());			
+		}
 		
 	}
 }

@@ -48,6 +48,8 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener {
 	viListaPasajeros vilp = null; // VENTANA INTERNA LISTA PASAJEROS
 	int opc = 0; 
 	int dni = 0;
+	private JLabel lblNacionalidad;
+	private JTextField txtNacionalidad;
 	/**
 	 * Launch the application.
 	 */
@@ -72,7 +74,7 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener {
 		
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		setResizable(false);
-		setBounds(100, 100, 654, 411);
+		setBounds(100, 100, 654, 441);
 		getContentPane().setLayout(null);
 		
 		textField = new JTextField();
@@ -96,7 +98,7 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener {
 		txtDni.setText("0");
 		txtDni.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtDni.setColumns(10);
-		txtDni.setBounds(193, 88, 403, 23);
+		txtDni.setBounds(204, 88, 392, 23);
 		getContentPane().add(txtDni);
 		
 		label_1 = new JLabel("*RUC:");
@@ -109,14 +111,14 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener {
 		txtRuc.setText((String) null);
 		txtRuc.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtRuc.setColumns(10);
-		txtRuc.setBounds(193, 128, 403, 23);
+		txtRuc.setBounds(204, 128, 392, 23);
 		getContentPane().add(txtRuc);
 		
 		txtNombre = new JTextField();
 		txtNombre.setText((String) null);
 		txtNombre.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtNombre.setColumns(10);
-		txtNombre.setBounds(193, 162, 403, 23);
+		txtNombre.setBounds(204, 162, 392, 23);
 		getContentPane().add(txtNombre);
 		
 		label_2 = new JLabel("Nombre:");
@@ -135,7 +137,7 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener {
 		txtRazSocial.setText((String) null);
 		txtRazSocial.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtRazSocial.setColumns(10);
-		txtRazSocial.setBounds(193, 194, 403, 23);
+		txtRazSocial.setBounds(204, 194, 392, 23);
 		getContentPane().add(txtRazSocial);
 		
 		label_4 = new JLabel("F. Nacimiento (d/m/a):");
@@ -168,7 +170,7 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener {
 		btnCancelar.setForeground(Color.WHITE);
 		btnCancelar.setFont(new Font("USAngel", Font.PLAIN, 20));
 		btnCancelar.setBackground(Color.DARK_GRAY);
-		btnCancelar.setBounds(47, 298, 220, 53);
+		btnCancelar.setBounds(47, 335, 220, 53);
 		getContentPane().add(btnCancelar);
 		
 		btnGuardar = new JButton("Guardar ");
@@ -176,7 +178,7 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener {
 		btnGuardar.setForeground(Color.WHITE);
 		btnGuardar.setFont(new Font("USAngel", Font.PLAIN, 20));
 		btnGuardar.setBackground(Color.DARK_GRAY);
-		btnGuardar.setBounds(376, 298, 220, 53);
+		btnGuardar.setBounds(376, 335, 220, 53);
 		getContentPane().add(btnGuardar);
 		
 		label_5 = new JLabel("Los datos con * son opcionales");
@@ -185,6 +187,19 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener {
 		label_5.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		label_5.setBounds(0, 45, 251, 20);
 		getContentPane().add(label_5);
+		
+		lblNacionalidad = new JLabel("Pa\u00EDs:");
+		lblNacionalidad.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNacionalidad.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+		lblNacionalidad.setBounds(47, 267, 154, 20);
+		getContentPane().add(lblNacionalidad);
+		
+		txtNacionalidad = new JTextField();
+		txtNacionalidad.setText("Per\u00FA");
+		txtNacionalidad.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		txtNacionalidad.setColumns(10);
+		txtNacionalidad.setBounds(204, 266, 392, 23);
+		getContentPane().add(txtNacionalidad);
 		cargar();
 	}
 	
@@ -205,6 +220,7 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener {
 				txtNombre.setText(rs.getString("nombre"));
 				txtRazSocial.setText(rs.getString("razsocial"));
 				txtRuc.setText(rs.getString("ruc"));
+				txtNacionalidad.setText(rs.getString("nacionalidad"));
 				
 				String fnacimiento =  rs.getString("fnacimiento").toString();
 				String[] parts = fnacimiento.split("-");
@@ -230,40 +246,47 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener {
 		}
 	}
 	protected void actionPerformedBtnGuardar(ActionEvent arg0) {
-		if(opc ==1){
-			int dni = Integer.parseInt(txtDni.getText());
-			String ruc = txtRuc.getText();
-			int dia = Integer.parseInt(cbDia.getSelectedItem().toString());
-			int mes = cbMes.getSelectedIndex() + 1;
-			int anio = Integer.parseInt(cbAnio.getSelectedItem().toString());
-			String fnacimiento = "" + anio + "-" + mes + "-" + dia;
-			String nombre = txtNombre.getText();
-			String razSocial = txtRazSocial.getText();
-			
-			Consultas consulta = new Consultas();
-			consulta.crearPasajero(dni, ruc, fnacimiento, nombre, razSocial);
-			this.setAlwaysOnTop(false);
-			JOptionPane.showMessageDialog(null, "Cliente creado correctamente.");
+		if(txtNombre.getText().length() == 0 || txtDni.getText().length() != 8 || txtNacionalidad.getText().length() == 0 || cbAnio.getSelectedIndex() < 0 || cbMes.getSelectedIndex() < 0 || cbDia.getSelectedIndex() < 0){
+			this.setAlwaysOnTop(false);		
+			JOptionPane.showMessageDialog(null, "Ingrese los datos necesarios correctamente");
+			this.setAlwaysOnTop(true);
 		}
-		if(opc == 2){
-			int dni = Integer.parseInt(txtDni.getText());
-			String ruc = txtRuc.getText();
-			int dia = Integer.parseInt(cbDia.getSelectedItem().toString());
-			int mes = cbMes.getSelectedIndex() + 1;
-			int anio = Integer.parseInt(cbAnio.getSelectedItem().toString());
-			String fnacimiento = "" + anio + "-" + mes + "-" + dia;
-			String nombre = txtNombre.getText();
-			String razSocial = txtRazSocial.getText();
-			
-			Consultas consulta = new Consultas();
-			consulta.actualizarPasajero(dni, ruc, fnacimiento, nombre, razSocial);
-			this.setAlwaysOnTop(false);
-			JOptionPane.showMessageDialog(null, "Cliente modificado correctamente.");
+		else{
+			if(opc ==1){
+				int dni = Integer.parseInt(txtDni.getText());
+				String ruc = txtRuc.getText();
+				int dia = Integer.parseInt(cbDia.getSelectedItem().toString());
+				int mes = cbMes.getSelectedIndex() + 1;
+				int anio = Integer.parseInt(cbAnio.getSelectedItem().toString());
+				String fnacimiento = "" + anio + "-" + mes + "-" + dia;
+				String nombre = txtNombre.getText();
+				String razSocial = txtRazSocial.getText();
+				String nacionalidad = txtNacionalidad.getText();
+				
+				Consultas consulta = new Consultas();
+				consulta.crearPasajero(dni, ruc, fnacimiento, nombre, razSocial, nacionalidad);
+				this.setAlwaysOnTop(false);
+				JOptionPane.showMessageDialog(null, "Cliente creado correctamente.");
+			}
+			if(opc == 2){
+				int dni = Integer.parseInt(txtDni.getText());
+				String ruc = txtRuc.getText();
+				int dia = Integer.parseInt(cbDia.getSelectedItem().toString());
+				int mes = cbMes.getSelectedIndex() + 1;
+				int anio = Integer.parseInt(cbAnio.getSelectedItem().toString());
+				String fnacimiento = "" + anio + "-" + mes + "-" + dia;
+				String nombre = txtNombre.getText();
+				String razSocial = txtRazSocial.getText();
+				String nacionalidad = txtNacionalidad.getText();
+				Consultas consulta = new Consultas();
+				consulta.actualizarPasajero(dni, ruc, fnacimiento, nombre, razSocial, nacionalidad);
+				this.setAlwaysOnTop(false);
+				JOptionPane.showMessageDialog(null, "Cliente modificado correctamente.");
+			}		
+			vp.enable(true);
+			vilp.cargar();
+			this.dispose();
 		}
-		
-		vp.enable(true);
-		vilp.cargar();
-		this.dispose();
 	}
 	protected void actionPerformedBtnCancelar(ActionEvent arg0) {
 		vp.enable(true);

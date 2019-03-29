@@ -122,12 +122,12 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 		tb = this.tbPasajeros;
 		tb.setRowHeight(40);
 		tb.setModel(dtm);
-		dtm.setColumnIdentifiers(new Object[]{"DNI", "RUC", "NOMBRE", "RAZ SOCIAL", "F. NACIMIENTO"});
+		dtm.setColumnIdentifiers(new Object[]{"DNI", "RUC", "NOMBRE", "RAZ SOCIAL", "F. NACIMIENTO", "NACIONALIDAD"});
 		Consultas consult = new Consultas();
 		rs = consult.cargarPasajeros();
 		try {
 			while(rs.next())
-				dtm.addRow(new Object[]{rs.getInt("dnipasajero"), rs.getString("ruc"), rs.getString("nombre"), rs.getString("razsocial"), rs.getString("fnacimiento")});
+				dtm.addRow(new Object[]{rs.getInt("dnipasajero"), rs.getString("ruc"), rs.getString("nombre"), rs.getString("razsocial"), rs.getString("fnacimiento"), rs.getString("nacionalidad")});
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
@@ -172,7 +172,6 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 			JOptionPane.showMessageDialog(null, "Eliminado correctamente");
 		}
 	}
-	
 }
 
 

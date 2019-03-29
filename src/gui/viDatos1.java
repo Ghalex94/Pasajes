@@ -177,7 +177,7 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 				vp.desktopPane.add(vp.sa1);
 				vp.sa1.show();
 				vp.sa1.txtTitulo.setText(modelovh);
-				Image imBanner = new ImageIcon(this.getClass().getResource("/mvsprinter51519+1.png")).getImage();
+				Image imBanner = new ImageIcon(this.getClass().getResource("/mv02.png")).getImage();
 				vp.sa1.lblBanner.setIcon(new ImageIcon(imBanner));
 				try{
 					vp.sa1.setMaximum(true);
@@ -215,7 +215,7 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 				vp.desktopPane.add(vp.sa2);
 				vp.sa2.show();
 				vp.sa2.txtTitulo.setText(modelovh);
-				Image imBanner2 = new ImageIcon(this.getClass().getResource("/mvsprinter51520+1.png")).getImage();
+				Image imBanner2 = new ImageIcon(this.getClass().getResource("/mv06.png")).getImage();
 				vp.sa2.lblBanner.setIcon(new ImageIcon(imBanner2));
 				try{
 					vp.sa2.setMaximum(true);

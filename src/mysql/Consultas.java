@@ -265,6 +265,17 @@ public class Consultas {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
 	}
+	public static void actualizarVentaTemporal07(int nViaje){
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "update tb_venta_temporal set nviaje=? where id=1";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, nViaje);
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+	}
 	
 	public ResultSet buscarVehiculo(String placa){
 		Connection con = MySQLConexion.getConection();
@@ -317,34 +328,36 @@ public class Consultas {
 		return rs;
 	}
 	
-	public static void crearPasajero(int dnipasajero, String ruc, String fnacimiento, String nombre, String razsocial){
+	public static void crearPasajero(int dnipasajero, String ruc, String fnacimiento, String nombre, String razsocial, String nacionalidad){
 		Object fn = fnacimiento;
 		Connection con = MySQLConexion.getConection();
 		try {
-			String sql = "insert into tb_pasajero (dnipasajero, ruc, fnacimiento, nombre, razsocial)" + " values (?, ?, ?, ?, ?)";
+			String sql = "insert into tb_pasajero (dnipasajero, ruc, fnacimiento, nombre, razsocial, nacionalidad)" + " values (?, ?, ?, ?, ?, ?)";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setInt(1, dnipasajero);
 			prepareStmt.setString(2, ruc);
 			prepareStmt.setObject(3, fn);
 			prepareStmt.setString(4, nombre);
 			prepareStmt.setString(5, razsocial);
+			prepareStmt.setString(6, nacionalidad);
 			prepareStmt.execute();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR" + e);
 		}
 	}
 	
-	public static void actualizarPasajero(int dnipasajero, String ruc, String fnacimiento, String nombre, String razsocial){
+	public static void actualizarPasajero(int dnipasajero, String ruc, String fnacimiento, String nombre, String razsocial, String nacionalidad){
 		Object fn = fnacimiento;
 		Connection con = MySQLConexion.getConection();
 		try {
-			String sql = "update tb_pasajero set ruc=?, fnacimiento=?, nombre=?, razsocial=? where dnipasajero=?";
+			String sql = "update tb_pasajero set ruc=?, fnacimiento=?, nombre=?, razsocial=?, nacionalidad=? where dnipasajero=?";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setString(1, ruc);
 			prepareStmt.setObject(2, fn);
 			prepareStmt.setString(3, nombre);
 			prepareStmt.setString(4, razsocial);
-			prepareStmt.setInt(5, dnipasajero);
+			prepareStmt.setString(5, nacionalidad);
+			prepareStmt.setInt(6, dnipasajero);
 			prepareStmt.execute();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERRORnbvnb: " + e);
@@ -364,16 +377,17 @@ public class Consultas {
 		}
 	}
 	
-	public static void asignarAsiento(int asiento, int dnipasajero, int edad, float prepasaje){
+	public static void asignarAsiento(int asiento, int dnipasajero, int edad, float prepasaje, int nboleto){
 		Connection con = MySQLConexion.getConection();
 		try {
-			String sql = "insert into tb_pasajeros_temporal (asiento, estado, dnipasajero, edad, prepasaje)" + " values (?, ?, ?, ?, ?)";
+			String sql = "insert into tb_pasajeros_temporal (asiento, estado, nboleto, dnipasajero, edad, prepasaje)" + " values (?, ?, ?, ?, ?, ?)";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setInt(1, asiento);
 			prepareStmt.setInt(2, 1);
-			prepareStmt.setInt(3, dnipasajero);
-			prepareStmt.setInt(4, edad);
-			prepareStmt.setFloat(5, prepasaje);
+			prepareStmt.setInt(3, nboleto);
+			prepareStmt.setInt(4, dnipasajero);
+			prepareStmt.setInt(5, edad);
+			prepareStmt.setFloat(6, prepasaje);
 			prepareStmt.execute();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR" + e);
@@ -470,6 +484,34 @@ public class Consultas {
 		PreparedStatement pst = null;
 		try {
 			String sql = "select * from tb_pasajero order by nombre";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		return rs;
+	}
+	
+	public ResultSet cantPasajeros(){
+		Connection con = MySQLConexion.getConection();
+		ResultSet rs = null;
+		PreparedStatement pst = null;
+		try {
+			String sql = "select count(*) as cantPasajeros from tb_pasajeros_temporal";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		return rs;
+	}
+	
+	public ResultSet ultimoNboleto(){
+		Connection con = MySQLConexion.getConection();
+		ResultSet rs = null;
+		PreparedStatement pst = null;
+		try {
+			String sql = "select nboleto from tb_pasajeros_temporal order by nboleto desc limit 1";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 		} catch (Exception e) {

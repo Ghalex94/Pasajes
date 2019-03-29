@@ -24,7 +24,8 @@ mtc				varchar(20)
 
 create table tb_modelo_vehiculo(
 idmodelo		int primary key auto_increment,
-modelo 			varchar(50)
+modelo 			varchar(50),
+casientos		int
 );
 
 create table tb_vehiculo(
@@ -41,7 +42,8 @@ dnipasajero		int not null primary key,
 ruc				varchar(11),
 fnacimiento		date,
 nombre			varchar(50),
-razsocial		varchar(80)
+razsocial		varchar(80),
+nacionalidad	varchar(50)
 );
 
 create table tb_destinos(
@@ -85,12 +87,14 @@ origen			varchar(50),
 destino			varchar(50),
 fpartida		datetime,
 fllegada		datetime,
-prepasaje		float
+prepasaje		float,
+nviaje			int
 );
 
 create table tb_pasajeros_temporal(
 asiento 		int not null primary key,
 estado			int, -- 0Libre 1Ocupado
+nboleto			int,
 dnipasajero		int,
 edad			int,
 prepasaje 		float,
@@ -103,15 +107,15 @@ insert into tb_usuario values('admin', 'admin', 'ADMINISTRADOR', 0);
 insert into tb_empresa values(null, '20406468683', 'MERMA HERMANOS S.R.L.', null);
 insert into tb_empresa values(null, '20601642124', 'ZIGUEL E.I.R.L.', null);
 
-insert into tb_venta_temporal values(1, 0, 0, 0, null, 0, null, null, null, null, null);
+insert into tb_venta_temporal values(1, 0, 0, 0, null, 0, null, null, null, null, null, 1000);
 
 
-insert into tb_modelo_vehiculo values(null, 'Mercedes Sprinter 413 19+1 Asientos'); -- 1
-insert into tb_modelo_vehiculo values(null, 'Mercedes Sprinter 515 19+1 Asientos'); -- 2
-insert into tb_modelo_vehiculo values(null, 'Mercedes Sprinter 515 20+1 Asientos'); -- 3
-insert into tb_modelo_vehiculo values(null, 'Renault Master 2012 15 Asientos');   	-- 4
-insert into tb_modelo_vehiculo values(null, 'Renault Master Moderna 15 Asientos');	-- 5
-insert into tb_modelo_vehiculo values(null, 'Wolkswagen Crafter 20+1 Asientos'); 	-- 6
+insert into tb_modelo_vehiculo values(null, 'Mercedes Sprinter 413 19+1', 20); -- 1
+insert into tb_modelo_vehiculo values(null, 'Mercedes Sprinter 515 19+1', 20); -- 2
+insert into tb_modelo_vehiculo values(null, 'Mercedes Sprinter 515 20+1', 21); -- 3
+insert into tb_modelo_vehiculo values(null, 'Renault Master 2012 15', 15);     -- 4
+insert into tb_modelo_vehiculo values(null, 'Renault Master Moderna 15', 15);  -- 5
+insert into tb_modelo_vehiculo values(null, 'Wolkswagen Crafter 20+1', 21);    -- 6
 
 insert into tb_destinos values(null, 'Arequipa');
 insert into tb_destinos values(null, 'Puno');
@@ -134,10 +138,10 @@ insert into tb_vehiculo values('F7Q-G4Y', 6, 'Blanco', 52048699);
 
 
 
-insert into tb_pasajero values(76784966, '10767849660', '1994-10-30', 'Alexander Gamarra', 'Byte x Byte');
-insert into tb_pasajero values(76784955, '10767849550', '1995-01-28', 'Melany G', 'BxB');
-insert into tb_pasajero values(76784944, '10767849440', '1997-12-31', 'Jean Carlos', 'Sin oficio');
-insert into tb_pasajero values(76784933, '10767849330', '1995-03-05', 'Andrea Perez', 'Imagenes SRL');
+insert into tb_pasajero values(76784966, '10767849660', '1994-10-30', 'Alexander Gamarra', 'Byte x Byte', 'Peruana');
+insert into tb_pasajero values(76784955, '10767849550', '1995-01-28', 'Melany G', 'BxB', 'Peruana');
+insert into tb_pasajero values(76784944, '10767849440', '1997-12-31', 'Jean Carlos', 'Sin oficio', 'Venzolana');
+insert into tb_pasajero values(76784933, '10767849330', '1995-03-05', 'Andrea Perez', 'Imagenes SRL', 'Peruana');
 
 insert into tb_pasajeros_temporal values(1, 1, 76784966, 10767849660, 'Alexander Gamarra', 'BxB', 30, 10, 1994, 24, 19.90);
 
@@ -197,4 +201,26 @@ select * from tb_pasajeros_temporal where asiento = 6;
 
 delete from tb_pasajeros_temporal where asiento = 11;
 
-select vh.placa, mvh.idmodelo, mvh.modelo, vh.detalle, co.dniconductor, co.conductor from tb_vehiculo vh inner join tb_modelo_vehiculo mvh  inner join tb_conductor co on vh.idmodelo = mvh.idmodelo and vh.dniconductor = co.dniconductor order by mvh.modelo
+select vh.placa, mvh.idmodelo, mvh.modelo, vh.detalle, co.dniconductor, co.conductor from tb_vehiculo vh inner join tb_modelo_vehiculo mvh  inner join tb_conductor co on vh.idmodelo = mvh.idmodelo and vh.dniconductor = co.dniconductor order by mvh.modelo;
+
+select vt.origen, vt.destino, DATE_FORMAT(vt.fpartida, '%d-%m-%Y') Fecha_Viaje,  TIME(vt.fpartida) Hora_Salida, mvh.casientos, 
+c.conductor, c.licencia, vh.placa, mvh.modelo, e.mtc, pt.asiento, p.nombre, pt.dnipasajero, pt.edad, pt.nboleto, p.nacionalidad, pt.prepasaje
+from tb_pasajeros_temporal pt
+inner join tb_pasajero p
+inner join tb_venta_temporal vt
+inner join tb_conductor c
+inner join tb_vehiculo vh
+inner join tb_modelo_vehiculo mvh
+inner join tb_empresa e
+on pt.estado = 1 
+and  p.dnipasajero = pt.dnipasajero
+and vt.id = 1
+and c.dniconductor = vt.dniconductor
+and vh.placa = vt.placa
+and mvh.idmodelo = vh.idmodelo
+and e.idempresa = vt.empresa; 
+
+select count(*) as cantPasajeros from tb_pasajeros_temporal;
+
+select nboleto from tb_pasajeros_temporal order by nboleto desc limit 1;
+
