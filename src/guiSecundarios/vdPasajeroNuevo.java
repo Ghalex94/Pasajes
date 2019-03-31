@@ -91,40 +91,40 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener {
 		label = new JLabel("DNI:");
 		label.setHorizontalAlignment(SwingConstants.LEFT);
 		label.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-		label.setBounds(47, 89, 132, 20);
+		label.setBounds(47, 95, 132, 20);
 		getContentPane().add(label);
 		
 		txtDni = new JTextField();
 		txtDni.setText("0");
 		txtDni.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtDni.setColumns(10);
-		txtDni.setBounds(204, 88, 392, 23);
+		txtDni.setBounds(204, 94, 392, 23);
 		getContentPane().add(txtDni);
 		
 		label_1 = new JLabel("*RUC:");
 		label_1.setHorizontalAlignment(SwingConstants.LEFT);
 		label_1.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-		label_1.setBounds(47, 129, 132, 20);
+		label_1.setBounds(47, 162, 132, 20);
 		getContentPane().add(label_1);
 		
 		txtRuc = new JTextField();
 		txtRuc.setText((String) null);
 		txtRuc.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtRuc.setColumns(10);
-		txtRuc.setBounds(204, 128, 392, 23);
+		txtRuc.setBounds(204, 161, 392, 23);
 		getContentPane().add(txtRuc);
 		
 		txtNombre = new JTextField();
 		txtNombre.setText((String) null);
 		txtNombre.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtNombre.setColumns(10);
-		txtNombre.setBounds(204, 162, 392, 23);
+		txtNombre.setBounds(204, 128, 392, 23);
 		getContentPane().add(txtNombre);
 		
 		label_2 = new JLabel("Nombre:");
 		label_2.setHorizontalAlignment(SwingConstants.LEFT);
 		label_2.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-		label_2.setBounds(47, 163, 132, 20);
+		label_2.setBounds(47, 129, 132, 20);
 		getContentPane().add(label_2);
 		
 		label_3 = new JLabel("*Raz. Social:");

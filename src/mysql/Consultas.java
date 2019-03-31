@@ -88,6 +88,23 @@ public class Consultas {
 		return rs;
 	}
 	
+	public ResultSet buscarConductor(int dniconductor){
+		Connection con = MySQLConexion.getConection();
+		java.sql.Statement st;
+		ResultSet rs = null;
+		PreparedStatement pst = null;
+		try {
+			st = con.createStatement();
+			String sql = "select * from tb_conductor where dniconductor = ?";
+			pst = con.prepareStatement(sql);
+			pst.setInt(1, dniconductor);
+			rs = pst.executeQuery();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		return rs;
+	}
+	
 	public ResultSet cargarEmpresas(){
 		Connection con = MySQLConexion.getConection();
 		java.sql.Statement st;
@@ -276,6 +293,31 @@ public class Consultas {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
 	}
+	public static void actualizarVentaTemporal08(int vstandar, int escalascom, String desde, String hasta, String pencuentro, String escalasparadas,
+			String horainicio2, int dniconductor2, String licencia2, String horafin1, String horafin2, String comentarios){ // Viene de LLenar Datos Faltantes
+		
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "update tb_venta_temporal set standar=?, escalacom=?, ciudaddesde=?, ciudadhasta=?, puntoencuentro=?, escalas=?, horainicio2=?, dniconductor2=?, licencia2=?, horafin1=?, horafin2=?, comentarios=? where id=1";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, vstandar);
+			prepareStmt.setInt(2, escalascom);
+			prepareStmt.setString(3, desde);
+			prepareStmt.setString(4, hasta);
+			prepareStmt.setString(5, pencuentro);
+			prepareStmt.setString(6, escalasparadas);
+			prepareStmt.setString(7, horainicio2);
+			prepareStmt.setInt(8, dniconductor2);
+			prepareStmt.setString(9, licencia2);
+			prepareStmt.setString(10, horafin1);
+			prepareStmt.setString(11, horafin2);
+			prepareStmt.setString(12, comentarios);
+			prepareStmt.execute();
+			JOptionPane.showMessageDialog(null, "Cambios guardados correctamente");
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+	}
 	
 	public ResultSet buscarVehiculo(String placa){
 		Connection con = MySQLConexion.getConection();
@@ -298,8 +340,8 @@ public class Consultas {
 		Connection con = MySQLConexion.getConection();
 		try {
 			String sql1 = "delete from tb_venta_temporal where id = 1";
-			String sql2 = "insert into tb_venta_temporal values(1, 0, 0, 0, null, 0, null, null, null, null, null)";
-			String sql3 = "delete from tb_pasajeros_temporal where asiento < 50";
+			String sql2 = "insert into tb_venta_temporal values(1, 0, null, null, null, 0, null, null, null, null, null, null, 1, 0, null, null, null, null, null, null, null, null, null, null)";
+			String sql3 = "delete from tb_pasajeros_temporal where asiento < 100";
 			PreparedStatement prepareStmt = con.prepareStatement(sql1);
 			prepareStmt.execute();
 			PreparedStatement prepareStmt2 = con.prepareStatement(sql2);
@@ -377,10 +419,10 @@ public class Consultas {
 		}
 	}
 	
-	public static void asignarAsiento(int asiento, int dnipasajero, int edad, float prepasaje, int nboleto){
+	public static void asignarAsiento(int asiento, int dnipasajero, int edad, float prepasaje, int nboleto, int contratante){
 		Connection con = MySQLConexion.getConection();
 		try {
-			String sql = "insert into tb_pasajeros_temporal (asiento, estado, nboleto, dnipasajero, edad, prepasaje)" + " values (?, ?, ?, ?, ?, ?)";
+			String sql = "insert into tb_pasajeros_temporal (asiento, estado, nboleto, dnipasajero, edad, prepasaje, contratante)" + " values (?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setInt(1, asiento);
 			prepareStmt.setInt(2, 1);
@@ -388,6 +430,7 @@ public class Consultas {
 			prepareStmt.setInt(4, dnipasajero);
 			prepareStmt.setInt(5, edad);
 			prepareStmt.setFloat(6, prepasaje);
+			prepareStmt.setInt(7, contratante);
 			prepareStmt.execute();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR" + e);

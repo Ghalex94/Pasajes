@@ -51,8 +51,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import java.awt.event.KeyListener;
 
-public class viSeleccionAsientos4 extends JInternalFrame implements ActionListener, PropertyChangeListener {
+public class viSeleccionAsientos4 extends JInternalFrame implements ActionListener, PropertyChangeListener, KeyListener {
 	public JTextField txtTitulo;
 	private JLabel lblOrigen;
 	private JComboBox <Destinos> cbOrigen;
@@ -424,6 +425,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		getContentPane().add(label);
 		
 		txtNviaje = new JTextField();
+		txtNviaje.addKeyListener(this);
 		txtNviaje.setText("0");
 		txtNviaje.setForeground(Color.RED);
 		txtNviaje.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 22));
@@ -454,7 +456,8 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 				while(rs2.next()){
 					if(rs2.getInt("estado") == 1);{
 						int asiento = rs2.getInt("asiento");
-						cambiarColorAsiento(asiento);
+						int contratante = rs2.getInt("contratante");
+						cambiarColorAsiento(asiento, contratante);
 					}
 				}
 				sumarTotalPasajes();
@@ -593,73 +596,64 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		}
 	}
 	
-	public void cambiarColorAsiento(int asiento){
-		switch(asiento){
-		case 1: btnA1.setBackground(Color.RED);
-			break;
-		case 2: btnA2.setBackground(Color.RED);
-			break;
-		case 3: btnA3.setBackground(Color.RED);
-			break;
-		case 4: btnA4.setBackground(Color.RED);
-			break;
-		case 5: btnA5.setBackground(Color.RED);
-			break;
-		case 6: btnA6.setBackground(Color.RED);
-			break;
-		case 7: btnA7.setBackground(Color.RED);
-			break;
-		case 8: btnA8.setBackground(Color.RED);
-			break;
-		case 9: btnA9.setBackground(Color.RED);
-			break;
-		case 10: btnA10.setBackground(Color.RED);
-			break;
-		case 11: btnA11.setBackground(Color.RED);
-			break;
-		case 12: btnA12.setBackground(Color.RED);
-			break;
-		case 13: btnA13.setBackground(Color.RED);
-			break;
-		case 14: btnA14.setBackground(Color.RED);
-			break;
-		case 15: btnA15.setBackground(Color.RED);
-			break;
+	public void cambiarColorAsiento(int asiento, int contratante){
+		if(contratante == 0){
+			switch(asiento){
+			case 1: btnA1.setBackground(Color.RED); break;
+			case 2: btnA2.setBackground(Color.RED);	break;
+			case 3: btnA3.setBackground(Color.RED); break;
+			case 4: btnA4.setBackground(Color.RED); break;
+			case 5: btnA5.setBackground(Color.RED); break;
+			case 6: btnA6.setBackground(Color.RED); break;
+			case 7: btnA7.setBackground(Color.RED); break;
+			case 8: btnA8.setBackground(Color.RED); break;
+			case 9: btnA9.setBackground(Color.RED); break;
+			case 10: btnA10.setBackground(Color.RED); break;
+			case 11: btnA11.setBackground(Color.RED); break;
+			case 12: btnA12.setBackground(Color.RED); break;
+			case 13: btnA13.setBackground(Color.RED); break;
+			case 14: btnA14.setBackground(Color.RED); break;
+			case 15: btnA15.setBackground(Color.RED); break;
+			}
+		}
+		else{
+			switch(asiento){
+			case 1: btnA1.setBackground(Color.YELLOW); break;
+			case 2: btnA2.setBackground(Color.YELLOW);	break;
+			case 3: btnA3.setBackground(Color.YELLOW); break;
+			case 4: btnA4.setBackground(Color.YELLOW); break;
+			case 5: btnA5.setBackground(Color.YELLOW); break;
+			case 6: btnA6.setBackground(Color.YELLOW); break;
+			case 7: btnA7.setBackground(Color.YELLOW); break;
+			case 8: btnA8.setBackground(Color.YELLOW); break;
+			case 9: btnA9.setBackground(Color.YELLOW); break;
+			case 10: btnA10.setBackground(Color.YELLOW); break;
+			case 11: btnA11.setBackground(Color.YELLOW); break;
+			case 12: btnA12.setBackground(Color.YELLOW); break;
+			case 13: btnA13.setBackground(Color.YELLOW); break;
+			case 14: btnA14.setBackground(Color.YELLOW); break;
+			case 15: btnA15.setBackground(Color.YELLOW); break;
+			}
 		}
 	}
 	
 	public void cambiarColorAsientoVerde(int asiento){
 		switch(asiento){
-		case 1: btnA1.setBackground(Color.GREEN);
-			break;
-		case 2: btnA2.setBackground(Color.GREEN);
-			break;
-		case 3: btnA3.setBackground(Color.GREEN);
-			break;
-		case 4: btnA4.setBackground(Color.GREEN);
-			break;
-		case 5: btnA5.setBackground(Color.GREEN);
-			break;
-		case 6: btnA6.setBackground(Color.GREEN);
-			break;
-		case 7: btnA7.setBackground(Color.GREEN);
-			break;
-		case 8: btnA8.setBackground(Color.GREEN);
-			break;
-		case 9: btnA9.setBackground(Color.GREEN);
-			break;
-		case 10: btnA10.setBackground(Color.GREEN);
-			break;
-		case 11: btnA11.setBackground(Color.GREEN);
-			break;
-		case 12: btnA12.setBackground(Color.GREEN);
-			break;
-		case 13: btnA13.setBackground(Color.GREEN);
-			break;
-		case 14: btnA14.setBackground(Color.GREEN);
-			break;
-		case 15: btnA15.setBackground(Color.GREEN);
-			break;
+		case 1: btnA1.setBackground(Color.GREEN); break;
+		case 2: btnA2.setBackground(Color.GREEN); break;
+		case 3: btnA3.setBackground(Color.GREEN); break;
+		case 4: btnA4.setBackground(Color.GREEN); break;
+		case 5: btnA5.setBackground(Color.GREEN); break;
+		case 6: btnA6.setBackground(Color.GREEN); break;
+		case 7: btnA7.setBackground(Color.GREEN); break;
+		case 8: btnA8.setBackground(Color.GREEN); break;
+		case 9: btnA9.setBackground(Color.GREEN); break;
+		case 10: btnA10.setBackground(Color.GREEN); break;
+		case 11: btnA11.setBackground(Color.GREEN); break;
+		case 12: btnA12.setBackground(Color.GREEN); break;
+		case 13: btnA13.setBackground(Color.GREEN); break;
+		case 14: btnA14.setBackground(Color.GREEN); break;
+		case 15: btnA15.setBackground(Color.GREEN); break;
 		}
 	}
 	
@@ -825,5 +819,23 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 			Consultas consulta = new Consultas();
 			consulta.actualizarVentaTemporal06(fDestino);	
 			} catch (Exception e) {	}
+	}
+	public void keyPressed(KeyEvent e) {
+	}
+	public void keyReleased(KeyEvent e) {
+		if (e.getSource() == txtNviaje) {
+			keyReleasedTxtNviaje(e);
+		}
+	}
+	public void keyTyped(KeyEvent e) {
+	}
+	protected void keyReleasedTxtNviaje(KeyEvent ex) {
+		try {
+			int nViaje = Integer.parseInt(txtNviaje.getText());
+			Consultas consulta = new Consultas();
+			consulta.actualizarVentaTemporal07(nViaje);	
+		} catch (Exception e) {	
+			JOptionPane.showMessageDialog(null, "Error: " + e);
+		}
 	}
 }

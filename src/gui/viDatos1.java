@@ -154,13 +154,12 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 			int idmodelovh = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getIdmodelo();
 			String modelovh = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getModelo();
 			float prepasaje = Float.parseFloat(txtPrePasaje.getText());
-			
 			Consultas consulta = new Consultas();
 			consulta.actualizarVentaTemporal01(1, empresa, dniconductor, placa, idmodelovh, prepasaje);
 			vp.mntmCrearNuevaSalida.setEnabled(false);
 			vp.mntmContinuarPreparacion.setEnabled(true);
 			vp.mntmCancelarSalida.setEnabled(true);
-			
+			vp.mnFormatos.setEnabled(true);
 			
 			switch(idmodelovh){
 			case 1:

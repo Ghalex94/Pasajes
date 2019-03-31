@@ -2,26 +2,33 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import mysql.Consultas;
-
+import mysql.MySQLConexion;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
 import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
@@ -31,7 +38,11 @@ import java.awt.event.KeyListener;
 import java.math.BigInteger;
 import java.awt.event.KeyEvent;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
+
+import clases.AbstractJasperReports;
+import clases.NumeroLetras;
 import java.awt.Component;
+import javax.swing.JCheckBox;
 
 public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 	private JTextField textField;
@@ -55,16 +66,19 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 	
 	vPrincipal vp;
 	int asiento = 0;
-	viSeleccionAsientos3 vsa1 = null;
-	viSeleccionAsientos4 vsa2 = null;
-	viSeleccionAsientos2 vsa3 = null;
-	viSeleccionAsientos1 vsa4 = null;
+	viSeleccionAsientos2 vsa2 = null;
+	viSeleccionAsientos3 vsa3 = null;
+	viSeleccionAsientos4 vsa4 = null;
+	viSeleccionAsientos1 vsa1 = null;
 	float prepasajeoriginal = 0;
 	private JButton btnEliminar;
 	private JLabel lblNacionalidad;
 	private JTextField txtNacionalidad;
 	private JTextField txtNboleto;
 	private JLabel lblBoletoNo;
+	private JButton btnNewButton;
+	private JCheckBox chckbxImprimir;
+	private JCheckBox chckbxContratante;
 	
 	
 	public static void main(String[] args) {
@@ -81,15 +95,15 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		vp = temp;
 		asiento = temp2;
-		vsa1 = temp3;
-		vsa2 = temp4;
-		vsa3 = temp5;
-		vsa4 = temp6;
+		vsa2 = temp5;
+		vsa3 = temp3;
+		vsa4 = temp4;
+		vsa1 = temp6;
 		
 		
 		setLocationRelativeTo(null);
 		setUndecorated(true);
-		setBounds(100, 100, 649, 503);
+		setBounds(100, 100, 649, 530);
 		getContentPane().setLayout(null);
 		{
 			textField = new JTextField();
@@ -138,7 +152,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			btnGuardar.setForeground(Color.WHITE);
 			btnGuardar.setFont(new Font("USAngel", Font.PLAIN, 20));
 			btnGuardar.setBackground(Color.DARK_GRAY);
-			btnGuardar.setBounds(368, 427, 220, 53);
+			btnGuardar.setBounds(368, 466, 220, 53);
 			getContentPane().add(btnGuardar);
 		}
 		{
@@ -176,7 +190,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			btnCancelar.setForeground(Color.WHITE);
 			btnCancelar.setFont(new Font("USAngel", Font.PLAIN, 20));
 			btnCancelar.setBackground(Color.DARK_GRAY);
-			btnCancelar.setBounds(39, 427, 220, 53);
+			btnCancelar.setBounds(39, 466, 220, 53);
 			getContentPane().add(btnCancelar);
 		}
 		{
@@ -265,7 +279,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		btnEliminar.setForeground(Color.WHITE);
 		btnEliminar.setFont(new Font("Dialog", Font.PLAIN, 20));
 		btnEliminar.setBackground(Color.RED);
-		btnEliminar.setBounds(269, 427, 89, 53);
+		btnEliminar.setBounds(269, 466, 89, 53);
 		getContentPane().add(btnEliminar);
 		{
 			lblNacionalidad = new JLabel("Pa\u00EDs:");
@@ -298,11 +312,33 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			lblBoletoNo.setBounds(39, 113, 154, 20);
 			getContentPane().add(lblBoletoNo);
 		}
+		{
+			btnNewButton = new JButton("prueba");
+			btnNewButton.addActionListener(this);
+			btnNewButton.setBounds(499, 117, 89, 23);
+			getContentPane().add(btnNewButton);
+		}
+		
+		chckbxImprimir = new JCheckBox("Imprimir?");
+		chckbxImprimir.setHorizontalAlignment(SwingConstants.RIGHT);
+		chckbxImprimir.setBackground(Color.LIGHT_GRAY);
+		chckbxImprimir.setBounds(491, 441, 97, 23);
+		getContentPane().add(chckbxImprimir);
+		{
+			chckbxContratante = new JCheckBox("\u00BFCONTRATANTE?");
+			chckbxContratante.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+			chckbxContratante.setBackground(Color.LIGHT_GRAY);
+			chckbxContratante.setBounds(207, 412, 240, 35);
+			getContentPane().add(chckbxContratante);
+		}
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtDni, txtRuc, txtNombre, txtRazsocial, txtNacionalidad, cbDia, cbMes, cbAnio, txtEdad, txtPrecio, btnGuardar, btnCancelar, btnEliminar}));
 		cargar();
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == btnNewButton) {
+			actionPerformedBtnNewButton(arg0);
+		}
 		if (arg0.getSource() == cbAnio) {
 			actionPerformedCbAnio(arg0);
 		}
@@ -350,6 +386,9 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			txtEdad.setText("" + rs2.getInt("edad"));
 			txtPrecio.setText("" + rs2.getFloat("prepasaje"));
 			int estado = rs.getInt("estado");
+			int contratante = rs2.getInt("contratante");
+			if(contratante == 1)
+				chckbxContratante.setSelected(true);
 			Consultas consulta3 = new Consultas();
 			ResultSet rs3 = consulta3.buscarPasajero(dnipasajero);
 			rs3.next();
@@ -367,11 +406,13 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			//JOptionPane.showMessageDialog(null, a+" "+m+" "+d);
 			cbDia.setSelectedIndex(d-1);
 			cbMes.setSelectedIndex(m-1);
-			for(int i = 0 ; i<cbAnio.getItemCount(); i++){
+			cbAnio.setSelectedItem(a);
+			/*for(int i = 0 ; i<cbAnio.getItemCount(); i++){
 				if(Integer.parseInt(cbAnio.getItemAt(i).toString()) == a)
 					cbAnio.setSelectedIndex(i);
-			}
+			}*/
 			if(estado == 1){
+				txtNboleto.setEditable(false);
 				txtDni.setEditable(false);
 				txtRuc.setEditable(false);
 				txtNombre.setEditable(false);
@@ -383,11 +424,12 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 				cbAnio.setEnabled(false);
 				btnGuardar.setEnabled(false);
 				btnEliminar.setVisible(true);
+				chckbxContratante.setEnabled(false);
 			}
 			
 			
 		} catch (Exception e) {
-			try {
+			try { //ASIGNAR N BOLETO SI EL ASIENTO ESTÁ VACIO
 				Consultas consulta4 = new Consultas();
 				ResultSet rs4 = consulta4.ultimoNboleto();
 				rs4.next();
@@ -430,6 +472,9 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 				String fnacimiento = "" + anio + "-" + mes + "-" + dia;
 				float prepasaje = Float.parseFloat(txtPrecio.getText());
 				String nacionalidad = txtNacionalidad.getText();
+				int contratante = 0;
+				if(chckbxContratante.isSelected())
+					contratante = 1;
 				try {
 					Consultas consulta = new Consultas();
 					ResultSet rs = consulta.buscarPasajero(dnipasajero);
@@ -451,24 +496,69 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 				try {
 					Consultas consulta3 = new Consultas();
 					this.setAlwaysOnTop(false);
-					consulta3.asignarAsiento(asiento, dnipasajero, edad, prepasaje, nboleto);
+					consulta3.asignarAsiento(asiento, dnipasajero, edad, prepasaje, nboleto, contratante);
 					
 					if(vsa1 != null)
-						vsa1.cambiarColorAsiento(asiento);
+						vsa1.cambiarColorAsiento(asiento, contratante);
 					if(vsa2 != null)
-						vsa2.cambiarColorAsiento(asiento);
+						vsa2.cambiarColorAsiento(asiento, contratante);
 					if(vsa3 != null)
-						vsa3.cambiarColorAsiento(asiento);
+						vsa3.cambiarColorAsiento(asiento, contratante);
 					if(vsa4 != null)
-						vsa4.cambiarColorAsiento(asiento);
+						vsa4.cambiarColorAsiento(asiento, contratante);
 					vp.enable(true);
 					this.dispose();
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "ERROR: " + e);
 				}
 				
+				
+				sumarTotalPasajes();
+				//IMPRIMIR
+				if(chckbxImprimir.isSelected()){
+				
+					try {
+						this.setAlwaysOnTop(false);
+						String precio = txtPrecio.getText();
+						String[] arrayprecio = precio.split("\\.");
+						String soles = arrayprecio[0];
+						String centimos = arrayprecio[1];
+						//JOptionPane.showMessageDialog(null, soles + "   -   " + centimos);
+						String solesLetras = new NumeroLetras().convertir(Integer.parseInt(soles));
+						//JOptionPane.showMessageDialog(null, solesLetras + " CON " + centimos);
+						String precioLetras = solesLetras + " CON " + centimos + "/100 SOLES";
+						Connection con = MySQLConexion.getConection();
+						int asiento = Integer.parseInt(lblNAsiento.getText());
+						//IMPRIMIR TICKET
+						try {
+							Map<String, Object> parameters = new HashMap();
+							parameters.put("prmtNasiento", asiento);
+							parameters.put("prmtPrecioLetras", precioLetras);
+							/*new AbstractJasperReports().createReport( con.getConn(), "rPrueba.jasper", null);
+							AbstractJasperReports.showViewer();*/
+							try{
+								//JasperReport reporte=(JasperReport) JRLoader.loadObjectFromFile("D:\\ INFORMACION_DEL_SISTEMA\\rBoleto.jasper");
+								//JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, con);
+								JasperPrint impressao = JasperFillManager.fillReport(getClass().getClassLoader().getResourceAsStream("rBoleto.jasper"), parameters, con);
+	
+								//AbstractJasperReports.showViewer();
+								JasperPrintManager.printReport(impressao, false);
+								JOptionPane.showMessageDialog(null, "VENTA CORRECTA :)");          
+							}
+							catch (JRException ex){
+								System.err.println( "Error iReport: " + ex.getMessage() );
+							}
+							
+						} catch (Exception e) {
+							JOptionPane.showMessageDialog(null, "ERROR "+ e);
+						}				
+						
+					} catch (Exception e) {
+						JOptionPane.showMessageDialog(null, e);
+					}
+				}
+				
 			}
-			sumarTotalPasajes();
 		}
 	}
 	
@@ -618,6 +708,21 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			sumarTotalPasajes();
 			vp.enable(true);
 			this.dispose();
+		}
+	}
+	protected void actionPerformedBtnNewButton(ActionEvent arg0) {
+		try {
+			this.setAlwaysOnTop(false);
+			String precio = txtPrecio.getText();
+			String[] arrayprecio = precio.split("\\.");
+			String soles = arrayprecio[0];
+			String centimos = arrayprecio[1];
+						
+			String solesLetras = new NumeroLetras().convertir(Integer.parseInt(soles));
+			
+			JOptionPane.showMessageDialog(null, solesLetras + " CON " + centimos);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e);
 		}
 	}
 }

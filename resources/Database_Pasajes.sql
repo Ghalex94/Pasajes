@@ -88,8 +88,22 @@ destino			varchar(50),
 fpartida		datetime,
 fllegada		datetime,
 prepasaje		float,
-nviaje			int
+nviaje			int,
+
+standar			int, -- 0NO 1SI
+escalacom		int, -- 0NO 1SI	
+ciudaddesde		varchar(50),
+ciudadhasta		varchar(50),
+puntoencuentro	varchar(60),
+escalas			varchar(100),
+horainicio2		varchar(5),
+dniconductor2	int,
+licencia2		varchar(30),
+horafin1		varchar(5),
+horafin2		varchar(5),
+comentarios		varchar(200)
 );
+select  * from tb_venta_temporal;
 
 create table tb_pasajeros_temporal(
 asiento 		int not null primary key,
@@ -98,6 +112,7 @@ nboleto			int,
 dnipasajero		int,
 edad			int,
 prepasaje 		float,
+contratante		int, -- 0NO 1SI
 foreign key (dnipasajero) references tb_pasajero(dnipasajero)
 );
 
@@ -106,9 +121,6 @@ insert into tb_usuario values('admin', 'admin', 'ADMINISTRADOR', 0);
 
 insert into tb_empresa values(null, '20406468683', 'MERMA HERMANOS S.R.L.', null);
 insert into tb_empresa values(null, '20601642124', 'ZIGUEL E.I.R.L.', null);
-
-insert into tb_venta_temporal values(1, 0, 0, 0, null, 0, null, null, null, null, null, 1000);
-
 
 insert into tb_modelo_vehiculo values(null, 'Mercedes Sprinter 413 19+1', 20); -- 1
 insert into tb_modelo_vehiculo values(null, 'Mercedes Sprinter 515 19+1', 20); -- 2
@@ -143,21 +155,21 @@ insert into tb_pasajero values(76784955, '10767849550', '1995-01-28', 'Melany G'
 insert into tb_pasajero values(76784944, '10767849440', '1997-12-31', 'Jean Carlos', 'Sin oficio', 'Venzolana');
 insert into tb_pasajero values(76784933, '10767849330', '1995-03-05', 'Andrea Perez', 'Imagenes SRL', 'Peruana');
 
-insert into tb_pasajeros_temporal values(1, 1, 76784966, 10767849660, 'Alexander Gamarra', 'BxB', 30, 10, 1994, 24, 19.90);
+insert into tb_venta_temporal values(1, 0, null, null, null, null, null, null, null, null, null, null, 1, 0, null, null, null, null, null, 0, null, null, null, null);
 
 
 -- ELIMINAR TABLAS Y DB -----------------------------------------------------------
 drop database db_venta_pasajes; -- ----------------------------------------------
-drop table tb_usuario;
-drop table tb_conductor;
-drop table tb_modelo_vehiculo;
-drop table tb_vehiculo;
-drop table tb_pasajero;
-drop table tb_destinos;
-drop table tb_viaje;
-drop table tb_detalle_viaje;
-drop table tb_venta_temporal;
-drop table tb_pasajeros_temporal;
+-- drop table tb_usuario;
+-- drop table tb_conductor;
+-- drop table tb_modelo_vehiculo;
+-- drop table tb_vehiculo;
+-- drop table tb_pasajero;
+-- drop table tb_destinos;
+-- drop table tb_viaje;
+-- drop table tb_detalle_viaje;
+-- drop table tb_venta_temporal;
+-- drop table tb_pasajeros_temporal;
 
 -- SELECT TABLAS -----------------------------------------------------------------
 use db_venta_pasajes;
@@ -203,8 +215,9 @@ delete from tb_pasajeros_temporal where asiento = 11;
 
 select vh.placa, mvh.idmodelo, mvh.modelo, vh.detalle, co.dniconductor, co.conductor from tb_vehiculo vh inner join tb_modelo_vehiculo mvh  inner join tb_conductor co on vh.idmodelo = mvh.idmodelo and vh.dniconductor = co.dniconductor order by mvh.modelo;
 
+-- consulta para manifiesto de pasajeros
 select vt.origen, vt.destino, DATE_FORMAT(vt.fpartida, '%d-%m-%Y') Fecha_Viaje,  TIME(vt.fpartida) Hora_Salida, mvh.casientos, 
-c.conductor, c.licencia, vh.placa, mvh.modelo, e.mtc, pt.asiento, p.nombre, pt.dnipasajero, pt.edad, pt.nboleto, p.nacionalidad, pt.prepasaje
+c.conductor, c.licencia, vh.placa, mvh.modelo, e.mtc, pt.asiento, p.nombre, pt.dnipasajero, pt.edad, pt.nboleto, p.nacionalidad, pt.prepasaje, vt.nviaje
 from tb_pasajeros_temporal pt
 inner join tb_pasajero p
 inner join tb_venta_temporal vt
@@ -218,9 +231,20 @@ and vt.id = 1
 and c.dniconductor = vt.dniconductor
 and vh.placa = vt.placa
 and mvh.idmodelo = vh.idmodelo
-and e.idempresa = vt.empresa; 
+and e.idempresa = vt.empresa
+order by pt.asiento; 
 
-select count(*) as cantPasajeros from tb_pasajeros_temporal;
+UPDATE tb_venta_temporal SET fpartida = concat(date(fpartida), ' 21:00:00') WHERE id=1;
 
-select nboleto from tb_pasajeros_temporal order by nboleto desc limit 1;
+-- consulta para impresion ed boleto
+select p.nombre, pt.dnipasajero, p.razsocial, vt.fpartida, pt.prepasaje, vt.origen, vt.destino, vt.nviaje, pt.nboleto
+from tb_pasajeros_temporal pt
+inner join tb_venta_temporal vt
+inner join tb_pasajero p
+on vt.id = 1
+and p.dnipasajero = pt.dnipasajero
+where pt.asiento = 2;
+
+-- consulta para hoja de ruta
+
 

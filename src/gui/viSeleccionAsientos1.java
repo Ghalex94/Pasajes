@@ -182,6 +182,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		getContentPane().add(lblCuentaTotal);
 		
 		btnfinalizarEImprimir = new JButton("<html>FINALIZAR E <br>\u00A0\u00A0IMPRIMIR </html>");
+		btnfinalizarEImprimir.addActionListener(this);
 		btnfinalizarEImprimir.setForeground(new Color(255, 255, 255));
 		btnfinalizarEImprimir.setBackground(Color.DARK_GRAY);
 		btnfinalizarEImprimir.setFont(new Font("USAngel", Font.PLAIN, 20));
@@ -365,6 +366,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 
 		Image imgAsiento16 = new ImageIcon(this.getClass().getResource("/asiento16.png")).getImage();
 		btnA16 = new JButton("");
+		btnA16.addActionListener(this);
 		btnA16.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		btnA16.setHorizontalAlignment(SwingConstants.CENTER);
 		btnA16.setIcon(new ImageIcon(imgAsiento16));
@@ -374,6 +376,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 
 		Image imgAsiento17 = new ImageIcon(this.getClass().getResource("/asiento17.png")).getImage();
 		btnA17 = new JButton("");
+		btnA17.addActionListener(this);
 		btnA17.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		btnA17.setHorizontalAlignment(SwingConstants.CENTER);
 		btnA17.setIcon(new ImageIcon(imgAsiento17));
@@ -383,6 +386,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 
 		Image imgAsiento18 = new ImageIcon(this.getClass().getResource("/asiento18.png")).getImage();
 		btnA18 = new JButton("");
+		btnA18.addActionListener(this);
 		btnA18.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		btnA18.setHorizontalAlignment(SwingConstants.CENTER);
 		btnA18.setIcon(new ImageIcon(imgAsiento18));
@@ -392,6 +396,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 
 		Image imgAsiento19 = new ImageIcon(this.getClass().getResource("/asiento19.png")).getImage();
 		btnA19 = new JButton("");
+		btnA19.addActionListener(this);
 		btnA19.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		btnA19.setHorizontalAlignment(SwingConstants.CENTER);
 		btnA19.setIcon(new ImageIcon(imgAsiento19));
@@ -401,6 +406,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 
 		Image imgAsiento20 = new ImageIcon(this.getClass().getResource("/asiento20.png")).getImage();
 		btnA20 = new JButton("");
+		btnA20.addActionListener(this);
 		btnA20.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		btnA20.setHorizontalAlignment(SwingConstants.CENTER);
 		btnA20.setIcon(new ImageIcon(imgAsiento20));
@@ -508,6 +514,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 			if(rs.next()){
 				origen = rs.getString("origen");
 				destino = rs.getString("destino");
+				txtNviaje.setText(rs.getString("nviaje"));
 			}
 		
 			//Actualizar asientos y total
@@ -517,7 +524,8 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 				while(rs2.next()){
 					if(rs2.getInt("estado") == 1);{
 						int asiento = rs2.getInt("asiento");
-						cambiarColorAsiento(asiento);
+						int contratante = rs2.getInt("contratante");
+						cambiarColorAsiento(asiento, contratante);
 					}
 				}
 				sumarTotalPasajes();
@@ -594,6 +602,24 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 	}
 	
 	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == btnA20) {
+			actionPerformedBtnA20(arg0);
+		}
+		if (arg0.getSource() == btnA19) {
+			actionPerformedBtnA19(arg0);
+		}
+		if (arg0.getSource() == btnA18) {
+			actionPerformedBtnA18(arg0);
+		}
+		if (arg0.getSource() == btnA17) {
+			actionPerformedBtnA17(arg0);
+		}
+		if (arg0.getSource() == btnA16) {
+			actionPerformedBtnA16(arg0);
+		}
+		if (arg0.getSource() == btnfinalizarEImprimir) {
+			actionPerformedBtnfinalizarEImprimir(arg0);
+		}
 		if (arg0.getSource() == cbMinutoDestino) {
 			actionPerformedCbMinutoDestino(arg0);
 		}
@@ -656,73 +682,79 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		}
 	}
 	
-	public void cambiarColorAsiento(int asiento){
-		switch(asiento){
-		case 1: btnA1.setBackground(Color.RED);
-			break;
-		case 2: btnA2.setBackground(Color.RED);
-			break;
-		case 3: btnA3.setBackground(Color.RED);
-			break;
-		case 4: btnA4.setBackground(Color.RED);
-			break;
-		case 5: btnA5.setBackground(Color.RED);
-			break;
-		case 6: btnA6.setBackground(Color.RED);
-			break;
-		case 7: btnA7.setBackground(Color.RED);
-			break;
-		case 8: btnA8.setBackground(Color.RED);
-			break;
-		case 9: btnA9.setBackground(Color.RED);
-			break;
-		case 10: btnA10.setBackground(Color.RED);
-			break;
-		case 11: btnA11.setBackground(Color.RED);
-			break;
-		case 12: btnA12.setBackground(Color.RED);
-			break;
-		case 13: btnA13.setBackground(Color.RED);
-			break;
-		case 14: btnA14.setBackground(Color.RED);
-			break;
-		case 15: btnA15.setBackground(Color.RED);
-			break;
+	public void cambiarColorAsiento(int asiento, int contratante){
+		if(contratante == 0){
+			switch(asiento){
+			case 1: btnA1.setBackground(Color.RED); break;
+			case 2: btnA2.setBackground(Color.RED);	break;
+			case 3: btnA3.setBackground(Color.RED); break;
+			case 4: btnA4.setBackground(Color.RED); break;
+			case 5: btnA5.setBackground(Color.RED); break;
+			case 6: btnA6.setBackground(Color.RED); break;
+			case 7: btnA7.setBackground(Color.RED); break;
+			case 8: btnA8.setBackground(Color.RED); break;
+			case 9: btnA9.setBackground(Color.RED); break;
+			case 10: btnA10.setBackground(Color.RED); break;
+			case 11: btnA11.setBackground(Color.RED); break;
+			case 12: btnA12.setBackground(Color.RED); break;
+			case 13: btnA13.setBackground(Color.RED); break;
+			case 14: btnA14.setBackground(Color.RED); break;
+			case 15: btnA15.setBackground(Color.RED); break;
+			case 16: btnA16.setBackground(Color.RED); break;
+			case 17: btnA17.setBackground(Color.RED); break;
+			case 18: btnA18.setBackground(Color.RED); break;
+			case 19: btnA19.setBackground(Color.RED); break;
+			case 20: btnA20.setBackground(Color.RED); break;
+			}
+		}
+		else{
+			switch(asiento){
+			case 1: btnA1.setBackground(Color.YELLOW); break;
+			case 2: btnA2.setBackground(Color.YELLOW);	break;
+			case 3: btnA3.setBackground(Color.YELLOW); break;
+			case 4: btnA4.setBackground(Color.YELLOW); break;
+			case 5: btnA5.setBackground(Color.YELLOW); break;
+			case 6: btnA6.setBackground(Color.YELLOW); break;
+			case 7: btnA7.setBackground(Color.YELLOW); break;
+			case 8: btnA8.setBackground(Color.YELLOW); break;
+			case 9: btnA9.setBackground(Color.YELLOW); break;
+			case 10: btnA10.setBackground(Color.YELLOW); break;
+			case 11: btnA11.setBackground(Color.YELLOW); break;
+			case 12: btnA12.setBackground(Color.YELLOW); break;
+			case 13: btnA13.setBackground(Color.YELLOW); break;
+			case 14: btnA14.setBackground(Color.YELLOW); break;
+			case 15: btnA15.setBackground(Color.YELLOW); break;
+			case 16: btnA16.setBackground(Color.YELLOW); break;
+			case 17: btnA17.setBackground(Color.YELLOW); break;
+			case 18: btnA18.setBackground(Color.YELLOW); break;
+			case 19: btnA19.setBackground(Color.YELLOW); break;
+			case 20: btnA20.setBackground(Color.YELLOW); break;
+			}
 		}
 	}
 	
 	public void cambiarColorAsientoVerde(int asiento){
 		switch(asiento){
-		case 1: btnA1.setBackground(Color.GREEN);
-			break;
-		case 2: btnA2.setBackground(Color.GREEN);
-			break;
-		case 3: btnA3.setBackground(Color.GREEN);
-			break;
-		case 4: btnA4.setBackground(Color.GREEN);
-			break;
-		case 5: btnA5.setBackground(Color.GREEN);
-			break;
-		case 6: btnA6.setBackground(Color.GREEN);
-			break;
-		case 7: btnA7.setBackground(Color.GREEN);
-			break;
-		case 8: btnA8.setBackground(Color.GREEN);
-			break;
-		case 9: btnA9.setBackground(Color.GREEN);
-			break;
-		case 10: btnA10.setBackground(Color.GREEN);
-			break;
-		case 11: btnA11.setBackground(Color.GREEN);
-			break;
-		case 12: btnA12.setBackground(Color.GREEN);
-			break;
-		case 13: btnA13.setBackground(Color.GREEN);
-			break;
-		case 14: btnA14.setBackground(Color.GREEN);
-			break;
-		case 15: btnA15.setBackground(Color.GREEN);
-			break;
+		case 1: btnA1.setBackground(Color.GREEN); break;
+		case 2: btnA2.setBackground(Color.GREEN); break;
+		case 3: btnA3.setBackground(Color.GREEN); break;
+		case 4: btnA4.setBackground(Color.GREEN); break;
+		case 5: btnA5.setBackground(Color.GREEN); break;
+		case 6: btnA6.setBackground(Color.GREEN); break;
+		case 7: btnA7.setBackground(Color.GREEN); break;
+		case 8: btnA8.setBackground(Color.GREEN); break;
+		case 9: btnA9.setBackground(Color.GREEN); break;
+		case 10: btnA10.setBackground(Color.GREEN); break;
+		case 11: btnA11.setBackground(Color.GREEN); break;
+		case 12: btnA12.setBackground(Color.GREEN); break;
+		case 13: btnA13.setBackground(Color.GREEN); break;
+		case 14: btnA14.setBackground(Color.GREEN); break;
+		case 15: btnA15.setBackground(Color.GREEN); break;
+		case 16: btnA16.setBackground(Color.GREEN); break;
+		case 17: btnA17.setBackground(Color.GREEN); break;
+		case 18: btnA18.setBackground(Color.GREEN); break;
+		case 19: btnA19.setBackground(Color.GREEN); break;
+		case 20: btnA20.setBackground(Color.GREEN); break;
 		}
 	}
 	
@@ -803,6 +835,31 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 	}
 	protected void actionPerformedBtnA15(ActionEvent arg0) {
 		vdAsiento vdp = new vdAsiento(vp, 15, null, null, null, this);
+		vdp.setVisible(true);
+		vp.enable(false);
+	}
+	protected void actionPerformedBtnA16(ActionEvent arg0) {
+		vdAsiento vdp = new vdAsiento(vp, 16, null, null, null, this);
+		vdp.setVisible(true);
+		vp.enable(false);
+	}
+	protected void actionPerformedBtnA17(ActionEvent arg0) {
+		vdAsiento vdp = new vdAsiento(vp, 17, null, null, null, this);
+		vdp.setVisible(true);
+		vp.enable(false);
+	}
+	protected void actionPerformedBtnA18(ActionEvent arg0) {
+		vdAsiento vdp = new vdAsiento(vp, 18, null, null, null, this);
+		vdp.setVisible(true);
+		vp.enable(false);
+	}
+	protected void actionPerformedBtnA19(ActionEvent arg0) {
+		vdAsiento vdp = new vdAsiento(vp, 19, null, null, null, this);
+		vdp.setVisible(true);
+		vp.enable(false);
+	}
+	protected void actionPerformedBtnA20(ActionEvent arg0) {
+		vdAsiento vdp = new vdAsiento(vp, 20, null, null, null, this);
 		vdp.setVisible(true);
 		vp.enable(false);
 	}
@@ -892,17 +949,23 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 	public void keyPressed(KeyEvent arg0) {
 	}
 	public void keyReleased(KeyEvent arg0) {
-	}
-	public void keyTyped(KeyEvent arg0) {
 		if (arg0.getSource() == txtNviaje) {
-			keyTypedTxtNviaje(arg0);
+			keyReleasedTxtNviaje(arg0);
 		}
 	}
-	protected void keyTypedTxtNviaje(KeyEvent arg0) {
+	public void keyTyped(KeyEvent arg0) {
+	}
+	protected void actionPerformedBtnfinalizarEImprimir(ActionEvent arg0) {
+		
+	}
+	protected void keyReleasedTxtNviaje(KeyEvent arg0) {
 		try {
 			int nViaje = Integer.parseInt(txtNviaje.getText());
 			Consultas consulta = new Consultas();
 			consulta.actualizarVentaTemporal07(nViaje);	
-		} catch (Exception e) {	}
+		} catch (Exception e) {	
+			JOptionPane.showMessageDialog(null, "Error: " + e);
+		}
 	}
+	
 }

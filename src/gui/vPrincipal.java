@@ -52,15 +52,16 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
     public JMenuItem mntmContinuarPreparacion;
     public JMenuItem mntmCancelarSalida;
     
-	viLogin lg = new viLogin(this);  	//Login
-	viDatos1 d1 = null;  				//Datos1
-	viSeleccionAsientos1 sa1 = null;	//Seleccion de asientos 1
-	viSeleccionAsientos2 sa2 = null;	//Seleccion de asientos 2
-	viSeleccionAsientos3 sa3 = null;	//Seleccion de asientos 3
-	viSeleccionAsientos4 sa4 = null;	//Seleccion de asientos 4
-	viListaVehiculos lvc = null;		//Lista de vehiculos
-	viListaDestinos ldest = null;		//Lista destinos 
-	viListaPasajeros lpjr = null;		//Lista de pasajeros
+	viLogin lg = new viLogin(this);  	 //Login
+	viDatos1 d1 = null;  				 //Datos1
+	viSeleccionAsientos1 sa1 = null;	 //Seleccion de asientos 1
+	viSeleccionAsientos2 sa2 = null;	 //Seleccion de asientos 2
+	viSeleccionAsientos3 sa3 = null;	 //Seleccion de asientos 3
+	viSeleccionAsientos4 sa4 = null;	 //Seleccion de asientos 4
+	viListaVehiculos lvc = null;		 //Lista de vehiculos
+	viListaDestinos ldest = null;		 //Lista destinos 
+	viListaPasajeros lpjr = null;		 //Lista de pasajeros
+	viLlenarDatosFaltantes datfalt = null;//Datosa Faltantes 
 	
 	ResultSet rs;
 	//RESOLUCION MONITOR
@@ -71,10 +72,10 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
     int ancho = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
     int alto = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
     private JMenuItem mntmListaDeClientes;
-    private JMenu mnFormatos;
+    public JMenu mnFormatos;
     private JMenuItem mntmMDP;
-    private JMenuItem mntmFormato2;
-    private JMenuItem mntmFormato3;
+    private JMenuItem mntmHdR;
+    private JMenuItem mntmIdV;
     private JMenuItem mntmContrato;
     private JMenuItem mntmLlenarInformacion;
     
@@ -149,11 +150,12 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mntmMDP.addActionListener(this);
 		mnFormatos.add(mntmMDP);
 		
-		mntmFormato2 = new JMenuItem("Ver Formato 2");
-		mnFormatos.add(mntmFormato2);
+		mntmHdR = new JMenuItem("Ver Hoja de Ruta");
+		mntmHdR.addActionListener(this);
+		mnFormatos.add(mntmHdR);
 		
-		mntmFormato3 = new JMenuItem("Ver Formato 3");
-		mnFormatos.add(mntmFormato3);
+		mntmIdV = new JMenuItem("Ver Itinerario de Viaje");
+		mnFormatos.add(mntmIdV);
 		
 		mntmContrato = new JMenuItem("Ver Contrato");
 		mnFormatos.add(mntmContrato);
@@ -217,6 +219,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 				mntmCrearNuevaSalida.setEnabled(true);
 				mntmContinuarPreparacion.setEnabled(false);
 				mntmCancelarSalida.setEnabled(false);
+				mnFormatos.setEnabled(false);
 			}
 			else{
 				mntmCrearNuevaSalida.setEnabled(false);
@@ -229,17 +232,11 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
         lg.setLocation((ancho - FrameSize.width)/2, (alto - FrameSize.height)/4);
 		lg.show();
 	}
-	
-	public void integrar(){
-		desktopPane.add(d1);//DETALLES 1 (DESELECCION DE CARRO)
-		desktopPane.add(sa1);//SELECCION DE ASIENTOS 1
-		desktopPane.add(sa1);//SELECCION DE ASIENTOS 2 
-		desktopPane.add(sa3);//SELECCION DE ASIENTOS 3 
-		desktopPane.add(sa4);//SELECCION DE ASIENTOS 4 
-		desktopPane.add(lvc);//LISTA DE VEHICULOS
-	}
 
 	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == mntmHdR) {
+			actionPerformedMntmHdR(arg0);
+		}
 		if (arg0.getSource() == mntmMDP) {
 			actionPerformedMntmMDP(arg0);
 		}
@@ -304,6 +301,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		lvc = null;
 		ldest = null;
 		lpjr = null;
+		datfalt = null;
 	}
 	
 	public void esconderVentanas(){
@@ -323,6 +321,8 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			ldest.setVisible(false);
 		if (lpjr!=null)
 			lpjr.setVisible(false);
+		if (datfalt!=null)
+			datfalt.setVisible(false);
 	}
 	
 	public void desactivarMenu(){
@@ -497,10 +497,14 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		}catch(Exception f){}
 	}
 	protected void actionPerformedMntmLlenarInformacion(ActionEvent arg0) {
-		
-		
-		
-		
+		esconderVentanas();
+		cerrarVentanas();
+		datfalt = new viLlenarDatosFaltantes(this);
+		desktopPane.add(datfalt);
+		datfalt.show();
+		try{
+			datfalt.setMaximum(true);
+		}catch(Exception f){}	
 	}
 	
 	protected void actionPerformedMntmMDP(ActionEvent arg0) {
@@ -521,6 +525,9 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error:. "+ e.getStackTrace());			
 		}
+		
+	}
+	protected void actionPerformedMntmHdR(ActionEvent arg0) {
 		
 	}
 }

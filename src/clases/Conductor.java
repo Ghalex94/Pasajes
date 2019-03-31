@@ -7,12 +7,14 @@ import mysql.Consultas;
 
 public class Conductor {
 	int	dni;
+	String nlicencia;
 	String conductor;
 	ResultSet rs;
 	
 	public Conductor(){}
 	public Conductor(int dni, String nlicencia, String conductor){
 		this.dni = dni;
+		this.nlicencia = nlicencia;
 		this.conductor = conductor;
 	}
 	
@@ -49,5 +51,11 @@ public class Conductor {
 	}
 	public void setConductor(String conductor) {
 		this.conductor = conductor;
+	}
+	public String getNlicencia() {
+		return nlicencia;
+	}
+	public void setNlicencia(String nlicencia) {
+		this.nlicencia = nlicencia;
 	}
 }
