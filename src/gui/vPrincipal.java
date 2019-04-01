@@ -462,6 +462,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			mntmCrearNuevaSalida.setEnabled(true);
 			mntmContinuarPreparacion.setEnabled(false);
 			mntmCancelarSalida.setEnabled(false);
+			mnFormatos.setEnabled(false);
 			JOptionPane.showMessageDialog(null, "Salida cancelada");
 		}
 	}

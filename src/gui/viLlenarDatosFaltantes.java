@@ -19,11 +19,14 @@ import javax.swing.JTextArea;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
 import javax.swing.DefaultComboBoxModel;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 
 public class viLlenarDatosFaltantes extends JInternalFrame implements ActionListener {
 	private JTextField txtCompletarDatos;
@@ -172,11 +175,12 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		lblEscalasYParadas = new JLabel("<html>Escalas y paradas<br> en el recorrido:</html>");
 		lblEscalasYParadas.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEscalasYParadas.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-		lblEscalasYParadas.setBounds(30, 387, 355, 70);
+		lblEscalasYParadas.setBounds(30, 387, 355, 59);
 		getContentPane().add(lblEscalasYParadas);
 		
 		txtEscalasParadas = new JTextArea();
-		txtEscalasParadas.setBounds(30, 449, 355, 151);
+		txtEscalasParadas.setText("Sin escalas ni paradas.");
+		txtEscalasParadas.setBounds(30, 452, 355, 148);
 		getContentPane().add(txtEscalasParadas);
 		
 		lblConductor = new JLabel("Conductor 1:");
@@ -232,6 +236,7 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		getContentPane().add(label_1);
 		
 		txtNlicencia2 = new JTextField();
+		txtNlicencia2.setEnabled(false);
 		txtNlicencia2.setEditable(false);
 		txtNlicencia2.setText((String) null);
 		txtNlicencia2.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
@@ -258,6 +263,7 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		getContentPane().add(lblComentarios);
 		
 		txtComentarios = new JTextArea();
+		txtComentarios.setText("Sin comentarios.");
 		txtComentarios.setBounds(410, 333, 454, 270);
 		getContentPane().add(txtComentarios);
 		
@@ -287,31 +293,55 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		getContentPane().add(cbMinicio1);
 		
 		cbHinicio2 = new JComboBox();
+		cbHinicio2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedCbHinicio2(e);
+			}
+		});
 		cbHinicio2.setModel(new DefaultComboBoxModel(new String[] {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
 		cbHinicio2.setBounds(729, 253, 65, 20);
 		getContentPane().add(cbHinicio2);
 		
 		cbMinicio2 = new JComboBox();
+		cbMinicio2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedCbMinicio2(e);
+			}
+		});
 		cbMinicio2.setModel(new DefaultComboBoxModel(new String[] {"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
 		cbMinicio2.setBounds(794, 253, 58, 20);
 		getContentPane().add(cbMinicio2);
 		
 		cbHfin1 = new JComboBox();
+		cbHfin1.setEnabled(false);
+		cbHfin1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedCbHfin1(e);
+			}
+		});
 		cbHfin1.setModel(new DefaultComboBoxModel(new String[] {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
 		cbHfin1.setBounds(895, 253, 65, 20);
 		getContentPane().add(cbHfin1);
 		
 		cbMfin1 = new JComboBox();
+		cbMfin1.setEnabled(false);
+		cbMfin1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedCbMfin1(e);
+			}
+		});
 		cbMfin1.setModel(new DefaultComboBoxModel(new String[] {"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
 		cbMfin1.setBounds(960, 253, 58, 20);
 		getContentPane().add(cbMfin1);
 		
 		cbHfin2 = new JComboBox();
+		cbHfin2.setEnabled(false);
 		cbHfin2.setModel(new DefaultComboBoxModel(new String[] {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
 		cbHfin2.setBounds(1214, 253, 65, 20);
 		getContentPane().add(cbHfin2);
 		
 		cbMfin2 = new JComboBox();
+		cbMfin2.setEnabled(false);
 		cbMfin2.setModel(new DefaultComboBoxModel(new String[] {"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
 		cbMfin2.setBounds(1279, 253, 58, 20);
 		getContentPane().add(cbMfin2);
@@ -340,68 +370,86 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 						chbxViajeStandar.setSelected(true);
 					if(rs.getInt("escalacom" ) == 1)
 						chbxEscalasCom.setSelected(true);
-					txtDesde.setText(rs.getString("ciudaddesde"));
-					txtHasta.setText(rs.getString("ciudadhasta"));
-					txtPencuentro.setText(rs.getString("puntoencuentro"));
-					txtEscalasParadas.setText(rs.getString("escalas"));
-					txtNlicencia2.setText(rs.getString("licencia2"));
-					txtComentarios.setText(rs.getString("comentarios"));
-					for(int i = 0; i < cbConductor2.getItemCount(); i++){
-						if(rs.getInt("dniconductor2") == cbConductor2.getItemAt(i).getDni()){
-							cbConductor2.setSelectedIndex(i);
-							i = cbConductor2.getItemCount();
+					if(rs.getString("ciudaddesde") == null)
+						txtDesde.setText(rs.getString("origen"));
+					else
+						txtDesde.setText(rs.getString("ciudaddesde"));
+					if(rs.getString("ciudadhasta") == null)
+						txtHasta.setText(rs.getString("destino"));
+					else
+						txtHasta.setText(rs.getString("ciudadhasta"));
+					if(rs.getString("puntoencuentro") == null)
+						txtPencuentro.setText("Terminal de " + rs.getString("origen"));
+					else
+						txtPencuentro.setText(rs.getString("puntoencuentro"));
+					if(rs.getString("escalas") != null)
+						txtEscalasParadas.setText(rs.getString("escalas"));
+					if(rs.getString("licencia2") != null)
+						txtNlicencia2.setText(rs.getString("licencia2"));
+					if(rs.getString("comentarios") != null)
+						txtComentarios.setText(rs.getString("comentarios"));
+					if(rs.getInt("dniconductor2") != 0){
+						for(int i = 0; i < cbConductor2.getItemCount(); i++){
+							if(rs.getInt("dniconductor2") == cbConductor2.getItemAt(i).getDni()){
+								cbConductor2.setSelectedIndex(i);
+								i = cbConductor2.getItemCount();
+							}
 						}
 					}
-					try {
+						
+					String fpartidaoriginal = "";
+					if(rs.getString("fpartida") != null){
+						fpartidaoriginal = rs.getString("fpartida");
+						String[] arrayfecha1 = fpartidaoriginal.split(" ");
+						String horamin1 = arrayfecha1[1];
+						String[] arrayhora1 = horamin1.split(":");
+						String hora1 = arrayhora1[0];
+						String minuto1 = arrayhora1[1];
+						cbHinicio1.setSelectedItem(hora1);
+						cbMinicio1.setSelectedItem(minuto1);
+					}
+						
+					if(rs.getString("horainicio2") != null){
 						String horamininicio2 = rs.getString("horainicio2");
 						String[] arrayhorainicio2 = horamininicio2.split(":");
 						String horainicio2 = arrayhorainicio2[0];
 						String mininicio2 = arrayhorainicio2[1];
-											
+						cbHinicio2.setSelectedItem(horainicio2);
+						cbMinicio2.setSelectedItem(mininicio2);	
+					}
+					else{
+						String fllegadaoriginal = "";					
+						if(rs.getString("fllegada") != null){
+							fllegadaoriginal = rs.getString("fllegada");
+							String[] arrayfecha2 = fllegadaoriginal.split(" ");
+							String horamin2 = arrayfecha2[1];
+							String[] arrayhora2 = horamin2.split(":");
+							String hora2 = arrayhora2[0];
+							String minuto2 = arrayhora2[1];
+							cbHinicio2.setSelectedItem(hora2);
+							cbMinicio2.setSelectedItem(minuto2);
+						}
+					}
+						
+					if(rs.getString("horafin1") != null){
 						String horaminfin1 = rs.getString("horafin1");
 						String[] arrayhorafin1 = horaminfin1.split(":");
 						String horafin1 = arrayhorafin1[0];
 						String minfin1 = arrayhorafin1[1];
-						
+						cbHfin1.setSelectedItem(horafin1);
+						cbMfin1.setSelectedItem(minfin1);
+					}
+					if(rs.getString("horafin2") != null){
 						String horaminfin2 = rs.getString("horafin2");
 						String[] arrayhorafin2 = horaminfin2.split(":");
 						String horafin2 = arrayhorafin2[0];
 						String minfin2 = arrayhorafin2[1];
-						
-						
-						
-						cbHinicio2.setSelectedItem(horainicio2);
-						cbMinicio2.setSelectedItem(mininicio2);
-						cbHfin1.setSelectedItem(horafin1);
-						cbMfin1.setSelectedItem(minfin1);
 						cbHfin2.setSelectedItem(horafin2);
 						cbMfin2.setSelectedItem(minfin2);
-				
-					} catch (Exception e) {
-						String fpartidaoriginal = rs.getString("fpartida");
-						String fllegadaoriginal = rs.getString("fllegada");
-						
-						String[] arrayfecha1 = fpartidaoriginal.split(" ");
-						String horamin1 = arrayfecha1[1];
-						String[] arrayfecha2 = fllegadaoriginal.split(" ");
-						String horamin2 = arrayfecha2[1];
-						
-						String[] arrayhora1 = horamin1.split(":");
-						String hora1 = arrayhora1[0];
-						String minuto1 = arrayhora1[1];
-						
-						String[] arrayhora2 = horamin2.split(":");
-						String hora2 = arrayhora2[0];
-						String minuto2 = arrayhora2[1];
-		
-						cbHinicio1.setSelectedItem(hora1);
-						cbMinicio1.setSelectedItem(minuto1);
-						cbHinicio2.setSelectedItem(hora2);
-						cbMinicio2.setSelectedItem(minuto2);
 					}
-				}
-				
-			}			
+					
+				}			
+			}
 		}
 		catch(Exception e){
 			JOptionPane.showMessageDialog(null, e);
@@ -418,6 +466,13 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 	}
 	protected void actionPerformedCbConductor2(ActionEvent arg0) {
 		txtNlicencia2.setText("" + cbConductor2.getItemAt(cbConductor2.getSelectedIndex()).getNlicencia());
+		if(txtNlicencia2.getText().equals("")){}
+		else{
+			cbHfin1.setEnabled(true);
+			cbMfin1.setEnabled(true);
+			cbHfin2.setEnabled(true);
+			cbMfin2.setEnabled(true);
+		}
 	}
 	protected void actionPerformedBtnGuardarInformacion(ActionEvent arg0) {
 		int vstandar = 0;
@@ -425,22 +480,67 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		int escalascom = 0;
 		if(chbxEscalasCom.isSelected()) escalascom = 1;
 		
-		String desde, hasta, pencuentro, escalasparadas, horafin1, licencia2, horainicio2, horafin2, comentarios = "";
+		String desde = null, hasta = null, pencuentro = null, escalasparadas = null, horafin1, licencia2 = null, horainicio2, horafin2, comentarios = null;
 		int dniconductor2 = 0;
-		desde = txtDesde.getText();
-		hasta = txtHasta.getText();
-		pencuentro = txtPencuentro.getText();
-		escalasparadas = txtEscalasParadas.getText();
+		if(txtDesde.getText().length() != 0)
+			desde = txtDesde.getText();
+		if(txtHasta.getText().length() != 0)
+			hasta = txtHasta.getText();
+		if(txtPencuentro.getText().length() != 0)
+			pencuentro = txtPencuentro.getText();
+		if(txtEscalasParadas.getText().length() != 0)
+			escalasparadas = txtEscalasParadas.getText();
 		horainicio2 = cbHinicio2.getSelectedItem().toString() + ":" + cbMinicio2.getSelectedItem().toString();
 		dniconductor2 = cbConductor2.getItemAt(cbConductor2.getSelectedIndex()).getDni();
-		licencia2 = txtNlicencia2.getText();
+		if(txtNlicencia2.getText().length() != 0)
+			licencia2 = txtNlicencia2.getText();
 		horafin1 = cbHfin1.getSelectedItem().toString() + ":" + cbMfin1.getSelectedItem().toString();
 		horafin2 = cbHfin2.getSelectedItem().toString() + ":" + cbMfin2.getSelectedItem().toString();
-		comentarios = txtComentarios.getText();
+		if(txtComentarios.getText().length() != 0)
+			comentarios = txtComentarios.getText();
 		
 		Consultas.actualizarVentaTemporal08(vstandar, escalascom, desde, hasta, pencuentro, escalasparadas,
 				horainicio2, dniconductor2, licencia2, horafin1, horafin2, comentarios);
 	}
+	protected void actionPerformedCbHinicio2(ActionEvent e) {
+		if(cbHfin1.isEnabled()){
+			String hi2 = cbHinicio2.getSelectedItem().toString();
+			cbHfin1.setSelectedItem(hi2);
+			Consultas consulta = new Consultas();
+			ResultSet rs = consulta.cargarVentaTemporal();
+			String fllegadaoriginal = "";					
+			try {
+				rs.next();
+				if(rs.getString("fllegada") != null){
+					fllegadaoriginal = rs.getString("fllegada");
+					String[] arrayfecha2 = fllegadaoriginal.split(" ");
+					String horamin2 = arrayfecha2[1];
+					String[] arrayhora2 = horamin2.split(":");
+					String hora2 = arrayhora2[0];
+					String minuto2 = arrayhora2[1];
+					cbHfin2.setSelectedItem(hora2);
+					cbMfin2.setSelectedItem(minuto2);
+				}
+			} catch (SQLException e1) {
+				JOptionPane.showMessageDialog(null, e1);
+			}
+		}
+	}
+	protected void actionPerformedCbMinicio2(ActionEvent e) {
+		if(cbMfin1.isEnabled()){
+			String mi2 = cbMinicio2.getSelectedItem().toString();
+			cbMfin1.setSelectedItem(mi2);
+		}
+	}
+	protected void actionPerformedCbHfin1(ActionEvent e) {
+		String hf1 = cbHfin1.getSelectedItem().toString();
+		cbHinicio2.setSelectedItem(hf1);
+	}
+	protected void actionPerformedCbMfin1(ActionEvent e) {
+		String mf1 = cbMfin1.getSelectedItem().toString();
+		cbMinicio2.setSelectedItem(mf1);
+	}
+	
 }
 
 

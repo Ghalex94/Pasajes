@@ -155,7 +155,7 @@ insert into tb_pasajero values(76784955, '10767849550', '1995-01-28', 'Melany G'
 insert into tb_pasajero values(76784944, '10767849440', '1997-12-31', 'Jean Carlos', 'Sin oficio', 'Venzolana');
 insert into tb_pasajero values(76784933, '10767849330', '1995-03-05', 'Andrea Perez', 'Imagenes SRL', 'Peruana');
 
-insert into tb_venta_temporal values(1, 0, null, null, null, null, null, null, null, null, null, null, 1, 0, null, null, null, null, null, 0, null, null, null, null);
+insert into tb_venta_temporal values(1, 0, 0, 0, null, 0, null, null, null, null, 0, 0, 1, 0, null, null, null, null, null, 0, null, null, null, null);
 
 
 -- ELIMINAR TABLAS Y DB -----------------------------------------------------------
@@ -246,5 +246,13 @@ and p.dnipasajero = pt.dnipasajero
 where pt.asiento = 2;
 
 -- consulta para hoja de ruta
-
+select vt.placa, DATE_FORMAT(vt.fpartida, '%d-%m-%Y') Fecha_Viaje, vt.standar, vt.escalacom, vt.ciudaddesde, vt.ciudadhasta, 
+TIME(vt.fpartida) Hora_Salida,  TIME(vt.fllegada) Hora_Llegada, c.conductor, c.licencia, TIME(vt.fpartida) Hora_Inicio_1, 
+vt.horainicio2, c2.conductor, c2.licencia, vt.horafin1, horafin2
+from tb_venta_temporal vt
+inner join tb_conductor c
+inner join tb_conductor c2
+on vt.id = 1
+and c.dniconductor = vt.dniconductor
+and c2.dniconductor = vt.dniconductor2;
 

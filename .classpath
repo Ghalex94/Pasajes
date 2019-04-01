@@ -3,12 +3,12 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="B:/Desarrollo/Eclipse/ Librerias y otros/Librerias/mysql-connector-java-5.1.42-bin.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Ghalex_/git/Farmacia/resources/Librerias/mysql-connector-java-5.1.42-bin.jar"/>
 	<classpathentry kind="lib" path="jcalendar-1.4.jar"/>
-	<classpathentry kind="lib" path="B:/Desarrollo/Eclipse/ Librerias y otros/Librerias/JR/jasperreports-6.6.0.jar"/>
-	<classpathentry kind="lib" path="B:/Desarrollo/Eclipse/ Librerias y otros/Librerias/JR/itextpdf-5.5.4.jar"/>
-	<classpathentry kind="lib" path="B:/Desarrollo/Eclipse/ Librerias y otros/Librerias/JR/commons-collections-3.2.1-1.0.0.jar"/>
-	<classpathentry kind="lib" path="B:/Desarrollo/Eclipse/ Librerias y otros/Librerias/JR/commons-digester-2.1.jar"/>
-	<classpathentry kind="lib" path="B:/Desarrollo/Eclipse/ Librerias y otros/Librerias/JR/commons-logging-1.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Ghalex_/git/Farmacia/resources/Librerias/JR/jasperreports-6.6.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Ghalex_/git/Farmacia/resources/Librerias/JR/itextpdf-5.5.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Ghalex_/git/Farmacia/resources/Librerias/JR/commons-collections-3.2.1-1.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Ghalex_/git/Farmacia/resources/Librerias/JR/commons-digester-2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Ghalex_/git/Farmacia/resources/Librerias/JR/commons-logging-1.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
