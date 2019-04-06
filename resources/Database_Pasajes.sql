@@ -246,13 +246,33 @@ and p.dnipasajero = pt.dnipasajero
 where pt.asiento = 2;
 
 -- consulta para hoja de ruta
-select vt.placa, DATE_FORMAT(vt.fpartida, '%d-%m-%Y') Fecha_Viaje, vt.standar, vt.escalacom, vt.ciudaddesde, vt.ciudadhasta, 
+select vt.placa, DATE_FORMAT(vt.fpartida, '%d-%m-%Y') Fecha_Inicio, DATE_FORMAT(vt.fllegada, '%d-%m-%Y') Fecha_Llegada, vt.standar, vt.escalacom, vt.origen, vt.destino, 
 TIME(vt.fpartida) Hora_Salida,  TIME(vt.fllegada) Hora_Llegada, c.conductor, c.licencia, TIME(vt.fpartida) Hora_Inicio_1, 
-vt.horainicio2, c2.conductor, c2.licencia, vt.horafin1, horafin2
+vt.horainicio2, c2.conductor, c2.licencia l2, vt.horafin1, vt.horafin2, vt.comentarios
 from tb_venta_temporal vt
 inner join tb_conductor c
-inner join tb_conductor c2
-on vt.id = 1
-and c.dniconductor = vt.dniconductor
-and c2.dniconductor = vt.dniconductor2;
+on c.dniconductor = vt.dniconductor
+left join tb_conductor c2
+on c2.dniconductor = vt.dniconductor2
+where  vt.id = 1;
 
+-- consulta para itinerario de viaje
+select vt.placa, DATE_FORMAT(vt.fpartida, '%d-%m-%Y') Fecha_Inicio, DATE_FORMAT(vt.fllegada, '%d-%m-%Y') Fecha_Llegada, p.dnipasajero, p.nombre,  vt.standar, vt.escalacom, vt.origen, vt.destino, 
+TIME(vt.fpartida) Hora_Salida,  TIME(vt.fllegada) Hora_Llegada, c.conductor, c.licencia, TIME(vt.fpartida) Hora_Inicio_1, 
+vt.horainicio2, c2.conductor, c2.licencia l2, vt.horafin1, vt.horafin2, vt.comentarios, round(sum(pt2.prepasaje)) totpasajes
+from tb_venta_temporal vt
+inner join tb_conductor c
+on c.dniconductor = vt.dniconductor
+left join tb_conductor c2
+on c2.dniconductor = vt.dniconductor2
+left join tb_pasajeros_temporal pt
+on pt.contratante = 1
+left join tb_pasajeros_temporal pt2
+on pt2.estado = 1
+left join tb_pasajero p
+on pt.dnipasajero = p.dnipasajero
+where  vt.id = 1;
+
+
+select * from tb_venta_temporal;
+select * from tb_pasajeros_temporal;

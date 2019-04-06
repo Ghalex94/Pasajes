@@ -155,6 +155,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mnFormatos.add(mntmHdR);
 		
 		mntmIdV = new JMenuItem("Ver Itinerario de Viaje");
+		mntmIdV.addActionListener(this);
 		mnFormatos.add(mntmIdV);
 		
 		mntmContrato = new JMenuItem("Ver Contrato");
@@ -234,6 +235,9 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == mntmIdV) {
+			actionPerformedMntmIdV(arg0);
+		}
 		if (arg0.getSource() == mntmHdR) {
 			actionPerformedMntmHdR(arg0);
 		}
@@ -526,10 +530,28 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error:. "+ e.getStackTrace());			
 		}
-		
 	}
+	
 	protected void actionPerformedMntmHdR(ActionEvent arg0) {
-		
+		Consultas consulta = new Consultas();
+		try {
+			Connection con = MySQLConexion.getConection();
+			new AbstractJasperReports().createReport( con, "rHojaRuta3.jasper");
+			AbstractJasperReports.showViewer();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error:. "+ e.getStackTrace());			
+		}
+	}
+	
+	protected void actionPerformedMntmIdV(ActionEvent arg0) {
+		Consultas consulta = new Consultas();
+		try {
+			Connection con = MySQLConexion.getConection();
+			new AbstractJasperReports().createReport( con, "rItinerarioViajeM.jasper");
+			AbstractJasperReports.showViewer();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error:. "+ e.getStackTrace());			
+		}
 	}
 }
 

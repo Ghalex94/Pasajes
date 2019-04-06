@@ -409,15 +409,18 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 						cbMinicio1.setSelectedItem(minuto1);
 					}
 						
-					if(rs.getString("horainicio2") != null){
+					if(rs.getString("horainicio2") != null){						
 						String horamininicio2 = rs.getString("horainicio2");
 						String[] arrayhorainicio2 = horamininicio2.split(":");
 						String horainicio2 = arrayhorainicio2[0];
 						String mininicio2 = arrayhorainicio2[1];
 						cbHinicio2.setSelectedItem(horainicio2);
-						cbMinicio2.setSelectedItem(mininicio2);	
+						cbMinicio2.setSelectedItem(mininicio2);
+						
+						
 					}
 					else{
+						JOptionPane.showMessageDialog(null, "asdfasf");
 						String fllegadaoriginal = "";					
 						if(rs.getString("fllegada") != null){
 							fllegadaoriginal = rs.getString("fllegada");
@@ -472,7 +475,7 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 			cbMfin1.setEnabled(true);
 			cbHfin2.setEnabled(true);
 			cbMfin2.setEnabled(true);
-		}
+		 }
 	}
 	protected void actionPerformedBtnGuardarInformacion(ActionEvent arg0) {
 		int vstandar = 0;
