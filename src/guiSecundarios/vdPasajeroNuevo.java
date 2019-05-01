@@ -25,8 +25,10 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
 
-public class vdPasajeroNuevo extends JDialog implements ActionListener {
+public class vdPasajeroNuevo extends JDialog implements ActionListener, KeyListener {
 	private JTextField textField;
 	private JLabel label;
 	private JTextField txtDni;
@@ -95,6 +97,7 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener {
 		getContentPane().add(label);
 		
 		txtDni = new JTextField();
+		txtDni.addKeyListener(this);
 		txtDni.setText("0");
 		txtDni.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtDni.setColumns(10);
@@ -108,6 +111,7 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener {
 		getContentPane().add(label_1);
 		
 		txtRuc = new JTextField();
+		txtRuc.addKeyListener(this);
 		txtRuc.setText((String) null);
 		txtRuc.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtRuc.setColumns(10);
@@ -115,6 +119,7 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener {
 		getContentPane().add(txtRuc);
 		
 		txtNombre = new JTextField();
+		txtNombre.addKeyListener(this);
 		txtNombre.setText((String) null);
 		txtNombre.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtNombre.setColumns(10);
@@ -134,6 +139,7 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener {
 		getContentPane().add(label_3);
 		
 		txtRazSocial = new JTextField();
+		txtRazSocial.addKeyListener(this);
 		txtRazSocial.setText((String) null);
 		txtRazSocial.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtRazSocial.setColumns(10);
@@ -195,6 +201,7 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener {
 		getContentPane().add(lblNacionalidad);
 		
 		txtNacionalidad = new JTextField();
+		txtNacionalidad.addKeyListener(this);
 		txtNacionalidad.setText("Per\u00FA");
 		txtNacionalidad.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtNacionalidad.setColumns(10);
@@ -291,5 +298,62 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener {
 	protected void actionPerformedBtnCancelar(ActionEvent arg0) {
 		vp.enable(true);
 		this.dispose();
+	}
+	public void keyPressed(KeyEvent e) {
+	}
+	public void keyReleased(KeyEvent e) {
+	}
+	public void keyTyped(KeyEvent e) {
+		if (e.getSource() == txtNacionalidad) {
+			keyTypedTxtNacionalidad(e);
+		}
+		if (e.getSource() == txtRazSocial) {
+			keyTypedTxtRazSocial(e);
+		}
+		if (e.getSource() == txtRuc) {
+			keyTypedTxtRuc(e);
+		}
+		if (e.getSource() == txtNombre) {
+			keyTypedTxtNombre(e);
+		}
+		if (e.getSource() == txtDni) {
+			keyTypedTxtDni(e);
+		}
+	}
+	protected void keyTypedTxtDni(KeyEvent e) {
+		char c = e.getKeyChar();
+		if ((c<'0' || c>'9') && (c!=(char)KeyEvent.VK_DELETE) && (c!=(char)KeyEvent.VK_BACK_SPACE) && (c!=(char)KeyEvent.VK_ENTER)){
+			e.consume();
+		}
+		if (txtDni.getText().length() == 8){
+			e.consume();
+		}
+	}
+	protected void keyTypedTxtNombre(KeyEvent e) {
+		if (txtNombre.getText().length() == 50){
+			e.consume();
+		}
+			
+	}
+	protected void keyTypedTxtRuc(KeyEvent e) {
+		char c = e.getKeyChar();
+		
+		if ((c<'0' || c>'9') && (c!=(char)KeyEvent.VK_DELETE) && (c!=(char)KeyEvent.VK_BACK_SPACE) && (c!=(char)KeyEvent.VK_ENTER)){
+			e.consume();
+		}
+		if (txtRuc.getText().length() == 11){
+			e.consume();
+		}
+	}
+	protected void keyTypedTxtRazSocial(KeyEvent e) {
+		
+		if (txtRazSocial.getText().length() == 80){
+			e.consume();
+		}
+	}
+	protected void keyTypedTxtNacionalidad(KeyEvent e) {
+		if (txtNacionalidad.getText().length() == 50){
+			e.consume();
+		}
 	}
 }

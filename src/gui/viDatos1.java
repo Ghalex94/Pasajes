@@ -26,8 +26,10 @@ import mysql.Consultas;
 import java.awt.Color;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
 
-public class viDatos1 extends JInternalFrame implements ActionListener {
+public class viDatos1 extends JInternalFrame implements ActionListener, KeyListener {
 	private JLabel lblNewLabel;
 	private JLabel lblVehiculo;
 	private JButton btnContinuar;
@@ -39,6 +41,7 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 	private JButton btnCancelar;
 	private JLabel lblPrecioDePasaje;
 	private JTextField txtPrePasaje;
+	private JLabel label;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -78,7 +81,7 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 		btnContinuar = new JButton("Continuar");
 		btnContinuar.setForeground(Color.WHITE);
 		btnContinuar.setBackground(Color.DARK_GRAY);
-		btnContinuar.setFont(new Font("USAngel", Font.PLAIN, 20));
+		btnContinuar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
 		btnContinuar.addActionListener(this);
 		btnContinuar.setBounds(590, 158, 212, 31);
 		getContentPane().add(btnContinuar);
@@ -96,9 +99,9 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(this);
 		btnCancelar.setForeground(Color.WHITE);
-		btnCancelar.setFont(new Font("USAngel", Font.PLAIN, 20));
+		btnCancelar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
 		btnCancelar.setBackground(Color.DARK_GRAY);
-		btnCancelar.setBounds(378, 158, 190, 31);
+		btnCancelar.setBounds(390, 158, 190, 31);
 		getContentPane().add(btnCancelar);
 		
 		lblPrecioDePasaje = new JLabel("Precio de pasaje:");
@@ -108,11 +111,19 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 		getContentPane().add(lblPrecioDePasaje);
 		
 		txtPrePasaje = new JTextField();
+		txtPrePasaje.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtPrePasaje.addKeyListener(this);
 		txtPrePasaje.setText("0");
 		txtPrePasaje.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtPrePasaje.setColumns(10);
-		txtPrePasaje.setBounds(250, 164, 103, 25);
+		txtPrePasaje.setBounds(250, 164, 52, 25);
 		getContentPane().add(txtPrePasaje);
+		
+		label = new JLabel(".00");
+		label.setBackground(Color.WHITE);
+		label.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		label.setBounds(303, 166, 52, 23);
+		getContentPane().add(label);
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{cbEmpresa, cbVehiculo, txtPrePasaje, btnContinuar, btnCancelar}));
 		cargar();
 	}
@@ -222,6 +233,24 @@ public class viDatos1 extends JInternalFrame implements ActionListener {
 				break;
 			}
 			
+		}
+	}
+	public void keyPressed(KeyEvent arg0) {
+	}
+	public void keyReleased(KeyEvent arg0) {
+	}
+	public void keyTyped(KeyEvent arg0) {
+		if (arg0.getSource() == txtPrePasaje) {
+			keyTypedTxtPrePasaje(arg0);
+		}
+	}
+	protected void keyTypedTxtPrePasaje(KeyEvent arg0) {
+		char c = arg0.getKeyChar();
+		if ((c<'0' || c>'9') && (c!=(char)KeyEvent.VK_DELETE) && (c!=(char)KeyEvent.VK_BACK_SPACE)){
+			arg0.consume();
+		}
+		if (txtPrePasaje.getText().length() == 4){
+			arg0.consume();
 		}
 	}
 }

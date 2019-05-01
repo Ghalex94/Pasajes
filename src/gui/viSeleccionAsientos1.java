@@ -127,7 +127,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		setBounds(100, 100, 1361, 854);
 		getContentPane().setLayout(null);
 		
-		getContentPane().setBackground(SystemColor.textInactiveText);
+		getContentPane().setBackground(Color.DARK_GRAY);
 		
 		txtTitulo = new JTextField();
 		txtTitulo.setText("SELECCI\u00D3N DE ASIENTOS");
@@ -954,10 +954,18 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		}
 	}
 	public void keyTyped(KeyEvent arg0) {
+		char c = arg0.getKeyChar();
+		if ((c<'0' || c>'9') && (c!=(char)KeyEvent.VK_DELETE) && (c!=(char)KeyEvent.VK_BACK_SPACE)){
+			arg0.consume();
+		}
+		if (txtNviaje.getText().length() == 5){
+			arg0.consume();
+		}
 	}
 	protected void actionPerformedBtnfinalizarEImprimir(ActionEvent arg0) {
 		
 	}
+	
 	protected void keyReleasedTxtNviaje(KeyEvent arg0) {
 		try {
 			int nViaje = Integer.parseInt(txtNviaje.getText());

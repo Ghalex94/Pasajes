@@ -26,8 +26,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
 
-public class vdVehiculoModificar extends JDialog implements ActionListener {
+public class vdVehiculoModificar extends JDialog implements ActionListener, KeyListener {
 	private JTextField txtAgregarVehiculo;
 	private JTextField txtPlaca;
 	private JTextField txtDetalles;
@@ -89,6 +91,7 @@ public class vdVehiculoModificar extends JDialog implements ActionListener {
 		}
 		{
 			txtPlaca = new JTextField();
+			txtPlaca.addKeyListener(this);
 			txtPlaca.setEditable(false);
 			txtPlaca.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 			txtPlaca.setColumns(10);
@@ -134,6 +137,7 @@ public class vdVehiculoModificar extends JDialog implements ActionListener {
 		}
 		{
 			txtDetalles = new JTextField();
+			txtDetalles.addKeyListener(this);
 			txtDetalles.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 			txtDetalles.setColumns(10);
 			txtDetalles.setBounds(188, 150, 335, 25);
@@ -300,6 +304,28 @@ public class vdVehiculoModificar extends JDialog implements ActionListener {
 		vncon.setVisible(true);
 		this.setVisible(false);
 		this.setAlwaysOnTop(false);
+	}
+	public void keyPressed(KeyEvent e) {
+	}
+	public void keyReleased(KeyEvent e) {
+	}
+	public void keyTyped(KeyEvent e) {
+		if (e.getSource() == txtDetalles) {
+			keyTypedTxtDetalles(e);
+		}
+		if (e.getSource() == txtPlaca) {
+			keyTypedTxtPlaca(e);
+		}
+	}
+	protected void keyTypedTxtPlaca(KeyEvent e) {
+		if (txtPlaca.getText().length() == 7){
+			e.consume();
+		}
+	}
+	protected void keyTypedTxtDetalles(KeyEvent e) {
+		if (txtDetalles.getText().length() == 100){
+			e.consume();
+		}
 	}
 }
 

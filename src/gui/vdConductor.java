@@ -23,8 +23,10 @@ import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
 
-public class vdConductor extends JDialog implements ActionListener {
+public class vdConductor extends JDialog implements ActionListener, KeyListener {
 	private JTextField txtDatosDeConductor;
 	private JTextField txtPlaca;
 	private JTextField txtPasaje;
@@ -37,6 +39,7 @@ public class vdConductor extends JDialog implements ActionListener {
 	viSeleccionAsientos3 vsa1;
 	private JLabel lblEmpresa;
 	private JTextField txtEmpresa;
+	private JLabel label;
 	
 	public static void main(String[] args) {
 		try {
@@ -110,9 +113,11 @@ public class vdConductor extends JDialog implements ActionListener {
 		}
 		{
 			txtPasaje = new JTextField();
+			txtPasaje.setHorizontalAlignment(SwingConstants.RIGHT);
+			txtPasaje.addKeyListener(this);
 			txtPasaje.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 			txtPasaje.setColumns(10);
-			txtPasaje.setBounds(309, 227, 267, 23);
+			txtPasaje.setBounds(309, 227, 79, 23);
 			getContentPane().add(txtPasaje);
 		}
 		{
@@ -152,6 +157,12 @@ public class vdConductor extends JDialog implements ActionListener {
 		txtEmpresa.setColumns(10);
 		txtEmpresa.setBounds(225, 100, 351, 23);
 		getContentPane().add(txtEmpresa);
+		
+		label = new JLabel(".00");
+		label.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		label.setBackground(Color.WHITE);
+		label.setBounds(387, 227, 52, 23);
+		getContentPane().add(label);
 		cargar();
 	}
 
@@ -180,7 +191,7 @@ public class vdConductor extends JDialog implements ActionListener {
 		try {
 			rs.next();
 			txtPlaca.setText(rs.getString("placa"));
-			txtPasaje.setText(""+rs.getFloat("prepasaje"));
+			txtPasaje.setText("0");
 			if(rs.getInt("empresa") == 1)
 				txtEmpresa.setText("MERMA HERMANOS S.R.L");
 			if(rs.getInt("empresa") == 2)
@@ -191,6 +202,9 @@ public class vdConductor extends JDialog implements ActionListener {
 					i = cbConductor.getItemCount();
 				}
 			}
+			//txtPasaje.setText("" + (rs.getFloat("prepasaje")));
+			int prepas = Integer.parseInt(rs.getString("prepasaje"));
+			txtPasaje.setText(""+prepas);			
 		} catch (SQLException e) {e.printStackTrace();}
 	}
 	
@@ -211,5 +225,23 @@ public class vdConductor extends JDialog implements ActionListener {
 		this.setAlwaysOnTop(false);
 		vncon.setVisible(true);
 		this.setVisible(false);
+	}
+	public void keyPressed(KeyEvent arg0) {
+	}
+	public void keyReleased(KeyEvent arg0) {
+	}
+	public void keyTyped(KeyEvent arg0) {
+		if (arg0.getSource() == txtPasaje) {
+			keyTypedTxtPasaje(arg0);
+		}
+	}
+	protected void keyTypedTxtPasaje(KeyEvent arg0) {
+		char c = arg0.getKeyChar();
+		if ((c<'0' || c>'9') && (c!=(char)KeyEvent.VK_DELETE) && (c!=(char)KeyEvent.VK_BACK_SPACE)){
+			arg0.consume();
+		}
+		if (txtPasaje.getText().length() == 4){
+			arg0.consume();
+		}
 	}
 }

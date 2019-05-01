@@ -122,7 +122,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		setBounds(100, 100, 1361, 729);
 		getContentPane().setLayout(null);
 		
-		getContentPane().setBackground(SystemColor.textInactiveText);
+		getContentPane().setBackground(Color.DARK_GRAY);
 		
 		txtTitulo = new JTextField();
 		txtTitulo.setText("SELECCI\u00D3N DE ASIENTOS");

@@ -27,8 +27,10 @@ import java.awt.Component;
 import javax.swing.DefaultComboBoxModel;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
 
-public class viLlenarDatosFaltantes extends JInternalFrame implements ActionListener {
+public class viLlenarDatosFaltantes extends JInternalFrame implements ActionListener, KeyListener {
 	private JTextField txtCompletarDatos;
 	private JLabel lblViajeStandar;
 	private JTextField txtDesde;
@@ -116,10 +118,11 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		getContentPane().add(lblViajeStandar);
 		
 		txtDesde = new JTextField();
+		txtDesde.addKeyListener(this);
 		txtDesde.setText((String) null);
 		txtDesde.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtDesde.setColumns(10);
-		txtDesde.setBounds(30, 202, 355, 23);
+		txtDesde.setBounds(30, 202, 355, 38);
 		getContentPane().add(txtDesde);
 		
 		chbxViajeStandar = new JCheckBox("");
@@ -153,34 +156,39 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		getContentPane().add(lblHataLaCiudad);
 		
 		txtHasta = new JTextField();
+		txtHasta.addKeyListener(this);
 		txtHasta.setText((String) null);
 		txtHasta.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtHasta.setColumns(10);
-		txtHasta.setBounds(30, 276, 355, 23);
+		txtHasta.setBounds(30, 276, 355, 38);
 		getContentPane().add(txtHasta);
 		
 		lblPuntoDeEncuento = new JLabel("Punto de encuento en:");
 		lblPuntoDeEncuento.setHorizontalAlignment(SwingConstants.LEFT);
 		lblPuntoDeEncuento.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-		lblPuntoDeEncuento.setBounds(30, 330, 427, 20);
+		lblPuntoDeEncuento.setBounds(30, 317, 427, 20);
 		getContentPane().add(lblPuntoDeEncuento);
 		
 		txtPencuentro = new JTextField();
+		txtPencuentro.addKeyListener(this);
 		txtPencuentro.setText((String) null);
 		txtPencuentro.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtPencuentro.setColumns(10);
-		txtPencuentro.setBounds(30, 353, 355, 23);
+		txtPencuentro.setBounds(30, 348, 355, 43);
 		getContentPane().add(txtPencuentro);
 		
-		lblEscalasYParadas = new JLabel("<html>Escalas y paradas<br> en el recorrido:</html>");
+		lblEscalasYParadas = new JLabel("<html>Escalas y paradas en el recorrido:</html>");
 		lblEscalasYParadas.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEscalasYParadas.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-		lblEscalasYParadas.setBounds(30, 387, 355, 59);
+		lblEscalasYParadas.setBounds(410, 312, 474, 38);
 		getContentPane().add(lblEscalasYParadas);
 		
 		txtEscalasParadas = new JTextArea();
+		txtEscalasParadas.setLineWrap(true);
+		txtEscalasParadas.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		txtEscalasParadas.addKeyListener(this);
 		txtEscalasParadas.setText("Sin escalas ni paradas.");
-		txtEscalasParadas.setBounds(30, 452, 355, 148);
+		txtEscalasParadas.setBounds(410, 350, 454, 75);
 		getContentPane().add(txtEscalasParadas);
 		
 		lblConductor = new JLabel("Conductor 1:");
@@ -194,25 +202,25 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		txtConductor1.setText((String) null);
 		txtConductor1.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtConductor1.setColumns(10);
-		txtConductor1.setBounds(410, 132, 454, 23);
+		txtConductor1.setBounds(410, 132, 454, 38);
 		getContentPane().add(txtConductor1);
 		
 		lblHoraInicio = new JLabel("Hora Inicio:");
 		lblHoraInicio.setHorizontalAlignment(SwingConstants.LEFT);
 		lblHoraInicio.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-		lblHoraInicio.setBounds(410, 227, 169, 20);
+		lblHoraInicio.setBounds(409, 253, 169, 20);
 		getContentPane().add(lblHoraInicio);
 		
 		lblHoraFin = new JLabel("Hora Fin:");
 		lblHoraFin.setHorizontalAlignment(SwingConstants.LEFT);
 		lblHoraFin.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-		lblHoraFin.setBounds(729, 227, 135, 20);
+		lblHoraFin.setBounds(728, 253, 135, 20);
 		getContentPane().add(lblHoraFin);
 		
 		lblNLicenciaDe = new JLabel("N Licencia de Conducir:");
 		lblNLicenciaDe.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNLicenciaDe.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-		lblNLicenciaDe.setBounds(410, 165, 427, 20);
+		lblNLicenciaDe.setBounds(410, 180, 427, 20);
 		getContentPane().add(lblNLicenciaDe);
 		
 		txtNlicencia1 = new JTextField();
@@ -220,7 +228,7 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		txtNlicencia1.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtNlicencia1.setEditable(false);
 		txtNlicencia1.setColumns(10);
-		txtNlicencia1.setBounds(410, 193, 454, 23);
+		txtNlicencia1.setBounds(410, 208, 454, 38);
 		getContentPane().add(txtNlicencia1);
 		
 		lblConductor_1 = new JLabel("Conductor 2:");
@@ -232,7 +240,7 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		label_1 = new JLabel("N Licencia de Conducir:");
 		label_1.setHorizontalAlignment(SwingConstants.LEFT);
 		label_1.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-		label_1.setBounds(895, 165, 427, 20);
+		label_1.setBounds(895, 180, 427, 20);
 		getContentPane().add(label_1);
 		
 		txtNlicencia2 = new JTextField();
@@ -241,55 +249,60 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		txtNlicencia2.setText((String) null);
 		txtNlicencia2.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtNlicencia2.setColumns(10);
-		txtNlicencia2.setBounds(895, 193, 454, 23);
+		txtNlicencia2.setBounds(895, 208, 454, 38);
 		getContentPane().add(txtNlicencia2);
 		
 		label_2 = new JLabel("Hora Inicio:");
 		label_2.setHorizontalAlignment(SwingConstants.LEFT);
 		label_2.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-		label_2.setBounds(895, 227, 169, 20);
+		label_2.setBounds(894, 253, 169, 20);
 		getContentPane().add(label_2);
 		
 		label_3 = new JLabel("Hora Fin:");
 		label_3.setHorizontalAlignment(SwingConstants.LEFT);
 		label_3.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-		label_3.setBounds(1214, 227, 169, 20);
+		label_3.setBounds(1213, 253, 169, 20);
 		getContentPane().add(label_3);
 		
 		lblComentarios = new JLabel("Comentarios:");
+		lblComentarios.setVisible(false);
 		lblComentarios.setHorizontalAlignment(SwingConstants.LEFT);
 		lblComentarios.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-		lblComentarios.setBounds(410, 300, 355, 20);
+		lblComentarios.setBounds(30, 449, 355, 20);
 		getContentPane().add(lblComentarios);
 		
 		txtComentarios = new JTextArea();
+		txtComentarios.setVisible(false);
+		txtComentarios.setLineWrap(true);
+		txtComentarios.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		txtComentarios.addKeyListener(this);
 		txtComentarios.setText("Sin comentarios.");
-		txtComentarios.setBounds(410, 333, 454, 270);
+		txtComentarios.setBounds(30, 482, 212, 59);
 		getContentPane().add(txtComentarios);
 		
 		cbConductor2 = new JComboBox();
 		cbConductor2.addActionListener(this);
-		cbConductor2.setBounds(895, 134, 452, 20);
+		cbConductor2.setBounds(895, 134, 452, 38);
 		getContentPane().add(cbConductor2);
 		
 		btnGuardarCambios = new JButton("GUARDAR CAMBIOS");
 		btnGuardarCambios.addActionListener(this);
 		btnGuardarCambios.setForeground(Color.WHITE);
-		btnGuardarCambios.setFont(new Font("USAngel", Font.PLAIN, 20));
-		btnGuardarCambios.setBackground(new Color(50, 205, 50));
-		btnGuardarCambios.setBounds(895, 499, 454, 101);
+		btnGuardarCambios.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
+		btnGuardarCambios.setBackground(new Color(30, 144, 255));
+		btnGuardarCambios.setBounds(410, 449, 454, 101);
 		getContentPane().add(btnGuardarCambios);
 		
 		cbHinicio1 = new JComboBox();
 		cbHinicio1.setEnabled(false);
 		cbHinicio1.setModel(new DefaultComboBoxModel(new String[] {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
-		cbHinicio1.setBounds(410, 253, 65, 20);
+		cbHinicio1.setBounds(409, 279, 65, 23);
 		getContentPane().add(cbHinicio1);
 		
 		cbMinicio1 = new JComboBox();
 		cbMinicio1.setEnabled(false);
 		cbMinicio1.setModel(new DefaultComboBoxModel(new String[] {"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
-		cbMinicio1.setBounds(475, 253, 58, 20);
+		cbMinicio1.setBounds(474, 279, 58, 23);
 		getContentPane().add(cbMinicio1);
 		
 		cbHinicio2 = new JComboBox();
@@ -299,7 +312,7 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 			}
 		});
 		cbHinicio2.setModel(new DefaultComboBoxModel(new String[] {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
-		cbHinicio2.setBounds(729, 253, 65, 20);
+		cbHinicio2.setBounds(728, 279, 65, 23);
 		getContentPane().add(cbHinicio2);
 		
 		cbMinicio2 = new JComboBox();
@@ -309,7 +322,7 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 			}
 		});
 		cbMinicio2.setModel(new DefaultComboBoxModel(new String[] {"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
-		cbMinicio2.setBounds(794, 253, 58, 20);
+		cbMinicio2.setBounds(793, 279, 58, 23);
 		getContentPane().add(cbMinicio2);
 		
 		cbHfin1 = new JComboBox();
@@ -320,7 +333,7 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 			}
 		});
 		cbHfin1.setModel(new DefaultComboBoxModel(new String[] {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
-		cbHfin1.setBounds(895, 253, 65, 20);
+		cbHfin1.setBounds(894, 279, 65, 23);
 		getContentPane().add(cbHfin1);
 		
 		cbMfin1 = new JComboBox();
@@ -331,19 +344,19 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 			}
 		});
 		cbMfin1.setModel(new DefaultComboBoxModel(new String[] {"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
-		cbMfin1.setBounds(960, 253, 58, 20);
+		cbMfin1.setBounds(959, 279, 58, 23);
 		getContentPane().add(cbMfin1);
 		
 		cbHfin2 = new JComboBox();
 		cbHfin2.setEnabled(false);
 		cbHfin2.setModel(new DefaultComboBoxModel(new String[] {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
-		cbHfin2.setBounds(1214, 253, 65, 20);
+		cbHfin2.setBounds(1213, 279, 65, 23);
 		getContentPane().add(cbHfin2);
 		
 		cbMfin2 = new JComboBox();
 		cbMfin2.setEnabled(false);
 		cbMfin2.setModel(new DefaultComboBoxModel(new String[] {"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
-		cbMfin2.setBounds(1279, 253, 58, 20);
+		cbMfin2.setBounds(1278, 279, 58, 23);
 		getContentPane().add(cbMfin2);
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{chbxViajeStandar, chbxEscalasCom, txtDesde, txtHasta, txtPencuentro, cbConductor2, txtEscalasParadas, txtComentarios, btnGuardarCambios}));
 		
@@ -420,7 +433,6 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 						
 					}
 					else{
-						JOptionPane.showMessageDialog(null, "asdfasf");
 						String fllegadaoriginal = "";					
 						if(rs.getString("fllegada") != null){
 							fllegadaoriginal = rs.getString("fllegada");
@@ -544,6 +556,52 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		cbMinicio2.setSelectedItem(mf1);
 	}
 	
+	public void keyPressed(KeyEvent e) {
+	}
+	public void keyReleased(KeyEvent e) {
+	}
+	public void keyTyped(KeyEvent e) {
+		if (e.getSource() == txtComentarios) {
+			keyTypedTxtComentarios(e);
+		}
+		if (e.getSource() == txtEscalasParadas) {
+			keyTypedTxtEscalasParadas(e);
+		}
+		if (e.getSource() == txtPencuentro) {
+			keyTypedTxtPencuentro(e);
+		}
+		if (e.getSource() == txtHasta) {
+			keyTypedTxtHasta(e);
+		}
+		if (e.getSource() == txtDesde) {
+			keyTypedTxtDesde(e);
+		}
+	}
+	protected void keyTypedTxtDesde(KeyEvent e) {
+		if (txtDesde.getText().length() == 50){
+			e.consume();
+		}
+	}
+	protected void keyTypedTxtHasta(KeyEvent e) {
+		if (txtHasta.getText().length() == 50){
+			e.consume();
+		}
+	}
+	protected void keyTypedTxtPencuentro(KeyEvent e) {
+		if (txtPencuentro.getText().length() == 60){
+			e.consume();
+		}
+	}
+	protected void keyTypedTxtEscalasParadas(KeyEvent e) {
+		if (txtEscalasParadas.getText().length() == 100){
+			e.consume();
+		}
+	}
+	protected void keyTypedTxtComentarios(KeyEvent e) {
+		if (txtComentarios.getText().length() == 200){
+			e.consume();
+		}
+	}
 }
 
 

@@ -26,8 +26,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
 
-public class vdDestinoNuevo extends JDialog implements ActionListener {
+public class vdDestinoNuevo extends JDialog implements ActionListener, KeyListener {
 	private JTextField txtAgregarDestino;
 	private JButton btnCancelar;
 	private JButton btnGuardar;
@@ -93,6 +95,7 @@ public class vdDestinoNuevo extends JDialog implements ActionListener {
 		getContentPane().add(lblConductor);
 		
 		txtDestino = new JTextField();
+		txtDestino.addKeyListener(this);
 		txtDestino.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtDestino.setColumns(10);
 		txtDestino.setBounds(188, 93, 335, 25);
@@ -153,6 +156,21 @@ public class vdDestinoNuevo extends JDialog implements ActionListener {
 		}
 	}
 	
+	public void keyPressed(KeyEvent e) {
+	}
+	public void keyReleased(KeyEvent e) {
+	}
+	public void keyTyped(KeyEvent e) {
+		if (e.getSource() == txtDestino) {
+			keyTypedTxtDestino(e);
+		}
+	}
+	protected void keyTypedTxtDestino(KeyEvent e) {
+		if (txtDestino.getText().length() == 50){
+			e.consume();
+		}
+		
+	}
 }
 
 

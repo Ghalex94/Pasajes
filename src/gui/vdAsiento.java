@@ -76,9 +76,9 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 	private JTextField txtNacionalidad;
 	private JTextField txtNboleto;
 	private JLabel lblBoletoNo;
-	private JButton btnNewButton;
 	private JCheckBox chckbxImprimir;
 	private JCheckBox chckbxContratante;
+	private JLabel label_1;
 	
 	
 	public static void main(String[] args) {
@@ -141,16 +141,18 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		}
 		{
 			txtPrecio = new JTextField();
+			txtPrecio.setHorizontalAlignment(SwingConstants.RIGHT);
+			txtPrecio.addKeyListener(this);
 			txtPrecio.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 			txtPrecio.setColumns(10);
-			txtPrecio.setBounds(446, 372, 142, 23);
+			txtPrecio.setBounds(446, 372, 72, 23);
 			getContentPane().add(txtPrecio);
 		}
 		{
 			btnGuardar = new JButton("<html>Guardar e<br>\u00A0\u00A0imprimir</html>");
 			btnGuardar.addActionListener(this);
 			btnGuardar.setForeground(Color.WHITE);
-			btnGuardar.setFont(new Font("USAngel", Font.PLAIN, 20));
+			btnGuardar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
 			btnGuardar.setBackground(Color.DARK_GRAY);
 			btnGuardar.setBounds(368, 466, 220, 53);
 			getContentPane().add(btnGuardar);
@@ -164,6 +166,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		}
 		{
 			txtNombre = new JTextField();
+			txtNombre.addKeyListener(this);
 			txtNombre.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 			txtNombre.setColumns(10);
 			txtNombre.setBounds(185, 187, 403, 23);
@@ -188,7 +191,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			btnCancelar = new JButton("Cancelar");
 			btnCancelar.addActionListener(this);
 			btnCancelar.setForeground(Color.WHITE);
-			btnCancelar.setFont(new Font("USAngel", Font.PLAIN, 20));
+			btnCancelar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
 			btnCancelar.setBackground(Color.DARK_GRAY);
 			btnCancelar.setBounds(39, 466, 220, 53);
 			getContentPane().add(btnCancelar);
@@ -238,6 +241,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		getContentPane().add(cbAnio);
 		
 		txtRuc = new JTextField();
+		txtRuc.addKeyListener(this);
 		txtRuc.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtRuc.setColumns(10);
 		txtRuc.setBounds(185, 224, 403, 23);
@@ -256,6 +260,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		getContentPane().add(lblRazSocial);
 		
 		txtRazsocial = new JTextField();
+		txtRazsocial.addKeyListener(this);
 		txtRazsocial.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtRazsocial.setColumns(10);
 		txtRazsocial.setBounds(185, 260, 403, 23);
@@ -277,7 +282,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			}
 		});
 		btnEliminar.setForeground(Color.WHITE);
-		btnEliminar.setFont(new Font("Dialog", Font.PLAIN, 20));
+		btnEliminar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
 		btnEliminar.setBackground(Color.RED);
 		btnEliminar.setBounds(269, 466, 89, 53);
 		getContentPane().add(btnEliminar);
@@ -290,6 +295,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		}
 		{
 			txtNacionalidad = new JTextField();
+			txtNacionalidad.addKeyListener(this);
 			txtNacionalidad.setText("Per\u00FA");
 			txtNacionalidad.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 			txtNacionalidad.setColumns(10);
@@ -312,12 +318,6 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			lblBoletoNo.setBounds(39, 113, 154, 20);
 			getContentPane().add(lblBoletoNo);
 		}
-		{
-			btnNewButton = new JButton("prueba");
-			btnNewButton.addActionListener(this);
-			btnNewButton.setBounds(499, 117, 89, 23);
-			getContentPane().add(btnNewButton);
-		}
 		
 		chckbxImprimir = new JCheckBox("Imprimir?");
 		chckbxImprimir.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -331,14 +331,18 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			chckbxContratante.setBounds(207, 412, 240, 35);
 			getContentPane().add(chckbxContratante);
 		}
-		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtDni, txtRuc, txtNombre, txtRazsocial, txtNacionalidad, cbDia, cbMes, cbAnio, txtEdad, txtPrecio, btnGuardar, btnCancelar, btnEliminar}));
+		{
+			label_1 = new JLabel(".00");
+			label_1.setFont(new Font("Segoe UI", Font.BOLD, 18));
+			label_1.setBackground(Color.WHITE);
+			label_1.setBounds(518, 372, 52, 23);
+			getContentPane().add(label_1);
+		}
+		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtDni, txtNombre, txtRuc, txtRazsocial, txtNacionalidad, cbDia, cbMes, cbAnio, txtEdad, txtPrecio, btnGuardar, btnCancelar, btnEliminar}));
 		cargar();
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
-		if (arg0.getSource() == btnNewButton) {
-			actionPerformedBtnNewButton(arg0);
-		}
 		if (arg0.getSource() == cbAnio) {
 			actionPerformedCbAnio(arg0);
 		}
@@ -364,7 +368,10 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		ResultSet rs = consulta.cargarVentaTemporal();
 		try {
 			rs.next();
-			txtPrecio.setText(rs.getString("prepasaje"));
+			//txtPrecio.setText(rs.getString("prepasaje"));
+			int prepas = Integer.parseInt(rs.getString("prepasaje"));
+			txtPrecio.setText(""+prepas);
+			
 			prepasajeoriginal = Float.parseFloat(rs.getString("prepasaje"));
 		} catch (SQLException e) {	e.printStackTrace(); }
 		//LLENAR COMBOS DE FECHA
@@ -470,7 +477,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 				int anio = Integer.parseInt(cbAnio.getSelectedItem().toString());
 				int edad = Integer.parseInt(txtEdad.getText());
 				String fnacimiento = "" + anio + "-" + mes + "-" + dia;
-				float prepasaje = Float.parseFloat(txtPrecio.getText());
+				float prepasaje = Float.parseFloat(txtPrecio.getText() + ".00");
 				String nacionalidad = txtNacionalidad.getText();
 				int contratante = 0;
 				if(chckbxContratante.isSelected())
@@ -587,12 +594,36 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 	public void keyReleased(KeyEvent arg0) {
 	}
 	public void keyTyped(KeyEvent arg0) {
+		if (arg0.getSource() == txtPrecio) {
+			keyTypedTxtPrecio(arg0);
+		}
+		if (arg0.getSource() == txtNacionalidad) {
+			keyTypedTxtNacionalidad(arg0);
+		}
+		if (arg0.getSource() == txtRazsocial) {
+			keyTypedTxtRazsocial(arg0);
+		}
+		if (arg0.getSource() == txtRuc) {
+			keyTypedTxtRuc(arg0);
+		}
+		if (arg0.getSource() == txtNombre) {
+			keyTypedTxtNombre(arg0);
+		}
 		if (arg0.getSource() == txtDni) {
 			keyTypedTxtDni(arg0);
 		}
 	}
 	protected void keyTypedTxtDni(KeyEvent e) {
 		char c = e.getKeyChar();
+		
+		if ((c<'0' || c>'9') && (c!=(char)KeyEvent.VK_DELETE) && (c!=(char)KeyEvent.VK_BACK_SPACE) && (c!=(char)KeyEvent.VK_ENTER)){
+			e.consume();
+		}
+		if (txtDni.getText().length() == 8){
+			e.consume();
+		}
+		
+		
 		if (c == (char)KeyEvent.VK_ENTER){
 			int dni;
 			if(txtDni.getText().length() != 8){
@@ -710,19 +741,38 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			this.dispose();
 		}
 	}
-	protected void actionPerformedBtnNewButton(ActionEvent arg0) {
-		try {
-			this.setAlwaysOnTop(false);
-			String precio = txtPrecio.getText();
-			String[] arrayprecio = precio.split("\\.");
-			String soles = arrayprecio[0];
-			String centimos = arrayprecio[1];
-						
-			String solesLetras = new NumeroLetras().convertir(Integer.parseInt(soles));
-			
-			JOptionPane.showMessageDialog(null, solesLetras + " CON " + centimos);
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e);
+	protected void keyTypedTxtNombre(KeyEvent arg0) {
+		
+		if (txtNombre.getText().length() == 50){
+			arg0.consume();
+		}
+	}
+	protected void keyTypedTxtRuc(KeyEvent arg0) {
+		char c = arg0.getKeyChar();
+		if ((c<'0' || c>'9') && (c!=(char)KeyEvent.VK_DELETE) && (c!=(char)KeyEvent.VK_BACK_SPACE) && (c!=(char)KeyEvent.VK_ENTER)){
+			arg0.consume();
+		}
+		if (txtRuc.getText().length() == 11){
+			arg0.consume();
+		}
+	}
+	protected void keyTypedTxtRazsocial(KeyEvent arg0) {
+		if (txtRazsocial.getText().length() == 80){
+			arg0.consume();
+		}
+	}
+	protected void keyTypedTxtNacionalidad(KeyEvent arg0) {
+		if (txtNacionalidad.getText().length() == 50){
+			arg0.consume();
+		}
+	}
+	protected void keyTypedTxtPrecio(KeyEvent arg0) {
+		char c = arg0.getKeyChar();
+		if ((c<'0' || c>'9') && (c!=(char)KeyEvent.VK_DELETE) && (c!=(char)KeyEvent.VK_BACK_SPACE)){
+			arg0.consume();
+		}
+		if (txtPrecio.getText().length() == 4){
+			arg0.consume();
 		}
 	}
 }

@@ -22,8 +22,10 @@ import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
 
-public class vdConductorNuevo extends JDialog implements ActionListener {
+public class vdConductorNuevo extends JDialog implements ActionListener, KeyListener {
 	private JTextField txtAgregarConductor;
 	private JLabel lblDni;
 	private JTextField txtDni;
@@ -80,6 +82,7 @@ public class vdConductorNuevo extends JDialog implements ActionListener {
 		getContentPane().add(lblDni);
 		
 		txtDni = new JTextField();
+		txtDni.addKeyListener(this);
 		txtDni.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtDni.setColumns(10);
 		txtDni.setBounds(188, 69, 335, 25);
@@ -108,6 +111,7 @@ public class vdConductorNuevo extends JDialog implements ActionListener {
 		getContentPane().add(lblConductor);
 		
 		txtConductor = new JTextField();
+		txtConductor.addKeyListener(this);
 		txtConductor.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtConductor.setColumns(10);
 		txtConductor.setBounds(188, 177, 335, 25);
@@ -120,6 +124,7 @@ public class vdConductorNuevo extends JDialog implements ActionListener {
 		getContentPane().add(lblNLicencia);
 		
 		txtNlicencia = new JTextField();
+		txtNlicencia.addKeyListener(this);
 		txtNlicencia.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		txtNlicencia.setColumns(10);
 		txtNlicencia.setBounds(188, 123, 335, 25);
@@ -195,6 +200,40 @@ public class vdConductorNuevo extends JDialog implements ActionListener {
 		}
 		
 		
+	}
+	public void keyPressed(KeyEvent e) {
+	}
+	public void keyReleased(KeyEvent e) {
+	}
+	public void keyTyped(KeyEvent e) {
+		if (e.getSource() == txtConductor) {
+			keyTypedTxtConductor(e);
+		}
+		if (e.getSource() == txtNlicencia) {
+			keyTypedTxtNlicencia(e);
+		}
+		if (e.getSource() == txtDni) {
+			keyTypedTxtDni(e);
+		}
+	}
+	protected void keyTypedTxtDni(KeyEvent e) {
+		char c = e.getKeyChar();
+		if ((c<'0' || c>'9') && (c!=(char)KeyEvent.VK_DELETE) && (c!=(char)KeyEvent.VK_BACK_SPACE) && (c!=(char)KeyEvent.VK_ENTER)){
+			e.consume();
+		}
+		if (txtDni.getText().length() == 8){
+			e.consume();
+		}
+	}
+	protected void keyTypedTxtNlicencia(KeyEvent e) {
+		if (txtNlicencia.getText().length() == 30){
+			e.consume();
+		}
+	}
+	protected void keyTypedTxtConductor(KeyEvent e) {
+		if (txtConductor.getText().length() == 50){
+			e.consume();
+		}
 	}
 }
 
