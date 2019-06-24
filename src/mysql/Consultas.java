@@ -39,7 +39,7 @@ public class Consultas {
 		ResultSet rs = null;
 		try {
 			st = con.createStatement();
-			rs = st.executeQuery("select vh.placa, mvh.idmodelo, mvh.modelo, vh.detalle, co.dniconductor, co.conductor from tb_vehiculo vh inner join tb_modelo_vehiculo mvh  inner join tb_conductor co on vh.idmodelo = mvh.idmodelo and vh.dniconductor = co.dniconductor order by mvh.modelo");		
+			rs = st.executeQuery("select vh.placa, mvh.idmodelo, mvh.modelo, vh.mtc, vh.detalle, co.dniconductor, co.conductor from tb_vehiculo vh inner join tb_modelo_vehiculo mvh  inner join tb_conductor co on vh.idmodelo = mvh.idmodelo and vh.dniconductor = co.dniconductor order by mvh.modelo");		
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
@@ -118,18 +118,19 @@ public class Consultas {
 		return rs;
 	}
 	
-	public static void crearVehiculo(String placa, int modelo, String detalle, int dni){
+	public static void crearVehiculo(String placa, int modelo, String detalle, String mtc, int dni){
 		Connection con = MySQLConexion.getConection();
 		java.sql.Statement st;
 		ResultSet rs = null;
 		try {
 			st = con.createStatement();
-			String sql = "insert into tb_vehiculo (placa, idmodelo, detalle, dniconductor)" + " values (?, ?, ?, ?)";
+			String sql = "insert into tb_vehiculo (placa, idmodelo, detalle, mtc, dniconductor)" + " values (?, ?, ?, ?, ?)";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setString(1, placa);
 			prepareStmt.setInt(2, modelo);
 			prepareStmt.setString(3, detalle);
-			prepareStmt.setInt(4, dni);
+			prepareStmt.setString(4, mtc);
+			prepareStmt.setInt(5, dni);
 			prepareStmt.execute();
 			
 		} catch (Exception e) {
@@ -153,14 +154,15 @@ public class Consultas {
 		}
 	}
 	
-	public static void modificarvehiculo(String placa, String detalles, int dni){
+	public static void modificarvehiculo(String placa, String detalles, String mtc, int dni){
 		Connection con = MySQLConexion.getConection();
 		try {
-			String sql = "update tb_vehiculo set detalle=?, dniconductor=? where placa=?";
+			String sql = "update tb_vehiculo set detalle=?, mtc=?, dniconductor=? where placa=?";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setString(1, detalles);
-			prepareStmt.setInt(2, dni);
-			prepareStmt.setString(3, placa);
+			prepareStmt.setString(2, mtc);
+			prepareStmt.setInt(3, dni);
+			prepareStmt.setString(4, placa);
 			prepareStmt.execute();
 			//JOptionPane.showMessageDialog(null, " VEHICULO MODIFICADO CORRECTAMENTE ");
 		} catch (Exception e) {

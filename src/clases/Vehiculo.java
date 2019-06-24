@@ -12,14 +12,16 @@ public class Vehiculo {
 	String detalle;
 	int dniconductor;
 	ResultSet rs;
+	String mtc;
 	String conductor;
 	
 	public Vehiculo(){}
-	public Vehiculo(String placa, int idmodelo, String modelo, String detalle, int dniconductor, String conductor){
+	public Vehiculo(String placa, int idmodelo, String modelo, String detalle, String mtc, int dniconductor, String conductor){
 		this.placa = placa;
 		this.idmodelo = idmodelo;
 		this.modelo = modelo;
 		this.detalle = detalle;
+		this.mtc = mtc;
 		this.dniconductor = dniconductor;
 		this.conductor = conductor;
 	}
@@ -36,6 +38,7 @@ public class Vehiculo {
 								rs.getInt("idmodelo"),
 								rs.getString("modelo"),
 								rs.getString("detalle"),
+								rs.getString("mtc"),
 								rs.getInt("dniconductor"),
 								rs.getString("conductor")
 								)
@@ -108,6 +111,10 @@ public class Vehiculo {
 	public void setConductor(String conductor) {
 		this.conductor = conductor;
 	}
-	
-
+	public String getMtc() {
+		return mtc;
+	}
+	public void setMtc(String mtc) {
+		this.mtc = mtc;
+	}
 }

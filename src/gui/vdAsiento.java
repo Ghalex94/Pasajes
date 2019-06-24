@@ -523,10 +523,11 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 				sumarTotalPasajes();
 				//IMPRIMIR
 				if(chckbxImprimir.isSelected()){
-				
 					try {
 						this.setAlwaysOnTop(false);
+						
 						String precio = txtPrecio.getText();
+						precio = precio + ".00";
 						String[] arrayprecio = precio.split("\\.");
 						String soles = arrayprecio[0];
 						String centimos = arrayprecio[1];
@@ -550,18 +551,18 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 	
 								//AbstractJasperReports.showViewer();
 								JasperPrintManager.printReport(impressao, false);
-								JOptionPane.showMessageDialog(null, "VENTA CORRECTA :)");          
+								JOptionPane.showMessageDialog(null, "VENTA CORRECTA");          
 							}
 							catch (JRException ex){
 								System.err.println( "Error iReport: " + ex.getMessage() );
 							}
 							
 						} catch (Exception e) {
-							JOptionPane.showMessageDialog(null, "ERROR "+ e);
+							JOptionPane.showMessageDialog(null, "ERROR2 "+ e);
 						}				
 						
 					} catch (Exception e) {
-						JOptionPane.showMessageDialog(null, e);
+						JOptionPane.showMessageDialog(null,"ERROR1 " + e);
 					}
 				}
 				

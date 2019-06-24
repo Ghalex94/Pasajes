@@ -9,15 +9,13 @@ public class Empresa {
 	int	idempresa;
 	String ruc;
 	String empresa;
-	String mtc;
 	ResultSet rs;
 	
 	public Empresa(){}
-	public Empresa(int idempresa, String ruc, String empresa, String mtc){
+	public Empresa(int idempresa, String ruc, String empresa){
 		this.idempresa = idempresa;
 		this.ruc = ruc;
 		this.empresa = empresa;
-		this.mtc = mtc;
 	}
 	
 	public void cargarEmpresas(JComboBox<Empresa> cbEmpresa){
@@ -29,8 +27,7 @@ public class Empresa {
 						new Empresa(
 								rs.getInt("idempresa"),
 								rs.getString("ruc"),
-								rs.getString("empresa"),
-								rs.getString("mtc")
+								rs.getString("empresa")
 								)
 				);
 		} catch (Exception e) {
@@ -60,12 +57,6 @@ public class Empresa {
 	}
 	public void setEmpresa(String empresa) {
 		this.empresa = empresa;
-	}
-	public String getMtc() {
-		return mtc;
-	}
-	public void setMtc(String mtc) {
-		this.mtc = mtc;
 	}
 	public ResultSet getRs() {
 		return rs;

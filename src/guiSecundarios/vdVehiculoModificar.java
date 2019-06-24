@@ -46,6 +46,8 @@ public class vdVehiculoModificar extends JDialog implements ActionListener, KeyL
 	viListaVehiculos vnvh = null;
 	String[ ] vehiculo = null;
 	ResultSet rs;
+	private JTextField txtMtc;
+	private JLabel lblMtc;
 	
 	public static void main(String[] args) {
 		try {
@@ -68,7 +70,7 @@ public class vdVehiculoModificar extends JDialog implements ActionListener, KeyL
 		
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		setUndecorated(true);
-		setBounds(100, 100, 559, 325);
+		setBounds(100, 100, 559, 393);
 		getContentPane().setLayout(null);
 		{
 			txtAgregarVehiculo = new JTextField();
@@ -116,14 +118,14 @@ public class vdVehiculoModificar extends JDialog implements ActionListener, KeyL
 			JLabel lblConductor = new JLabel("Conductor:");
 			lblConductor.setHorizontalAlignment(SwingConstants.LEFT);
 			lblConductor.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-			lblConductor.setBounds(30, 221, 132, 20);
+			lblConductor.setBounds(30, 281, 132, 20);
 			getContentPane().add(lblConductor);
 		}
 		{
 			cbConductor = new JComboBox();
 			cbConductor.addActionListener(this);
 			cbConductor.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-			cbConductor.setBounds(188, 220, 273, 23);
+			cbConductor.setBounds(188, 280, 273, 23);
 			getContentPane().add(cbConductor);
 		}
 		{
@@ -132,7 +134,7 @@ public class vdVehiculoModificar extends JDialog implements ActionListener, KeyL
 			btnNewConductor.setForeground(Color.WHITE);
 			btnNewConductor.setFont(new Font("Segoe UI", Font.BOLD, 15));
 			btnNewConductor.setBackground(new Color(50, 205, 50));
-			btnNewConductor.setBounds(471, 220, 52, 23);
+			btnNewConductor.setBounds(471, 280, 52, 23);
 			getContentPane().add(btnNewConductor);
 		}
 		{
@@ -156,7 +158,7 @@ public class vdVehiculoModificar extends JDialog implements ActionListener, KeyL
 			btnCancelar.setForeground(Color.WHITE);
 			btnCancelar.setFont(new Font("USAngel", Font.PLAIN, 20));
 			btnCancelar.setBackground(Color.DARK_GRAY);
-			btnCancelar.setBounds(30, 258, 220, 53);
+			btnCancelar.setBounds(30, 326, 220, 53);
 			getContentPane().add(btnCancelar);
 		}
 		{
@@ -165,14 +167,14 @@ public class vdVehiculoModificar extends JDialog implements ActionListener, KeyL
 			btnGuardar.setForeground(Color.WHITE);
 			btnGuardar.setFont(new Font("USAngel", Font.PLAIN, 20));
 			btnGuardar.setBackground(Color.DARK_GRAY);
-			btnGuardar.setBounds(303, 261, 220, 53);
+			btnGuardar.setBounds(303, 329, 220, 53);
 			getContentPane().add(btnGuardar);
 		}
 		{
 			lblDniConductor = new JLabel("DNI Conductor:");
 			lblDniConductor.setHorizontalAlignment(SwingConstants.LEFT);
 			lblDniConductor.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-			lblDniConductor.setBounds(30, 191, 220, 20);
+			lblDniConductor.setBounds(30, 241, 220, 20);
 			getContentPane().add(lblDniConductor);
 		}
 		{
@@ -180,8 +182,23 @@ public class vdVehiculoModificar extends JDialog implements ActionListener, KeyL
 			txtDni.setEditable(false);
 			txtDni.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 			txtDni.setColumns(10);
-			txtDni.setBounds(244, 186, 279, 25);
+			txtDni.setBounds(244, 236, 279, 25);
 			getContentPane().add(txtDni);
+		}
+		{
+			txtMtc = new JTextField();
+			txtMtc.setText((String) null);
+			txtMtc.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+			txtMtc.setColumns(10);
+			txtMtc.setBounds(188, 196, 335, 25);
+			getContentPane().add(txtMtc);
+		}
+		{
+			lblMtc = new JLabel("MTC:");
+			lblMtc.setHorizontalAlignment(SwingConstants.LEFT);
+			lblMtc.setFont(new Font("Dialog", Font.PLAIN, 25));
+			lblMtc.setBounds(30, 201, 132, 20);
+			getContentPane().add(lblMtc);
 		}
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtPlaca, cbModelo, txtDetalles, cbConductor, btnNewConductor, btnCancelar, btnGuardar}));
 		cargar();
@@ -209,6 +226,7 @@ public class vdVehiculoModificar extends JDialog implements ActionListener, KeyL
 		txtPlaca.setText(vehiculo[0]);
 		txtDetalles.setText(vehiculo[2]);
 		txtDni.setText(vehiculo[3]);
+		txtMtc.setText(vehiculo[5]);
 		String modelo = vehiculo[1];
 		String nombreconductor = vehiculo[4];
 		
@@ -221,7 +239,7 @@ public class vdVehiculoModificar extends JDialog implements ActionListener, KeyL
 		}
 		//buscar conductor
 		for(int i = 0; i < cbConductor.getItemCount(); i++){
-			if(Integer.parseInt(vehiculo[3]) == cbConductor.getItemAt(i).getDni()){
+			if(Integer.parseInt(vehiculo[4]) == cbConductor.getItemAt(i).getDni()){
 				cbConductor.setSelectedIndex(i);
 				i = cbConductor.getItemCount();
 			}
@@ -252,6 +270,7 @@ public class vdVehiculoModificar extends JDialog implements ActionListener, KeyL
 			String placa = txtPlaca.getText();
 			int modelo = cbModelo.getSelectedIndex()+1;
 			String detalle = txtDetalles.getText();
+			String mtc = txtMtc.getText();
 			int dni = Integer.parseInt(txtDni.getText());
 			if(txtPlaca.getText().length() == 0){
 				this.setAlwaysOnTop(false);
@@ -261,7 +280,7 @@ public class vdVehiculoModificar extends JDialog implements ActionListener, KeyL
 			}
 			else{
 				this.setAlwaysOnTop(false);
-				Consultas.modificarvehiculo(placa, detalle, dni);
+				Consultas.modificarvehiculo(placa, detalle, mtc, dni);
 				vnvh.cargar();
 				selecionarVehiculo();
 				JOptionPane.showMessageDialog(null, "Vehiculo modificado");

@@ -24,6 +24,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
+import java.awt.SystemColor;
 
 public class vdConductorNuevo extends JDialog implements ActionListener, KeyListener {
 	private JTextField txtAgregarConductor;
@@ -59,9 +60,8 @@ public class vdConductorNuevo extends JDialog implements ActionListener, KeyList
 		vmvh = temp2;
 		cndtr = temp3;
 		
-		getContentPane().setBackground(Color.LIGHT_GRAY);
-		setUndecorated(true);
-		setBounds(100, 100, 559, 303);
+		getContentPane().setBackground(SystemColor.activeCaption);
+		setBounds(100, 100, 559, 351);
 		getContentPane().setLayout(null);
 		
 		txtAgregarConductor = new JTextField();
@@ -71,7 +71,7 @@ public class vdConductorNuevo extends JDialog implements ActionListener, KeyList
 		txtAgregarConductor.setFont(new Font("USAngel", Font.PLAIN, 20));
 		txtAgregarConductor.setEditable(false);
 		txtAgregarConductor.setColumns(10);
-		txtAgregarConductor.setBackground(new Color(30, 144, 255));
+		txtAgregarConductor.setBackground(new Color(60, 179, 113));
 		txtAgregarConductor.setBounds(0, 0, 559, 46);
 		getContentPane().add(txtAgregarConductor);
 		
@@ -146,13 +146,21 @@ public class vdConductorNuevo extends JDialog implements ActionListener, KeyList
 	}
 	
 	protected void actionPerformedBtnCancelar(ActionEvent arg0) {
+		this.setAlwaysOnTop(false);
 		if(vnvh != null){
 			vnvh.setVisible(true);
 			vnvh.setAlwaysOnTop(true);
+			vnvh.setEnabled(true);
 		}
 		if(cndtr != null){
 			cndtr.setVisible(true);
 			cndtr.setAlwaysOnTop(true);
+			cndtr.setEnabled(true);
+		}
+		if(vmvh != null){
+			vmvh.setVisible(true);
+			vmvh.setAlwaysOnTop(true);
+			vmvh.setEnabled(true);
 		}
 		this.dispose();
 	}

@@ -47,6 +47,7 @@ public class vdVehiculoNuevo extends JDialog implements ActionListener, KeyListe
 	vPrincipal vp = null;
 	viListaVehiculos vnvh = null;
 	ResultSet rs;
+	private JTextField txtMtc;
 	
 	public static void main(String[] args) {
 		try {
@@ -68,7 +69,7 @@ public class vdVehiculoNuevo extends JDialog implements ActionListener, KeyListe
 		vnvh = temp2;
 		
 		setUndecorated(true);
-		setBounds(100, 100, 559, 325);
+		setBounds(100, 100, 559, 383);
 		getContentPane().setLayout(null);
 		{
 			txtAgregarVehiculo = new JTextField();
@@ -114,14 +115,14 @@ public class vdVehiculoNuevo extends JDialog implements ActionListener, KeyListe
 			JLabel lblConductor = new JLabel("Conductor:");
 			lblConductor.setHorizontalAlignment(SwingConstants.LEFT);
 			lblConductor.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-			lblConductor.setBounds(30, 221, 132, 20);
+			lblConductor.setBounds(30, 273, 132, 20);
 			getContentPane().add(lblConductor);
 		}
 		{
 			cbConductor = new JComboBox();
 			cbConductor.addActionListener(this);
 			cbConductor.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-			cbConductor.setBounds(188, 220, 273, 23);
+			cbConductor.setBounds(188, 272, 273, 23);
 			getContentPane().add(cbConductor);
 		}
 		{
@@ -130,7 +131,7 @@ public class vdVehiculoNuevo extends JDialog implements ActionListener, KeyListe
 			btnNewConductor.setForeground(Color.WHITE);
 			btnNewConductor.setFont(new Font("Segoe UI", Font.BOLD, 15));
 			btnNewConductor.setBackground(new Color(50, 205, 50));
-			btnNewConductor.setBounds(471, 220, 52, 23);
+			btnNewConductor.setBounds(471, 272, 52, 23);
 			getContentPane().add(btnNewConductor);
 		}
 		{
@@ -154,7 +155,7 @@ public class vdVehiculoNuevo extends JDialog implements ActionListener, KeyListe
 			btnCancelar.setForeground(Color.WHITE);
 			btnCancelar.setFont(new Font("USAngel", Font.PLAIN, 20));
 			btnCancelar.setBackground(Color.DARK_GRAY);
-			btnCancelar.setBounds(30, 258, 220, 53);
+			btnCancelar.setBounds(30, 310, 220, 53);
 			getContentPane().add(btnCancelar);
 		}
 		{
@@ -163,14 +164,14 @@ public class vdVehiculoNuevo extends JDialog implements ActionListener, KeyListe
 			btnGuardar.setForeground(Color.WHITE);
 			btnGuardar.setFont(new Font("USAngel", Font.PLAIN, 20));
 			btnGuardar.setBackground(Color.DARK_GRAY);
-			btnGuardar.setBounds(303, 261, 220, 53);
+			btnGuardar.setBounds(303, 313, 220, 53);
 			getContentPane().add(btnGuardar);
 		}
 		{
 			lblDniConductor = new JLabel("DNI Conductor:");
 			lblDniConductor.setHorizontalAlignment(SwingConstants.LEFT);
 			lblDniConductor.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-			lblDniConductor.setBounds(30, 191, 220, 20);
+			lblDniConductor.setBounds(30, 238, 220, 20);
 			getContentPane().add(lblDniConductor);
 		}
 		{
@@ -178,9 +179,21 @@ public class vdVehiculoNuevo extends JDialog implements ActionListener, KeyListe
 			txtDni.setEditable(false);
 			txtDni.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 			txtDni.setColumns(10);
-			txtDni.setBounds(244, 186, 279, 25);
+			txtDni.setBounds(244, 233, 279, 25);
 			getContentPane().add(txtDni);
 		}
+		
+		JLabel lblMtc = new JLabel("MTC:");
+		lblMtc.setHorizontalAlignment(SwingConstants.LEFT);
+		lblMtc.setFont(new Font("Dialog", Font.PLAIN, 25));
+		lblMtc.setBounds(30, 198, 132, 20);
+		getContentPane().add(lblMtc);
+		
+		txtMtc = new JTextField();
+		txtMtc.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		txtMtc.setColumns(10);
+		txtMtc.setBounds(188, 193, 335, 25);
+		getContentPane().add(txtMtc);
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtPlaca, cbModelo, txtDetalles, cbConductor, btnNewConductor, btnCancelar, btnGuardar}));
 		cargar();
 	}
@@ -227,6 +240,7 @@ public class vdVehiculoNuevo extends JDialog implements ActionListener, KeyListe
 			String placa = txtPlaca.getText();
 			int modelo = cbModelo.getSelectedIndex()+1;
 			String detalle = txtDetalles.getText();
+			String mtc = txtMtc.getText();
 			int dni = Integer.parseInt(txtDni.getText());
 			if(txtPlaca.getText().length() == 0){
 				this.setAlwaysOnTop(false);
@@ -235,7 +249,7 @@ public class vdVehiculoNuevo extends JDialog implements ActionListener, KeyListe
 				this.setAlwaysOnTop(true);
 			}
 			else{
-				Consultas.crearVehiculo(placa, modelo, detalle, dni);
+				Consultas.crearVehiculo(placa, modelo, detalle, mtc, dni);
 				this.setAlwaysOnTop(false);
 				vnvh.cargar();
 				selecionarVehiculo();

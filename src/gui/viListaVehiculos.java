@@ -126,12 +126,12 @@ public class viListaVehiculos extends JInternalFrame implements ActionListener {
 		tb = this.tbVehiculos;
 		tb.setRowHeight(40);
 		tb.setModel(dtm);
-		dtm.setColumnIdentifiers(new Object[]{"PLACA", "MODELO", "DETALLE", "DNI CONDUCTOR", "NOMBRE CONDUCTOR"});
+		dtm.setColumnIdentifiers(new Object[]{"PLACA", "MODELO", "DETALLE", "DNI CONDUCTOR", "NOMBRE CONDUCTOR", "MTC"});
 		Consultas consult = new Consultas();
 		rs = consult.cargarVehiculosConductores();
 		try {
 			while(rs.next())
-				dtm.addRow(new Object[]{rs.getString("placa"), rs.getString("modelo"), rs.getString("detalle"), rs.getString("dniconductor"), rs.getString("conductor")});
+				dtm.addRow(new Object[]{rs.getString("placa"), rs.getString("modelo"), rs.getString("detalle"), rs.getString("dniconductor"), rs.getString("conductor"), rs.getString("mtc")});
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
@@ -160,9 +160,10 @@ public class viListaVehiculos extends JInternalFrame implements ActionListener {
 		String placa = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 0).toString();
 		String modelo = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 1).toString();
 		String detalle = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 2).toString();
-		String dniconductor = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 3).toString();
-		String nomconductor = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 4).toString();		
-		String[ ] vehiculo = {placa, modelo, detalle, dniconductor, nomconductor};
+		String mtc = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 3).toString();
+		String dniconductor = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 4).toString();
+		String nomconductor = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 5).toString();		
+		String[ ] vehiculo = {placa, modelo, detalle, dniconductor, mtc, nomconductor};
 		
 		vdVehiculoModificar vmvh = new vdVehiculoModificar(vp, this, vehiculo);
 		vmvh.setVisible(true);
