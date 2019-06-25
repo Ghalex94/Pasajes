@@ -67,12 +67,12 @@ public class viListaDestinos extends JInternalFrame implements ActionListener {
         int alto = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
 		
 		txtVehiculos = new JTextField();
-		txtVehiculos.setText("DESTINOS");
+		txtVehiculos.setText("SEDES");
 		txtVehiculos.setRequestFocusEnabled(false);
 		txtVehiculos.setIgnoreRepaint(true);
 		txtVehiculos.setHorizontalAlignment(SwingConstants.CENTER);
 		txtVehiculos.setForeground(Color.WHITE);
-		txtVehiculos.setFont(new Font("USAngel", Font.BOLD, 32));
+		txtVehiculos.setFont(new Font("EngraversGothic BT", Font.BOLD, 35));
 		txtVehiculos.setFocusable(false);
 		txtVehiculos.setFocusTraversalKeysEnabled(false);
 		txtVehiculos.setEditable(false);
@@ -81,19 +81,20 @@ public class viListaDestinos extends JInternalFrame implements ActionListener {
 		txtVehiculos.setBounds(0, 0, ancho, 75);
 		getContentPane().add(txtVehiculos);
 		
-		btnAnadirDestino = new JButton("Anadir Destino");
+		btnAnadirDestino = new JButton("A\u00F1adir Sede");
 		btnAnadirDestino.addActionListener(this);
 		btnAnadirDestino.setForeground(Color.WHITE);
-		btnAnadirDestino.setFont(new Font("EngraversGothic BT", Font.BOLD, 28));
-		btnAnadirDestino.setBackground(Color.DARK_GRAY);
+		btnAnadirDestino.setFont(new Font("EngraversGothic BT", Font.BOLD, 35));
+		btnAnadirDestino.setBackground(new Color(0, 139, 139));
 		btnAnadirDestino.setBounds(968, 86, 364, 98);
 		getContentPane().add(btnAnadirDestino);
 		
-		btnEliminarDestino = new JButton("Eliminar Destino");
+		btnEliminarDestino = new JButton("Eliminar Sede");
+		btnEliminarDestino.setEnabled(false);
 		btnEliminarDestino.addActionListener(this);
 		btnEliminarDestino.setForeground(Color.WHITE);
-		btnEliminarDestino.setFont(new Font("EngraversGothic BT", Font.BOLD, 28));
-		btnEliminarDestino.setBackground(Color.DARK_GRAY);
+		btnEliminarDestino.setFont(new Font("EngraversGothic BT", Font.BOLD, 35));
+		btnEliminarDestino.setBackground(new Color(0, 139, 139));
 		btnEliminarDestino.setBounds(968, 227, 364, 98);
 		getContentPane().add(btnEliminarDestino);
 		
@@ -114,7 +115,7 @@ public class viListaDestinos extends JInternalFrame implements ActionListener {
 		tb = this.tbDestinos;
 		tb.setRowHeight(40);
 		tb.setModel(dtm);
-		dtm.setColumnIdentifiers(new Object[]{"ID", "DESTINO"});
+		dtm.setColumnIdentifiers(new Object[]{"ID", "SEDE"});
 		Consultas consult = new Consultas();
 		rs = consult.cargarDestinos();
 		try {

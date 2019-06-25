@@ -40,6 +40,8 @@ public class vdConductor extends JDialog implements ActionListener, KeyListener 
 	private JLabel lblEmpresa;
 	private JTextField txtEmpresa;
 	private JLabel label;
+	private JLabel lblSocio;
+	private JTextField textField;
 	
 	public static void main(String[] args) {
 		try {
@@ -58,7 +60,7 @@ public class vdConductor extends JDialog implements ActionListener, KeyListener 
 		
 		setLocationRelativeTo(null);
 		setUndecorated(true);
-		setBounds(100, 100, 658, 378);
+		setBounds(100, 100, 658, 368);
 		getContentPane().setLayout(null);
 		{
 			txtDatosDeConductor = new JTextField();
@@ -66,103 +68,119 @@ public class vdConductor extends JDialog implements ActionListener, KeyListener 
 			txtDatosDeConductor.setText("DATOS DE CONDUCTOR");
 			txtDatosDeConductor.setHorizontalAlignment(SwingConstants.CENTER);
 			txtDatosDeConductor.setForeground(Color.WHITE);
-			txtDatosDeConductor.setFont(new Font("USAngel", Font.PLAIN, 20));
+			txtDatosDeConductor.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
 			txtDatosDeConductor.setColumns(10);
-			txtDatosDeConductor.setBackground(new Color(30, 144, 255));
+			txtDatosDeConductor.setBackground(new Color(0, 139, 139));
 			txtDatosDeConductor.setBounds(0, 0, 658, 68);
 			getContentPane().add(txtDatosDeConductor);
 		}
 		{
 			JLabel lblConductor = new JLabel("Conductor:");
 			lblConductor.setHorizontalAlignment(SwingConstants.LEFT);
-			lblConductor.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-			lblConductor.setBounds(83, 147, 132, 20);
+			lblConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+			lblConductor.setBounds(43, 165, 132, 20);
 			getContentPane().add(lblConductor);
 		}
 		{
 			JLabel lblPlaca = new JLabel("Placa:");
 			lblPlaca.setHorizontalAlignment(SwingConstants.LEFT);
-			lblPlaca.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-			lblPlaca.setBounds(83, 188, 132, 20);
+			lblPlaca.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+			lblPlaca.setBounds(43, 205, 132, 20);
 			getContentPane().add(lblPlaca);
 		}
 		{
 			btnGuardar = new JButton("<html>Guardar<br></html>");
 			btnGuardar.addActionListener(this);
 			btnGuardar.setForeground(Color.WHITE);
-			btnGuardar.setFont(new Font("USAngel", Font.PLAIN, 20));
-			btnGuardar.setBackground(Color.DARK_GRAY);
-			btnGuardar.setBounds(387, 303, 220, 53);
+			btnGuardar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
+			btnGuardar.setBackground(new Color(0, 139, 139));
+			btnGuardar.setBounds(387, 292, 220, 53);
 			getContentPane().add(btnGuardar);
 		}
 		{
 			JLabel lblPrecioDePasaje = new JLabel("Precio de pasaje:");
 			lblPrecioDePasaje.setVerticalAlignment(SwingConstants.TOP);
 			lblPrecioDePasaje.setHorizontalAlignment(SwingConstants.LEFT);
-			lblPrecioDePasaje.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-			lblPrecioDePasaje.setBounds(83, 227, 216, 32);
+			lblPrecioDePasaje.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+			lblPrecioDePasaje.setBounds(43, 249, 216, 32);
 			getContentPane().add(lblPrecioDePasaje);
 		}
 		{
 			txtPlaca = new JTextField();
 			txtPlaca.setEditable(false);
-			txtPlaca.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+			txtPlaca.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 			txtPlaca.setColumns(10);
-			txtPlaca.setBounds(225, 187, 351, 23);
+			txtPlaca.setBounds(185, 204, 422, 23);
 			getContentPane().add(txtPlaca);
 		}
 		{
 			txtPasaje = new JTextField();
 			txtPasaje.setHorizontalAlignment(SwingConstants.RIGHT);
 			txtPasaje.addKeyListener(this);
-			txtPasaje.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+			txtPasaje.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 			txtPasaje.setColumns(10);
-			txtPasaje.setBounds(309, 227, 79, 23);
+			txtPasaje.setBounds(269, 249, 79, 23);
 			getContentPane().add(txtPasaje);
 		}
 		{
 			btnCancelar = new JButton("Cancelar");
 			btnCancelar.addActionListener(this);
 			btnCancelar.setForeground(Color.WHITE);
-			btnCancelar.setFont(new Font("USAngel", Font.PLAIN, 20));
-			btnCancelar.setBackground(Color.DARK_GRAY);
-			btnCancelar.setBounds(43, 303, 220, 53);
+			btnCancelar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
+			btnCancelar.setBackground(new Color(0, 139, 139));
+			btnCancelar.setBounds(43, 292, 220, 53);
 			getContentPane().add(btnCancelar);
 		}
 		
 		cbConductor = new JComboBox();
-		cbConductor.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-		cbConductor.setBounds(225, 136, 289, 31);
+		cbConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		cbConductor.setBounds(185, 158, 351, 31);
 		getContentPane().add(cbConductor);
 		{
 			btnNewConductor = new JButton("+");
 			btnNewConductor.addActionListener(this);
 			btnNewConductor.setForeground(Color.WHITE);
 			btnNewConductor.setBackground(new Color(50, 205, 50));
-			btnNewConductor.setFont(new Font("Segoe UI", Font.BOLD, 15));
-			btnNewConductor.setBounds(524, 136, 52, 31);
+			btnNewConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+			btnNewConductor.setBounds(555, 158, 52, 31);
 			getContentPane().add(btnNewConductor);
 		}
 		
 		lblEmpresa = new JLabel("Empresa:");
 		lblEmpresa.setHorizontalAlignment(SwingConstants.LEFT);
-		lblEmpresa.setFont(new Font("Dialog", Font.PLAIN, 25));
-		lblEmpresa.setBounds(83, 99, 132, 24);
+		lblEmpresa.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		lblEmpresa.setBounds(43, 124, 132, 24);
 		getContentPane().add(lblEmpresa);
 		
 		txtEmpresa = new JTextField();
 		txtEmpresa.setText((String) null);
-		txtEmpresa.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		txtEmpresa.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtEmpresa.setEditable(false);
 		txtEmpresa.setColumns(10);
-		txtEmpresa.setBounds(225, 100, 351, 23);
+		txtEmpresa.setBounds(185, 124, 422, 23);
 		getContentPane().add(txtEmpresa);
 		
 		label = new JLabel(".00");
-		label.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		label.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		label.setBackground(Color.WHITE);
-		label.setBounds(387, 227, 52, 23);
+		label.setBounds(347, 249, 52, 23);
 		getContentPane().add(label);
+		{
+			lblSocio = new JLabel("Socio:");
+			lblSocio.setHorizontalAlignment(SwingConstants.LEFT);
+			lblSocio.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+			lblSocio.setBounds(43, 89, 132, 24);
+			getContentPane().add(lblSocio);
+		}
+		{
+			textField = new JTextField();
+			textField.setEditable(false);
+			textField.setText((String) null);
+			textField.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+			textField.setColumns(10);
+			textField.setBounds(185, 89, 422, 23);
+			getContentPane().add(textField);
+		}
 		cargar();
 	}
 

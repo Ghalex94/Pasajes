@@ -83,37 +83,37 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener, KeyListe
 		textField.setText("DATOS DE PASAJERO");
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
 		textField.setForeground(Color.WHITE);
-		textField.setFont(new Font("USAngel", Font.PLAIN, 20));
+		textField.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
 		textField.setEditable(false);
 		textField.setColumns(10);
-		textField.setBackground(new Color(30, 144, 255));
+		textField.setBackground(new Color(0, 139, 139));
 		textField.setBounds(0, 0, 649, 46);
 		getContentPane().add(textField);
 		
 		label = new JLabel("DNI:");
 		label.setHorizontalAlignment(SwingConstants.LEFT);
-		label.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+		label.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		label.setBounds(47, 95, 132, 20);
 		getContentPane().add(label);
 		
 		txtDni = new JTextField();
 		txtDni.addKeyListener(this);
 		txtDni.setText("0");
-		txtDni.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		txtDni.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		txtDni.setColumns(10);
 		txtDni.setBounds(204, 94, 392, 23);
 		getContentPane().add(txtDni);
 		
 		label_1 = new JLabel("*RUC:");
 		label_1.setHorizontalAlignment(SwingConstants.LEFT);
-		label_1.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+		label_1.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		label_1.setBounds(47, 162, 132, 20);
 		getContentPane().add(label_1);
 		
 		txtRuc = new JTextField();
 		txtRuc.addKeyListener(this);
 		txtRuc.setText((String) null);
-		txtRuc.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		txtRuc.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		txtRuc.setColumns(10);
 		txtRuc.setBounds(204, 161, 392, 23);
 		getContentPane().add(txtRuc);
@@ -121,69 +121,69 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener, KeyListe
 		txtNombre = new JTextField();
 		txtNombre.addKeyListener(this);
 		txtNombre.setText((String) null);
-		txtNombre.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		txtNombre.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		txtNombre.setColumns(10);
 		txtNombre.setBounds(204, 128, 392, 23);
 		getContentPane().add(txtNombre);
 		
 		label_2 = new JLabel("Nombre:");
 		label_2.setHorizontalAlignment(SwingConstants.LEFT);
-		label_2.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+		label_2.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		label_2.setBounds(47, 129, 132, 20);
 		getContentPane().add(label_2);
 		
 		label_3 = new JLabel("*Raz. Social:");
 		label_3.setHorizontalAlignment(SwingConstants.LEFT);
-		label_3.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+		label_3.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		label_3.setBounds(47, 195, 154, 20);
 		getContentPane().add(label_3);
 		
 		txtRazSocial = new JTextField();
 		txtRazSocial.addKeyListener(this);
 		txtRazSocial.setText((String) null);
-		txtRazSocial.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		txtRazSocial.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		txtRazSocial.setColumns(10);
 		txtRazSocial.setBounds(204, 194, 392, 23);
 		getContentPane().add(txtRazSocial);
 		
 		label_4 = new JLabel("F. Nacimiento (d/m/a):");
 		label_4.setHorizontalAlignment(SwingConstants.LEFT);
-		label_4.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+		label_4.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		label_4.setBounds(49, 232, 251, 20);
 		getContentPane().add(label_4);
 		
 		cbDia = new JComboBox();
 		cbDia.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
 		cbDia.setSelectedIndex(-1);
-		cbDia.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		cbDia.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		cbDia.setBounds(334, 228, 65, 27);
 		getContentPane().add(cbDia);
 		
 		cbMes = new JComboBox();
 		cbMes.setModel(new DefaultComboBoxModel(new String[] {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SETIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"}));
 		cbMes.setSelectedIndex(-1);
-		cbMes.setFont(new Font("Segoe UI", Font.BOLD, 15));
+		cbMes.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		cbMes.setBounds(409, 228, 112, 27);
 		getContentPane().add(cbMes);
 		
 		cbAnio = new JComboBox();
-		cbAnio.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		cbAnio.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		cbAnio.setBounds(531, 228, 65, 27);
 		getContentPane().add(cbAnio);
 		
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(this);
 		btnCancelar.setForeground(Color.WHITE);
-		btnCancelar.setFont(new Font("USAngel", Font.PLAIN, 20));
-		btnCancelar.setBackground(Color.DARK_GRAY);
+		btnCancelar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
+		btnCancelar.setBackground(new Color(0, 139, 139));
 		btnCancelar.setBounds(47, 335, 220, 53);
 		getContentPane().add(btnCancelar);
 		
 		btnGuardar = new JButton("Guardar ");
 		btnGuardar.addActionListener(this);
 		btnGuardar.setForeground(Color.WHITE);
-		btnGuardar.setFont(new Font("USAngel", Font.PLAIN, 20));
-		btnGuardar.setBackground(Color.DARK_GRAY);
+		btnGuardar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
+		btnGuardar.setBackground(new Color(0, 139, 139));
 		btnGuardar.setBounds(376, 335, 220, 53);
 		getContentPane().add(btnGuardar);
 		
@@ -196,14 +196,14 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener, KeyListe
 		
 		lblNacionalidad = new JLabel("Pa\u00EDs:");
 		lblNacionalidad.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNacionalidad.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+		lblNacionalidad.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		lblNacionalidad.setBounds(47, 267, 154, 20);
 		getContentPane().add(lblNacionalidad);
 		
 		txtNacionalidad = new JTextField();
 		txtNacionalidad.addKeyListener(this);
 		txtNacionalidad.setText("Per\u00FA");
-		txtNacionalidad.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		txtNacionalidad.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		txtNacionalidad.setColumns(10);
 		txtNacionalidad.setBounds(204, 266, 392, 23);
 		getContentPane().add(txtNacionalidad);

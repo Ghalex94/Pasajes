@@ -74,7 +74,7 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 		txtVehiculos.setIgnoreRepaint(true);
 		txtVehiculos.setHorizontalAlignment(SwingConstants.CENTER);
 		txtVehiculos.setForeground(Color.WHITE);
-		txtVehiculos.setFont(new Font("USAngel", Font.BOLD, 32));
+		txtVehiculos.setFont(new Font("EngraversGothic BT", Font.BOLD, 35));
 		txtVehiculos.setFocusable(false);
 		txtVehiculos.setFocusTraversalKeysEnabled(false);
 		txtVehiculos.setEditable(false);
@@ -86,16 +86,17 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 		btnAnadirPasajero = new JButton("A\u00F1adir Cliente");
 		btnAnadirPasajero.addActionListener(this);
 		btnAnadirPasajero.setForeground(Color.WHITE);
-		btnAnadirPasajero.setFont(new Font("EngraversGothic BT", Font.BOLD, 28));
-		btnAnadirPasajero.setBackground(Color.DARK_GRAY);
+		btnAnadirPasajero.setFont(new Font("EngraversGothic BT", Font.BOLD, 35));
+		btnAnadirPasajero.setBackground(new Color(0, 139, 139));
 		btnAnadirPasajero.setBounds(973, 86, 364, 98);
 		getContentPane().add(btnAnadirPasajero);
 		
 		btnEliminarPasajero = new JButton("Eliminar Cliente");
+		btnEliminarPasajero.setEnabled(false);
 		btnEliminarPasajero.addActionListener(this);
 		btnEliminarPasajero.setForeground(Color.WHITE);
-		btnEliminarPasajero.setFont(new Font("EngraversGothic BT", Font.BOLD, 28));
-		btnEliminarPasajero.setBackground(Color.DARK_GRAY);
+		btnEliminarPasajero.setFont(new Font("EngraversGothic BT", Font.BOLD, 35));
+		btnEliminarPasajero.setBackground(new Color(0, 139, 139));
 		btnEliminarPasajero.setBounds(973, 333, 364, 98);
 		getContentPane().add(btnEliminarPasajero);
 		
@@ -109,8 +110,8 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 		btnModificarCliente = new JButton("Modificar Cliente");
 		btnModificarCliente.addActionListener(this);
 		btnModificarCliente.setForeground(Color.WHITE);
-		btnModificarCliente.setFont(new Font("EngraversGothic BT", Font.BOLD, 28));
-		btnModificarCliente.setBackground(Color.DARK_GRAY);
+		btnModificarCliente.setFont(new Font("EngraversGothic BT", Font.BOLD, 35));
+		btnModificarCliente.setBackground(new Color(0, 139, 139));
 		btnModificarCliente.setBounds(973, 209, 364, 98);
 		getContentPane().add(btnModificarCliente);
 

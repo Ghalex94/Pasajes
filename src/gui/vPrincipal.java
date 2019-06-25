@@ -50,7 +50,6 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	public JMenuItem mntmCerrarSesin;
 	public JMenuItem mntmListaDeVehiculos;
 	public JMenuItem mntmListaDeDestinos;
-    public JMenuItem mntmGastos;
     public JMenuItem mntmContinuarPreparacion;
     public JMenuItem mntmCancelarSalida;
     
@@ -80,6 +79,10 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
     private JMenuItem mntmIdV;
     private JMenuItem mntmContrato;
     private JMenuItem mntmLlenarInformacion;
+    private JMenuItem mntmAdministrarUsuarios;
+    private JMenuItem mntmOpcionesAvanzadas;
+    private JMenuItem mntmListaSocios;
+    private JMenu mnSedes;
     
     
 	
@@ -110,12 +113,12 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		menuBar = new JMenuBar();
 		menuBar.setFont(new Font("Segoe UI", Font.BOLD, 30));
 		menuBar.setMargin(new Insets(5, 5, 5, 5));
-		menuBar.setBackground(Color.DARK_GRAY);
+		menuBar.setBackground(new Color(0, 139, 139));
 		setJMenuBar(menuBar);
 		
-		mnArchivo = new JMenu("Archivo");
+		mnArchivo = new JMenu("|Archivo|");
 		mnArchivo.setForeground(Color.WHITE);
-		mnArchivo.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		mnArchivo.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		mnArchivo.setEnabled(false);
 		menuBar.add(mnArchivo);
 		
@@ -126,16 +129,24 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mntmCerrarSesin = new JMenuItem("Cerrar Sesi\u00F3n");
 		mntmCerrarSesin.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mntmCerrarSesin.addActionListener(this);
+		
+		mntmAdministrarUsuarios = new JMenuItem("Administrar Usuarios");
+		mntmAdministrarUsuarios.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		mnArchivo.add(mntmAdministrarUsuarios);
+		
+		mntmOpcionesAvanzadas = new JMenuItem("Opciones Avanzadas");
+		mntmOpcionesAvanzadas.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		mnArchivo.add(mntmOpcionesAvanzadas);
 		mnArchivo.add(mntmCerrarSesin);
 		mnArchivo.add(mntmSalir);
 		
-		mnSalidas = new JMenu("Salida de Minivan");
+		mnSalidas = new JMenu("|Salida de Minivan|");
 		mnSalidas.setForeground(Color.WHITE);
-		mnSalidas.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		mnSalidas.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		mnSalidas.setEnabled(false);
 		menuBar.add(mnSalidas);
 		
-		mntmCrearNuevaSalida = new JMenuItem("Crear nueva salida bus");
+		mntmCrearNuevaSalida = new JMenuItem("Preparar salida de Minivan");
 		mntmCrearNuevaSalida.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mntmCrearNuevaSalida.addActionListener(this);
 		mnSalidas.add(mntmCrearNuevaSalida);
@@ -152,13 +163,14 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mntmCancelarSalida.setEnabled(false);
 		mnSalidas.add(mntmCancelarSalida);
 		
-		mnFormatos = new JMenu("Formatos");
+		mnFormatos = new JMenu("|Formatos|");
 		mnFormatos.setForeground(Color.WHITE);
-		mnFormatos.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		mnFormatos.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		mnFormatos.setEnabled(false);
 		menuBar.add(mnFormatos);
 		
-		mntmLlenarInformacion = new JMenuItem("Llenar informaci\u00F3n faltante");
+		mntmLlenarInformacion = new JMenuItem("COMPLETAR INFORMACI\u00D3N");
+		mntmLlenarInformacion.setForeground(new Color(0, 139, 139));
 		mntmLlenarInformacion.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mntmLlenarInformacion.addActionListener(this);
 		mnFormatos.add(mntmLlenarInformacion);
@@ -182,33 +194,38 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mntmContrato.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mnFormatos.add(mntmContrato);
 		
-		mnVehiculosConductores = new JMenu("Vehiculos y conductores");
+		mnVehiculosConductores = new JMenu("|Socio - conductores - vehiculos|");
 		mnVehiculosConductores.setForeground(Color.WHITE);
-		mnVehiculosConductores.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		mnVehiculosConductores.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		mnVehiculosConductores.setEnabled(false);
 		menuBar.add(mnVehiculosConductores);
 		
-		mntmListaDeVehiculos = new JMenuItem("Lista de Vehiculos");
+		mntmListaDeVehiculos = new JMenuItem("Lista de Vehiculos y Conductores");
 		mntmListaDeVehiculos.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mntmListaDeVehiculos.addActionListener(this);
+		
+		mntmListaSocios = new JMenuItem("Lista de Socios");
+		mntmListaSocios.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		mnVehiculosConductores.add(mntmListaSocios);
 		mnVehiculosConductores.add(mntmListaDeVehiculos);
 		
-		mntmListaDeDestinos = new JMenuItem("Lista de Destinos");
+		mnSedes = new JMenu("|Sedes|");
+		mnSedes.setForeground(Color.WHITE);
+		mnSedes.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		menuBar.add(mnSedes);
+		
+		mntmListaDeDestinos = new JMenuItem("Lista de Sedes");
+		mnSedes.add(mntmListaDeDestinos);
 		mntmListaDeDestinos.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mntmListaDeDestinos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				actionPerformedMntmListaDeDestinos(arg0);
 			}
 		});
-		mnVehiculosConductores.add(mntmListaDeDestinos);
 		
-		mntmGastos = new JMenuItem("Ingresar gastos generados con vehiculos");
-		mntmGastos.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		mnVehiculosConductores.add(mntmGastos);
-		
-		mnClientes = new JMenu("Clientes");
+		mnClientes = new JMenu("|Clientes|");
 		mnClientes.setForeground(Color.WHITE);
-		mnClientes.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		mnClientes.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		mnClientes.setEnabled(false);
 		menuBar.add(mnClientes);
 		
@@ -221,10 +238,10 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		});
 		mnClientes.add(mntmListaDeClientes);
 		
-		mnReportes = new JMenu("Reportes");
+		mnReportes = new JMenu("|Reportes|");
 		mnReportes.setForeground(Color.WHITE);
 		mnReportes.setBackground(Color.DARK_GRAY);
-		mnReportes.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		mnReportes.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		mnReportes.setEnabled(false);
 		menuBar.add(mnReportes);
 		contentPane = new JPanel();
@@ -528,10 +545,11 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		cerrarVentanas();
 		lvc = new viListaVehiculos(this);
 		desktopPane.add(lvc);
-		lvc.show();
+		
 		try{
 			lvc.setMaximum(true);
 		}catch(Exception f){}
+		lvc.show();
 	}
 	protected void actionPerformedMntmListaDeDestinos(ActionEvent arg0) {
 		esconderVentanas();

@@ -42,6 +42,11 @@ public class viDatos1 extends JInternalFrame implements ActionListener, KeyListe
 	private JLabel lblPrecioDePasaje;
 	private JTextField txtPrePasaje;
 	private JLabel label;
+	private JLabel lblCdigoDeSocio;
+	private JTextField txtCodSocio;
+	private JLabel lblNewLabel_1;
+	private JLabel lblConductor;
+	private JComboBox cbConductor;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -63,67 +68,95 @@ public class viDatos1 extends JInternalFrame implements ActionListener, KeyListe
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		setTitle("SELECCIONE");
 		vp = temp;
-		setBounds(100, 100, 871, 254);
+		setBounds(100, 100, 863, 303);
 		getContentPane().setLayout(null);
 		
 		lblNewLabel = new JLabel("Empresa:");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-		lblNewLabel.setBounds(35, 49, 132, 20);
+		lblNewLabel.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		lblNewLabel.setBounds(407, 74, 132, 31);
 		getContentPane().add(lblNewLabel);
 		
 		lblVehiculo = new JLabel("Vehiculo:");
 		lblVehiculo.setHorizontalAlignment(SwingConstants.LEFT);
-		lblVehiculo.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-		lblVehiculo.setBounds(35, 112, 132, 20);
+		lblVehiculo.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		lblVehiculo.setBounds(32, 179, 132, 20);
 		getContentPane().add(lblVehiculo);
 		
 		btnContinuar = new JButton("Continuar");
 		btnContinuar.setForeground(Color.WHITE);
-		btnContinuar.setBackground(Color.DARK_GRAY);
+		btnContinuar.setBackground(new Color(0, 139, 139));
 		btnContinuar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
 		btnContinuar.addActionListener(this);
-		btnContinuar.setBounds(590, 158, 212, 31);
+		btnContinuar.setBounds(587, 220, 212, 31);
 		getContentPane().add(btnContinuar);
 		
 		cbEmpresa = new JComboBox();
-		cbEmpresa.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-		cbEmpresa.setBounds(162, 49, 640, 23);
+		cbEmpresa.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		cbEmpresa.setBounds(510, 78, 289, 25);
 		getContentPane().add(cbEmpresa);
 		
 		cbVehiculo = new JComboBox();
-		cbVehiculo.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-		cbVehiculo.setBounds(162, 109, 640, 25);
+		cbVehiculo.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		cbVehiculo.setBounds(225, 176, 574, 25);
 		getContentPane().add(cbVehiculo);
 		
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(this);
 		btnCancelar.setForeground(Color.WHITE);
 		btnCancelar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
-		btnCancelar.setBackground(Color.DARK_GRAY);
-		btnCancelar.setBounds(390, 158, 190, 31);
+		btnCancelar.setBackground(new Color(0, 139, 139));
+		btnCancelar.setBounds(387, 220, 190, 31);
 		getContentPane().add(btnCancelar);
 		
 		lblPrecioDePasaje = new JLabel("Precio de pasaje:");
 		lblPrecioDePasaje.setHorizontalAlignment(SwingConstants.LEFT);
-		lblPrecioDePasaje.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
-		lblPrecioDePasaje.setBounds(35, 166, 229, 20);
+		lblPrecioDePasaje.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		lblPrecioDePasaje.setBounds(32, 220, 182, 31);
 		getContentPane().add(lblPrecioDePasaje);
 		
 		txtPrePasaje = new JTextField();
 		txtPrePasaje.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtPrePasaje.addKeyListener(this);
-		txtPrePasaje.setText("0");
-		txtPrePasaje.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		txtPrePasaje.setText("25");
+		txtPrePasaje.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtPrePasaje.setColumns(10);
-		txtPrePasaje.setBounds(250, 164, 52, 25);
+		txtPrePasaje.setBounds(225, 224, 52, 25);
 		getContentPane().add(txtPrePasaje);
 		
 		label = new JLabel(".00");
 		label.setBackground(Color.WHITE);
-		label.setFont(new Font("Segoe UI", Font.BOLD, 18));
-		label.setBounds(303, 166, 52, 23);
+		label.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		label.setBounds(280, 226, 52, 25);
 		getContentPane().add(label);
+		
+		lblCdigoDeSocio = new JLabel("C\u00F3digo de socio:");
+		lblCdigoDeSocio.setHorizontalAlignment(SwingConstants.LEFT);
+		lblCdigoDeSocio.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		lblCdigoDeSocio.setBounds(34, 74, 182, 31);
+		getContentPane().add(lblCdigoDeSocio);
+		
+		txtCodSocio = new JTextField();
+		txtCodSocio.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		txtCodSocio.setBounds(225, 78, 170, 25);
+		getContentPane().add(txtCodSocio);
+		txtCodSocio.setColumns(10);
+		
+		lblNewLabel_1 = new JLabel("Complete el siguiente formulario");
+		lblNewLabel_1.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
+		lblNewLabel_1.setBounds(34, 21, 455, 31);
+		getContentPane().add(lblNewLabel_1);
+		
+		lblConductor = new JLabel("Conductor:");
+		lblConductor.setHorizontalAlignment(SwingConstants.LEFT);
+		lblConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		lblConductor.setBounds(32, 132, 132, 20);
+		getContentPane().add(lblConductor);
+		
+		cbConductor = new JComboBox();
+		cbConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		cbConductor.setBounds(225, 129, 574, 25);
+		getContentPane().add(cbConductor);
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{cbEmpresa, cbVehiculo, txtPrePasaje, btnContinuar, btnCancelar}));
 		cargar();
 	}

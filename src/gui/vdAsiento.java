@@ -111,23 +111,23 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			textField.setText("DATOS DE PASAJERO");
 			textField.setHorizontalAlignment(SwingConstants.CENTER);
 			textField.setForeground(Color.WHITE);
-			textField.setFont(new Font("USAngel", Font.PLAIN, 20));
+			textField.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
 			textField.setColumns(10);
-			textField.setBackground(new Color(30, 144, 255));
+			textField.setBackground(new Color(0, 139, 139));
 			textField.setBounds(0, 0, 649, 46);
 			getContentPane().add(textField);
 		}
 		{
 			JLabel lblDni = new JLabel("DNI:");
 			lblDni.setHorizontalAlignment(SwingConstants.LEFT);
-			lblDni.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+			lblDni.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 			lblDni.setBounds(39, 152, 132, 20);
 			getContentPane().add(lblDni);
 		}
 		{
 			txtDni = new JTextField();
 			txtDni.addKeyListener(this);
-			txtDni.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+			txtDni.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 			txtDni.setColumns(10);
 			txtDni.setBounds(185, 151, 403, 23);
 			getContentPane().add(txtDni);
@@ -135,7 +135,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		{
 			JLabel lblNombre = new JLabel("Nombre:");
 			lblNombre.setHorizontalAlignment(SwingConstants.LEFT);
-			lblNombre.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+			lblNombre.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 			lblNombre.setBounds(39, 188, 132, 20);
 			getContentPane().add(lblNombre);
 		}
@@ -143,31 +143,31 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			txtPrecio = new JTextField();
 			txtPrecio.setHorizontalAlignment(SwingConstants.RIGHT);
 			txtPrecio.addKeyListener(this);
-			txtPrecio.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+			txtPrecio.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 			txtPrecio.setColumns(10);
 			txtPrecio.setBounds(446, 372, 72, 23);
 			getContentPane().add(txtPrecio);
 		}
 		{
-			btnGuardar = new JButton("<html>Guardar e<br>\u00A0\u00A0imprimir</html>");
+			btnGuardar = new JButton("<html>Guardar e<br>imprimir</html>");
 			btnGuardar.addActionListener(this);
 			btnGuardar.setForeground(Color.WHITE);
 			btnGuardar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
-			btnGuardar.setBackground(Color.DARK_GRAY);
+			btnGuardar.setBackground(new Color(0, 139, 139));
 			btnGuardar.setBounds(368, 466, 220, 53);
 			getContentPane().add(btnGuardar);
 		}
 		{
 			JLabel label = new JLabel("Edad:");
 			label.setHorizontalAlignment(SwingConstants.LEFT);
-			label.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+			label.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 			label.setBounds(39, 372, 78, 20);
 			getContentPane().add(label);
 		}
 		{
 			txtNombre = new JTextField();
 			txtNombre.addKeyListener(this);
-			txtNombre.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+			txtNombre.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 			txtNombre.setColumns(10);
 			txtNombre.setBounds(185, 187, 403, 23);
 			getContentPane().add(txtNombre);
@@ -175,14 +175,14 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		{
 			JLabel label = new JLabel("Precio:");
 			label.setHorizontalAlignment(SwingConstants.RIGHT);
-			label.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+			label.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 			label.setBounds(325, 372, 102, 20);
 			getContentPane().add(label);
 		}
 		{
 			txtEdad = new JTextField();
 			txtEdad.setEditable(false);
-			txtEdad.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+			txtEdad.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 			txtEdad.setColumns(10);
 			txtEdad.setBounds(127, 372, 107, 23);
 			getContentPane().add(txtEdad);
@@ -192,14 +192,14 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			btnCancelar.addActionListener(this);
 			btnCancelar.setForeground(Color.WHITE);
 			btnCancelar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
-			btnCancelar.setBackground(Color.DARK_GRAY);
+			btnCancelar.setBackground(new Color(0, 139, 139));
 			btnCancelar.setBounds(39, 466, 220, 53);
 			getContentPane().add(btnCancelar);
 		}
 		{
 			lblAsiento = new JLabel("ASIENTO:");
 			lblAsiento.setHorizontalAlignment(SwingConstants.LEFT);
-			lblAsiento.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+			lblAsiento.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 			lblAsiento.setBounds(39, 81, 132, 20);
 			getContentPane().add(lblAsiento);
 		}
@@ -208,14 +208,14 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			lblNAsiento.setForeground(new Color(220, 20, 60));
 			lblNAsiento.setBackground(Color.WHITE);
 			lblNAsiento.setHorizontalAlignment(SwingConstants.LEFT);
-			lblNAsiento.setFont(new Font("Segoe UI", Font.BOLD, 25));
+			lblNAsiento.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 			lblNAsiento.setBounds(185, 81, 173, 20);
 			getContentPane().add(lblNAsiento);
 		}
 		{
 			lblFNacimiento = new JLabel("F. Nacimiento (d/m/a):");
 			lblFNacimiento.setHorizontalAlignment(SwingConstants.LEFT);
-			lblFNacimiento.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+			lblFNacimiento.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 			lblFNacimiento.setBounds(41, 333, 251, 20);
 			getContentPane().add(lblFNacimiento);
 		}
@@ -223,45 +223,45 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		cbDia = new JComboBox();
 		cbDia.addActionListener(this);
 		cbDia.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
-		cbDia.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		cbDia.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		cbDia.setBounds(326, 329, 65, 27);
 		getContentPane().add(cbDia);
 		
 		cbMes = new JComboBox();
 		cbMes.addActionListener(this);
 		cbMes.setModel(new DefaultComboBoxModel(new String[] {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SETIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"}));
-		cbMes.setFont(new Font("Segoe UI", Font.BOLD, 15));
+		cbMes.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		cbMes.setBounds(401, 329, 112, 27);
 		getContentPane().add(cbMes);
 		
 		cbAnio = new JComboBox();
 		cbAnio.addActionListener(this);
-		cbAnio.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		cbAnio.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		cbAnio.setBounds(523, 329, 65, 27);
 		getContentPane().add(cbAnio);
 		
 		txtRuc = new JTextField();
 		txtRuc.addKeyListener(this);
-		txtRuc.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		txtRuc.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		txtRuc.setColumns(10);
 		txtRuc.setBounds(185, 224, 403, 23);
 		getContentPane().add(txtRuc);
 		
 		lblRuc = new JLabel("*RUC:");
 		lblRuc.setHorizontalAlignment(SwingConstants.LEFT);
-		lblRuc.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+		lblRuc.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		lblRuc.setBounds(39, 225, 132, 20);
 		getContentPane().add(lblRuc);
 		
 		lblRazSocial = new JLabel("*Raz. Social:");
 		lblRazSocial.setHorizontalAlignment(SwingConstants.LEFT);
-		lblRazSocial.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+		lblRazSocial.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		lblRazSocial.setBounds(39, 261, 154, 20);
 		getContentPane().add(lblRazSocial);
 		
 		txtRazsocial = new JTextField();
 		txtRazsocial.addKeyListener(this);
-		txtRazsocial.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		txtRazsocial.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		txtRazsocial.setColumns(10);
 		txtRazsocial.setBounds(185, 260, 403, 23);
 		getContentPane().add(txtRazsocial);
@@ -289,7 +289,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		{
 			lblNacionalidad = new JLabel("Pa\u00EDs:");
 			lblNacionalidad.setHorizontalAlignment(SwingConstants.LEFT);
-			lblNacionalidad.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+			lblNacionalidad.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 			lblNacionalidad.setBounds(39, 296, 154, 20);
 			getContentPane().add(lblNacionalidad);
 		}
@@ -297,7 +297,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			txtNacionalidad = new JTextField();
 			txtNacionalidad.addKeyListener(this);
 			txtNacionalidad.setText("Per\u00FA");
-			txtNacionalidad.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+			txtNacionalidad.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 			txtNacionalidad.setColumns(10);
 			txtNacionalidad.setBounds(185, 295, 403, 23);
 			getContentPane().add(txtNacionalidad);
@@ -306,7 +306,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			txtNboleto = new JTextField();
 			txtNboleto.setForeground(Color.RED);
 			txtNboleto.setText("0");
-			txtNboleto.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+			txtNboleto.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 			txtNboleto.setColumns(10);
 			txtNboleto.setBounds(185, 112, 206, 23);
 			getContentPane().add(txtNboleto);
@@ -314,26 +314,30 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		{
 			lblBoletoNo = new JLabel("BOLETO No:");
 			lblBoletoNo.setHorizontalAlignment(SwingConstants.LEFT);
-			lblBoletoNo.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+			lblBoletoNo.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 			lblBoletoNo.setBounds(39, 113, 154, 20);
 			getContentPane().add(lblBoletoNo);
 		}
 		
 		chckbxImprimir = new JCheckBox("Imprimir?");
+		chckbxImprimir.setSelected(true);
+		chckbxImprimir.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		chckbxImprimir.setHorizontalAlignment(SwingConstants.RIGHT);
 		chckbxImprimir.setBackground(Color.LIGHT_GRAY);
-		chckbxImprimir.setBounds(491, 441, 97, 23);
+		chckbxImprimir.setBounds(446, 441, 142, 23);
 		getContentPane().add(chckbxImprimir);
 		{
 			chckbxContratante = new JCheckBox("\u00BFCONTRATANTE?");
-			chckbxContratante.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+			chckbxContratante.setForeground(new Color(255, 255, 0));
+			chckbxContratante.setHorizontalAlignment(SwingConstants.CENTER);
+			chckbxContratante.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 			chckbxContratante.setBackground(Color.LIGHT_GRAY);
-			chckbxContratante.setBounds(207, 412, 240, 35);
+			chckbxContratante.setBounds(198, 412, 240, 35);
 			getContentPane().add(chckbxContratante);
 		}
 		{
 			label_1 = new JLabel(".00");
-			label_1.setFont(new Font("Segoe UI", Font.BOLD, 18));
+			label_1.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 			label_1.setBackground(Color.WHITE);
 			label_1.setBounds(518, 372, 52, 23);
 			getContentPane().add(label_1);

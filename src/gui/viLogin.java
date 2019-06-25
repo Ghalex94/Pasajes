@@ -53,40 +53,41 @@ public class viLogin extends JInternalFrame implements ActionListener, KeyListen
 	 * Create the frame.
 	 */
 	public viLogin(vPrincipal temp) {
+		getContentPane().setBackground(Color.WHITE);
 		vp = temp;
 		
 		setTitle("LOGIN");
-		setBounds(100, 100, 612, 401);
+		setBounds(100, 100, 612, 372);
 		getContentPane().setLayout(null);
 		
 		txtUsuario = new JTextField();
 		txtUsuario.addKeyListener(this);
 		txtUsuario.setForeground(Color.BLACK);
-		txtUsuario.setFont(new Font("Berlin Sans FB Demi", Font.BOLD | Font.ITALIC, 22));
+		txtUsuario.setFont(new Font("Century Gothic", Font.ITALIC, 20));
 		txtUsuario.setColumns(10);
-		txtUsuario.setBackground(SystemColor.menu);
+		txtUsuario.setBackground(new Color(255, 255, 255));
 		txtUsuario.setBounds(150, 175, 378, 41);
 		getContentPane().add(txtUsuario);
 		
 		txtPass = new JPasswordField();
 		txtPass.addKeyListener(this);
 		txtPass.setForeground(Color.BLACK);
-		txtPass.setFont(new Font("USAngel", Font.ITALIC, 18));
-		txtPass.setBackground(SystemColor.menu);
-		txtPass.setBounds(150, 244, 378, 41);
+		txtPass.setFont(new Font("Century Gothic", Font.ITALIC, 20));
+		txtPass.setBackground(new Color(255, 255, 255));
+		txtPass.setBounds(150, 227, 378, 41);
 		getContentPane().add(txtPass);
 		
 		btnIngresar = new JButton("INGRESAR");
 		btnIngresar.addActionListener(this);
-		btnIngresar.setForeground(Color.BLACK);
-		btnIngresar.setFont(new Font("USAngel", Font.BOLD, 18));
-		btnIngresar.setBackground(Color.LIGHT_GRAY);
-		btnIngresar.setBounds(150, 311, 378, 49);
+		btnIngresar.setForeground(new Color(255, 255, 255));
+		btnIngresar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
+		btnIngresar.setBackground(new Color(0, 139, 139));
+		btnIngresar.setBounds(86, 279, 442, 49);
 		getContentPane().add(btnIngresar);
 		
 		lblBanner = new JLabel("");
 		lblBanner.setHorizontalAlignment(SwingConstants.CENTER);
-		Image img0 = new ImageIcon(this.getClass().getResource("/bannerbxb.png")).getImage();
+		Image img0 = new ImageIcon(this.getClass().getResource("/banner.png")).getImage();
 		lblBanner.setIcon(new ImageIcon(img0));
 		lblBanner.setBounds(0, 0, 600, 160);
 		getContentPane().add(lblBanner);
@@ -102,7 +103,7 @@ public class viLogin extends JInternalFrame implements ActionListener, KeyListen
 		lblPass.setHorizontalAlignment(SwingConstants.CENTER);
 		Image img3 = new ImageIcon(this.getClass().getResource("/pass.jpg")).getImage();
 		lblPass.setIcon(new ImageIcon(img3));
-		lblPass.setBounds(86, 244, 41, 41);
+		lblPass.setBounds(86, 227, 41, 41);
 		getContentPane().add(lblPass);
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtUsuario, txtPass, btnIngresar}));
 

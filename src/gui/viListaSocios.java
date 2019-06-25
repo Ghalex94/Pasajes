@@ -30,7 +30,7 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.awt.event.ActionEvent;
 
-public class viListaVehiculos extends JInternalFrame implements ActionListener {
+public class viListaSocios extends JInternalFrame implements ActionListener {
 	private JTextField txtVehiculos;
 	private JButton btnAnadirVehiculo;
 	private JButton btnModificarVehiculo;
@@ -46,7 +46,7 @@ public class viListaVehiculos extends JInternalFrame implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					viListaVehiculos frame = new viListaVehiculos(null);
+					viListaSocios frame = new viListaSocios(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -58,7 +58,7 @@ public class viListaVehiculos extends JInternalFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public viListaVehiculos(vPrincipal temp) {
+	public viListaSocios(vPrincipal temp) {
 		
 		vp = temp;
 		
@@ -70,11 +70,8 @@ public class viListaVehiculos extends JInternalFrame implements ActionListener {
         int ancho = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
         int alto = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
 		
-		btnAnadirVehiculo = new JButton("A\u00F1adir Vehiculo");
-		btnAnadirVehiculo.addActionListener(this);
-		
 		txtVehiculos = new JTextField();
-		txtVehiculos.setText("VEHICULOS");
+		txtVehiculos.setText("SOCIOS");
 		txtVehiculos.setRequestFocusEnabled(false);
 		txtVehiculos.setIgnoreRepaint(true);
 		txtVehiculos.setHorizontalAlignment(SwingConstants.CENTER);
@@ -87,13 +84,16 @@ public class viListaVehiculos extends JInternalFrame implements ActionListener {
 		txtVehiculos.setBackground(Color.DARK_GRAY);
 		txtVehiculos.setBounds(0, 0, ancho, 75);
 		getContentPane().add(txtVehiculos);
+		
+		btnAnadirVehiculo = new JButton("A\u00F1adir Socio");
+		btnAnadirVehiculo.addActionListener(this);
 		btnAnadirVehiculo.setForeground(Color.WHITE);
 		btnAnadirVehiculo.setFont(new Font("EngraversGothic BT", Font.BOLD, 35));
 		btnAnadirVehiculo.setBackground(new Color(0, 139, 139));
 		btnAnadirVehiculo.setBounds(957, 88, 364, 98);
 		getContentPane().add(btnAnadirVehiculo);
 		
-		btnModificarVehiculo = new JButton("Modificar");
+		btnModificarVehiculo = new JButton("Modificar Socio");
 		btnModificarVehiculo.addActionListener(this);
 		btnModificarVehiculo.setForeground(Color.WHITE);
 		btnModificarVehiculo.setFont(new Font("EngraversGothic BT", Font.BOLD, 35));
@@ -101,7 +101,7 @@ public class viListaVehiculos extends JInternalFrame implements ActionListener {
 		btnModificarVehiculo.setBounds(957, 224, 364, 98);
 		getContentPane().add(btnModificarVehiculo);
 		
-		btnDeshabilitarVehiculo = new JButton("Eliminar Vehiculo");
+		btnDeshabilitarVehiculo = new JButton("Eliminar Socio");
 		btnDeshabilitarVehiculo.setEnabled(false);
 		btnDeshabilitarVehiculo.addActionListener(this);
 		btnDeshabilitarVehiculo.setForeground(Color.WHITE);
@@ -152,33 +152,11 @@ public class viListaVehiculos extends JInternalFrame implements ActionListener {
 	}
 	
 	protected void actionPerformedBtnAnadirVehiculo(ActionEvent arg0) {
-		vdVehiculoNuevo vnvh = new vdVehiculoNuevo(vp, this);
-		vnvh.setVisible(true);
-		vp.setEnabled(false);
 	}
 	
 	protected void actionPerformedBtnModificarVehiculo(ActionEvent arg0) {
-		String placa = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 0).toString();
-		String modelo = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 1).toString();
-		String detalle = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 2).toString();
-		String mtc = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 3).toString();
-		String dniconductor = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 4).toString();
-		String nomconductor = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 5).toString();		
-		String[ ] vehiculo = {placa, modelo, detalle, dniconductor, mtc, nomconductor};
-		
-		vdVehiculoModificar vmvh = new vdVehiculoModificar(vp, this, vehiculo);
-		vmvh.setVisible(true);
-		vp.setEnabled(false);
 	}
 	protected void actionPerformedBtnDeshabilitarVehiculo(ActionEvent arg0) {
-		int opc = JOptionPane.showConfirmDialog(null, "Si elimina el producto, se borraran todos los registros de este.\nSe recomienda hacerlo solo si es muy necesario\n¿Eliminar Producto?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-		if (opc == 0){
-			String placa = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 0).toString();
-			Consultas.eliminarHistorialVehiculo(placa);
-			Consultas.eliminarVehiculo(placa);
-			this.cargar();
-			JOptionPane.showMessageDialog(null, "Eliminado correctamente");
-		}
 	}
 }
 

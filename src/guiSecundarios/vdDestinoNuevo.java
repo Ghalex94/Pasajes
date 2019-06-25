@@ -62,43 +62,43 @@ public class vdDestinoNuevo extends JDialog implements ActionListener, KeyListen
 		getContentPane().setLayout(null);
 		
 		txtAgregarDestino = new JTextField();
-		txtAgregarDestino.setText("AGREGAR DESTINO");
+		txtAgregarDestino.setText("AGREGAR SEDE");
 		txtAgregarDestino.setHorizontalAlignment(SwingConstants.CENTER);
 		txtAgregarDestino.setForeground(Color.WHITE);
-		txtAgregarDestino.setFont(new Font("USAngel", Font.PLAIN, 20));
+		txtAgregarDestino.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
 		txtAgregarDestino.setEditable(false);
 		txtAgregarDestino.setColumns(10);
-		txtAgregarDestino.setBackground(new Color(30, 144, 255));
+		txtAgregarDestino.setBackground(new Color(0, 139, 139));
 		txtAgregarDestino.setBounds(0, 0, 559, 46);
 		getContentPane().add(txtAgregarDestino);
 		
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(this);
 		btnCancelar.setForeground(Color.WHITE);
-		btnCancelar.setFont(new Font("USAngel", Font.PLAIN, 20));
-		btnCancelar.setBackground(Color.DARK_GRAY);
+		btnCancelar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
+		btnCancelar.setBackground(new Color(0, 139, 139));
 		btnCancelar.setBounds(30, 179, 220, 53);
 		getContentPane().add(btnCancelar);
 		
 		btnGuardar = new JButton("<html>Guardar</html>");
 		btnGuardar.addActionListener(this);
 		btnGuardar.setForeground(Color.WHITE);
-		btnGuardar.setFont(new Font("USAngel", Font.PLAIN, 20));
-		btnGuardar.setBackground(Color.DARK_GRAY);
+		btnGuardar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
+		btnGuardar.setBackground(new Color(0, 139, 139));
 		btnGuardar.setBounds(303, 182, 220, 53);
 		getContentPane().add(btnGuardar);
 		
-		lblConductor = new JLabel("Destino:");
+		lblConductor = new JLabel("Sede:");
 		lblConductor.setHorizontalAlignment(SwingConstants.LEFT);
-		lblConductor.setFont(new Font("EngraversGothic BT", Font.PLAIN, 25));
+		lblConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		lblConductor.setBounds(30, 98, 132, 20);
 		getContentPane().add(lblConductor);
 		
 		txtDestino = new JTextField();
 		txtDestino.addKeyListener(this);
-		txtDestino.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		txtDestino.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtDestino.setColumns(10);
-		txtDestino.setBounds(188, 93, 335, 25);
+		txtDestino.setBounds(119, 93, 404, 25);
 		getContentPane().add(txtDestino);
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtDestino, btnGuardar, btnCancelar}));
 		cargar();
