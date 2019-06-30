@@ -30,6 +30,7 @@ import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
+import javax.swing.Box;
 
 public class vdVehiculoNuevo extends JDialog implements ActionListener, KeyListener {
 	private JTextField txtAgregarVehiculo;
@@ -48,6 +49,14 @@ public class vdVehiculoNuevo extends JDialog implements ActionListener, KeyListe
 	viListaVehiculos vnvh = null;
 	ResultSet rs;
 	private JTextField txtMtc;
+	private JTextField textField_1;
+	private JLabel label_1;
+	private JLabel label_2;
+	private JTextField textField_2;
+	private Component verticalStrut;
+	private Component horizontalStrut;
+	private JLabel lblNombre;
+	private JTextField txtNombreConductor;
 	
 	public static void main(String[] args) {
 		try {
@@ -69,7 +78,7 @@ public class vdVehiculoNuevo extends JDialog implements ActionListener, KeyListe
 		vnvh = temp2;
 		
 		setUndecorated(true);
-		setBounds(100, 100, 591, 383);
+		setBounds(100, 100, 591, 475);
 		getContentPane().setLayout(null);
 		{
 			txtAgregarVehiculo = new JTextField();
@@ -115,14 +124,14 @@ public class vdVehiculoNuevo extends JDialog implements ActionListener, KeyListe
 			JLabel lblConductor = new JLabel("Conductor:");
 			lblConductor.setHorizontalAlignment(SwingConstants.LEFT);
 			lblConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-			lblConductor.setBounds(30, 273, 132, 20);
+			lblConductor.setBounds(30, 236, 132, 20);
 			getContentPane().add(lblConductor);
 		}
 		{
 			cbConductor = new JComboBox();
 			cbConductor.addActionListener(this);
 			cbConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-			cbConductor.setBounds(201, 270, 300, 25);
+			cbConductor.setBounds(201, 233, 300, 25);
 			getContentPane().add(cbConductor);
 		}
 		{
@@ -131,7 +140,7 @@ public class vdVehiculoNuevo extends JDialog implements ActionListener, KeyListe
 			btnNewConductor.setForeground(Color.WHITE);
 			btnNewConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 			btnNewConductor.setBackground(new Color(50, 205, 50));
-			btnNewConductor.setBounds(511, 272, 52, 23);
+			btnNewConductor.setBounds(511, 235, 52, 23);
 			getContentPane().add(btnNewConductor);
 		}
 		{
@@ -154,8 +163,8 @@ public class vdVehiculoNuevo extends JDialog implements ActionListener, KeyListe
 			btnCancelar.addActionListener(this);
 			btnCancelar.setForeground(Color.WHITE);
 			btnCancelar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
-			btnCancelar.setBackground(Color.DARK_GRAY);
-			btnCancelar.setBounds(30, 310, 220, 53);
+			btnCancelar.setBackground(new Color(0, 139, 139));
+			btnCancelar.setBounds(30, 408, 220, 53);
 			getContentPane().add(btnCancelar);
 		}
 		{
@@ -163,15 +172,15 @@ public class vdVehiculoNuevo extends JDialog implements ActionListener, KeyListe
 			btnGuardar.addActionListener(this);
 			btnGuardar.setForeground(Color.WHITE);
 			btnGuardar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
-			btnGuardar.setBackground(Color.DARK_GRAY);
-			btnGuardar.setBounds(343, 313, 220, 53);
+			btnGuardar.setBackground(new Color(0, 139, 139));
+			btnGuardar.setBounds(343, 411, 220, 53);
 			getContentPane().add(btnGuardar);
 		}
 		{
-			lblDniConductor = new JLabel("DNI Conductor:");
+			lblDniConductor = new JLabel("DNI:");
 			lblDniConductor.setHorizontalAlignment(SwingConstants.LEFT);
 			lblDniConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-			lblDniConductor.setBounds(30, 238, 220, 20);
+			lblDniConductor.setBounds(70, 305, 73, 20);
 			getContentPane().add(lblDniConductor);
 		}
 		{
@@ -179,7 +188,7 @@ public class vdVehiculoNuevo extends JDialog implements ActionListener, KeyListe
 			txtDni.setEditable(false);
 			txtDni.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 			txtDni.setColumns(10);
-			txtDni.setBounds(201, 233, 362, 25);
+			txtDni.setBounds(201, 302, 362, 25);
 			getContentPane().add(txtDni);
 		}
 		
@@ -194,6 +203,61 @@ public class vdVehiculoNuevo extends JDialog implements ActionListener, KeyListe
 		txtMtc.setColumns(10);
 		txtMtc.setBounds(201, 193, 362, 25);
 		getContentPane().add(txtMtc);
+		
+		textField_1 = new JTextField();
+		textField_1.setEnabled(false);
+		textField_1.setForeground(new Color(0, 139, 139));
+		textField_1.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		textField_1.setColumns(10);
+		textField_1.setBounds(201, 336, 362, 25);
+		getContentPane().add(textField_1);
+		
+		label_1 = new JLabel("N Licencia:");
+		label_1.setEnabled(false);
+		label_1.setForeground(new Color(0, 139, 139));
+		label_1.setHorizontalAlignment(SwingConstants.LEFT);
+		label_1.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		label_1.setBounds(70, 338, 132, 20);
+		getContentPane().add(label_1);
+		
+		label_2 = new JLabel("Conductor:");
+		label_2.setEnabled(false);
+		label_2.setForeground(new Color(0, 139, 139));
+		label_2.setHorizontalAlignment(SwingConstants.LEFT);
+		label_2.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		label_2.setBounds(70, 374, 132, 20);
+		getContentPane().add(label_2);
+		
+		textField_2 = new JTextField();
+		textField_2.setEnabled(false);
+		textField_2.setForeground(new Color(0, 139, 139));
+		textField_2.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		textField_2.setColumns(10);
+		textField_2.setBounds(201, 372, 362, 25);
+		getContentPane().add(textField_2);
+		
+		verticalStrut = Box.createVerticalStrut(20);
+		verticalStrut.setBounds(51, 264, 18, 133);
+		getContentPane().add(verticalStrut);
+		
+		horizontalStrut = Box.createHorizontalStrut(20);
+		horizontalStrut.setBounds(21, 254, 40, 20);
+		getContentPane().add(horizontalStrut);
+		{
+			lblNombre = new JLabel("Nombre:");
+			lblNombre.setHorizontalAlignment(SwingConstants.LEFT);
+			lblNombre.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+			lblNombre.setBounds(70, 270, 104, 20);
+			getContentPane().add(lblNombre);
+		}
+		{
+			txtNombreConductor = new JTextField();
+			txtNombreConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+			txtNombreConductor.setEditable(false);
+			txtNombreConductor.setColumns(10);
+			txtNombreConductor.setBounds(201, 267, 362, 25);
+			getContentPane().add(txtNombreConductor);
+		}
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtPlaca, cbModelo, txtDetalles, cbConductor, btnNewConductor, btnCancelar, btnGuardar}));
 		cargar();
 	}

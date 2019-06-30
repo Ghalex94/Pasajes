@@ -98,7 +98,7 @@ public class viListaSocios extends JInternalFrame implements ActionListener {
 		btnModificarVehiculo.setForeground(Color.WHITE);
 		btnModificarVehiculo.setFont(new Font("EngraversGothic BT", Font.BOLD, 35));
 		btnModificarVehiculo.setBackground(new Color(0, 139, 139));
-		btnModificarVehiculo.setBounds(957, 224, 364, 98);
+		btnModificarVehiculo.setBounds(957, 197, 364, 98);
 		getContentPane().add(btnModificarVehiculo);
 		
 		btnDeshabilitarVehiculo = new JButton("Eliminar Socio");
@@ -107,7 +107,7 @@ public class viListaSocios extends JInternalFrame implements ActionListener {
 		btnDeshabilitarVehiculo.setForeground(Color.WHITE);
 		btnDeshabilitarVehiculo.setFont(new Font("EngraversGothic BT", Font.BOLD, 35));
 		btnDeshabilitarVehiculo.setBackground(new Color(0, 139, 139));
-		btnDeshabilitarVehiculo.setBounds(957, 365, 364, 98);
+		btnDeshabilitarVehiculo.setBounds(957, 306, 364, 98);
 		getContentPane().add(btnDeshabilitarVehiculo);
 		
 		scrollPane = new JScrollPane();
