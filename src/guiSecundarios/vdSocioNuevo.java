@@ -70,6 +70,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 	private Component verticalStrut_1;
 	private Component horizontalStrut_2;
 	private Component verticalStrut_2;
+	private JTextField textField_8;
 	
 	public static void main(String[] args) {
 		try {
@@ -321,6 +322,11 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		verticalStrut_2 = Box.createVerticalStrut(20);
 		verticalStrut_2.setBounds(52, 95, 18, 91);
 		getContentPane().add(verticalStrut_2);
+		
+		textField_8 = new JTextField();
+		textField_8.setBounds(261, 655, 86, 20);
+		getContentPane().add(textField_8);
+		textField_8.setColumns(10);
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtPlaca, cbConductor, btnCancelar, btnGuardar}));
 		cargar();
 	}
