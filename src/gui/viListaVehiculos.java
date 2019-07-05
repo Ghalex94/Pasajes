@@ -71,6 +71,7 @@ public class viListaVehiculos extends JInternalFrame implements ActionListener {
         int alto = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
 		
 		btnAnadirVehiculo = new JButton("A\u00F1adir Vehiculo");
+		btnAnadirVehiculo.setVisible(false);
 		btnAnadirVehiculo.addActionListener(this);
 		
 		txtVehiculos = new JTextField();
@@ -102,6 +103,7 @@ public class viListaVehiculos extends JInternalFrame implements ActionListener {
 		getContentPane().add(btnModificarVehiculo);
 		
 		btnDeshabilitarVehiculo = new JButton("Eliminar Vehiculo");
+		btnDeshabilitarVehiculo.setVisible(false);
 		btnDeshabilitarVehiculo.setEnabled(false);
 		btnDeshabilitarVehiculo.addActionListener(this);
 		btnDeshabilitarVehiculo.setForeground(Color.WHITE);

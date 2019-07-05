@@ -15,13 +15,6 @@ ruc 			varchar(11),
 empresa 		varchar(60)
 );
 
-create table tb_socio(
-codsocio		int primary key auto_increment,
-idempresa		int,
-nombresocio		varchar(50)
-
-);
-
 create table tb_conductor(
 dniconductor	int not null primary key,
 licencia		varchar(30),
@@ -40,10 +33,19 @@ idmodelo		int,
 detalle			varchar(100),
 dniconductor	int,
 mtc				varchar(20),
-codsocio		int,
 foreign key (dniconductor) references tb_conductor(dniconductor),
-foreign key (idmodelo) references tb_modelo_vehiculo(idmodelo),
-foreign key (codsocio) references tb_socio(codsocio)
+foreign key (idmodelo) references tb_modelo_vehiculo(idmodelo)
+);
+
+create table tb_socio(
+codsocio		int primary key,
+idempresa		int,
+dnisocio		int,
+nombresocio		varchar(70),
+dniconductor	int,
+placa			varchar(7),
+foreign key (dniconductor) references tb_conductor(dniconductor),
+foreign key (placa) references tb_vehiculo(placa)
 );
 
 create table tb_pasajero(
@@ -142,7 +144,7 @@ insert into tb_empresa values(null, '20601642124', 'ZIGUEL E.I.R.L.');
 
 insert into tb_modelo_vehiculo values(null, 'Mercedes Sprinter 413 19+1', 20); -- 1
 insert into tb_modelo_vehiculo values(null, 'Mercedes Sprinter 515 19+1', 20); -- 2
-insert into tb_modelo_vehiculo values(null, 'Mercedes Sprinter 515 20+1', 21); -- 3
+insert into tb_modelo_vehiculo values(null, 'Mercedes Sprinter 515 20+1', 21); -- 3	
 insert into tb_modelo_vehiculo values(null, 'Renault Master 2012 15',     15); -- 4
 insert into tb_modelo_vehiculo values(null, 'Renault Master Moderna 15',  15); -- 5
 insert into tb_modelo_vehiculo values(null, 'Wolkswagen Crafter 20+1',    21); -- 6
