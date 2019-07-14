@@ -313,7 +313,7 @@ public class vdVehiculoNuevo extends JDialog implements ActionListener, KeyListe
 				this.setAlwaysOnTop(true);
 			}
 			else{
-				Consultas.crearVehiculo(placa, modelo, detalle, mtc, dni);
+				Consultas.crearVehiculo(placa, modelo, detalle, mtc);
 				this.setAlwaysOnTop(false);
 				vnvh.cargar();
 				selecionarVehiculo();

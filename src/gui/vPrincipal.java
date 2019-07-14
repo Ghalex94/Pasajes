@@ -63,6 +63,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	viListaDestinos ldest = null;		 //Lista destinos 
 	viListaPasajeros lpjr = null;		 //Lista de pasajeros
 	viLlenarDatosFaltantes datfalt = null;//Datosa Faltantes 
+	viListaSocios lsoc = null; 			  //Lista de Socios
 	
 	ResultSet rs;
 	//RESOLUCION MONITOR
@@ -205,6 +206,11 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mntmListaDeVehiculos.addActionListener(this);
 		
 		mntmListaSocios = new JMenuItem("Lista de Socios");
+		mntmListaSocios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmListaSocios(e);
+			}
+		});
 		mntmListaSocios.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mnVehiculosConductores.add(mntmListaSocios);
 		mnVehiculosConductores.add(mntmListaDeVehiculos);
@@ -355,6 +361,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		ldest = null;
 		lpjr = null;
 		datfalt = null;
+		lsoc = null;
 	}
 	
 	public void esconderVentanas(){
@@ -376,6 +383,8 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			lpjr.setVisible(false);
 		if (datfalt!=null)
 			datfalt.setVisible(false);
+		if (lsoc!=null)
+			lsoc.setVisible(false);
 	}
 	
 	public void desactivarMenu(){
@@ -622,6 +631,17 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error:. "+ e.getStackTrace());			
 		}
+	}
+	
+	protected void actionPerformedMntmListaSocios(ActionEvent e) {
+		esconderVentanas();
+		cerrarVentanas();
+		lsoc = new viListaSocios(this);
+		desktopPane.add(lsoc);
+		lsoc.show();
+		try{
+			lsoc.setMaximum(true);
+		}catch(Exception f){}
 	}
 }
 

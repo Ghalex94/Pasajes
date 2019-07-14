@@ -118,21 +118,21 @@ public class Consultas {
 		return rs;
 	}
 	
-	public static void crearVehiculo(String placa, int modelo, String detalle, String mtc, int dni){
+	public static void crearVehiculo(String placa, int modelo, String detalle, String mtc){
 		Connection con = MySQLConexion.getConection();
 		java.sql.Statement st;
 		ResultSet rs = null;
 		try {
 			st = con.createStatement();
-			String sql = "insert into tb_vehiculo (placa, idmodelo, detalle, mtc, dniconductor)" + " values (?, ?, ?, ?, ?)";
+			String sql = "insert into tb_vehiculo (placa, idmodelo, detalle, mtc)" + " values (?, ?, ?, ?)";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setString(1, placa);
 			prepareStmt.setInt(2, modelo);
 			prepareStmt.setString(3, detalle);
 			prepareStmt.setString(4, mtc);
-			prepareStmt.setInt(5, dni);
 			prepareStmt.execute();
-			
+			con.close();
+			//JOptionPane.showMessageDialog(null, "Conductor creado correctamente");			
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
@@ -142,13 +142,13 @@ public class Consultas {
 		Connection con = MySQLConexion.getConection();
 		try {
 			String sql = "insert into tb_conductor (dniconductor, licencia, conductor)" + " values (?, ?, ?)";
-			//insert into tb_conductor values(48562548, 'Pablo Ramirez Valderrama');
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setInt(1, dni);
 			prepareStmt.setString(2, nlicencia);
 			prepareStmt.setString(3, conductor);
 			prepareStmt.execute();
-			JOptionPane.showMessageDialog(null, "Conductor creado correctamente");
+			con.close();
+			//JOptionPane.showMessageDialog(null, "Conductor creado correctamente");
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR" + e);
 		}
@@ -557,6 +557,39 @@ public class Consultas {
 		PreparedStatement pst = null;
 		try {
 			String sql = "select nboleto from tb_pasajeros_temporal order by nboleto desc limit 1";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		return rs;
+	}
+	
+	public static void crearSocio(int codsocio, int idempresa, int dnisocio, String nombresocio, int dniconductor, String placa){
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "insert into tb_socio (codsocio, idempresa, dnisocio, nombresocio, dniconductor, placa)" + " values (?, ?, ?, ?, ?, ?)";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, codsocio);
+			prepareStmt.setInt(2, idempresa);
+			prepareStmt.setInt(3, dnisocio);
+			prepareStmt.setString(4, nombresocio);
+			prepareStmt.setInt(5, dniconductor);
+			prepareStmt.setString(6, placa);
+			prepareStmt.execute();
+			JOptionPane.showMessageDialog(null, "Socio creado correctamente.");
+			con.close();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR" + e);
+		}
+	}
+	
+	public ResultSet cargarSocios(){
+		Connection con = MySQLConexion.getConection();
+		ResultSet rs = null;
+		PreparedStatement pst = null;
+		try {
+			String sql = "select sc.codsocio, sc.nombresocio, sc.dnisocio, e.empresa, c.conductor, sc.placa from tb_socio sc inner join tb_conductor c on c.dniconductor = sc.dniconductor inner join tb_empresa e on e.idempresa = sc.idempresa;";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 		} catch (Exception e) {

@@ -14,6 +14,7 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import guiSecundarios.vdSocioNuevo;
 import guiSecundarios.vdVehiculoModificar;
 import guiSecundarios.vdVehiculoNuevo;
 import mysql.Consultas;
@@ -127,12 +128,12 @@ public class viListaSocios extends JInternalFrame implements ActionListener {
 		tb = this.tbVehiculos;
 		tb.setRowHeight(40);
 		tb.setModel(dtm);
-		dtm.setColumnIdentifiers(new Object[]{"PLACA", "MODELO", "DETALLE", "DNI CONDUCTOR", "NOMBRE CONDUCTOR", "MTC"});
+		dtm.setColumnIdentifiers(new Object[]{"CODIGO DE SOCIO", "SOCIO", "DNI SOCIO", "EMPRESA", "CONDUCTOR", "PLACA",});
 		Consultas consult = new Consultas();
-		rs = consult.cargarVehiculosConductores();
+		rs = consult.cargarSocios();
 		try {
 			while(rs.next())
-				dtm.addRow(new Object[]{rs.getString("placa"), rs.getString("modelo"), rs.getString("detalle"), rs.getString("dniconductor"), rs.getString("conductor"), rs.getString("mtc")});
+				dtm.addRow(new Object[]{rs.getInt("codsocio"), rs.getString("nombresocio"), rs.getInt("dnisocio"), rs.getString("empresa"), rs.getString("conductor"), rs.getString("placa")});
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
@@ -152,6 +153,9 @@ public class viListaSocios extends JInternalFrame implements ActionListener {
 	}
 	
 	protected void actionPerformedBtnAnadirVehiculo(ActionEvent arg0) {
+		vdSocioNuevo vnsn = new vdSocioNuevo(vp, this);
+		vnsn.setVisible(true);
+		vp.setEnabled(false);
 	}
 	
 	protected void actionPerformedBtnModificarVehiculo(ActionEvent arg0) {
