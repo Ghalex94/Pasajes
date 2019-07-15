@@ -122,6 +122,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		}
 		{
 			txtCodSocio = new JTextField();
+			txtCodSocio.setForeground(new Color(255, 69, 0));
 			txtCodSocio.addKeyListener(this);
 			txtCodSocio.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 			txtCodSocio.setColumns(10);
@@ -164,6 +165,12 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		}
 		{
 			txtDniSocio = new JTextField();
+			txtDniSocio.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyTyped(KeyEvent arg0) {
+					keyTypedTxtDniSocio(arg0);
+				}
+			});
 			txtDniSocio.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 			txtDniSocio.setColumns(10);
 			txtDniSocio.setBounds(226, 155, 464, 25);
@@ -189,6 +196,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		getContentPane().add(label);
 		
 		txtPlaca = new JTextField();
+		txtPlaca.setForeground(new Color(255, 69, 0));
 		txtPlaca.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
@@ -224,6 +232,12 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		getContentPane().add(label_2);
 		
 		txtDetalles = new JTextField();
+		txtDetalles.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				keyTypedTxtDetalles(e);
+			}
+		});
 		txtDetalles.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtDetalles.setColumns(10);
 		txtDetalles.setBounds(226, 372, 464, 25);
@@ -236,6 +250,12 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		getContentPane().add(label_3);
 		
 		txtMTC = new JTextField();
+		txtMTC.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				keyTypedTxtMTC(e);
+			}
+		});
 		txtMTC.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtMTC.setColumns(10);
 		txtMTC.setBounds(226, 415, 464, 25);
@@ -254,6 +274,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		getContentPane().add(lblDni);
 		
 		txtDniConductor = new JTextField();
+		txtDniConductor.setForeground(new Color(255, 69, 0));
 		txtDniConductor.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
@@ -278,6 +299,12 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		getContentPane().add(lblNombre);
 		
 		txtNombreConductor = new JTextField();
+		txtNombreConductor.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				keyTypedTxtNombreConductor(e);
+			}
+		});
 		txtNombreConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtNombreConductor.setColumns(10);
 		txtNombreConductor.setBounds(226, 550, 464, 25);
@@ -291,7 +318,13 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		getContentPane().add(label_7);
 		
 		txtNlicencia = new JTextField();
-		txtNlicencia.setForeground(new Color(0, 139, 139));
+		txtNlicencia.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				keyTypedTxtNlicencia(e);
+			}
+		});
+		txtNlicencia.setForeground(Color.BLACK);
 		txtNlicencia.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtNlicencia.setColumns(10);
 		txtNlicencia.setBounds(226, 584, 464, 25);
@@ -329,6 +362,12 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		getContentPane().add(Nombre);
 		
 		txtNombreSocio = new JTextField();
+		txtNombreSocio.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				keyTypedTxtNombreSocio(e);
+			}
+		});
 		txtNombreSocio.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtNombreSocio.setColumns(10);
 		txtNombreSocio.setBounds(226, 200, 464, 25);
@@ -358,6 +397,14 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		cargar();
 	}
 	
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnCancelar) {
+			actionPerformedBtnCancelar(e);
+		}
+		if (e.getSource() == btnGuardar) {
+			actionPerformedBtnGuardar(e);
+		}
+	}
 	
 	public void cargar(){
 		this.setLocationRelativeTo(null);
@@ -377,21 +424,13 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		Conductor conductor = new Conductor();
 	}
 	
-
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == btnCancelar) {
-			actionPerformedBtnCancelar(e);
-		}
-		if (e.getSource() == btnGuardar) {
-			actionPerformedBtnGuardar(e);
-		}
-	}
 	protected void actionPerformedBtnCancelar(ActionEvent e) {
 		vp.enable(true);
 		this.dispose();
 	}
+	
 	protected void actionPerformedBtnGuardar(ActionEvent e) {
-		if(txtCodSocio.getText().length() == 0 || txtPlaca.getText().length() == 0 || txtDniConductor.getText().length() != 8){
+		if(txtCodSocio.getText().length() == 0 || txtPlaca.getText().length() != 7 || txtDniConductor.getText().length() != 8){
 			this.setAlwaysOnTop(false);		
 			JOptionPane.showMessageDialog(null, "Ingrese los datos necesarios correctamente");
 			this.setAlwaysOnTop(true);
@@ -425,17 +464,6 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		}
 	}
 	
-	public void selecionarVehiculo(){
-		String placa = txtCodSocio.getText();
-		int cantVehiculos = vnsn.tbVehiculos.getRowCount();
-		for(int i = 0; i<cantVehiculos; i++){
-			if(placa.equals(vnsn.tbVehiculos.getValueAt(i, 0))){
-				vnsn.tbVehiculos.setRowSelectionInterval(i,i);
-				break;
-			}
-		}
-	}
-	
 	public void mouseClicked(MouseEvent arg0) {
 	}
 	public void mouseEntered(MouseEvent arg0) {
@@ -451,35 +479,62 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 	public void keyReleased(KeyEvent e) {
 	}
 	public void keyTyped(KeyEvent e) {
-		if (e.getSource() == txtCodSocio) {
+		if (e.getSource() == txtCodSocio) 
+			keyTypedTxtCodSocio(e);
+		if (e.getSource() == txtDniSocio) 
+			keyTypedTxtDniSocio(e);
+		if (e.getSource() == txtPlaca) 
 			keyTypedTxtPlaca(e);
-		}
-	}
-	protected void keyTypedTxtPlaca(KeyEvent e) {
-		if (txtPlaca.getText().length() == 7){
-			e.consume();
-		}
-		char c = e.getKeyChar();
-		if (c == (char)KeyEvent.VK_ENTER){
-			verificarPlaca();
-		}
-		
 	}
 	
+	protected void keyTypedTxtCodSocio(KeyEvent e) {
+		if (txtCodSocio.getText().length() == 8)
+			e.consume();
+	}
+	protected void keyTypedTxtDniSocio(KeyEvent e) {
+		
+		char c = e.getKeyChar();
+		if ((c<'0' || c>'9') && (c!=(char)KeyEvent.VK_DELETE) && (c!=(char)KeyEvent.VK_BACK_SPACE) && (c!=(char)KeyEvent.VK_ENTER))
+			e.consume();
+		if (txtDniSocio.getText().length() == 8)
+			e.consume();
+	}
+	protected void keyTypedTxtNombreSocio(KeyEvent e) {
+		if (txtNombreSocio.getText().length() == 50)
+			e.consume();
+	}
+	protected void keyTypedTxtPlaca(KeyEvent e) {
+		if (txtPlaca.getText().length() == 7)
+			e.consume();
+	}
+	protected void keyTypedTxtDetalles(KeyEvent e) {
+		if (txtDetalles.getText().length() == 100)
+			e.consume();
+	}
+	protected void keyTypedTxtMTC(KeyEvent e) {
+		if (txtMTC.getText().length() == 20)
+			e.consume();
+	}
 	protected void keyTypedTxtDniConductor(KeyEvent e) {
+		char c = e.getKeyChar();
+		if ((c<'0' || c>'9') && (c!=(char)KeyEvent.VK_DELETE) && (c!=(char)KeyEvent.VK_BACK_SPACE) && (c!=(char)KeyEvent.VK_ENTER))
+			e.consume();
 		if (txtDniConductor.getText().length() == 8){
 			e.consume();
 		}
-		char c = e.getKeyChar();
-		if (c == (char)KeyEvent.VK_ENTER){
-			verificarConductor();
-		}
+	}
+	protected void keyTypedTxtNombreConductor(KeyEvent e) {
+		if (txtNombreConductor.getText().length() == 50)
+			e.consume();
+	}
+	protected void keyTypedTxtNlicencia(KeyEvent e) {
+		if (txtNlicencia.getText().length() == 20)
+			e.consume();
 	}
 	
 	protected void focusLostTxtPlaca(FocusEvent arg0) {
-		verificarPlaca();
+		//verificarPlaca();
 	}
-	
 	protected void focusLostTxtDniConductor(FocusEvent e) {
 		verificarConductor();
 	}
@@ -502,6 +557,8 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 			} catch (SQLException ex) {
 				this.setAlwaysOnTop(false);
 				JOptionPane.showMessageDialog(null, "No existe el conductor, se creará uno nuevo.");
+				limpiarConductor();
+				this.setAlwaysOnTop(true);
 			}
 		}
 	}
@@ -511,7 +568,6 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		if(txtPlaca.getText().length() != 7){
 			this.setAlwaysOnTop(false);
 			JOptionPane.showMessageDialog(null, "Placa incorrecta");
-			limpiarVehiculo();
 			this.setAlwaysOnTop(true);
 		}
 		else{
@@ -540,7 +596,11 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		txtMTC.setText("");
 	} 
 	
-	
+	public void limpiarConductor(){
+		cbModeloV.setSelectedIndex(1);
+		txtNombreConductor.setText("");
+		txtNlicencia.setText("");
+	} 
 }
 
 
