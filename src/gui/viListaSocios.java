@@ -14,6 +14,7 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import guiSecundarios.vdSocioModificar;
 import guiSecundarios.vdSocioNuevo;
 import guiSecundarios.vdVehiculoModificar;
 import guiSecundarios.vdVehiculoNuevo;
@@ -119,25 +120,22 @@ public class viListaSocios extends JInternalFrame implements ActionListener {
 		scrollPane.setViewportView(tbVehiculos);
 
 		cargar();
-	}
-	
-	
+	}	
 	
 	public void cargar(){
 		DefaultTableModel dtm = new DefaultTableModel();
 		tb = this.tbVehiculos;
 		tb.setRowHeight(40);
 		tb.setModel(dtm);
-		dtm.setColumnIdentifiers(new Object[]{"CODIGO DE SOCIO", "SOCIO", "DNI SOCIO", "EMPRESA", "CONDUCTOR", "PLACA",});
+		dtm.setColumnIdentifiers(new Object[]{"CODIGO DE SOCIO", "SOCIO", "DNI SOCIO", "EMPRESA", "CONDUCTOR", "DNI CONDUCTOR", "PLACA",});
 		Consultas consult = new Consultas();
 		rs = consult.cargarSocios();
 		try {
 			while(rs.next())
-				dtm.addRow(new Object[]{rs.getInt("codsocio"), rs.getString("nombresocio"), rs.getInt("dnisocio"), rs.getString("empresa"), rs.getString("conductor"), rs.getString("placa")});
+				dtm.addRow(new Object[]{rs.getInt("codsocio"), rs.getString("nombresocio"), rs.getInt("dnisocio"), rs.getString("empresa"), rs.getString("conductor"), rs.getInt("dniconductor"), rs.getString("placa")});
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
-		}
-		
+		}	
 	}
 	
 	public void actionPerformed(ActionEvent arg0) {
@@ -159,7 +157,15 @@ public class viListaSocios extends JInternalFrame implements ActionListener {
 	}
 	
 	protected void actionPerformedBtnModificarVehiculo(ActionEvent arg0) {
+		int codsocio = Integer.parseInt(tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 0).toString());
+		int dnicondutcor = Integer.parseInt(tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 5).toString());
+		String placa = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 6).toString();
+		vdSocioModificar vnsm = new vdSocioModificar(vp, this, codsocio, dnicondutcor, placa);
+		vnsm.setVisible(true);
+		vp.setEnabled(false);
+		
 	}
+	
 	protected void actionPerformedBtnDeshabilitarVehiculo(ActionEvent arg0) {
 	}
 }

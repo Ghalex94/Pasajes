@@ -266,7 +266,7 @@ public class vdVehiculoModificar extends JDialog implements ActionListener, KeyL
 		this.dispose();
 	}
 	protected void actionPerformedBtnGuardar(ActionEvent e) {
-		try {
+		/*try {
 			String placa = txtPlaca.getText();
 			int modelo = cbModelo.getSelectedIndex()+1;
 			String detalle = txtDetalles.getText();
@@ -290,7 +290,7 @@ public class vdVehiculoModificar extends JDialog implements ActionListener, KeyL
 			}
 		}
 		catch(Exception ex){
-		}
+		}*/
 	}
 	
 	public void selecionarVehiculo(){

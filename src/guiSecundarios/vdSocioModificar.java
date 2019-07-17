@@ -38,17 +38,12 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 
-public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener {
+public class vdSocioModificar extends JDialog implements ActionListener, KeyListener {
 	private JTextField txtAgregarVehiculo;
 	private JTextField txtCodSocio;
 	private JButton btnGuardar;
 	private JButton btnCancelar;
 	private JLabel lblPlaca;
-	
-	vPrincipal vp = null;
-	viListaSocios vnsn = null;
-	
-	ResultSet rs;
 	private JTextField txtDniSocio;
 	private JLabel lblEmpresa;
 	private JComboBox cbEmpresa;
@@ -78,9 +73,15 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 	private JLabel label_6;
 	private JLabel label_8;
 	
+	vPrincipal vp = null;
+	viListaSocios vnsn = null;
+	int codsocio = 0;
+	int dniconductor = 0;
+	String placa = null;
+	
 	public static void main(String[] args) {
 		try {
-			vdSocioNuevo dialog = new vdSocioNuevo(null, null);
+			vdSocioModificar dialog = new vdSocioModificar(null, null, 0, 0, null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -91,11 +92,15 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 	/**
 	 * Create the dialog.
 	 */
-	public vdSocioNuevo(vPrincipal temp, viListaSocios temp2) {
+	public vdSocioModificar(vPrincipal temp, viListaSocios temp2, int temp3, int temp4, String temp5) {
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		
 		vp = temp;
 		vnsn = temp2;
+		codsocio = temp3;
+		dniconductor = temp4;
+		placa = temp5;
+		
 		
 		setUndecorated(true);
 		setBounds(100, 100, 724, 709);
@@ -103,7 +108,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		{
 			txtAgregarVehiculo = new JTextField();
 			txtAgregarVehiculo.setEditable(false);
-			txtAgregarVehiculo.setText("AGREGAR SOCIO");
+			txtAgregarVehiculo.setText("MODIFICAR SOCIO");
 			txtAgregarVehiculo.setHorizontalAlignment(SwingConstants.CENTER);
 			txtAgregarVehiculo.setForeground(Color.WHITE);
 			txtAgregarVehiculo.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
@@ -122,6 +127,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		}
 		{
 			txtCodSocio = new JTextField();
+			txtCodSocio.setEditable(false);
 			txtCodSocio.setForeground(new Color(255, 69, 0));
 			txtCodSocio.addKeyListener(this);
 			txtCodSocio.setFont(new Font("Century Gothic", Font.PLAIN, 20));
@@ -196,6 +202,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		getContentPane().add(label);
 		
 		txtPlaca = new JTextField();
+		txtPlaca.setEditable(false);
 		txtPlaca.setForeground(new Color(255, 69, 0));
 		txtPlaca.addKeyListener(new KeyAdapter() {
 			@Override
@@ -274,6 +281,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		getContentPane().add(lblDni);
 		
 		txtDniConductor = new JTextField();
+		txtDniConductor.setEditable(false);
 		txtDniConductor.setForeground(new Color(255, 69, 0));
 		txtDniConductor.addKeyListener(new KeyAdapter() {
 			@Override
@@ -409,19 +417,83 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 	public void cargar(){
 		this.setLocationRelativeTo(null);
 		
+		//CARGAR EMPRESAS
 		Empresa empresa = new Empresa();
 		empresa.cargarEmpresas(cbEmpresa);
 		
+		//CARGAR MODELOS DE VEHICULOS
 		Consultas consult = new Consultas();
-		rs = consult.cargarModelosVehiculos();
+		ResultSet rs1;
+		rs1 = consult.cargarModelosVehiculos();
 		try {
-			while(rs.next())
-				cbModeloV.addItem(rs.getString("modelo"));
+			while(rs1.next())
+				cbModeloV.addItem(rs1.getString("modelo"));
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
 		
-		Conductor conductor = new Conductor();
+		//BUSCAR DATOS
+		txtCodSocio.setText("" + codsocio);
+		txtDniConductor.setText("" + dniconductor);
+		txtPlaca.setText(placa);
+		
+		Consultas consult2 = new Consultas();
+		ResultSet rs2;
+		rs2 = consult2.buscarSocio(codsocio);
+		int idEmpresa = 0;
+		try {
+			rs2.next();
+			idEmpresa = rs2.getInt("idempresa");
+			txtDniSocio.setText(""+rs2.getString("dnisocio"));
+			txtNombreSocio.setText(rs2.getString("nombresocio"));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		cbEmpresa.setSelectedIndex(idEmpresa-1);
+		/*
+		Consultas consult25 = new Consultas();
+		ResultSet rs25;
+		rs25 = consult25.buscarEmpresa(idEmpresa);
+		try {
+			rs25.next();
+			cbEmpresa.setSelectedItem(rs25.getString("empresa").toString());
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}*/
+		
+		Consultas consult3 = new Consultas();
+		ResultSet rs3;
+		rs3 = consult3.buscarVehiculo(placa);
+		int idmodelovehiculo = 0;
+		try {
+			rs3.next();
+			idmodelovehiculo = rs3.getInt("idmodelo");
+			txtDetalles.setText(rs3.getString("detalle"));
+			txtMTC.setText(rs3.getString("mtc"));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		
+		Consultas consultas35 = new Consultas();
+		ResultSet rs35;
+		rs35 = consultas35.buscarModeloVehiculo(idmodelovehiculo);
+		try {
+			rs35.next();
+			cbModeloV.setSelectedItem(rs35.getString("modelo"));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		
+		Consultas consult4 = new Consultas();
+		ResultSet rs4;
+		rs4 = consult4.buscarConductor(dniconductor);
+		try {
+			rs4.next();
+			txtNombreConductor.setText(rs4.getString("conductor"));
+			txtNlicencia.setText(rs4.getString("licencia"));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}		
 	}
 	
 	protected void actionPerformedBtnCancelar(ActionEvent e) {
@@ -434,7 +506,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 			this.setAlwaysOnTop(false);		
 			JOptionPane.showMessageDialog(null, "Ingrese los datos necesarios correctamente");
 			this.setAlwaysOnTop(true);
-		}  
+		}
 		else{
 			int codsocio = Integer.parseInt(txtCodSocio.getText());
 			int idempresa = cbEmpresa.getSelectedIndex() + 1;
@@ -452,14 +524,16 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 			
 			this.setAlwaysOnTop(false);
 			Consultas consulta1 = new Consultas();
-			consulta1.crearConductor(dniconductor, licencia, nombreconductor);
+			consulta1.modificarConductor(dniconductor, licencia, nombreconductor);
 			
 			Consultas consulta2 = new Consultas();
-			consulta2.crearVehiculo(placa, modelo, detalles, mtc);
+			consulta2.modificarVehiculo(placa, modelo, detalles, mtc);
 			
-			Consultas consulta = new Consultas();
+			Consultas consulta = new Consultas();	
 			this.setAlwaysOnTop(false);
-			consulta.crearSocio(codsocio, idempresa, dnisocio, nombresocio, dniconductor, placa);
+			consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio);
+			this.dispose();
+			JOptionPane.showMessageDialog(null, "Datos modificados correctamente.");
 			this.dispose();
 		}
 	}
@@ -602,27 +676,6 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		txtNlicencia.setText("");
 	} 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

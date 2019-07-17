@@ -138,6 +138,21 @@ public class Consultas {
 		}
 	}
 	
+	public static void modificarVehiculo(String placa, int modelo, String detalle, String mtc){
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "update tb_vehiculo set idmodelo=?, detalle=?, mtc=? where placa=?";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, modelo);
+			prepareStmt.setString(2, detalle);
+			prepareStmt.setString(3, mtc);
+			prepareStmt.setString(4, placa);
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+	}
+	
 	public static void crearConductor(int dni, String nlicencia, String conductor){
 		Connection con = MySQLConexion.getConection();
 		try {
@@ -154,7 +169,21 @@ public class Consultas {
 		}
 	}
 	
-	public static void modificarvehiculo(String placa, String detalles, String mtc, int dni){
+	public static void modificarConductor(int dni, String nlicencia, String conductor){
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "update tb_conductor set licencia=?, conductor=? where dniconductor=?";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setString(1, nlicencia);
+			prepareStmt.setString(2, conductor);
+			prepareStmt.setInt(3, dni);
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+	}
+	
+	public static void modificarConductor(String placa, String detalles, String mtc, int dni){
 		Connection con = MySQLConexion.getConection();
 		try {
 			String sql = "update tb_vehiculo set detalle=?, mtc=?, dniconductor=? where placa=?";
@@ -319,6 +348,40 @@ public class Consultas {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
+	}
+	
+	public ResultSet buscarSocio(int codsocio){
+		Connection con = MySQLConexion.getConection();
+		java.sql.Statement st;
+		ResultSet rs = null;
+		PreparedStatement pst = null;
+		try {
+			st = con.createStatement();
+			String sql = "select * from tb_socio where codsocio = ?";
+			pst = con.prepareStatement(sql);
+			pst.setInt(1, codsocio);
+			rs = pst.executeQuery();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		return rs;
+	}
+	
+	public ResultSet buscarEmpresa(int idEmpresa){
+		Connection con = MySQLConexion.getConection();
+		java.sql.Statement st;
+		ResultSet rs = null;
+		PreparedStatement pst = null;
+		try {
+			st = con.createStatement();
+			String sql = "select * from tb_empresa where idempresa = ?";
+			pst = con.prepareStatement(sql);
+			pst.setInt(1, idEmpresa);
+			rs = pst.executeQuery();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		return rs;
 	}
 	
 	public ResultSet buscarVehiculo(String placa){
@@ -583,13 +646,28 @@ public class Consultas {
 			JOptionPane.showMessageDialog(null, "ERROR" + e);
 		}
 	}
+
+	public static void modificarSocio(int codsocio, int idempresa, int dnisocio, String nombresocio){
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "update tb_socio set idempresa=?, dnisocio=?, nombresocio=?, dniconductor=?, placa=?, where codsocio=?";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, idempresa);
+			prepareStmt.setInt(2, dnisocio);
+			prepareStmt.setString(3, nombresocio);
+			prepareStmt.setInt(4, codsocio);
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+	}
 	
 	public ResultSet cargarSocios(){
 		Connection con = MySQLConexion.getConection();
 		ResultSet rs = null;
 		PreparedStatement pst = null;
 		try {
-			String sql = "select sc.codsocio, sc.nombresocio, sc.dnisocio, e.empresa, c.conductor, sc.placa from tb_socio sc inner join tb_conductor c on c.dniconductor = sc.dniconductor inner join tb_empresa e on e.idempresa = sc.idempresa;";
+			String sql = "select sc.codsocio, sc.nombresocio, sc.dnisocio, e.empresa, c.conductor, c.dniconductor, sc.placa from tb_socio sc inner join tb_conductor c on c.dniconductor = sc.dniconductor inner join tb_empresa e on e.idempresa = sc.idempresa;";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 		} catch (Exception e) {
@@ -597,4 +675,7 @@ public class Consultas {
 		}
 		return rs;
 	}
+	
+	
+	
 }
