@@ -200,6 +200,7 @@ select * from tb_conductor;
 select * from tb_empresa;
 select * from tb_modelo_vehiculo;
 select * from tb_vehiculo;
+select * from tb_socio;
 select * from tb_pasajero;
 select * from tb_destinos;
 select * from tb_viaje;

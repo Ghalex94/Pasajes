@@ -461,6 +461,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 			this.setAlwaysOnTop(false);
 			consulta.crearSocio(codsocio, idempresa, dnisocio, nombresocio, dniconductor, placa);
 			this.dispose();
+			this.setAlwaysOnTop(true);
 		}
 	}
 	
@@ -533,7 +534,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 	}
 	
 	protected void focusLostTxtPlaca(FocusEvent arg0) {
-		//verificarPlaca();
+		verificarPlaca();
 	}
 	protected void focusLostTxtDniConductor(FocusEvent e) {
 		verificarConductor();

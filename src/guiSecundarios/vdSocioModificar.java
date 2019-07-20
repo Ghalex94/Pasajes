@@ -37,6 +37,13 @@ import javax.swing.Box;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
+import javax.swing.JCheckBox;
+import java.awt.SystemColor;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+import java.awt.event.MouseAdapter;
 
 public class vdSocioModificar extends JDialog implements ActionListener, KeyListener {
 	private JTextField txtAgregarVehiculo;
@@ -78,6 +85,8 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 	int codsocio = 0;
 	int dniconductor = 0;
 	String placa = null;
+	private JCheckBox chbxVehiculo;
+	private JCheckBox chbxConductor;
 	
 	public static void main(String[] args) {
 		try {
@@ -401,6 +410,34 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		label_8.setFont(new Font("Century Gothic", Font.PLAIN, 25));
 		label_8.setBounds(202, 518, 18, 20);
 		getContentPane().add(label_8);
+		
+		chbxVehiculo = new JCheckBox("Si el Vehiculo afiliado ser\u00E1 uno nuevo, marque esta casilla.");
+		chbxVehiculo.setHorizontalAlignment(SwingConstants.RIGHT);
+		chbxVehiculo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				mouseClickedChbxVehiculo(arg0);
+			}
+		});
+		chbxVehiculo.setForeground(new Color(255, 0, 0));
+		chbxVehiculo.setBackground(Color.LIGHT_GRAY);
+		chbxVehiculo.setFont(new Font("Tahoma", Font.ITALIC, 15));
+		chbxVehiculo.setBounds(226, 257, 464, 23);
+		getContentPane().add(chbxVehiculo);
+		
+		chbxConductor = new JCheckBox("Si el Conductor afiliado ser\u00E1 uno nuevo, marque esta casilla.");
+		chbxConductor.setHorizontalAlignment(SwingConstants.RIGHT);
+		chbxConductor.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				mouseClickedChbxConductor(e);
+			}
+		});
+		chbxConductor.setForeground(new Color(255, 0, 0));
+		chbxConductor.setFont(new Font("Tahoma", Font.ITALIC, 15));
+		chbxConductor.setBackground(Color.LIGHT_GRAY);
+		chbxConductor.setBounds(226, 484, 464, 23);
+		getContentPane().add(chbxConductor);
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtCodSocio, cbEmpresa, txtDniSocio, txtNombreSocio, txtPlaca, cbModeloV, txtDetalles, txtMTC, txtDniConductor, txtNombreConductor, txtNlicencia, btnGuardar, btnCancelar}));
 		cargar();
 	}
@@ -414,6 +451,10 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		}
 	}
 	
+	String detallesVehiculo = null;
+	String mtc = null;
+	String modelovehiculo = null;
+	
 	public void cargar(){
 		this.setLocationRelativeTo(null);
 		
@@ -421,7 +462,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		Empresa empresa = new Empresa();
 		empresa.cargarEmpresas(cbEmpresa);
 		
-		//CARGAR MODELOS DE VEHICULOS
+		//CARGAR MODELOS DE VEHICULOS  A COMBOBOX
 		Consultas consult = new Consultas();
 		ResultSet rs1;
 		rs1 = consult.cargarModelosVehiculos();
@@ -437,6 +478,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		txtDniConductor.setText("" + dniconductor);
 		txtPlaca.setText(placa);
 		
+		//SOCIO
 		Consultas consult2 = new Consultas();
 		ResultSet rs2;
 		rs2 = consult2.buscarSocio(codsocio);
@@ -461,6 +503,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}*/
 		
+		//VEHICULO
 		Consultas consult3 = new Consultas();
 		ResultSet rs3;
 		rs3 = consult3.buscarVehiculo(placa);
@@ -469,7 +512,9 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 			rs3.next();
 			idmodelovehiculo = rs3.getInt("idmodelo");
 			txtDetalles.setText(rs3.getString("detalle"));
+			detallesVehiculo = rs3.getString("detalle");
 			txtMTC.setText(rs3.getString("mtc"));
+			mtc = rs3.getString("mtc");
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
@@ -480,6 +525,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		try {
 			rs35.next();
 			cbModeloV.setSelectedItem(rs35.getString("modelo"));
+			modelovehiculo = rs35.getString("modelo");
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
@@ -522,19 +568,40 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 			String nombreconductor = txtNombreConductor.getText();
 			String licencia = txtNlicencia.getText();
 			
-			this.setAlwaysOnTop(false);
-			Consultas consulta1 = new Consultas();
-			consulta1.modificarConductor(dniconductor, licencia, nombreconductor);
-			
-			Consultas consulta2 = new Consultas();
-			consulta2.modificarVehiculo(placa, modelo, detalles, mtc);
-			
-			Consultas consulta = new Consultas();	
-			this.setAlwaysOnTop(false);
-			consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio);
-			this.dispose();
-			JOptionPane.showMessageDialog(null, "Datos modificados correctamente.");
-			this.dispose();
+			if(chbxVehiculo.isSelected()){
+				Consultas consulta2 = new Consultas();
+				consulta2.modificarVehiculo(placa, modelo, detalles, mtc);
+			}
+						
+			if(chbxConductor.isSelected()){// CREAR
+				this.setAlwaysOnTop(false);
+				Consultas consulta1 = new Consultas();
+				consulta1.crearConductor(dniconductor, licencia, nombreconductor);
+				
+				Consultas consulta2 = new Consultas();
+				consulta2.crearVehiculo(placa, modelo, detalles, mtc);
+				
+				Consultas consulta = new Consultas();
+				this.setAlwaysOnTop(false);
+				consulta.crearSocio(codsocio, idempresa, dnisocio, nombresocio, dniconductor, placa);
+				this.dispose();
+				this.setAlwaysOnTop(true);
+			}
+			else{// MODIFICAR
+				this.setAlwaysOnTop(false);
+				Consultas consulta1 = new Consultas();
+				consulta1.modificarConductor(dniconductor, licencia, nombreconductor);
+				
+				Consultas consulta2 = new Consultas();
+				consulta2.modificarVehiculo(placa, modelo, detalles, mtc);
+				
+				Consultas consulta = new Consultas();	
+				this.setAlwaysOnTop(false);
+				consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, dniconductor, placa);
+				this.dispose();
+				JOptionPane.showMessageDialog(null, "Datos modificados correctamente.");
+				this.dispose();
+			}
 		}
 	}
 	
@@ -607,7 +674,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 	}
 	
 	protected void focusLostTxtPlaca(FocusEvent arg0) {
-		//verificarPlaca();
+		verificarPlaca();
 	}
 	protected void focusLostTxtDniConductor(FocusEvent e) {
 		verificarConductor();
@@ -668,13 +735,40 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		cbModeloV.setSelectedIndex(1);
 		txtDetalles.setText("");
 		txtMTC.setText("");
-	} 
+	}
 	
 	public void limpiarConductor(){
 		cbModeloV.setSelectedIndex(1);
 		txtNombreConductor.setText("");
 		txtNlicencia.setText("");
-	} 
+	}
+	
+	protected void mouseClickedChbxVehiculo(MouseEvent arg0) {
+		if(chbxVehiculo.isSelected()){
+			int opc = JOptionPane.showConfirmDialog(null, "¿Está seguro de querer crear un nuevo vehiculo?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if (opc == 0){
+				txtPlaca.setEditable(true);
+				limpiarVehiculo();
+				txtPlaca.setText("");
+				cbModeloV.setSelectedIndex(0);
+			}
+		}
+		else{
+			txtPlaca.setEditable(false);
+			int opc = JOptionPane.showConfirmDialog(null, "¿Está seguro de dejar la creación? Se cargará la información original", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if (opc == 0){
+				txtPlaca.setText(placa);
+				txtDetalles.setText(detallesVehiculo);
+				txtMTC.setText(mtc);
+				cbModeloV.setSelectedItem(modelovehiculo);
+				JOptionPane.showMessageDialog(null, modelovehiculo);
+			}
+		}
+	}
+	protected void mouseClickedChbxConductor(MouseEvent e) {
+		txtDniConductor.setEditable(true);
+		limpiarConductor();
+	}
 }
 
 

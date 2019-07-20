@@ -647,15 +647,17 @@ public class Consultas {
 		}
 	}
 
-	public static void modificarSocio(int codsocio, int idempresa, int dnisocio, String nombresocio){
+	public static void modificarSocio(int codsocio, int idempresa, int dnisocio, String nombresocio, int dniconductor, String placa){
 		Connection con = MySQLConexion.getConection();
 		try {
-			String sql = "update tb_socio set idempresa=?, dnisocio=?, nombresocio=?, dniconductor=?, placa=?, where codsocio=?";
+			String sql = "update tb_socio set idempresa=?, dnisocio=?, nombresocio=?, dniconductor=?, placa=? where codsocio=?";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setInt(1, idempresa);
 			prepareStmt.setInt(2, dnisocio);
 			prepareStmt.setString(3, nombresocio);
-			prepareStmt.setInt(4, codsocio);
+			prepareStmt.setInt(4, dniconductor);
+			prepareStmt.setString(5, placa);
+			prepareStmt.setInt(6, codsocio);
 			prepareStmt.execute();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
