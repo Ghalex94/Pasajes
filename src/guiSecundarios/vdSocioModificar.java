@@ -568,11 +568,32 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 			String nombreconductor = txtNombreConductor.getText();
 			String licencia = txtNlicencia.getText();
 			
+			
+			this.setAlwaysOnTop(false);
 			if(chbxVehiculo.isSelected()){
+				Consultas consulta2 = new Consultas();
+				consulta2.crearVehiculo(placa, modelo, detalles, mtc);
+			}
+			else{
 				Consultas consulta2 = new Consultas();
 				consulta2.modificarVehiculo(placa, modelo, detalles, mtc);
 			}
-						
+				
+			if(chbxConductor.isSelected()){// CREAR
+				Consultas consulta1 = new Consultas();
+				consulta1.crearConductor(dniconductor, licencia, nombreconductor);
+			}
+			else{
+				Consultas consulta1 = new Consultas();
+				consulta1.crearConductor(dniconductor, licencia, nombreconductor);
+			}
+					
+			Consultas consulta = new Consultas();
+			consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, dniconductor, placa);
+			this.dispose();
+			JOptionPane.showMessageDialog(null, "Datos modificados correctamente.");
+			this.dispose();
+			/*
 			if(chbxConductor.isSelected()){// CREAR
 				this.setAlwaysOnTop(false);
 				Consultas consulta1 = new Consultas();
@@ -601,7 +622,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 				this.dispose();
 				JOptionPane.showMessageDialog(null, "Datos modificados correctamente.");
 				this.dispose();
-			}
+			}*/
 		}
 	}
 	
