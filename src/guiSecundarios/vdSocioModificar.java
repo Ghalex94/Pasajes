@@ -455,6 +455,9 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 	String mtc = null;
 	String modelovehiculo = null;
 	
+	String nombrecondutor = null;
+	String nlicencia = null;
+	
 	public void cargar(){
 		this.setLocationRelativeTo(null);
 		
@@ -530,13 +533,16 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
 		
+		//CONDUCTOR
 		Consultas consult4 = new Consultas();
 		ResultSet rs4;
 		rs4 = consult4.buscarConductor(dniconductor);
 		try {
 			rs4.next();
 			txtNombreConductor.setText(rs4.getString("conductor"));
+			nombrecondutor = rs4.getString("conductor");
 			txtNlicencia.setText(rs4.getString("licencia"));
+			nlicencia = rs4.getString("licencia");
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}		
@@ -568,61 +574,26 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 			String nombreconductor = txtNombreConductor.getText();
 			String licencia = txtNlicencia.getText();
 			
-			
 			this.setAlwaysOnTop(false);
-			if(chbxVehiculo.isSelected()){
-				Consultas consulta2 = new Consultas();
-				consulta2.crearVehiculo(placa, modelo, detalles, mtc);
-			}
-			else{
-				Consultas consulta2 = new Consultas();
-				consulta2.modificarVehiculo(placa, modelo, detalles, mtc);
-			}
-				
-			if(chbxConductor.isSelected()){// CREAR
-				Consultas consulta1 = new Consultas();
-				consulta1.crearConductor(dniconductor, licencia, nombreconductor);
-			}
-			else{
-				Consultas consulta1 = new Consultas();
-				consulta1.crearConductor(dniconductor, licencia, nombreconductor);
-			}
-					
 			Consultas consulta = new Consultas();
+			if(chbxVehiculo.isSelected()){// CREAR
+				consulta.eliminarVehiculo(placa);
+				consulta.crearVehiculo(placa, modelo, detalles, mtc);
+			}
+			else// MODIFICAR
+				consulta.modificarVehiculo(placa, modelo, detalles, mtc);
+			
+			if(chbxConductor.isSelected()){// CREAR
+				consulta.eliminarConductor(dniconductor);
+				consulta.crearConductor(dniconductor, licencia, nombreconductor);
+			}
+			else// MODIFICAR
+				consulta.modificarConductor(dniconductor, licencia, nombreconductor);
+			
 			consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, dniconductor, placa);
-			this.dispose();
 			JOptionPane.showMessageDialog(null, "Datos modificados correctamente.");
 			this.dispose();
-			/*
-			if(chbxConductor.isSelected()){// CREAR
-				this.setAlwaysOnTop(false);
-				Consultas consulta1 = new Consultas();
-				consulta1.crearConductor(dniconductor, licencia, nombreconductor);
-				
-				Consultas consulta2 = new Consultas();
-				consulta2.crearVehiculo(placa, modelo, detalles, mtc);
-				
-				Consultas consulta = new Consultas();
-				this.setAlwaysOnTop(false);
-				consulta.crearSocio(codsocio, idempresa, dnisocio, nombresocio, dniconductor, placa);
-				this.dispose();
-				this.setAlwaysOnTop(true);
-			}
-			else{// MODIFICAR
-				this.setAlwaysOnTop(false);
-				Consultas consulta1 = new Consultas();
-				consulta1.modificarConductor(dniconductor, licencia, nombreconductor);
-				
-				Consultas consulta2 = new Consultas();
-				consulta2.modificarVehiculo(placa, modelo, detalles, mtc);
-				
-				Consultas consulta = new Consultas();	
-				this.setAlwaysOnTop(false);
-				consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, dniconductor, placa);
-				this.dispose();
-				JOptionPane.showMessageDialog(null, "Datos modificados correctamente.");
-				this.dispose();
-			}*/
+			vp.setEnabled(true);
 		}
 	}
 	
@@ -759,14 +730,14 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 	}
 	
 	public void limpiarConductor(){
-		cbModeloV.setSelectedIndex(1);
 		txtNombreConductor.setText("");
 		txtNlicencia.setText("");
 	}
 	
 	protected void mouseClickedChbxVehiculo(MouseEvent arg0) {
+		this.setAlwaysOnTop(false);
 		if(chbxVehiculo.isSelected()){
-			int opc = JOptionPane.showConfirmDialog(null, "¿Está seguro de querer crear un nuevo vehiculo?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			int opc = JOptionPane.showConfirmDialog(null, "¿Está seguro de querer crear uno nuevo? El vehiculo actual se eliminará", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (opc == 0){
 				txtPlaca.setEditable(true);
 				limpiarVehiculo();
@@ -782,13 +753,30 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 				txtDetalles.setText(detallesVehiculo);
 				txtMTC.setText(mtc);
 				cbModeloV.setSelectedItem(modelovehiculo);
-				JOptionPane.showMessageDialog(null, modelovehiculo);
 			}
 		}
+		this.setAlwaysOnTop(true);
 	}
 	protected void mouseClickedChbxConductor(MouseEvent e) {
-		txtDniConductor.setEditable(true);
-		limpiarConductor();
+		this.setAlwaysOnTop(false);
+		if(chbxConductor.isSelected()){
+			int opc = JOptionPane.showConfirmDialog(null, "¿Está seguro de querer crear uno nuevo? El conductor actual se eliminará", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if (opc == 0){
+				txtDniConductor.setEditable(true);
+				txtDniConductor.setText("");
+				limpiarConductor(); 
+			}
+		}
+		else{
+			txtPlaca.setEditable(false);
+			int opc = JOptionPane.showConfirmDialog(null, "¿Está seguro de dejar la creación? Se cargará la información original", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if (opc == 0){
+				txtDniConductor.setText(""+dniconductor);
+				txtNombreConductor.setText(nombrecondutor);
+				txtNlicencia.setText(nlicencia);
+			}
+		}
+		this.setAlwaysOnTop(true);
 	}
 }
 

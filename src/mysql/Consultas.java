@@ -201,7 +201,6 @@ public class Consultas {
 	
 	public static void eliminarVehiculo(String placa){
 		Connection con = MySQLConexion.getConection();
-		ResultSet rs = null;
 		try {
 			String sql = "delete from tb_vehiculo where placa = ?";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
@@ -478,6 +477,19 @@ public class Consultas {
 			String sql = "delete from tb_pasajero where dnipasajero = ?";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setInt(1, dnipasajero);		
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+	}
+	
+	public static void eliminarConductor(int dniconductor){
+		Connection con = MySQLConexion.getConection();
+		ResultSet rs = null;
+		try {
+			String sql = "delete from tb_conductor where dniconductor = ?";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, dniconductor);		
 			prepareStmt.execute();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
