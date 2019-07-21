@@ -31,9 +31,7 @@ create table tb_vehiculo(
 placa			varchar(7) not null primary key,
 idmodelo		int,
 detalle			varchar(100),
-dniconductor	int,
 mtc				varchar(20),
-foreign key (dniconductor) references tb_conductor(dniconductor),
 foreign key (idmodelo) references tb_modelo_vehiculo(idmodelo)
 );
 
@@ -158,28 +156,6 @@ insert into tb_configuracion_inicial values(0, null, null, 1, 1);
 
 insert into tb_venta_temporal values(1, 0, 0, 0, null, 0, null, null, null, null, 0, 0, 1, 0, null, null, null, null, null, 0, null, null, null);
 
-insert into tb_socio values(null, 'Socio Juan Carlos');
-
-insert into tb_conductor values(48562548, '468FD4F8', 'Pablo Ramirez Valderrama');
-insert into tb_conductor values(78561565, '8F4D45E5', 'Carlos Choque Paredes');
-insert into tb_conductor values(49581622, '845DFVC8', 'Martin Olivares');
-insert into tb_conductor values(84951655, 'SD4S8A4C', 'Joaquin Cardenas');
-insert into tb_conductor values(84589125, 'SD84CX52', 'Andres Torres');
-insert into tb_conductor values(52048699, 'RYT7843F', 'Marco Villanueva');
-
-insert into tb_vehiculo values('D8G-FV4', 1, 'Blanco', 48562548, 1);
-insert into tb_vehiculo values('F8F-8F4', 2, 'Blanco', 78561565, 2);
-insert into tb_vehiculo values('D8C-D4F', 3, 'Blanco', 49581622, 3);
-insert into tb_vehiculo values('G7V-D5C', 4, 'Blanco', 84951655, 4);
-insert into tb_vehiculo values('H8I-G5F', 5, 'Blanco', 84589125, 5);
-insert into tb_vehiculo values('F7Q-G4Y', 6, 'Blanco', 52048699, 6);
-
-insert into tb_pasajero values(76784966, '10767849660', '1994-10-30', 'Alexander Gamarra', 'Byte x Byte', 'Peruana');
-insert into tb_pasajero values(76784955, '10767849550', '1995-01-28', 'Melany G', 'BxB', 'Peruana');
-insert into tb_pasajero values(76784944, '10767849440', '1997-12-31', 'Jean Carlos', 'Sin oficio', 'Venzolana');
-insert into tb_pasajero values(76784933, '10767849330', '1995-03-05', 'Andrea Perez', 'Imagenes SRL', 'Peruana');
-
-
 -- ELIMINAR TABLAS Y DB -----------------------------------------------------------
 drop database db_venta_pasajes; -- ----------------------------------------------
 -- drop table tb_usuario;
@@ -299,3 +275,5 @@ where  vt.id = 1;
 
 select * from tb_venta_temporal;
 select * from tb_pasajeros_temporal;
+
+delete from tb_vehiculo where placa = 'CCC-333'

@@ -83,8 +83,8 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 	vPrincipal vp = null;
 	viListaSocios vnsn = null;
 	int codsocio = 0;
-	int dniconductor = 0;
-	String placa = null;
+	int antiguodniconductor = 0;
+	String antiguaplaca = null;
 	private JCheckBox chbxVehiculo;
 	private JCheckBox chbxConductor;
 	
@@ -107,8 +107,8 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		vp = temp;
 		vnsn = temp2;
 		codsocio = temp3;
-		dniconductor = temp4;
-		placa = temp5;
+		antiguodniconductor = temp4;
+		antiguaplaca = temp5;
 		
 		
 		setUndecorated(true);
@@ -478,8 +478,8 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		
 		//BUSCAR DATOS
 		txtCodSocio.setText("" + codsocio);
-		txtDniConductor.setText("" + dniconductor);
-		txtPlaca.setText(placa);
+		txtDniConductor.setText("" + antiguodniconductor);
+		txtPlaca.setText(antiguaplaca);
 		
 		//SOCIO
 		Consultas consult2 = new Consultas();
@@ -509,7 +509,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		//VEHICULO
 		Consultas consult3 = new Consultas();
 		ResultSet rs3;
-		rs3 = consult3.buscarVehiculo(placa);
+		rs3 = consult3.buscarVehiculo(antiguaplaca);
 		int idmodelovehiculo = 0;
 		try {
 			rs3.next();
@@ -536,7 +536,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		//CONDUCTOR
 		Consultas consult4 = new Consultas();
 		ResultSet rs4;
-		rs4 = consult4.buscarConductor(dniconductor);
+		rs4 = consult4.buscarConductor(antiguodniconductor);
 		try {
 			rs4.next();
 			txtNombreConductor.setText(rs4.getString("conductor"));
@@ -565,33 +565,57 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 			int dnisocio = Integer.parseInt(txtDniSocio.getText());	
 			String nombresocio = txtNombreSocio	.getText();
 			
-			String placa = txtPlaca.getText();
+			String newplaca = txtPlaca.getText();
 			int modelo = cbModeloV.getSelectedIndex() + 1;
 			String detalles = txtDetalles.getText();
 			String mtc = txtMTC.getText();
 			
-			int dniconductor = Integer.parseInt(txtDniConductor.getText());
+			int newdniconductor = Integer.parseInt(txtDniConductor.getText());
 			String nombreconductor = txtNombreConductor.getText();
 			String licencia = txtNlicencia.getText();
 			
 			this.setAlwaysOnTop(false);
 			Consultas consulta = new Consultas();
+			/*
 			if(chbxVehiculo.isSelected()){// CREAR
-				consulta.eliminarVehiculo(placa);
-				consulta.crearVehiculo(placa, modelo, detalles, mtc);
+				JOptionPane.showMessageDialog(null, antiguaplaca);
+				consulta.crearVehiculo(newplaca, modelo, detalles, mtc);
+				consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, antiguodniconductor, newplaca);
+				consulta.eliminarVehiculo(antiguaplaca);
 			}
 			else// MODIFICAR
-				consulta.modificarVehiculo(placa, modelo, detalles, mtc);
+				consulta.modificarVehiculo(antiguaplaca, modelo, detalles, mtc);
 			
 			if(chbxConductor.isSelected()){// CREAR
-				consulta.eliminarConductor(dniconductor);
-				consulta.crearConductor(dniconductor, licencia, nombreconductor);
+				consulta.crearConductor(newdniconductor, licencia, nombreconductor);
+				consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, newdniconductor, antiguaplaca);
+				consulta.eliminarConductor(antiguodniconductor);
 			}
 			else// MODIFICAR
-				consulta.modificarConductor(dniconductor, licencia, nombreconductor);
+				consulta.modificarConductor(antiguodniconductor, licencia, nombreconductor);
+			*/
 			
-			consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, dniconductor, placa);
-			JOptionPane.showMessageDialog(null, "Datos modificados correctamente.");
+			
+			if(chbxVehiculo.isSelected() && chbxConductor.isSelected()){ // MODIFICAR CONDUCTOR Y VEHICULO
+				consulta.crearVehiculo(newplaca, modelo, detalles, mtc);
+				consulta.crearConductor(newdniconductor, licencia, nombreconductor);
+				consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, newdniconductor, newplaca);
+				consulta.eliminarVehiculo(antiguaplaca);
+				consulta.eliminarConductor(antiguodniconductor);
+			}
+			
+			if(!chbxConductor.isSelected() && chbxVehiculo.isSelected()){ // MODIFICAR VEHICULO
+				consulta.crearVehiculo(newplaca, modelo, detalles, mtc);
+				consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, antiguodniconductor, newplaca);
+				consulta.eliminarVehiculo(antiguaplaca);
+			}
+			
+			if(chbxConductor.isSelected() && !chbxVehiculo.isSelected()){ // MODIFICAR CONDUCTOR
+				consulta.crearConductor(newdniconductor, licencia, nombreconductor);
+				consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, newdniconductor, antiguaplaca);
+				consulta.eliminarConductor(antiguodniconductor);
+			}
+			
 			this.dispose();
 			vp.setEnabled(true);
 		}
@@ -749,7 +773,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 			txtPlaca.setEditable(false);
 			int opc = JOptionPane.showConfirmDialog(null, "¿Está seguro de dejar la creación? Se cargará la información original", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (opc == 0){
-				txtPlaca.setText(placa);
+				txtPlaca.setText(antiguaplaca);
 				txtDetalles.setText(detallesVehiculo);
 				txtMTC.setText(mtc);
 				cbModeloV.setSelectedItem(modelovehiculo);
@@ -771,7 +795,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 			txtPlaca.setEditable(false);
 			int opc = JOptionPane.showConfirmDialog(null, "¿Está seguro de dejar la creación? Se cargará la información original", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (opc == 0){
-				txtDniConductor.setText(""+dniconductor);
+				txtDniConductor.setText(""+antiguodniconductor);
 				txtNombreConductor.setText(nombrecondutor);
 				txtNlicencia.setText(nlicencia);
 			}

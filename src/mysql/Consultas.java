@@ -671,6 +671,8 @@ public class Consultas {
 			prepareStmt.setString(5, placa);
 			prepareStmt.setInt(6, codsocio);
 			prepareStmt.execute();
+
+			JOptionPane.showMessageDialog(null, "Datos modificados correctamente.");
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
