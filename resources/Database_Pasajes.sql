@@ -172,13 +172,13 @@ drop database db_venta_pasajes; -- ---------------------------------------------
 -- SELECT TABLAS -----------------------------------------------------------------
 use db_venta_pasajes;
 select * from tb_usuario;
-select * from tb_conductor;
 select * from tb_empresa;
-select * from tb_modelo_vehiculo;
+select * from tb_conductor;
 select * from tb_vehiculo;
 select * from tb_socio;
+select * from tb_modelo_vehiculo;
 select * from tb_pasajero;
-select * from tb_destinos;
+select * from tb_sedes;
 select * from tb_viaje;
 select * from tb_detalle_viaje;
 select * from tb_venta_temporal;
@@ -271,9 +271,3 @@ on pt2.estado = 1
 left join tb_pasajero p
 on pt.dnipasajero = p.dnipasajero
 where  vt.id = 1;
-
-
-select * from tb_venta_temporal;
-select * from tb_pasajeros_temporal;
-
-delete from tb_vehiculo where placa = 'CCC-333'

@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-import guiSecundarios.vdDestinoNuevo;
+import guiSecundarios.vdSedeNueva;
 import guiSecundarios.vdVehiculoModificar;
 import guiSecundarios.vdVehiculoNuevo;
 import mysql.Consultas;
@@ -27,7 +27,7 @@ import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class viListaDestinos extends JInternalFrame implements ActionListener {
+public class viListaSedes extends JInternalFrame implements ActionListener {
 	private JTextField txtVehiculos;
 	private JButton btnAnadirDestino;
 	private JButton btnEliminarDestino;
@@ -42,7 +42,7 @@ public class viListaDestinos extends JInternalFrame implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					viListaDestinos frame = new viListaDestinos(null);
+					viListaSedes frame = new viListaSedes(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -54,7 +54,7 @@ public class viListaDestinos extends JInternalFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public viListaDestinos(vPrincipal temp) {
+	public viListaSedes(vPrincipal temp) {
 		
 		vp = temp;
 		
@@ -117,10 +117,10 @@ public class viListaDestinos extends JInternalFrame implements ActionListener {
 		tb.setModel(dtm);
 		dtm.setColumnIdentifiers(new Object[]{"ID", "SEDE"});
 		Consultas consult = new Consultas();
-		rs = consult.cargarDestinos();
+		rs = consult.cargarSedes();
 		try {
 			while(rs.next())
-				dtm.addRow(new Object[]{rs.getInt("iddestino"), rs.getString("destino")});
+				dtm.addRow(new Object[]{rs.getInt("idsede"), rs.getString("sede")});
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
@@ -147,7 +147,7 @@ public class viListaDestinos extends JInternalFrame implements ActionListener {
 	}
 	
 	protected void actionPerformedBtnAnadirDestino(ActionEvent arg0) {
-		vdDestinoNuevo ldest = new vdDestinoNuevo(vp, this);
+		vdSedeNueva ldest = new vdSedeNueva(vp, this);
 		ldest.setVisible(true);
 		vp.setEnabled(false);
 	}

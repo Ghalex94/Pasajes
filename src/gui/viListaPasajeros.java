@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-import guiSecundarios.vdDestinoNuevo;
+import guiSecundarios.vdSedeNueva;
 import guiSecundarios.vdPasajeroNuevo;
 import guiSecundarios.vdVehiculoModificar;
 import guiSecundarios.vdVehiculoNuevo;

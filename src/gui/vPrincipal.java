@@ -60,7 +60,8 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	viSeleccionAsientos3 sa3 = null;	 //Seleccion de asientos 3
 	viSeleccionAsientos4 sa4 = null;	 //Seleccion de asientos 4
 	viListaVehiculos lvc = null;		 //Lista de vehiculos
-	viListaDestinos ldest = null;		 //Lista destinos 
+	viListaConductores lcond = null;	 //Lista dde conductores
+	viListaSedes ldest = null;		 //Lista destinos 
 	viListaPasajeros lpjr = null;		 //Lista de pasajeros
 	viLlenarDatosFaltantes datfalt = null;//Datosa Faltantes 
 	viListaSocios lsoc = null; 			  //Lista de Socios
@@ -84,6 +85,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
     private JMenuItem mntmOpcionesAvanzadas;
     private JMenuItem mntmListaSocios;
     private JMenu mnSedes;
+    private JMenuItem mntmVerConductores;
     
     
 	
@@ -141,7 +143,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mnArchivo.add(mntmCerrarSesin);
 		mnArchivo.add(mntmSalir);
 		
-		mnSalidas = new JMenu("|Salida de Minivan|");
+		mnSalidas = new JMenu("|Salida de Minivan");
 		mnSalidas.setForeground(Color.WHITE);
 		mnSalidas.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		mnSalidas.setEnabled(false);
@@ -164,7 +166,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mntmCancelarSalida.setEnabled(false);
 		mnSalidas.add(mntmCancelarSalida);
 		
-		mnFormatos = new JMenu("|Formatos|");
+		mnFormatos = new JMenu("Formatos|");
 		mnFormatos.setForeground(Color.WHITE);
 		mnFormatos.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		mnFormatos.setEnabled(false);
@@ -195,13 +197,13 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mntmContrato.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mnFormatos.add(mntmContrato);
 		
-		mnVehiculosConductores = new JMenu("|Socio - conductores - vehiculos|");
+		mnVehiculosConductores = new JMenu("|Socios - vehiculos - conductores|");
 		mnVehiculosConductores.setForeground(Color.WHITE);
 		mnVehiculosConductores.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		mnVehiculosConductores.setEnabled(false);
 		menuBar.add(mnVehiculosConductores);
 		
-		mntmListaDeVehiculos = new JMenuItem("Lista de Vehiculos y Conductores");
+		mntmListaDeVehiculos = new JMenuItem("Ver Vehiculos");
 		mntmListaDeVehiculos.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mntmListaDeVehiculos.addActionListener(this);
 		
@@ -215,7 +217,13 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mnVehiculosConductores.add(mntmListaSocios);
 		mnVehiculosConductores.add(mntmListaDeVehiculos);
 		
+		mntmVerConductores = new JMenuItem("Ver Conductores");
+		mntmVerConductores.addActionListener(this);
+		mntmVerConductores.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		mnVehiculosConductores.add(mntmVerConductores);
+		
 		mnSedes = new JMenu("|Sedes|");
+		mnSedes.setEnabled(false);
 		mnSedes.setForeground(Color.WHITE);
 		mnSedes.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		menuBar.add(mnSedes);
@@ -290,6 +298,9 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == mntmVerConductores) {
+			actionPerformedMntmVerConductores(arg0);
+		}
 		if (arg0.getSource() == mntmIdV) {
 			actionPerformedMntmIdV(arg0);
 		}
@@ -389,26 +400,26 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	
 	public void desactivarMenu(){
 		mnArchivo.setEnabled(false);
-		mnClientes.setEnabled(false);
-		mnVehiculosConductores.setEnabled(false);
-		mnReportes.setEnabled(false);
 		mnSalidas.setEnabled(false);
 		mnFormatos.setEnabled(false);
+		mnVehiculosConductores.setEnabled(false);
+		mnSedes.setEnabled(false);
+		mnClientes.setEnabled(false);
+		mnReportes.setEnabled(false);
 	}
 	
 	public void activarMenu(int tipo){
 		if(tipo == 0){
 			mnArchivo.setEnabled(true);
-			mnClientes.setEnabled(true);
-			mnVehiculosConductores.setEnabled(true);
-			mnReportes.setEnabled(true);
 			mnSalidas.setEnabled(true);
 			mnFormatos.setEnabled(true);
+			mnVehiculosConductores.setEnabled(true);
+			mnSedes.setEnabled(true);
+			mnClientes.setEnabled(true);
+			mnReportes.setEnabled(true);
 		}
 		else{
 			mnArchivo.setEnabled(true);
-			mnClientes.setEnabled(true);
-			mnVehiculosConductores.setEnabled(true);
 			mnSalidas.setEnabled(true);
 		}
 		
@@ -425,7 +436,6 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 				mnFormatos.setEnabled(false);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
 		}
 		
 	}
@@ -549,21 +559,10 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		}
 	}
 	
-	protected void actionPerformedMntmListaDeVehiculos(ActionEvent arg0) {
-		esconderVentanas();
-		cerrarVentanas();
-		lvc = new viListaVehiculos(this);
-		desktopPane.add(lvc);
-		
-		try{
-			lvc.setMaximum(true);
-		}catch(Exception f){}
-		lvc.show();
-	}
 	protected void actionPerformedMntmListaDeDestinos(ActionEvent arg0) {
 		esconderVentanas();
 		cerrarVentanas();
-		ldest = new viListaDestinos(this);
+		ldest = new viListaSedes(this);
 		desktopPane.add(ldest);
 		ldest.show();
 		try{
@@ -641,6 +640,29 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		lsoc.show();
 		try{
 			lsoc.setMaximum(true);
+		}catch(Exception f){}
+	}
+	
+	protected void actionPerformedMntmListaDeVehiculos(ActionEvent arg0) {
+		esconderVentanas();
+		cerrarVentanas();
+		lvc = new viListaVehiculos(this);
+		desktopPane.add(lvc);
+		
+		try{
+			lvc.setMaximum(true);
+		}catch(Exception f){}
+		lvc.show();
+	}
+	
+	protected void actionPerformedMntmVerConductores(ActionEvent arg0) {
+		esconderVentanas();
+		cerrarVentanas();
+		lcond = new viListaConductores(this);
+		desktopPane.add(lcond);
+		lcond.show();
+		try{
+			lcond.setMaximum(true);
 		}catch(Exception f){}
 	}
 }

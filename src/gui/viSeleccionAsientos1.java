@@ -37,7 +37,7 @@ import javax.swing.JSeparator;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 
 import clases.Conductor;
-import clases.Destinos;
+import clases.Sedes;
 import mysql.Consultas;
 import java.awt.event.MouseAdapter;
 import com.toedter.components.JSpinField;
@@ -57,11 +57,11 @@ import java.awt.event.KeyListener;
 public class viSeleccionAsientos1 extends JInternalFrame implements ActionListener, PropertyChangeListener, KeyListener {
 	public JTextField txtTitulo;
 	private JLabel lblOrigen;
-	private JComboBox <Destinos> cbOrigen;
+	private JComboBox <Sedes> cbOrigen;
 	private JLabel lblDestino;
 	private JLabel lblCuentaTotal;
 	private JButton btnfinalizarEImprimir;
-	private JComboBox <Destinos> cbDestino ;
+	private JComboBox <Sedes> cbDestino ;
 	private JLabel lblS;
 	public JButton btnConductor;
 	public JButton btnA1;
@@ -534,15 +534,15 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 			}
 			
 			//Llenar cbos de Destinos
-			Destinos destinos2 = new Destinos();
+			Sedes destinos2 = new Sedes();
 			destinos2.cargarDestinos(cbOrigen);
-			Destinos destinos = new Destinos();
+			Sedes destinos = new Sedes();
 			destinos.cargarDestinos(cbDestino);
 		
 			for(int i = 0; i < cbOrigen.getItemCount(); i++){
-				if(origen.equals(cbOrigen.getItemAt(i).getDestino()))
+				if(origen.equals(cbOrigen.getItemAt(i).getSede()))
 					cbOrigen.setSelectedIndex(i);
-				if(destino.equals(cbDestino.getItemAt(i).getDestino()))
+				if(destino.equals(cbDestino.getItemAt(i).getSede()))
 					cbDestino.setSelectedIndex(i);
 			}
 			
@@ -865,15 +865,15 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 	}
 	
 	protected void actionPerformedCbOrigen(ActionEvent arg0) {
-		int idorigen = cbOrigen.getItemAt(cbOrigen.getSelectedIndex()).getIddestino();
-		String origen = cbOrigen.getItemAt(cbOrigen.getSelectedIndex()).getDestino();
+		int idorigen = cbOrigen.getItemAt(cbOrigen.getSelectedIndex()).getIdsede();
+		String origen = cbOrigen.getItemAt(cbOrigen.getSelectedIndex()).getSede();
 		Consultas consulta = new Consultas();
 		consulta.actualizarVentaTemporal03(idorigen, origen);
 		
 	}
 	protected void actionPerformedCbDestino(ActionEvent e) {
-		int iddestino = cbDestino.getItemAt(cbDestino.getSelectedIndex()).getIddestino();
-		String destino = cbDestino.getItemAt(cbDestino.getSelectedIndex()).getDestino();
+		int iddestino = cbDestino.getItemAt(cbDestino.getSelectedIndex()).getIdsede();
+		String destino = cbDestino.getItemAt(cbDestino.getSelectedIndex()).getSede();
 		Consultas consulta = new Consultas();
 		consulta.actualizarVentaTemporal04(iddestino, destino);
 		

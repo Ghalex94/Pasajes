@@ -46,7 +46,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 	private JLabel lblPlaca;
 	
 	vPrincipal vp = null;
-	viListaSocios vnsn = null;
+	viListaSocios ls = null;
 	
 	ResultSet rs;
 	private JTextField txtDniSocio;
@@ -95,7 +95,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		
 		vp = temp;
-		vnsn = temp2;
+		ls = temp2;
 		
 		setUndecorated(true);
 		setBounds(100, 100, 724, 709);
@@ -408,6 +408,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 	
 	public void cargar(){
 		this.setLocationRelativeTo(null);
+		this.setAlwaysOnTop(true);
 		
 		Empresa empresa = new Empresa();
 		empresa.cargarEmpresas(cbEmpresa);
@@ -460,8 +461,11 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 			Consultas consulta = new Consultas();
 			this.setAlwaysOnTop(false);
 			consulta.crearSocio(codsocio, idempresa, dnisocio, nombresocio, dniconductor, placa);
+			
+			ls.cargar();
+			ls.seleccionarSocio(codsocio);
+			vp.setEnabled(true);
 			this.dispose();
-			this.setAlwaysOnTop(true);
 		}
 	}
 	
@@ -534,10 +538,10 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 	}
 	
 	protected void focusLostTxtPlaca(FocusEvent arg0) {
-		verificarPlaca();
+		//verificarPlaca();
 	}
 	protected void focusLostTxtDniConductor(FocusEvent e) {
-		verificarConductor();
+		//verificarConductor();
 	}
 	
 	public void verificarConductor(){

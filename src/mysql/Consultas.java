@@ -33,13 +33,13 @@ public class Consultas {
 		return ingresante;
 	}
 	
-	public ResultSet cargarVehiculosConductores(){
+	public ResultSet cargarVehiculos(){
 		Connection con = MySQLConexion.getConection();
 		java.sql.Statement st;
 		ResultSet rs = null;
 		try {
 			st = con.createStatement();
-			rs = st.executeQuery("select vh.placa, mvh.idmodelo, mvh.modelo, vh.mtc, vh.detalle, co.dniconductor, co.conductor from tb_vehiculo vh inner join tb_modelo_vehiculo mvh  inner join tb_conductor co on vh.idmodelo = mvh.idmodelo and vh.dniconductor = co.dniconductor order by mvh.modelo");		
+			rs = st.executeQuery("select vh.placa, vh.idmodelo, mvh.modelo, vh.detalle, vh.mtc from tb_vehiculo vh inner join tb_modelo_vehiculo mvh on vh.idmodelo = mvh.idmodelo order by vh.placa");		
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
@@ -559,12 +559,12 @@ public class Consultas {
 		}
 	}
 	
-	public ResultSet cargarDestinos(){
+	public ResultSet cargarSedes(){
 		Connection con = MySQLConexion.getConection();
 		ResultSet rs = null;
 		PreparedStatement pst = null;
 		try {
-			String sql = "select * from tb_destinos";
+			String sql = "select * from tb_sedes";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 		} catch (Exception e) {
@@ -573,12 +573,12 @@ public class Consultas {
 		return rs;
 	}
 	
-	public static void crearDestino(String destino){
+	public static void crearSede(String sede){
 		Connection con = MySQLConexion.getConection();
 		try {
-			String sql = "insert into tb_destinos (destino)" + " values (?)";
+			String sql = "insert into tb_sedes (sede)" + " values (?)";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
-			prepareStmt.setString(1, destino);
+			prepareStmt.setString(1, sede);
 			prepareStmt.execute();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR" + e);
@@ -671,8 +671,6 @@ public class Consultas {
 			prepareStmt.setString(5, placa);
 			prepareStmt.setInt(6, codsocio);
 			prepareStmt.execute();
-
-			JOptionPane.showMessageDialog(null, "Datos modificados correctamente.");
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}

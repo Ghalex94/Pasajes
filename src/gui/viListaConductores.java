@@ -30,7 +30,7 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.awt.event.ActionEvent;
 
-public class viListaVehiculos extends JInternalFrame implements ActionListener {
+public class viListaConductores extends JInternalFrame implements ActionListener {
 	private JTextField txtVehiculos;
 	private JButton btnAnadirVehiculo;
 	private JButton btnModificarVehiculo;
@@ -46,7 +46,7 @@ public class viListaVehiculos extends JInternalFrame implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					viListaVehiculos frame = new viListaVehiculos(null);
+					viListaConductores frame = new viListaConductores(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -58,7 +58,7 @@ public class viListaVehiculos extends JInternalFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public viListaVehiculos(vPrincipal temp) {
+	public viListaConductores(vPrincipal temp) {
 		
 		vp = temp;
 		
@@ -75,7 +75,7 @@ public class viListaVehiculos extends JInternalFrame implements ActionListener {
 		btnAnadirVehiculo.addActionListener(this);
 		
 		txtVehiculos = new JTextField();
-		txtVehiculos.setText("VEHICULOS");
+		txtVehiculos.setText("CONDUCTORES");
 		txtVehiculos.setRequestFocusEnabled(false);
 		txtVehiculos.setIgnoreRepaint(true);
 		txtVehiculos.setHorizontalAlignment(SwingConstants.CENTER);
@@ -128,12 +128,12 @@ public class viListaVehiculos extends JInternalFrame implements ActionListener {
 		tb = this.tbVehiculos;
 		tb.setRowHeight(40);
 		tb.setModel(dtm);
-		dtm.setColumnIdentifiers(new Object[]{"PLACA", "MODELO", "DETALLE", "MTC"});
+		dtm.setColumnIdentifiers(new Object[]{"DNI", "CONDUCTOR", "LICENCIA"});
 		Consultas consult = new Consultas();
-		rs = consult.cargarVehiculos();
+		rs = consult.cargarConductores();
 		try {
 			while(rs.next())
-				dtm.addRow(new Object[]{rs.getString("placa"), rs.getString("modelo"), rs.getString("detalle"), rs.getString("mtc")});
+				dtm.addRow(new Object[]{rs.getInt("dniconductor"), rs.getString("conductor"), rs.getString("licencia")});
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
@@ -141,46 +141,8 @@ public class viListaVehiculos extends JInternalFrame implements ActionListener {
 	}
 	
 	public void actionPerformed(ActionEvent arg0) {
-		if (arg0.getSource() == btnDeshabilitarVehiculo) {
-			actionPerformedBtnDeshabilitarVehiculo(arg0);
-		}
-		if (arg0.getSource() == btnModificarVehiculo) {
-			actionPerformedBtnModificarVehiculo(arg0);
-		}
-		if (arg0.getSource() == btnAnadirVehiculo) {
-			actionPerformedBtnAnadirVehiculo(arg0);
-		}
 	}
 	
-	protected void actionPerformedBtnAnadirVehiculo(ActionEvent arg0) {
-		vdVehiculoNuevo vnvh = new vdVehiculoNuevo(vp, this);
-		vnvh.setVisible(true);
-		vp.setEnabled(false);
-	}
-	
-	protected void actionPerformedBtnModificarVehiculo(ActionEvent arg0) {
-		String placa = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 0).toString();
-		String modelo = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 1).toString();
-		String detalle = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 2).toString();
-		String mtc = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 3).toString();
-		String dniconductor = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 4).toString();
-		String nomconductor = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 5).toString();		
-		String[ ] vehiculo = {placa, modelo, detalle, dniconductor, mtc, nomconductor};
-		
-		vdVehiculoModificar vmvh = new vdVehiculoModificar(vp, this, vehiculo);
-		vmvh.setVisible(true);
-		vp.setEnabled(false);
-	}
-	protected void actionPerformedBtnDeshabilitarVehiculo(ActionEvent arg0) {
-		int opc = JOptionPane.showConfirmDialog(null, "Si elimina el producto, se borraran todos los registros de este.\nSe recomienda hacerlo solo si es muy necesario\n¿Eliminar Producto?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-		if (opc == 0){
-			String placa = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 0).toString();
-			Consultas.eliminarHistorialVehiculo(placa);
-			Consultas.eliminarVehiculo(placa);
-			this.cargar();
-			JOptionPane.showMessageDialog(null, "Eliminado correctamente");
-		}
-	}
 }
 
 

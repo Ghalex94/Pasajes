@@ -81,7 +81,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 	private JLabel label_8;
 	
 	vPrincipal vp = null;
-	viListaSocios vnsn = null;
+	viListaSocios ls = null;
 	int codsocio = 0;
 	int antiguodniconductor = 0;
 	String antiguaplaca = null;
@@ -105,7 +105,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		
 		vp = temp;
-		vnsn = temp2;
+		ls = temp2;
 		codsocio = temp3;
 		antiguodniconductor = temp4;
 		antiguaplaca = temp5;
@@ -460,6 +460,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 	
 	public void cargar(){
 		this.setLocationRelativeTo(null);
+		this.setAlwaysOnTop(true);
 		
 		//CARGAR EMPRESAS
 		Empresa empresa = new Empresa();
@@ -575,28 +576,9 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 			String licencia = txtNlicencia.getText();
 			
 			this.setAlwaysOnTop(false);
-			Consultas consulta = new Consultas();
-			/*
-			if(chbxVehiculo.isSelected()){// CREAR
-				JOptionPane.showMessageDialog(null, antiguaplaca);
-				consulta.crearVehiculo(newplaca, modelo, detalles, mtc);
-				consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, antiguodniconductor, newplaca);
-				consulta.eliminarVehiculo(antiguaplaca);
-			}
-			else// MODIFICAR
-				consulta.modificarVehiculo(antiguaplaca, modelo, detalles, mtc);
+			Consultas consulta = new Consultas();			
 			
-			if(chbxConductor.isSelected()){// CREAR
-				consulta.crearConductor(newdniconductor, licencia, nombreconductor);
-				consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, newdniconductor, antiguaplaca);
-				consulta.eliminarConductor(antiguodniconductor);
-			}
-			else// MODIFICAR
-				consulta.modificarConductor(antiguodniconductor, licencia, nombreconductor);
-			*/
-			
-			
-			if(chbxVehiculo.isSelected() && chbxConductor.isSelected()){ // MODIFICAR CONDUCTOR Y VEHICULO
+			if(chbxVehiculo.isSelected() && chbxConductor.isSelected()){ // CREAR CONDUCTOR Y VEHICULO
 				consulta.crearVehiculo(newplaca, modelo, detalles, mtc);
 				consulta.crearConductor(newdniconductor, licencia, nombreconductor);
 				consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, newdniconductor, newplaca);
@@ -604,20 +586,31 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 				consulta.eliminarConductor(antiguodniconductor);
 			}
 			
-			if(!chbxConductor.isSelected() && chbxVehiculo.isSelected()){ // MODIFICAR VEHICULO
+			if(chbxConductor.isSelected() == false && chbxVehiculo.isSelected()){ // CREAR VEHICULO
 				consulta.crearVehiculo(newplaca, modelo, detalles, mtc);
+				consulta.modificarConductor(antiguodniconductor, licencia, nombreconductor);
 				consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, antiguodniconductor, newplaca);
 				consulta.eliminarVehiculo(antiguaplaca);
 			}
 			
-			if(chbxConductor.isSelected() && !chbxVehiculo.isSelected()){ // MODIFICAR CONDUCTOR
+			if(chbxConductor.isSelected() && chbxVehiculo.isSelected() == false){ // CREAR CONDUCTOR
 				consulta.crearConductor(newdniconductor, licencia, nombreconductor);
+				consulta.modificarVehiculo(antiguaplaca, modelo, detalles, mtc);
 				consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, newdniconductor, antiguaplaca);
 				consulta.eliminarConductor(antiguodniconductor);
 			}
 			
-			this.dispose();
+			if(chbxConductor.isSelected() == false && chbxVehiculo.isSelected() == false){ // MODIFICAR CONDUCTOR Y VEHICULO
+				consulta.modificarConductor(antiguodniconductor, licencia, nombreconductor);
+				consulta.modificarVehiculo(antiguaplaca, modelo, detalles, mtc);
+				consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, antiguodniconductor, antiguaplaca);
+			}
+
+			JOptionPane.showMessageDialog(null, "Datos modificados correctamente.");
+			ls.cargar();
+			ls.seleccionarSocio(codsocio);
 			vp.setEnabled(true);
+			this.dispose();
 		}
 	}
 	
@@ -649,7 +642,6 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 			e.consume();
 	}
 	protected void keyTypedTxtDniSocio(KeyEvent e) {
-		
 		char c = e.getKeyChar();
 		if ((c<'0' || c>'9') && (c!=(char)KeyEvent.VK_DELETE) && (c!=(char)KeyEvent.VK_BACK_SPACE) && (c!=(char)KeyEvent.VK_ENTER))
 			e.consume();
@@ -690,10 +682,10 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 	}
 	
 	protected void focusLostTxtPlaca(FocusEvent arg0) {
-		verificarPlaca();
+		//verificarPlaca();
 	}
 	protected void focusLostTxtDniConductor(FocusEvent e) {
-		verificarConductor();
+		//verificarConductor();
 	}
 	
 	public void verificarConductor(){

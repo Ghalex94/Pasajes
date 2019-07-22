@@ -29,7 +29,7 @@ public class Vehiculo {
 	
 	public void cargarVehiculo(JComboBox<Vehiculo> cbVehiculo){
 		Consultas consult = new Consultas();
-		rs = consult.cargarVehiculosConductores();
+		rs = consult.cargarVehiculos();
 		try {
 			while(rs.next())
 				cbVehiculo.addItem(

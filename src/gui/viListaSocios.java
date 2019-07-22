@@ -38,7 +38,7 @@ public class viListaSocios extends JInternalFrame implements ActionListener {
 	private JButton btnModificarVehiculo;
 	private JButton btnDeshabilitarVehiculo;
 	private JScrollPane scrollPane;
-	public JTable tbVehiculos;
+	public JTable tbSocios;
 	
 	JTable tb;
 	ResultSet rs;
@@ -113,18 +113,18 @@ public class viListaSocios extends JInternalFrame implements ActionListener {
 		getContentPane().add(btnDeshabilitarVehiculo);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 86, 937, 544);
+		scrollPane.setBounds(10, 86, 937, 523);
 		getContentPane().add(scrollPane);
 		
-		tbVehiculos = new JTable();
-		scrollPane.setViewportView(tbVehiculos);
+		tbSocios = new JTable();
+		scrollPane.setViewportView(tbSocios);
 
 		cargar();
 	}	
 	
 	public void cargar(){
 		DefaultTableModel dtm = new DefaultTableModel();
-		tb = this.tbVehiculos;
+		tb = this.tbSocios;
 		tb.setRowHeight(40);
 		tb.setModel(dtm);
 		dtm.setColumnIdentifiers(new Object[]{"CODIGO DE SOCIO", "SOCIO", "DNI SOCIO", "EMPRESA", "CONDUCTOR", "DNI CONDUCTOR", "PLACA",});
@@ -136,6 +136,18 @@ public class viListaSocios extends JInternalFrame implements ActionListener {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}	
+	}
+	
+	public void seleccionarSocio(int codsocio){
+		int cantSocios = tbSocios.getRowCount();
+		for(int i = 0; i<cantSocios; i++){
+			if(codsocio == Integer.parseInt(tbSocios.getValueAt(i, 0).toString())){
+				//JOptionPane.showMessageDialog(null, "" + codsocio + "  -  " + Integer.parseInt(tbSocios.getValueAt(i, 0).toString()));
+				tbSocios.setRowSelectionInterval(i,i);
+				break;
+			}
+		}
+		
 	}
 	
 	public void actionPerformed(ActionEvent arg0) {
@@ -157,9 +169,9 @@ public class viListaSocios extends JInternalFrame implements ActionListener {
 	}
 	
 	protected void actionPerformedBtnModificarVehiculo(ActionEvent arg0) {
-		int codsocio = Integer.parseInt(tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 0).toString());
-		int dnicondutcor = Integer.parseInt(tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 5).toString());
-		String placa = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 6).toString();
+		int codsocio = Integer.parseInt(tbSocios.getValueAt(tbSocios.getSelectedRow(), 0).toString());
+		int dnicondutcor = Integer.parseInt(tbSocios.getValueAt(tbSocios.getSelectedRow(), 5).toString());
+		String placa = tbSocios.getValueAt(tbSocios.getSelectedRow(), 6).toString();
 		vdSocioModificar vnsm = new vdSocioModificar(vp, this, codsocio, dnicondutcor, placa);
 		vnsm.setVisible(true);
 		vp.setEnabled(false);

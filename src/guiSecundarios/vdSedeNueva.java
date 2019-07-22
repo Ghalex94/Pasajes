@@ -11,7 +11,7 @@ import javax.swing.border.EmptyBorder;
 import clases.Conductor;
 import gui.vPrincipal;
 import gui.vdConductor;
-import gui.viListaDestinos;
+import gui.viListaSedes;
 import mysql.Consultas;
 
 import java.awt.Window.Type;
@@ -29,7 +29,7 @@ import java.awt.Component;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 
-public class vdDestinoNuevo extends JDialog implements ActionListener, KeyListener {
+public class vdSedeNueva extends JDialog implements ActionListener, KeyListener {
 	private JTextField txtAgregarDestino;
 	private JButton btnCancelar;
 	private JButton btnGuardar;
@@ -37,11 +37,11 @@ public class vdDestinoNuevo extends JDialog implements ActionListener, KeyListen
 	private JTextField txtDestino;
 
 	vPrincipal vp = null;
-	viListaDestinos ldest = null;
+	viListaSedes ldest = null;
 	
 	public static void main(String[] args) {
 		try {
-			vdDestinoNuevo dialog = new vdDestinoNuevo(null, null);
+			vdSedeNueva dialog = new vdSedeNueva(null, null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -52,7 +52,7 @@ public class vdDestinoNuevo extends JDialog implements ActionListener, KeyListen
 	/**
 	 * Create the dialog.
 	 */
-	public vdDestinoNuevo(vPrincipal temp, viListaDestinos temp2) {
+	public vdSedeNueva(vPrincipal temp, viListaSedes temp2) {
 		vp = temp;
 		ldest = temp2;
 		
@@ -124,17 +124,17 @@ public class vdDestinoNuevo extends JDialog implements ActionListener, KeyListen
 	
 	protected void actionPerformedBtnGuardar(ActionEvent arg0) {
 		try {
-			String destino = txtDestino.getText();
+			String sede = txtDestino.getText();
 			if(txtDestino.getText().length() == 0){
 				this.setAlwaysOnTop(false);
-				JOptionPane.showMessageDialog(null, "Por favor, ingrese destino");
+				JOptionPane.showMessageDialog(null, "Por favor, ingrese sede");
 				this.setAlwaysOnTop(true);
 			}
 			else{
-				Consultas.crearDestino(destino);
+				Consultas.crearSede(sede);
 				this.setAlwaysOnTop(false);
 				ldest.cargar();
-				selecionarDestino();
+				selecionarSede();
 				this.setAlwaysOnTop(false);
 				JOptionPane.showMessageDialog(null, "Creado correctamente");
 				vp.enable(true);
@@ -145,11 +145,11 @@ public class vdDestinoNuevo extends JDialog implements ActionListener, KeyListen
 		}
 	}
 	
-	public void selecionarDestino(){
-		String destino = txtDestino.getText();
+	public void selecionarSede(){
+		String sede = txtDestino.getText();
 		int cantDestinos = ldest.tbDestinos.getRowCount();
 		for(int i = 0; i<cantDestinos; i++){
-			if(destino.equals(ldest.tbDestinos.getValueAt(i, 1))){
+			if(sede.equals(ldest.tbDestinos.getValueAt(i, 1))){
 				ldest.tbDestinos.setRowSelectionInterval(i,i);
 				break;
 			}
