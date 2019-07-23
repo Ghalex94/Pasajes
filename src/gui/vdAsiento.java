@@ -375,7 +375,6 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			//txtPrecio.setText(rs.getString("prepasaje"));
 			int prepas = Integer.parseInt(rs.getString("prepasaje"));
 			txtPrecio.setText(""+prepas);
-			
 			prepasajeoriginal = Integer.parseInt(rs.getString("prepasaje"));
 		} catch (SQLException e) {	e.printStackTrace(); }
 		//LLENAR COMBOS DE FECHA
@@ -447,7 +446,26 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 				int ultimoNboleto = rs4.getInt("nboleto");
 				txtNboleto.setText("" + (ultimoNboleto+1));
 			} catch (SQLException e1) {
-				txtNboleto.setText("1000");
+				// SI NO EXISTE ALGUN BOLETO EN TABLA PASAJERO TEMPORAL, BUSCAR EN LA ANTERIOR VENTA
+				try {
+					Consultas consulta5 = new Consultas();
+					ResultSet rs5 = consulta5.ultboletoUltVenta();
+					rs5.next();
+					int ultimoNboleto = rs5.getInt("nboleto");
+					txtNboleto.setText("" + (ultimoNboleto+1));
+				} catch (Exception e2) {
+					//SI NO EXISTE NINGUNA VENTA, BUSCARA LA SERIE DE LA CONFGURACION PRINCIPAL
+					try {
+						Consultas consulta6 = new Consultas();
+						ResultSet rs6 = consulta6.nasientoCInicial();
+						rs6.next();
+						int ultimoNboleto = rs6.getInt("nboletoinicial");
+						txtNboleto.setText("" + (ultimoNboleto));
+					} catch (Exception e3) {
+						// TODO: handle exception
+					}
+					
+				}
 			}
 		}
 	}

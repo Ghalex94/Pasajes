@@ -253,7 +253,7 @@ public class Consultas {
 	public static void actualizarConfiguracionInicial(int sede, int nserie, int nviajeinicial, int nasientoinicial){ 
 		Connection con = MySQLConexion.getConection();
 		try {
-			String sql = "update tb_configuracion_inicial set estado=?, idsede=?, nserie=?, nviajeinicial=?, nboletoinicial=?";
+			String sql = "update tb_configuracion_inicial set estado=?, sede=?, nserie=?, nviajeinicial=?, nboletoinicial=?";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setInt(1, 1);
 			prepareStmt.setInt(2, sede);
@@ -662,6 +662,34 @@ public class Consultas {
 		PreparedStatement pst = null;
 		try {
 			String sql = "select nboleto from tb_pasajeros_temporal order by nboleto desc limit 1";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		return rs;
+	}
+	
+	public ResultSet ultboletoUltVenta(){
+		Connection con = MySQLConexion.getConection();
+		ResultSet rs = null;
+		PreparedStatement pst = null;
+		try {
+			String sql = "select nboleto from tb_detalle_viaje order by nboleto desc limit 1";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		return rs;
+	}
+	
+	public ResultSet nasientoCInicial(){
+		Connection con = MySQLConexion.getConection();
+		ResultSet rs = null;
+		PreparedStatement pst = null;
+		try {
+			String sql = "select nboletoinicial from tb_configuracion_inicial order by nboletoinicial desc limit 1";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 		} catch (Exception e) {
