@@ -78,7 +78,7 @@ asientosven		int
 
 create table tb_detalle_viaje(
 nviaje			int,
-nticket			int,
+nboleto			int,
 dnipasajero		int,
 asiento			int,
 edad			int,
@@ -86,7 +86,7 @@ prepasaje 		float,
 contratante		int,
 foreign key (nviaje) references tb_viaje(nviaje),
 foreign key (dnipasajero) references tb_pasajero(dnipasajero),
-primary key (nviaje, nticket)
+primary key (nviaje, nboleto)
 );
 
 create table tb_venta_temporal(
@@ -129,7 +129,7 @@ foreign key (dnipasajero) references tb_pasajero(dnipasajero)
 create table tb_configuracion_inicial(
 estado			int primary key, -- 0Iniciando por primera vez 
 sede			varchar(50),
-nserie			varchar(5),
+nserie			varchar(3),
 nviajeinicial	int,
 nboletoinicial	int
 );
@@ -183,6 +183,7 @@ select * from tb_viaje;
 select * from tb_detalle_viaje;
 select * from tb_venta_temporal;
 select * from tb_pasajeros_temporal;
+select * from tb_configuracion_inicial;
 
 
 -- PRUEBAS ------------------------------------------------------------------------

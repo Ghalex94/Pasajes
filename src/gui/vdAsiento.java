@@ -70,7 +70,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 	viSeleccionAsientos3 vsa3 = null;
 	viSeleccionAsientos4 vsa4 = null;
 	viSeleccionAsientos1 vsa1 = null;
-	float prepasajeoriginal = 0;
+	int prepasajeoriginal = 0;
 	private JButton btnEliminar;
 	private JLabel lblNacionalidad;
 	private JTextField txtNacionalidad;
@@ -376,7 +376,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			int prepas = Integer.parseInt(rs.getString("prepasaje"));
 			txtPrecio.setText(""+prepas);
 			
-			prepasajeoriginal = Float.parseFloat(rs.getString("prepasaje"));
+			prepasajeoriginal = Integer.parseInt(rs.getString("prepasaje"));
 		} catch (SQLException e) {	e.printStackTrace(); }
 		//LLENAR COMBOS DE FECHA
 		/*for(int i = 1; i<=31; i++) //DIA
@@ -663,7 +663,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 				} catch (SQLException ex) {
 					this.setAlwaysOnTop(false);
 					JOptionPane.showMessageDialog(null, "No existe el pasajero, se creará uno nuevo.");
-					txtRuc.requestFocus();
+					txtNombre.requestFocus();
 					this.setAlwaysOnTop(true);
 					txtRuc.setText(null);
 					txtNombre.setText(null);

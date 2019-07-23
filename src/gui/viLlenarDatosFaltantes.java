@@ -503,6 +503,8 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		
 		Consultas.actualizarVentaTemporal08(vstandar, escalascom, desde, hasta, pencuentro, escalasparadas,
 				horainicio2, dniconductor2, licencia2, horafin1, horafin2, comentarios);
+		vp.esconderVentanas();
+		vp.cerrarVentanas();
 	}
 	protected void actionPerformedCbHinicio2(ActionEvent e) {
 		if(cbHfin1.isEnabled()){

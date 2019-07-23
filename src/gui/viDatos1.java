@@ -17,9 +17,11 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 
 import clases.Conductor;
 import clases.Empresa;
+import clases.Socio;
 import clases.Vehiculo;
 import mysql.Consultas;
 
@@ -28,6 +30,12 @@ import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class viDatos1 extends JInternalFrame implements ActionListener, KeyListener {
 	private JLabel lblNewLabel;
@@ -35,18 +43,17 @@ public class viDatos1 extends JInternalFrame implements ActionListener, KeyListe
 	private JButton btnContinuar;
 	private JComboBox <Empresa> cbEmpresa;
 	private JComboBox <Vehiculo> cbVehiculo;
+	private JComboBox <Conductor> cbConductor;
 	
 	vPrincipal  vp = null;
-	ResultSet rs;
 	private JButton btnCancelar;
 	private JLabel lblPrecioDePasaje;
 	private JTextField txtPrePasaje;
 	private JLabel label;
 	private JLabel lblCdigoDeSocio;
-	private JTextField txtCodSocio;
 	private JLabel lblNewLabel_1;
 	private JLabel lblConductor;
-	private JComboBox cbConductor;
+	private JComboBox cbSocio;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -68,37 +75,40 @@ public class viDatos1 extends JInternalFrame implements ActionListener, KeyListe
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		setTitle("SELECCIONE");
 		vp = temp;
-		setBounds(100, 100, 863, 303);
+		setBounds(100, 100, 863, 374);
 		getContentPane().setLayout(null);
 		
 		lblNewLabel = new JLabel("Empresa:");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblNewLabel.setBounds(407, 74, 132, 31);
+		lblNewLabel.setBounds(33, 123, 132, 31);
 		getContentPane().add(lblNewLabel);
 		
 		lblVehiculo = new JLabel("Vehiculo:");
 		lblVehiculo.setHorizontalAlignment(SwingConstants.LEFT);
 		lblVehiculo.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblVehiculo.setBounds(32, 179, 132, 20);
+		lblVehiculo.setBounds(34, 226, 132, 20);
 		getContentPane().add(lblVehiculo);
 		
 		btnContinuar = new JButton("Continuar");
+		btnContinuar.setEnabled(false);
 		btnContinuar.setForeground(Color.WHITE);
 		btnContinuar.setBackground(new Color(0, 139, 139));
 		btnContinuar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
 		btnContinuar.addActionListener(this);
-		btnContinuar.setBounds(587, 220, 212, 31);
+		btnContinuar.setBounds(589, 267, 212, 31);
 		getContentPane().add(btnContinuar);
 		
 		cbEmpresa = new JComboBox();
+		cbEmpresa.setEnabled(false);
 		cbEmpresa.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		cbEmpresa.setBounds(510, 78, 289, 25);
+		cbEmpresa.setBounds(226, 126, 575, 25);
 		getContentPane().add(cbEmpresa);
 		
 		cbVehiculo = new JComboBox();
+		cbVehiculo.setEnabled(false);
 		cbVehiculo.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		cbVehiculo.setBounds(225, 176, 574, 25);
+		cbVehiculo.setBounds(227, 223, 574, 25);
 		getContentPane().add(cbVehiculo);
 		
 		btnCancelar = new JButton("Cancelar");
@@ -106,13 +116,13 @@ public class viDatos1 extends JInternalFrame implements ActionListener, KeyListe
 		btnCancelar.setForeground(Color.WHITE);
 		btnCancelar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
 		btnCancelar.setBackground(new Color(0, 139, 139));
-		btnCancelar.setBounds(387, 220, 190, 31);
+		btnCancelar.setBounds(389, 267, 190, 31);
 		getContentPane().add(btnCancelar);
 		
 		lblPrecioDePasaje = new JLabel("Precio de pasaje:");
 		lblPrecioDePasaje.setHorizontalAlignment(SwingConstants.LEFT);
 		lblPrecioDePasaje.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblPrecioDePasaje.setBounds(32, 220, 182, 31);
+		lblPrecioDePasaje.setBounds(34, 267, 182, 31);
 		getContentPane().add(lblPrecioDePasaje);
 		
 		txtPrePasaje = new JTextField();
@@ -121,13 +131,13 @@ public class viDatos1 extends JInternalFrame implements ActionListener, KeyListe
 		txtPrePasaje.setText("25");
 		txtPrePasaje.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtPrePasaje.setColumns(10);
-		txtPrePasaje.setBounds(225, 224, 52, 25);
+		txtPrePasaje.setBounds(227, 271, 52, 25);
 		getContentPane().add(txtPrePasaje);
 		
 		label = new JLabel(".00");
 		label.setBackground(Color.WHITE);
 		label.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		label.setBounds(280, 226, 52, 25);
+		label.setBounds(282, 273, 52, 25);
 		getContentPane().add(label);
 		
 		lblCdigoDeSocio = new JLabel("C\u00F3digo de socio:");
@@ -135,12 +145,6 @@ public class viDatos1 extends JInternalFrame implements ActionListener, KeyListe
 		lblCdigoDeSocio.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		lblCdigoDeSocio.setBounds(34, 74, 182, 31);
 		getContentPane().add(lblCdigoDeSocio);
-		
-		txtCodSocio = new JTextField();
-		txtCodSocio.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		txtCodSocio.setBounds(225, 78, 170, 25);
-		getContentPane().add(txtCodSocio);
-		txtCodSocio.setColumns(10);
 		
 		lblNewLabel_1 = new JLabel("Complete el siguiente formulario");
 		lblNewLabel_1.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
@@ -150,23 +154,42 @@ public class viDatos1 extends JInternalFrame implements ActionListener, KeyListe
 		lblConductor = new JLabel("Conductor:");
 		lblConductor.setHorizontalAlignment(SwingConstants.LEFT);
 		lblConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblConductor.setBounds(32, 132, 132, 20);
+		lblConductor.setBounds(34, 179, 132, 20);
 		getContentPane().add(lblConductor);
 		
 		cbConductor = new JComboBox();
+		cbConductor.setEnabled(false);
 		cbConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		cbConductor.setBounds(225, 129, 574, 25);
+		cbConductor.setBounds(227, 176, 574, 25);
 		getContentPane().add(cbConductor);
-		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{cbEmpresa, cbVehiculo, txtPrePasaje, btnContinuar, btnCancelar}));
+		
+		cbSocio = new JComboBox();
+		cbSocio.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				itemStateChangedCbSocio(arg0);
+			}
+		});
+		cbSocio.setModel(new DefaultComboBoxModel(new String[] {"SELECCIONE SOCIO"}));
+		cbSocio.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		cbSocio.setBounds(225, 80, 576, 25);
+		getContentPane().add(cbSocio);
+		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{cbSocio, cbConductor, cbVehiculo, txtPrePasaje, btnContinuar, btnCancelar}));
 		cargar();
 	}
 	
 	public void cargar(){
-		Vehiculo vehiculo = new Vehiculo();
-		vehiculo.cargarVehiculo(cbVehiculo);
+		
+		Socio socio = new Socio();
+		socio.cargarSocio(cbSocio);
 		
 		Empresa empresa = new Empresa();
 		empresa.cargarEmpresas(cbEmpresa);
+		
+		Vehiculo vehiculo = new Vehiculo();
+		vehiculo.cargarVehiculo(cbVehiculo);
+		
+		Conductor conductor = new Conductor();
+		conductor.cargarConductores(cbConductor);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -188,15 +211,13 @@ public class viDatos1 extends JInternalFrame implements ActionListener, KeyListe
 		if(txtPrePasaje.getText().length() <=0)
 			JOptionPane.showMessageDialog(null, "Ingrese el precio del pasaje");
 		else{
-			vp.esconderVentanas();
-			vp.cerrarVentanas();
 			int empresa = 0;
 			empresa = cbEmpresa.getItemAt(cbEmpresa.getSelectedIndex()).getIdempresa(); //1MERMA  2SIGUEL
 			//JOptionPane.showMessageDialog(null, ""+empresa);
-			int dniconductor = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getDniconductor();
 			String placa = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getPlaca();
 			int idmodelovh = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getIdmodelo();
 			String modelovh = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getModelo();
+			int dniconductor = cbConductor.getItemAt(cbConductor.getSelectedIndex()).getDni();
 			float prepasaje = Float.parseFloat(txtPrePasaje.getText());
 			Consultas consulta = new Consultas();
 			consulta.actualizarVentaTemporal01(1, empresa, dniconductor, placa, idmodelovh, prepasaje);
@@ -204,6 +225,9 @@ public class viDatos1 extends JInternalFrame implements ActionListener, KeyListe
 			vp.mntmContinuarPreparacion.setEnabled(true);
 			vp.mntmCancelarSalida.setEnabled(true);
 			vp.mnFormatos.setEnabled(true);
+
+			vp.esconderVentanas();
+			vp.cerrarVentanas();
 			
 			switch(idmodelovh){
 			case 1:
@@ -284,6 +308,68 @@ public class viDatos1 extends JInternalFrame implements ActionListener, KeyListe
 		}
 		if (txtPrePasaje.getText().length() == 4){
 			arg0.consume();
+		}
+	}
+	protected void itemStateChangedCbSocio(ItemEvent arg0) {
+		if(cbSocio.getSelectedIndex() == 0){
+			cbConductor.setEnabled(false);
+			cbVehiculo.setEnabled(false);
+			btnContinuar.setEnabled(false);
+		}
+		else{
+			cbVehiculo.setEnabled(true);
+			cbConductor.setEnabled(true);
+			btnContinuar.setEnabled(true);
+			Consultas consult = new Consultas();
+			ResultSet rs;
+			rs = consult.buscarSocio(Integer.parseInt(cbSocio.getSelectedItem().toString()));
+			try {
+				rs.next();
+				if(rs.getInt("idempresa") == 1)
+					cbEmpresa.setSelectedIndex(0);
+				if(rs.getInt("idempresa") == 2)
+					cbEmpresa.setSelectedIndex(1);
+				
+				int dniconductor = rs.getInt("dniconductor");
+				String placa = rs.getString("placa");
+				String modelovehiculo = null;
+	
+				ResultSet rs2 = consult.buscarVehiculo(placa);
+				try {
+					rs2.next();
+					int idmodelovehiculo = rs2.getInt("idmodelo");
+					
+					ResultSet rs3 = consult.buscarModeloVehiculo(idmodelovehiculo);
+					try {
+						rs3.next();
+						modelovehiculo = rs3.getString("modelo");
+					} catch (Exception e) {
+						JOptionPane.showMessageDialog(null, "ERROR Modelo Vehiculo: " + e);
+					}
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "ERROR Vehiculo: " + e);
+				}
+				String temp = placa + " (" + modelovehiculo + ")";
+				for(int i = 0; i<cbVehiculo.getItemCount(); i++){
+					if(temp.equals(cbVehiculo.getItemAt(i).toString())){
+						cbVehiculo.setSelectedIndex(i);		
+					}
+				}
+				
+				ResultSet rs4 = consult.buscarConductor(dniconductor);
+				try {
+					rs4.next();
+					for(int i = 0; i<cbConductor.getItemCount(); i++){
+						if(rs4.getString("conductor").toString().equals(cbConductor.getItemAt(i).toString())){
+							cbConductor.setSelectedIndex(i);		
+						}
+					}
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "ERROR Conductor: " + e);
+				}
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "ERROR: " + e);
+			}	
 		}
 	}
 }

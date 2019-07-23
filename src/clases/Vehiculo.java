@@ -10,20 +10,16 @@ public class Vehiculo {
 	int idmodelo;
 	String modelo;
 	String detalle;
-	int dniconductor;
 	ResultSet rs;
 	String mtc;
-	String conductor;
 	
 	public Vehiculo(){}
-	public Vehiculo(String placa, int idmodelo, String modelo, String detalle, String mtc, int dniconductor, String conductor){
+	public Vehiculo(String placa, int idmodelo, String modelo, String detalle, String mtc){
 		this.placa = placa;
 		this.idmodelo = idmodelo;
 		this.modelo = modelo;
 		this.detalle = detalle;
 		this.mtc = mtc;
-		this.dniconductor = dniconductor;
-		this.conductor = conductor;
 	}
 	
 	
@@ -38,9 +34,7 @@ public class Vehiculo {
 								rs.getInt("idmodelo"),
 								rs.getString("modelo"),
 								rs.getString("detalle"),
-								rs.getString("mtc"),
-								rs.getInt("dniconductor"),
-								rs.getString("conductor")
+								rs.getString("mtc")
 								)
 				);
 		} catch (Exception e) {
@@ -48,10 +42,12 @@ public class Vehiculo {
 		}		
 	}
 	
+	
 	@Override
 	public String toString(){
 		String t = "";
-		t = modelo + " (" + placa + ") " + conductor;/*
+		t = placa + " (" +  modelo + ")";
+				/*
 		switch(idmodelo){
 		case 1:
 			t = modelo + " " + placa + " - " + conductor;
@@ -93,24 +89,12 @@ public class Vehiculo {
 	public void setDetalle(String detalle) {
 		this.detalle = detalle;
 	}
-	public int getDniconductor() {
-		return dniconductor;
-	}
-	public void setDniconductor(int dniconductor) {
-		this.dniconductor = dniconductor;
-	}
 	public ResultSet getRs() {
 		return rs;
 	}
 	public void setRs(ResultSet rs) {
 		this.rs = rs;
 	}	
-	public String getConductor() {
-		return conductor;
-	}
-	public void setConductor(String conductor) {
-		this.conductor = conductor;
-	}
 	public String getMtc() {
 		return mtc;
 	}

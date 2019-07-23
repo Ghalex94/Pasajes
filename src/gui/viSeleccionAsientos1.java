@@ -181,7 +181,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		lblCuentaTotal.setBounds(1051, 151, 258, 32);
 		getContentPane().add(lblCuentaTotal);
 		
-		btnfinalizarEImprimir = new JButton("<html>FINALIZAR E <br>\u00A0\u00A0IMPRIMIR </html>");
+		btnfinalizarEImprimir = new JButton("FINALIZAR");
 		btnfinalizarEImprimir.addActionListener(this);
 		btnfinalizarEImprimir.setForeground(new Color(255, 255, 255));
 		btnfinalizarEImprimir.setBackground(new Color(220, 20, 60));
@@ -962,9 +962,6 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 			arg0.consume();
 		}
 	}
-	protected void actionPerformedBtnfinalizarEImprimir(ActionEvent arg0) {
-		
-	}
 	
 	protected void keyReleasedTxtNviaje(KeyEvent arg0) {
 		try {
@@ -972,8 +969,109 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 			Consultas consulta = new Consultas();
 			consulta.actualizarVentaTemporal07(nViaje);	
 		} catch (Exception e) {	
-			JOptionPane.showMessageDialog(null, "Error: " + e);
 		}
 	}
 	
+	public int contarAsientosVendidos(){
+		int cantvendidos = 0;
+		if(btnA1.getBackground() != Color.GREEN)
+			cantvendidos++;
+		if(btnA2.getBackground() != Color.GREEN)
+			cantvendidos++;
+		if(btnA3.getBackground() != Color.GREEN)
+			cantvendidos++;
+		if(btnA4.getBackground() != Color.GREEN)
+			cantvendidos++;
+		if(btnA5.getBackground() != Color.GREEN)
+			cantvendidos++;
+		if(btnA6.getBackground() != Color.GREEN)
+			cantvendidos++;
+		if(btnA7.getBackground() != Color.GREEN)
+			cantvendidos++;
+		if(btnA8.getBackground() != Color.GREEN)
+			cantvendidos++;
+		if(btnA9.getBackground() != Color.GREEN)
+			cantvendidos++;
+		if(btnA10.getBackground() != Color.GREEN)
+			cantvendidos++;
+		if(btnA11.getBackground() != Color.GREEN)
+			cantvendidos++;
+		if(btnA12.getBackground() != Color.GREEN)
+			cantvendidos++;
+		if(btnA13.getBackground() != Color.GREEN)
+			cantvendidos++;
+		if(btnA14.getBackground() != Color.GREEN)
+			cantvendidos++;
+		if(btnA15.getBackground() != Color.GREEN)
+			cantvendidos++;
+		if(btnA16.getBackground() != Color.GREEN)
+			cantvendidos++;
+		if(btnA17.getBackground() != Color.GREEN)
+			cantvendidos++;
+		if(btnA18.getBackground() != Color.GREEN)
+			cantvendidos++;
+		if(btnA19.getBackground() != Color.GREEN)
+			cantvendidos++;
+		if(btnA20.getBackground() != Color.GREEN)
+			cantvendidos++;
+		return cantvendidos;
+	}
+
+	protected void actionPerformedBtnfinalizarEImprimir(ActionEvent arg0) {
+		int opc = JOptionPane.showConfirmDialog(null, "¿ESTÁ SEGURO DE FINALIZAR?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		if (opc == 0){
+			Consultas consulta = new Consultas();
+			ResultSet rs1 = consulta.cargarVentaTemporal(); // OBTENER TODOS LOS DATOS TEMPORALES
+			try {
+				rs1.next();
+				String conductor = null;
+				int totalasientos = 0;
+				int asientosvendidos = 0;	
+				float total = Float.parseFloat(lblTotal.getText());
+				asientosvendidos = contarAsientosVendidos();
+				ResultSet rs2 = consulta.buscarConductor(rs1.getInt("dniconductor")); // BUSCAR NOMBRE DE CONDUCTOR 
+				try {
+					rs2.next();
+					conductor = rs2.getString("conductor");
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Error al buscar conductor: " + e);
+				}
+				
+				ResultSet rs3 = consulta.buscarModeloVehiculo(rs1.getInt("modelovh")); // BUSCAR CANTIDAD DE ASIENTOS 
+				try {
+					rs3.next();
+					totalasientos = rs3.getInt("casientos");
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Error al buscar total de cantidad de asientos: " + e);
+				}
+				//REGISTRAR LOS DATOS CORRESPONDIENTES EN VIAJE
+				consulta.registrarViaje(rs1.getInt("nviaje"), rs1.getInt("empresa"), rs1.getString("origen"), rs1.getString("destino"), rs1.getString("fpartida"), 
+						rs1.getString("fllegada"), rs1.getString("placa"), rs1.getInt("dniconductor"), conductor, rs1.getString("prepasaje"), 
+						total, totalasientos, asientosvendidos);
+				
+				
+				//REGISTRAR LOS DATOS CORRESPONDIENTES EN DETALLE
+				ResultSet rs4 = consulta.cargarPasajerosTemporal(); // OBTENER TODOS LOS DATOS TEMPORALES
+				try {
+					while(rs4.next())
+						consulta.registrarDetallesViaje(rs1.getInt("nviaje"), rs4.getInt("nboleto"), rs4.getInt("dnipasajero"), rs4.getInt("asiento"), rs4.getInt("edad"), rs4.getFloat("prepasaje"), rs4.getInt("contratante"));
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Error al buscar tabla pasajeros temporal: " + e);
+				}
+				
+				
+				JOptionPane.showMessageDialog(null, "VENTA EXITOSA");
+				consulta.eliminarSalidaVehiculo();
+				vp.mntmCrearNuevaSalida.setEnabled(true);
+				vp.mntmContinuarPreparacion.setEnabled(false);
+				vp.mntmCancelarSalida.setEnabled(false);
+				vp.mnFormatos.setEnabled(false);
+				vp.esconderVentanas();
+				vp.cerrarVentanas();
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			
+		}
+	}
 }

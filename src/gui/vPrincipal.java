@@ -53,6 +53,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
     public JMenuItem mntmContinuarPreparacion;
     public JMenuItem mntmCancelarSalida;
     
+    viConfiguracionInicial ci = new viConfiguracionInicial(this); // Configuracion inicial
 	viLogin lg = new viLogin(this);  	 //Login
 	viDatos1 d1 = null;  				 //Datos1
 	viSeleccionAsientos1 sa1 = null;	 //Seleccion de asientos 1
@@ -66,7 +67,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	viLlenarDatosFaltantes datfalt = null;//Datosa Faltantes 
 	viListaSocios lsoc = null; 			  //Lista de Socios
 	
-	ResultSet rs;
+	ResultSet rs2;
 	//RESOLUCION MONITOR
 	//Dimension desktopSize = desktopPane.getSize();
     Dimension FrameSize = lg.getSize();
@@ -268,33 +269,49 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		desktopPane.setBackground(Color.WHITE);
 		contentPane.add(desktopPane, BorderLayout.CENTER);
 		
-		desktopPane.add(lg);//LOGIN		
 		cargar();
 	}
 	
 	public void cargar(){
 		Consultas consulta = new Consultas();
-		rs = consulta.cargarVentaTemporal();
-		int estado;
+		ResultSet rs1 = consulta.cargarConfiguracionInicial();  
 		try {
-			rs.next();
-			estado = rs.getInt("estado");
-			if(estado == 0){
-				mntmCrearNuevaSalida.setEnabled(true);
-				mntmContinuarPreparacion.setEnabled(false);
-				mntmCancelarSalida.setEnabled(false);
-				mnFormatos.setEnabled(false);
+			rs1.next();
+			int estado = rs1.getInt("estado");
+			if(estado == 0){// PRIMERA VES
+				desktopPane.add(ci);
+				ci.setLocation((ancho - FrameSize.width)/2, (alto - FrameSize.height)/4);
+				ci.show();
 			}
-			else{
-				mntmCrearNuevaSalida.setEnabled(false);
-				mntmContinuarPreparacion.setEnabled(true);
-				mntmCancelarSalida.setEnabled(true);
+			else{// NO ES LA PRIMERA VES
+				rs2 = consulta.cargarVentaTemporal();
+				int estado2;
+				try {
+					rs2.next();
+					estado2 = rs2.getInt("estado");
+					if(estado2 == 0){
+						mntmCrearNuevaSalida.setEnabled(true);
+						mntmContinuarPreparacion.setEnabled(false);
+						mntmCancelarSalida.setEnabled(false);
+						mnFormatos.setEnabled(false);
+					}
+					else{
+						mntmCrearNuevaSalida.setEnabled(false);
+						mntmContinuarPreparacion.setEnabled(true);
+						mntmCancelarSalida.setEnabled(true);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				desktopPane.add(lg);
+		        lg.setLocation((ancho - FrameSize.width)/2, (alto - FrameSize.height)/4);
+				lg.show();
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-        lg.setLocation((ancho - FrameSize.width)/2, (alto - FrameSize.height)/4);
-		lg.show();
+		
+		
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
@@ -424,11 +441,11 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		}
 		
 		Consultas consulta = new Consultas();
-		rs = consulta.cargarVentaTemporal();
+		rs2 = consulta.cargarVentaTemporal();
 		int estado;
 		try {
-			rs.next();
-			estado = rs.getInt("estado");
+			rs2.next();
+			estado = rs2.getInt("estado");
 			if(estado != 0){
 				mnFormatos.setEnabled(true);
 			}
@@ -462,20 +479,20 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	
 	protected void actionPerformedMntmContinuarPreparacion(ActionEvent arg0) {
 		Consultas consulta = new Consultas();
-		rs = consulta.cargarVentaTemporal();
+		rs2 = consulta.cargarVentaTemporal();
 		int idmodelovh = 0;
 		String modelovh = null;
 		esconderVentanas();
 		cerrarVentanas();
 		try {
-			rs.next();
-			idmodelovh = rs.getInt("modelovh");
+			rs2.next();
+			idmodelovh = rs2.getInt("modelovh");
 		} catch (SQLException e1) {	e1.printStackTrace(); }
 		
-		rs = consulta.buscarModeloVehiculo(idmodelovh);
+		rs2 = consulta.buscarModeloVehiculo(idmodelovh);
 		try {
-			rs.next();
-			modelovh = rs.getString("modelo");
+			rs2.next();
+			modelovh = rs2.getString("modelo");
 		} catch (SQLException e1) {	e1.printStackTrace(); }
 		
 		switch(idmodelovh){
@@ -592,11 +609,11 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	
 	protected void actionPerformedMntmMDP(ActionEvent arg0) {
 		Consultas consulta = new Consultas();
-		rs = consulta.cantPasajeros();
+		rs2 = consulta.cantPasajeros();
 		int cantPasajeros = 0;
 		try {
-			rs.next();
-			cantPasajeros = rs.getInt("cantPasajeros");
+			rs2.next();
+			cantPasajeros = rs2.getInt("cantPasajeros");
 		} catch (SQLException e1) {	e1.printStackTrace(); }
 		
 		try {
