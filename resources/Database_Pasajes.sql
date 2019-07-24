@@ -62,15 +62,15 @@ sede			varchar(50)
 
 create table tb_viaje(
 nviaje			int primary key auto_increment,
-idempresa		int,
-origen			int,
-destino			int,
-fhpartida		datetime,
-fhllegada		datetime,
+empresa			int,
+origen			varchar(50),
+destino			varchar(50),
+fpartida		datetime,
+fllegada		datetime,
 placa			varchar(7),
 dniconductor	int,
 conductor		varchar(50),
-prepasajeuni	float,
+prepasaje		float,
 totpasajes		float,
 totalasientos	int,
 asientosven		int
