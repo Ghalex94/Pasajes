@@ -134,7 +134,7 @@ public class Consultas {
 			con.close();
 			//JOptionPane.showMessageDialog(null, "Conductor creado correctamente");			
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+			JOptionPane.showMessageDialog(null, "ERROR al crear vehiculo: " + e);
 		}
 	}
 	
@@ -165,7 +165,7 @@ public class Consultas {
 			con.close();
 			//JOptionPane.showMessageDialog(null, "Conductor creado correctamente");
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "ERROR" + e);
+			JOptionPane.showMessageDialog(null, "ERROR al crear conductor " + e);
 		}
 	}
 	
@@ -378,6 +378,18 @@ public class Consultas {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
 	}
+	public static void actualizarVentaTemporal09(int nviaje){ // Viene de Seleccion de asientos
+		
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "update tb_venta_temporal set nviaje = ? where id=1";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, nviaje);
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+	}
 	
 	public ResultSet buscarSocio(int codsocio){
 		Connection con = MySQLConexion.getConection();
@@ -389,6 +401,23 @@ public class Consultas {
 			String sql = "select * from tb_socio where codsocio = ?";
 			pst = con.prepareStatement(sql);
 			pst.setInt(1, codsocio);
+			rs = pst.executeQuery();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		return rs;
+	}
+	
+	public ResultSet buscarSocio2(int dnisocio){
+		Connection con = MySQLConexion.getConection();
+		java.sql.Statement st;
+		ResultSet rs = null;
+		PreparedStatement pst = null;
+		try {
+			st = con.createStatement();
+			String sql = "select * from tb_socio where dnisocio = ?";
+			pst = con.prepareStatement(sql);
+			pst.setInt(1, dnisocio);
 			rs = pst.executeQuery();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
@@ -434,7 +463,7 @@ public class Consultas {
 		Connection con = MySQLConexion.getConection();
 		try {
 			String sql1 = "delete from tb_venta_temporal where id = 1";
-			String sql2 = "insert into tb_venta_temporal values(1, 0, 0, 0, null, 0, null, null, null, null, 0, 0, 1, 0, null, null, null, null, null, 0, null, null, null)";
+			String sql2 = "insert into tb_venta_temporal values(1, 0, 0, 0, null, 0, null, null, null, null, 0, -1, 1, 0, null, null, null, null, null, 0, null, null, null)";
 			String sql3 = "delete from tb_pasajeros_temporal where asiento < 100";
 			PreparedStatement prepareStmt = con.prepareStatement(sql1);
 			prepareStmt.execute();
@@ -589,6 +618,23 @@ public class Consultas {
 		}
 	}
 	
+	public static void liberarAsiento(int asiento){
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "update tb_pasajeros_temporal set estado=? where asiento = ?";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, 2);
+			prepareStmt.setInt(2, asiento);
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR" + e);
+		}
+		
+		
+		
+		
+	}
+	
 	public ResultSet cargarSedes(){
 		Connection con = MySQLConexion.getConection();
 		ResultSet rs = null;
@@ -670,6 +716,20 @@ public class Consultas {
 		return rs;
 	}
 	
+	public ResultSet cargarUltimoViaje(){
+		Connection con = MySQLConexion.getConection();
+		ResultSet rs = null;
+		PreparedStatement pst = null;
+		try {
+			String sql = "select nviaje from tb_viaje order by nviaje desc limit 1";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		return rs;
+	}
+	
 	public ResultSet ultboletoUltVenta(){
 		Connection con = MySQLConexion.getConection();
 		ResultSet rs = null;
@@ -713,7 +773,7 @@ public class Consultas {
 			JOptionPane.showMessageDialog(null, "Socio creado correctamente.");
 			con.close();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "ERROR" + e);
+			JOptionPane.showMessageDialog(null, "ERROR al crear socio" + e);
 		}
 	}
 

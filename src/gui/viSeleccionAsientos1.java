@@ -506,6 +506,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		}
 	
 	public void cargar(){
+		
 		//seleccionar cbos
 		try {
 			Consultas consulta = new Consultas();
@@ -583,46 +584,46 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 				//JOptionPane.showMessageDialog(null, "Ninguna fecha registrada" + e);
 			}
 			
-			//CARGAR NRO DE VIAJE
-			
-			try { //ASIGNAR N VIAJE SI EL ASIENTO ESTÁ VACIO
-				Consultas consulta4 = new Consultas();
-				ResultSet rs4 = consulta4.verificarConfiguracionInicial();
-				rs4.next();
-				int estado = rs4.getInt("estado");
-				
-				if(estado == 0){ // 0 = PRIMERA VEZ
-					txtNviaje.setText(rs4.getString("nviajeinicial"));
-				}
-				
-			} catch (SQLException e1) {
-				// SI NO EXISTE ALGUN BOLETO EN TABLA PASAJERO TEMPORAL, BUSCAR EN LA ANTERIOR VENTA
-				try {
-					Consultas consulta5 = new Consultas();
-					ResultSet rs5 = consulta5.ultboletoUltVenta();
-					rs5.next();
-					int ultimoNboleto = rs5.getInt("nboleto");
-					txtNboleto.setText("" + (ultimoNboleto+1));
-				} catch (Exception e2) {
-					//SI NO EXISTE NINGUNA VENTA, BUSCARA LA SERIE DE LA CONFGURACION PRINCIPAL
-					try {
-						Consultas consulta6 = new Consultas();
-						ResultSet rs6 = consulta6.nasientoCInicial();
-						rs6.next();
-						int ultimoNboleto = rs6.getInt("nboletoinicial");
-						txtNboleto.setText("" + (ultimoNboleto));
-					} catch (Exception e3) {
-						// TODO: handle exception
-					}
-					
-				}
-			}
-			
-			
-			
-		} catch (Exception e) {
-			//JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
+		catch(Exception e){
+			
+		}
+		
+		//CARGAR NRO DE VIAJE
+		
+			try { //ASIGNAR N VIAJE 
+				
+				// BUSCAR SI EXISTE VENTA TEMPORAL
+				Consultas consult = new Consultas();
+				ResultSet rs4 = consult.cargarVentaTemporal();
+				rs4.next();
+				int nviajeventemp = rs4.getInt("nviaje");
+				if(nviajeventemp == -1){// SI ES = -1 ENTRA AQUÍ ES POR QUE SE CREARÁ UN NUEVO VIAJE
+					ResultSet rs5 = consult.cargarUltimoViaje();
+					try {// SI ENTRA AQUÍ ES POR QUE HUBO VIAJES ANTERIORES
+						rs5.next();
+						int ultviajeregistrado = rs5.getInt("nviaje");
+						txtNviaje.setText(""+ (ultviajeregistrado+1));
+						JOptionPane.showMessageDialog(null, "uno " + (ultviajeregistrado+1));
+						consult.actualizarVentaTemporal09((ultviajeregistrado+1));
+						
+					} catch (Exception e) { // SI ENTRA AQUÍ ES POR QUE ES EL PRIMER VIAJE QUE SE HARÁ Y CARGAMOS EL DE LA PRIMERA CONFIGURACIÓN
+						ResultSet rs6 = consult.cargarConfiguracionInicial();
+						rs6.next();
+						int nviajeconfiginicial = rs6.getInt("nviajeinicial");
+						JOptionPane.showMessageDialog(null, "dos " + nviajeconfiginicial);
+						txtNviaje.setText("" + nviajeconfiginicial);
+						consult.actualizarVentaTemporal09((nviajeconfiginicial));
+					}
+				}
+				else{ // SI ENTRA AQUÍ ES POR QUE YA EXISTE UNA PREPARACIÓN
+					JOptionPane.showMessageDialog(null, "TRES " +  nviajeventemp);
+					txtNviaje.setText("" + nviajeventemp);
+				}
+			
+			} catch (Exception e) {
+				//JOptionPane.showMessageDialog(null, "ERROR: " + e);
+			}
 	}
 	
 	public void sumarTotalPasajes(){

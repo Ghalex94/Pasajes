@@ -154,7 +154,7 @@ insert into tb_sedes values(null, 'Sicuani');
 
 insert into tb_configuracion_inicial values(0, null, null, 1, 1);
 
-insert into tb_venta_temporal values(1, 0, 0, 0, null, 0, null, null, null, null, 0, 0, 1, 0, null, null, null, null, null, 0, null, null, null);
+insert into tb_venta_temporal values(1, 0, 0, 0, null, 0, null, null, null, null, 0, -1, 1, 0, null, null, null, null, null, 0, null, null, null);
 
 -- ELIMINAR TABLAS Y DB -----------------------------------------------------------
 drop database db_venta_pasajes; -- ----------------------------------------------

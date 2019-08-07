@@ -749,7 +749,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			Consultas consulta = new Consultas();
 			consulta.eliminarAsiento(asiento);
 			this.setAlwaysOnTop(false);
-			JOptionPane.showMessageDialog(null, "Liberado");
+			JOptionPane.showMessageDialog(null, "Asiento Liberado");
 			
 			if(vsa1!= null)
 				vsa1.cambiarColorAsientoVerde(asiento);;

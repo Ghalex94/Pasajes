@@ -77,6 +77,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 	private JLabel label_5;
 	private JLabel label_6;
 	private JLabel label_8;
+	private JLabel label_4;
 	
 	public static void main(String[] args) {
 		try {
@@ -393,6 +394,13 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		label_8.setFont(new Font("Century Gothic", Font.PLAIN, 25));
 		label_8.setBounds(202, 518, 18, 20);
 		getContentPane().add(label_8);
+		
+		label_4 = new JLabel("*");
+		label_4.setHorizontalAlignment(SwingConstants.CENTER);
+		label_4.setForeground(Color.RED);
+		label_4.setFont(new Font("Century Gothic", Font.PLAIN, 25));
+		label_4.setBounds(202, 146, 18, 34);
+		getContentPane().add(label_4);
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtCodSocio, cbEmpresa, txtDniSocio, txtNombreSocio, txtPlaca, cbModeloV, txtDetalles, txtMTC, txtDniConductor, txtNombreConductor, txtNlicencia, btnGuardar, btnCancelar}));
 		cargar();
 	}
@@ -437,6 +445,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 			this.setAlwaysOnTop(true);
 		}  
 		else{
+			
 			int codsocio = Integer.parseInt(txtCodSocio.getText());
 			int idempresa = cbEmpresa.getSelectedIndex() + 1;
 			int dnisocio = Integer.parseInt(txtDniSocio.getText());	
@@ -450,6 +459,61 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 			int dniconductor = Integer.parseInt(txtDniConductor.getText());
 			String nombreconductor = txtNombreConductor.getText();
 			String licencia = txtNlicencia.getText();
+			
+			/*
+			//VERIFICAR QUE NO EXISTA SOCIO, CONDUCTOR NI VEHICULO
+			int flag = 1;
+			this.setAlwaysOnTop(false);
+			
+			Consultas consult = new Consultas();
+			ResultSet rsconductor = null;
+			rsconductor = consult.buscarConductor(dniconductor);
+			if(rsconductor != null)
+				flag = 0;
+			else
+				flag = 1;
+			
+			ResultSet rsvehiculo = null;
+			rsconductor = consult.buscarVehiculo(placa);
+			if(rsvehiculo != null)
+				flag = 0;
+			else
+				flag = 1;
+			
+			ResultSet rssocio = null;
+			rssocio = consult.buscarSocio(codsocio);
+			if(rssocio != null)
+				flag = 0;
+			else
+				flag = 1;
+			
+			ResultSet rssocio2 = null;
+			rssocio2 = consult.buscarSocio2(dnisocio);
+			if(rssocio2 != null)
+				flag = 0;
+			else
+				flag = 1;
+			
+			
+			
+			if(flag == 0){
+				this.setAlwaysOnTop(false);
+				Consultas consulta1 = new Consultas();
+				consulta1.crearConductor(dniconductor, licencia, nombreconductor);
+				
+				Consultas consulta2 = new Consultas();
+				consulta2.crearVehiculo(placa, modelo, detalles, mtc);
+				
+				Consultas consulta = new Consultas();
+				this.setAlwaysOnTop(false);
+				consulta.crearSocio(codsocio, idempresa, dnisocio, nombresocio, dniconductor, placa);
+				
+				ls.cargar();
+				ls.seleccionarSocio(codsocio);
+				vp.setEnabled(true);
+				this.dispose();
+			}
+			*/
 			
 			this.setAlwaysOnTop(false);
 			Consultas consulta1 = new Consultas();
