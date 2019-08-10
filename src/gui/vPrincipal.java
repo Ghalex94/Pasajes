@@ -67,7 +67,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	viLlenarDatosFaltantes datfalt = null;//Datosa Faltantes 
 	viListaSocios lsoc = null; 			  //Lista de Socios
 	
-	ResultSet rs2;
+	ResultSet rs;
 	//RESOLUCION MONITOR
 	//Dimension desktopSize = desktopPane.getSize();
     Dimension FrameSize = lg.getSize();
@@ -195,6 +195,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mnFormatos.add(mntmIdV);
 		
 		mntmContrato = new JMenuItem("Ver Contrato");
+		mntmContrato.addActionListener(this);
 		mntmContrato.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mnFormatos.add(mntmContrato);
 		
@@ -284,11 +285,11 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 				ci.show();
 			}
 			else{// NO ES LA PRIMERA VES
-				rs2 = consulta.cargarVentaTemporal();
+				rs = consulta.cargarVentaTemporal();
 				int estado2;
 				try {
-					rs2.next();
-					estado2 = rs2.getInt("estado");
+					rs.next();
+					estado2 = rs.getInt("estado");
 					if(estado2 == 0){
 						mntmCrearNuevaSalida.setEnabled(true);
 						mntmContinuarPreparacion.setEnabled(false);
@@ -315,6 +316,9 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == mntmContrato) {
+			actionPerformedMntmContrato(arg0);
+		}
 		if (arg0.getSource() == mntmVerConductores) {
 			actionPerformedMntmVerConductores(arg0);
 		}
@@ -441,11 +445,11 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		}
 		
 		Consultas consulta = new Consultas();
-		rs2 = consulta.cargarVentaTemporal();
+		rs = consulta.cargarVentaTemporal();
 		int estado;
 		try {
-			rs2.next();
-			estado = rs2.getInt("estado");
+			rs.next();
+			estado = rs.getInt("estado");
 			if(estado != 0){
 				mnFormatos.setEnabled(true);
 			}
@@ -479,20 +483,20 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	
 	protected void actionPerformedMntmContinuarPreparacion(ActionEvent arg0) {
 		Consultas consulta = new Consultas();
-		rs2 = consulta.cargarVentaTemporal();
+		rs = consulta.cargarVentaTemporal();
 		int idmodelovh = 0;
 		String modelovh = null;
 		esconderVentanas();
 		cerrarVentanas();
 		try {
-			rs2.next();
-			idmodelovh = rs2.getInt("modelovh");
+			rs.next();
+			idmodelovh = rs.getInt("modelovh");
 		} catch (SQLException e1) {	e1.printStackTrace(); }
 		
-		rs2 = consulta.buscarModeloVehiculo(idmodelovh);
+		rs = consulta.buscarModeloVehiculo(idmodelovh);
 		try {
-			rs2.next();
-			modelovh = rs2.getString("modelo");
+			rs.next();
+			modelovh = rs.getString("modelo");
 		} catch (SQLException e1) {	e1.printStackTrace(); }
 		
 		switch(idmodelovh){
@@ -609,11 +613,11 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	
 	protected void actionPerformedMntmMDP(ActionEvent arg0) {
 		Consultas consulta = new Consultas();
-		rs2 = consulta.cantPasajeros();
+		rs = consulta.cantPasajeros();
 		int cantPasajeros = 0;
 		try {
-			rs2.next();
-			cantPasajeros = rs2.getInt("cantPasajeros");
+			rs.next();
+			cantPasajeros = rs.getInt("cantPasajeros");
 		} catch (SQLException e1) {	e1.printStackTrace(); }
 		
 		try {
@@ -681,6 +685,24 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		try{
 			lcond.setMaximum(true);
 		}catch(Exception f){}
+	}
+	protected void actionPerformedMntmContrato(ActionEvent arg0) {
+		Consultas consulta = new Consultas();
+		ResultSet rs = consulta.cargarVentaTemporal();
+		int nViaje = 0;
+		try {
+			rs.next();
+			nViaje = rs.getInt("nviaje");
+		} catch (SQLException e1) {	e1.printStackTrace(); }
+		try {
+			Map<String, Object> parameters = new HashMap();
+			parameters.put("prmtNViaje", nViaje);
+			Connection con = MySQLConexion.getConection();
+			new AbstractJasperReports().createReport( con, "rContratoMA5.jasper", parameters);
+			AbstractJasperReports.showViewer();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error:. "+ e.getStackTrace());			
+		}
 	}
 }
 

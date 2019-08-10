@@ -275,8 +275,12 @@ where  vt.id = 1;
 
 -- consulta para contrato
 select vt.placa, DATE_FORMAT(vt.fpartida, '%d-%m-%Y') Fecha_Inicio, TIME(vt.fpartida) Hora_Salida, p.dnipasajero, p.nombre, vt.origen, vt.destino, 
-vt.puntoencuentro, vt.ciudaddesde, vt.ciudadhasta,  round(sum(pt2.prepasaje)) totpasajes
+vt.puntoencuentro, vt.ciudaddesde, vt.ciudadhasta, mvh.casientos, round(sum(pt2.prepasaje)) totpasajes
 from tb_venta_temporal vt
+inner join  tb_vehiculo vh
+on vh.placa = vt.placa
+inner join  tb_modelo_vehiculo mvh
+on mvh.idmodelo = vh.idmodelo
 inner join tb_conductor c
 on c.dniconductor = vt.dniconductor
 left join tb_conductor c2
@@ -288,3 +292,21 @@ on pt2.estado = 1
 left join tb_pasajero p
 on pt.dnipasajero = p.dnipasajero
 where  vt.id = 1;
+
+-- manifiesto
+select vt.origen, vt.destino, DATE_FORMAT(vt.fpartida, '%d-%m-%Y') Fecha_Viaje,  TIME(vt.fpartida) Hora_Salida, mvh.casientos, c.conductor, c.licencia, vh.placa, mvh.modelo, vh.mtc, pt.asiento, p.nombre, pt.dnipasajero, pt.edad, pt.nboleto, p.nacionalidad, pt.prepasaje, vt.nviaje
+from  db_venta_pasajes.tb_pasajeros_temporal pt
+inner join  db_venta_pasajes.tb_pasajero p
+inner join  db_venta_pasajes.tb_venta_temporal vt
+inner join  db_venta_pasajes.tb_conductor c
+inner join  db_venta_pasajes.tb_vehiculo vh
+inner join  db_venta_pasajes.tb_modelo_vehiculo mvh
+inner join  db_venta_pasajes.tb_empresa e
+on pt.estado = 1 
+and  p.dnipasajero = pt.dnipasajero
+and vt.id = 1
+and c.dniconductor = vt.dniconductor
+and vh.placa = vt.placa
+and mvh.idmodelo = vh.idmodelo
+and e.idempresa = vt.empresa
+order by pt.asiento
