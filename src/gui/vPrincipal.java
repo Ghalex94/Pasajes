@@ -646,7 +646,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		Consultas consulta = new Consultas();
 		try {
 			Connection con = MySQLConexion.getConection();
-			new AbstractJasperReports().createReport( con, "rItinerarioViajeM.jasper");
+			new AbstractJasperReports().createReport( con, "rItinerarioViajeMA5.jasper");
 			AbstractJasperReports.showViewer();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error:. "+ e.getStackTrace());			
