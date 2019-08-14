@@ -98,6 +98,7 @@ public class viSeleccionAsientos2 extends JInternalFrame implements ActionListen
 	private JLabel label;
 	private JLabel label_1;
 	private JTextField txtNviaje;
+	private JLabel lblNSerie;
 
 	
 	public static void main(String[] args) {
@@ -487,8 +488,15 @@ public class viSeleccionAsientos2 extends JInternalFrame implements ActionListen
 		txtNviaje.setForeground(Color.RED);
 		txtNviaje.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 22));
 		txtNviaje.setColumns(10);
-		txtNviaje.setBounds(1053, 104, 202, 40);
+		txtNviaje.setBounds(1170, 104, 165, 40);
 		getContentPane().add(txtNviaje);
+		
+		lblNSerie = new JLabel("<dynamic> - ");
+		lblNSerie.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNSerie.setForeground(Color.RED);
+		lblNSerie.setFont(new Font("Dialog", Font.BOLD, 30));
+		lblNSerie.setBounds(1053, 104, 105, 41);
+		getContentPane().add(lblNSerie);
 		
 		
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtTitulo, cbOrigen, btnfinalizarEImprimir, cbDestino, btnConductor, btnA3, btnA4, btnA5, btnA6, btnA7, btnA8, btnA9, btnA10, btnA11, btnA12, btnA13, btnA14, btnA15, btnA1, btnA2}));
@@ -578,36 +586,47 @@ public class viSeleccionAsientos2 extends JInternalFrame implements ActionListen
 
 		//CARGAR NRO DE VIAJE
 		
-			try { //ASIGNAR N VIAJE 
-				
-				// BUSCAR SI EXISTE VENTA TEMPORAL
-				Consultas consult = new Consultas();
-				ResultSet rs4 = consult.cargarVentaTemporal();
-				rs4.next();
-				int nviajeventemp = rs4.getInt("nviaje");
-				if(nviajeventemp == -1){// SI ES = -1 ENTRA AQUÍ ES POR QUE SE CREARÁ UN NUEVO VIAJE
-					ResultSet rs5 = consult.cargarUltimoViaje();
-					try {// SI ENTRA AQUÍ ES POR QUE HUBO VIAJES ANTERIORES
-						rs5.next();
-						int ultviajeregistrado = rs5.getInt("nviaje");
-						txtNviaje.setText(""+ (ultviajeregistrado+1));
-						consult.actualizarVentaTemporal09((ultviajeregistrado+1));
-						
-					} catch (Exception e) { // SI ENTRA AQUÍ ES POR QUE ES EL PRIMER VIAJE QUE SE HARÁ Y CARGAMOS EL DE LA PRIMERA CONFIGURACIÓN
-						ResultSet rs6 = consult.cargarConfiguracionInicial();
-						rs6.next();
-						int nviajeconfiginicial = rs6.getInt("nviajeinicial");
-						txtNviaje.setText("" + nviajeconfiginicial);
-						consult.actualizarVentaTemporal09((nviajeconfiginicial));
-					}
-				}
-				else{ // SI ENTRA AQUÍ ES POR QUE YA EXISTE UNA PREPARACIÓN
-					txtNviaje.setText("" + nviajeventemp);
-				}
+		try { //ASIGNAR N VIAJE 
 			
-			} catch (Exception e) {
-				//JOptionPane.showMessageDialog(null, "ERROR: " + e);
+			// BUSCAR SI EXISTE VENTA TEMPORAL
+			Consultas consult = new Consultas();
+			ResultSet rs4 = consult.cargarVentaTemporal();
+			rs4.next();
+			int nviajeventemp = rs4.getInt("nviaje");
+			if(nviajeventemp == -1){// SI ES = -1 ENTRA AQUÍ ES POR QUE SE CREARÁ UN NUEVO VIAJE
+				ResultSet rs5 = consult.cargarUltimoViaje();
+				try {// SI ENTRA AQUÍ ES POR QUE HUBO VIAJES ANTERIORES
+					rs5.next();
+					int ultviajeregistrado = rs5.getInt("nviaje");
+					txtNviaje.setText(""+ (ultviajeregistrado+1));
+					consult.actualizarVentaTemporal09((ultviajeregistrado+1));
+					
+				} catch (Exception e) { // SI ENTRA AQUÍ ES POR QUE ES EL PRIMER VIAJE QUE SE HARÁ Y CARGAMOS EL DE LA PRIMERA CONFIGURACIÓN
+					ResultSet rs6 = consult.cargarConfiguracionInicial();
+					rs6.next();
+					int nviajeconfiginicial = rs6.getInt("nviajeinicial");
+					txtNviaje.setText("" + nviajeconfiginicial);
+					consult.actualizarVentaTemporal09((nviajeconfiginicial));
+				}
 			}
+			else{ // SI ENTRA AQUÍ ES POR QUE YA EXISTE UNA PREPARACIÓN
+				txtNviaje.setText("" + nviajeventemp);
+			}
+		
+		} catch (Exception e) {
+			//JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		
+		// CARGAR NRO SERIE
+		Consultas consult = new Consultas();
+		ResultSet rs7 = consult.cargarConfiguracionInicial();
+		try {
+			rs7.next();
+			String nSerie = rs7.getString("nserie");
+			lblNSerie.setText(nSerie + " - ");
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error al cargar nSerie: " + e);
+		}
 	}
 	
 	public void sumarTotalPasajes(){

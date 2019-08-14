@@ -67,6 +67,8 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 	private JComboBox cbMfin1;
 	private JComboBox cbHfin2;
 	private JComboBox cbMfin2;
+	private JLabel lblTotalSboleta;
+	private JTextField textField;
 	
 	/**
 	 * Launch the application.
@@ -273,7 +275,7 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		btnGuardarCambios.setForeground(Color.WHITE);
 		btnGuardarCambios.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
 		btnGuardarCambios.setBackground(new Color(0, 139, 139));
-		btnGuardarCambios.setBounds(895, 363, 454, 75);
+		btnGuardarCambios.setBounds(895, 451, 454, 75);
 		getContentPane().add(btnGuardarCambios);
 		
 		cbHinicio1 = new JComboBox();
@@ -349,6 +351,19 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		cbMfin2.setModel(new DefaultComboBoxModel(new String[] {"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
 		cbMfin2.setBounds(1278, 284, 58, 23);
 		getContentPane().add(cbMfin2);
+		
+		lblTotalSboleta = new JLabel("<html>TOTAL S/ <br>(boleta, factura, itinerario, contrato)</html>");
+		lblTotalSboleta.setHorizontalAlignment(SwingConstants.LEFT);
+		lblTotalSboleta.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		lblTotalSboleta.setBounds(895, 342, 454, 52);
+		getContentPane().add(lblTotalSboleta);
+		
+		textField = new JTextField();
+		textField.setText((String) null);
+		textField.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		textField.setColumns(10);
+		textField.setBounds(895, 395, 452, 43);
+		getContentPane().add(textField);
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{chbxViajeStandar, chbxEscalasCom, txtDesde, txtHasta, txtPencuentro, cbConductor2, txtEscalasParadas, btnGuardarCambios}));
 		
 		cargar();

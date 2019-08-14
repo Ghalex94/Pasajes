@@ -35,8 +35,7 @@ public class Consultas {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error:_" + e);
 		}
-		return rs;
-			
+		return rs;	
 	}
 	
 	public ResultSet ingresarUsuario(String usu, String pass, String nom, int tipo){
@@ -745,6 +744,21 @@ public class Consultas {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR" + e);
 		}
+	}
+	
+	public ResultSet buscarSede(int nsede){
+		Connection con = MySQLConexion.getConection();
+		java.sql.Statement st;
+		ResultSet rs = null;
+		try {
+			String sql = "select * from tb_sedes where idsede=?";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, nsede);
+			rs = prepareStmt.executeQuery();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error:_" + e);
+		}
+		return rs;	
 	}
 	
 	public static void eliminarDestino(int iddestino){

@@ -52,12 +52,13 @@ public class viConfiguracionInicial extends JInternalFrame implements ActionList
 	private JTextField txtNViajeInicial;
 	private JTextField txtNSerie;
 	private JComboBox <Sedes> cbSedes ;
+	int tipo = 0;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					viConfiguracionInicial frame = new viConfiguracionInicial(null);
+					viConfiguracionInicial frame = new viConfiguracionInicial(null, 0);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -69,7 +70,8 @@ public class viConfiguracionInicial extends JInternalFrame implements ActionList
 	/**
 	 * Create the frame.
 	 */
-	public viConfiguracionInicial(vPrincipal temp) {
+	public viConfiguracionInicial(vPrincipal temp, int temp2) {
+		tipo = temp2;		
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		setTitle("SELECCIONE");
 		vp = temp;
@@ -82,7 +84,7 @@ public class viConfiguracionInicial extends JInternalFrame implements ActionList
 		lblNewLabel.setBounds(33, 78, 271, 31);
 		getContentPane().add(lblNewLabel);
 		
-		lblVehiculo = new JLabel("Numero de Viaje Inicial");
+		lblVehiculo = new JLabel("N\u00FAmero de Viaje Inicial");
 		lblVehiculo.setHorizontalAlignment(SwingConstants.LEFT);
 		lblVehiculo.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		lblVehiculo.setBounds(34, 181, 270, 20);
@@ -104,7 +106,7 @@ public class viConfiguracionInicial extends JInternalFrame implements ActionList
 		btnCancelar.setBounds(111, 280, 190, 31);
 		getContentPane().add(btnCancelar);
 		
-		lblPrecioDePasaje = new JLabel("Numero de Asiento Inicial:");
+		lblPrecioDePasaje = new JLabel("N\u00FAmero de Asiento Inicial:");
 		lblPrecioDePasaje.setHorizontalAlignment(SwingConstants.LEFT);
 		lblPrecioDePasaje.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		lblPrecioDePasaje.setBounds(34, 222, 270, 31);
@@ -122,7 +124,7 @@ public class viConfiguracionInicial extends JInternalFrame implements ActionList
 		lblNewLabel_1.setBounds(34, 21, 455, 31);
 		getContentPane().add(lblNewLabel_1);
 		
-		lblConductor = new JLabel("Numero de serie:");
+		lblConductor = new JLabel("N\u00FAmero de serie:");
 		lblConductor.setHorizontalAlignment(SwingConstants.LEFT);
 		lblConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		lblConductor.setBounds(34, 134, 270, 20);
@@ -152,6 +154,34 @@ public class viConfiguracionInicial extends JInternalFrame implements ActionList
 	public void cargar(){
 		Sedes sedes = new Sedes();
 		sedes.cargarDestinos(cbSedes);
+		
+		if(tipo == 2){
+			Consultas consulta = new Consultas();
+			ResultSet rs = consulta.cargarConfiguracionInicial();
+			try {
+				rs.next();
+				txtNSerie.setText(rs.getString("nserie"));
+				txtNAsientoInicial.setText(rs.getString("nboletoinicial"));
+				txtNViajeInicial.setText(rs.getString("nviajeinicial"));
+				
+				int nsede = rs.getInt("sede");
+				
+				ResultSet rs2 = consulta.buscarSede(nsede);
+				try {
+					rs2.next();
+					String sede = rs2.getString("sede");					
+					for(int i = 0; i < cbSedes.getItemCount(); i++){
+						if(sede.equals(cbSedes.getItemAt(i).toString())){
+							cbSedes.setSelectedIndex(i);							
+						}					
+					}
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Error al cargar sede " + e);
+				}
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Error al cargar Configuracion inicial: " + e);
+			}
+		}
 		
 	}
 	
@@ -184,7 +214,8 @@ public class viConfiguracionInicial extends JInternalFrame implements ActionList
 			this.hide();
 			vp.esconderVentanas();
 			vp.cerrarVentanas();
-			vp.cargar();
+			if(tipo == 0)
+				vp.cargar();
 		}
 	}
 }

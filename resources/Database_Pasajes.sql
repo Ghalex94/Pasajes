@@ -134,6 +134,7 @@ nviajeinicial	int,
 nboletoinicial	int
 );
 
+insert into tb_usuario values('bxb', 'stand207', 'BYTE X BYTE', 2);
 insert into tb_usuario values('alex', 'Aa123', 'Alexander Gamarra', 1);
 insert into tb_usuario values('admin', 'admin', 'ADMINISTRADOR', 0);
 

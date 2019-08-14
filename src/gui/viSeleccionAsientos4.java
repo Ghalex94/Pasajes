@@ -93,6 +93,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 	private JLabel lblTV;
 	private JLabel label;
 	private JTextField txtNviaje;
+	private JLabel lblNSerie;
 
 	
 	public static void main(String[] args) {
@@ -435,8 +436,15 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		txtNviaje.setForeground(Color.RED);
 		txtNviaje.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 22));
 		txtNviaje.setColumns(10);
-		txtNviaje.setBounds(1049, 116, 202, 40);
+		txtNviaje.setBounds(1164, 116, 167, 40);
 		getContentPane().add(txtNviaje);
+		
+		lblNSerie = new JLabel("<dynamic> - ");
+		lblNSerie.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNSerie.setForeground(Color.RED);
+		lblNSerie.setFont(new Font("Dialog", Font.BOLD, 30));
+		lblNSerie.setBounds(1049, 116, 105, 40);
+		getContentPane().add(lblNSerie);
 		
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtTitulo, cbOrigen, btnfinalizarEImprimir, cbDestino, btnConductor, btnA3, btnA4, btnA5, btnA6, btnA7, btnA8, btnA9, btnA10, btnA11, btnA12, btnA13, btnA14, btnA15, btnA1, btnA2}));
 		cargar();
@@ -553,6 +561,17 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		
 		} catch (Exception e) {
 			//JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		
+		// CARGAR NRO SERIE
+		Consultas consult = new Consultas();
+		ResultSet rs7 = consult.cargarConfiguracionInicial();
+		try {
+			rs7.next();
+			String nSerie = rs7.getString("nserie");
+			lblNSerie.setText(nSerie + " - ");
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error al cargar nSerie: " + e);
 		}
 	}
 	

@@ -53,7 +53,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
     public JMenuItem mntmContinuarPreparacion;
     public JMenuItem mntmCancelarSalida;
     
-    viConfiguracionInicial ci = new viConfiguracionInicial(this); // Configuracion inicial
+    viConfiguracionInicial ci = null; // Configuracion inicial
 	viLogin lg = new viLogin(this);  	 //Login
 	viListaUsuarios lusu = null;		 //Usuarios
 	viDatos1 d1 = null;  				 //Datos1
@@ -145,12 +145,12 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mnArchivo.add(mntmAdministrarUsuarios);
 		
 		mntmOpcionesAvanzadas = new JMenuItem("Opciones Avanzadas");
+		mntmOpcionesAvanzadas.setEnabled(false);
 		mntmOpcionesAvanzadas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				actionPerformedMntmOpcionesAvanzadas(e);
 			}
 		});
-		mntmOpcionesAvanzadas.setEnabled(false);
 		mntmOpcionesAvanzadas.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mnArchivo.add(mntmOpcionesAvanzadas);
 		mnArchivo.add(mntmCerrarSesin);
@@ -292,6 +292,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			rs1.next();
 			int estado = rs1.getInt("estado");
 			if(estado == 0){// PRIMERA VES
+				ci = new viConfiguracionInicial(this, 1); // PRIMERA VES
 				desktopPane.add(ci);
 				ci.setLocation((ancho - FrameSize.width)/2, (alto - FrameSize.height)/4);
 				ci.show();
@@ -442,10 +443,11 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mnSedes.setEnabled(false);
 		mnClientes.setEnabled(false);
 		mnReportes.setEnabled(false);
+		mntmOpcionesAvanzadas.setEnabled(false);
 	}
 	
 	public void activarMenu(int tipo){
-		if(tipo == 0){
+		if(tipo == 0 || tipo == 2){
 			mnArchivo.setEnabled(true);
 			mnSalidas.setEnabled(true);
 			mnFormatos.setEnabled(true);
@@ -736,7 +738,12 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	}
 	
 	protected void actionPerformedMntmOpcionesAvanzadas(ActionEvent e) {
-		
+		esconderVentanas();
+		cerrarVentanas();
+		ci = new viConfiguracionInicial(this, 2); // MODIFICAR
+		desktopPane.add(ci);
+		ci.setLocation((ancho - FrameSize.width)/2, (alto - FrameSize.height)/4);
+		ci.show();
 	}
 }
 

@@ -222,21 +222,21 @@ public class viListaUsuarios extends JInternalFrame {
 		rs = consult.cargarUsuarios();
 		try {
 			while(rs.next()){
-				String tipo = "";
-				if(rs.getInt("tipo") == 0)
-					tipo = "Administrador";
-				if(rs.getInt("tipo") == 1)
-					tipo = "Empleado";
-				/*if(rs.getInt("tipo") == 2)
-					tipo = "Soporte";*/
-				dtm.addRow(new Object[]{rs.getString("nombre"), rs.getString("usuario"), "************", tipo});
+				if(rs.getInt("tipo") != 2){
+					String tipo = "";
+					if(rs.getInt("tipo") == 0)
+						tipo = "Administrador";
+					if(rs.getInt("tipo") == 1)
+						tipo = "Empleado";
+					/*if(rs.getInt("tipo") == 2)
+						tipo = "Soporte";*/
+					dtm.addRow(new Object[]{rs.getString("nombre"), rs.getString("usuario"), "************", tipo});
+				}
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR al cargar usuarios: " + e);
 		}		
 		ajustarAnchoColumnas();
-				
-		
 	}
 	
 	private int anchoColumna(int porcentaje) {
