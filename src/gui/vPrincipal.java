@@ -55,6 +55,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
     
     viConfiguracionInicial ci = new viConfiguracionInicial(this); // Configuracion inicial
 	viLogin lg = new viLogin(this);  	 //Login
+	viListaUsuarios lusu = null;		 //Usuarios
 	viDatos1 d1 = null;  				 //Datos1
 	viSeleccionAsientos1 sa1 = null;	 //Seleccion de asientos 1
 	viSeleccionAsientos2 sa2 = null;	 //Seleccion de asientos 2
@@ -135,10 +136,21 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mntmCerrarSesin.addActionListener(this);
 		
 		mntmAdministrarUsuarios = new JMenuItem("Administrar Usuarios");
+		mntmAdministrarUsuarios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmAdministrarUsuarios(e);
+			}
+		});
 		mntmAdministrarUsuarios.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mnArchivo.add(mntmAdministrarUsuarios);
 		
 		mntmOpcionesAvanzadas = new JMenuItem("Opciones Avanzadas");
+		mntmOpcionesAvanzadas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmOpcionesAvanzadas(e);
+			}
+		});
+		mntmOpcionesAvanzadas.setEnabled(false);
 		mntmOpcionesAvanzadas.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mnArchivo.add(mntmOpcionesAvanzadas);
 		mnArchivo.add(mntmCerrarSesin);
@@ -385,6 +397,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	
 	public void cerrarVentanas(){
 		d1 = null;
+		lusu = null;
 		sa1 = null;
 		sa2 = null;
 		sa3 = null;
@@ -399,6 +412,8 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	public void esconderVentanas(){
 		if (d1!=null)
 			d1.setVisible(false);
+		if (lusu!=null)
+			lusu.setVisible(false);
 		if (sa1!=null)
 			sa1.setVisible(false);
 		if (sa2!=null)
@@ -442,6 +457,10 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		else{
 			mnArchivo.setEnabled(true);
 			mnSalidas.setEnabled(true);
+			mntmAdministrarUsuarios.setEnabled(false);
+		}
+		if(tipo == 2){
+			mntmOpcionesAvanzadas.setEnabled(true);
 		}
 		
 		Consultas consulta = new Consultas();
@@ -459,6 +478,17 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		} catch (SQLException e) {
 		}
 		
+	}
+	
+	protected void actionPerformedMntmAdministrarUsuarios(ActionEvent e) {
+		esconderVentanas();
+		cerrarVentanas();
+		lusu = new viListaUsuarios(this);
+		desktopPane.add(lusu);
+		lusu.show();
+		try{
+			lusu.setMaximum(true);
+		}catch(Exception f){}
 	}
 	
 	protected void actionPerformedMntmCerrarSesin(ActionEvent arg0) {
@@ -703,6 +733,10 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error:. "+ e.getStackTrace());			
 		}
+	}
+	
+	protected void actionPerformedMntmOpcionesAvanzadas(ActionEvent e) {
+		
 	}
 }
 

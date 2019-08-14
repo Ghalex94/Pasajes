@@ -604,20 +604,17 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 						rs5.next();
 						int ultviajeregistrado = rs5.getInt("nviaje");
 						txtNviaje.setText(""+ (ultviajeregistrado+1));
-						JOptionPane.showMessageDialog(null, "uno " + (ultviajeregistrado+1));
 						consult.actualizarVentaTemporal09((ultviajeregistrado+1));
 						
 					} catch (Exception e) { // SI ENTRA AQUÍ ES POR QUE ES EL PRIMER VIAJE QUE SE HARÁ Y CARGAMOS EL DE LA PRIMERA CONFIGURACIÓN
 						ResultSet rs6 = consult.cargarConfiguracionInicial();
 						rs6.next();
 						int nviajeconfiginicial = rs6.getInt("nviajeinicial");
-						JOptionPane.showMessageDialog(null, "dos " + nviajeconfiginicial);
 						txtNviaje.setText("" + nviajeconfiginicial);
 						consult.actualizarVentaTemporal09((nviajeconfiginicial));
 					}
 				}
 				else{ // SI ENTRA AQUÍ ES POR QUE YA EXISTE UNA PREPARACIÓN
-					JOptionPane.showMessageDialog(null, "TRES " +  nviajeventemp);
 					txtNviaje.setText("" + nviajeventemp);
 				}
 			

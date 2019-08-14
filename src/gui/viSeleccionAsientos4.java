@@ -522,6 +522,38 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		} catch (Exception e) {
 			//JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
+		//CARGAR NRO DE VIAJE
+		
+		try { //ASIGNAR N VIAJE 
+			
+			// BUSCAR SI EXISTE VENTA TEMPORAL
+			Consultas consult = new Consultas();
+			ResultSet rs4 = consult.cargarVentaTemporal();
+			rs4.next();
+			int nviajeventemp = rs4.getInt("nviaje");
+			if(nviajeventemp == -1){// SI ES = -1 ENTRA AQUÍ ES POR QUE SE CREARÁ UN NUEVO VIAJE
+				ResultSet rs5 = consult.cargarUltimoViaje();
+				try {// SI ENTRA AQUÍ ES POR QUE HUBO VIAJES ANTERIORES
+					rs5.next();
+					int ultviajeregistrado = rs5.getInt("nviaje");
+					txtNviaje.setText(""+ (ultviajeregistrado+1));
+					consult.actualizarVentaTemporal09((ultviajeregistrado+1));
+					
+				} catch (Exception e) { // SI ENTRA AQUÍ ES POR QUE ES EL PRIMER VIAJE QUE SE HARÁ Y CARGAMOS EL DE LA PRIMERA CONFIGURACIÓN
+					ResultSet rs6 = consult.cargarConfiguracionInicial();
+					rs6.next();
+					int nviajeconfiginicial = rs6.getInt("nviajeinicial");
+					txtNviaje.setText("" + nviajeconfiginicial);
+					consult.actualizarVentaTemporal09((nviajeconfiginicial));
+				}
+			}
+			else{ // SI ENTRA AQUÍ ES POR QUE YA EXISTE UNA PREPARACIÓN
+				txtNviaje.setText("" + nviajeventemp);
+			}
+		
+		} catch (Exception e) {
+			//JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
 	}
 	
 	public void sumarTotalPasajes(){

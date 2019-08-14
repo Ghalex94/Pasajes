@@ -11,6 +11,76 @@ import mysql.MySQLConexion;
 
 public class Consultas {
 	
+	public ResultSet cargarUsuarios(){
+		Connection con = MySQLConexion.getConection();
+		java.sql.Statement st;
+		ResultSet rs = null;
+		try {
+			st = con.createStatement();
+			rs = st.executeQuery("select * from tb_usuario");
+		} catch (Exception e) {
+		}
+		return rs;
+	}
+	
+	public ResultSet buscarUsuario(String usuario){
+		Connection con = MySQLConexion.getConection();
+		java.sql.Statement st;
+		ResultSet rs = null;
+		try {
+			String sql = "select * from tb_usuario where usuario=?";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setString(1, usuario);
+			rs = prepareStmt.executeQuery();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error:_" + e);
+		}
+		return rs;
+			
+	}
+	
+	public ResultSet ingresarUsuario(String usu, String pass, String nom, int tipo){
+		//JOptionPane.showMessageDialog(null, "Ingresar: " + usu + pass + nom + tipo);
+		Connection con = MySQLConexion.getConection();
+		java.sql.Statement st;
+		ResultSet rs = null;
+		try {
+			st = con.createStatement();
+			String sql = "insert into tb_usuario (usuario, pass, nombre, tipo)" + " values (?, ?, ?, ?)";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setString(1, usu);
+			prepareStmt.setString(2, pass);
+			prepareStmt.setString(3, nom);
+			prepareStmt.setInt(4, tipo);
+			prepareStmt.execute();
+			JOptionPane.showMessageDialog(null, "USUARIO CREADO CORRECTAMENTE");
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: USUARIO EXISTENTE");
+		}
+		return rs;
+	}
+	
+	public ResultSet modificarUsuario(String usu, String pass, String nom, int tip){
+		//JOptionPane.showMessageDialog(null, "Modificar: " + usu + pass + nom + tip);
+		Connection con = MySQLConexion.getConection();
+		java.sql.Statement st;
+		ResultSet rs = null;
+		try {
+			st = con.createStatement();
+			String sql = "update tb_usuario set pass=?, nombre=?, tipo=? where usuario=?";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setString(1, pass);
+			prepareStmt.setString(2, nom);
+			prepareStmt.setInt(3, tip);
+			prepareStmt.setString(4, usu);
+			prepareStmt.execute();
+			JOptionPane.showMessageDialog(null, "USUARIO MODIFICADO CORRECTAMENTE");
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR al modificar: " + e);
+		}
+		return rs;
+	}
+	
 	public Usuarios obtenerUsuario(Usuarios ingresante){
 		Connection con = null;	
 		PreparedStatement pst = null;
@@ -32,6 +102,22 @@ public class Consultas {
 		}
 		return ingresante;
 	}
+	
+	public ResultSet eliminarUsuario(String usu){
+		Connection con = MySQLConexion.getConection();
+		java.sql.Statement st;
+		ResultSet rs = null;
+		try {
+			st = con.createStatement();
+			String sql = "delete from tb_usuario where usuario = ?";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setString(1, usu);		
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		return rs;
+	}	
 	
 	public ResultSet cargarVehiculos(){
 		Connection con = MySQLConexion.getConection();
@@ -851,7 +937,4 @@ public class Consultas {
 			JOptionPane.showMessageDialog(null, "ERROR" + e);
 		}
 	}
-	
-	
-	
 }
