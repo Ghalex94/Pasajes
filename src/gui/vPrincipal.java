@@ -88,6 +88,8 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
     private JMenuItem mntmListaSocios;
     private JMenu mnSedes;
     private JMenuItem mntmVerConductores;
+    private JMenuItem mntmVerBoletaVenta;
+    private JMenuItem mntmVerFactura;
     
     
 	
@@ -210,6 +212,14 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mntmContrato.addActionListener(this);
 		mntmContrato.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mnFormatos.add(mntmContrato);
+		
+		mntmVerBoletaVenta = new JMenuItem("Ver Boleta de Venta");
+		mntmVerBoletaVenta.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		mnFormatos.add(mntmVerBoletaVenta);
+		
+		mntmVerFactura = new JMenuItem("Ver Factura");
+		mntmVerFactura.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		mnFormatos.add(mntmVerFactura);
 		
 		mnVehiculosConductores = new JMenu("|Socios - vehiculos - conductores|");
 		mnVehiculosConductores.setForeground(Color.WHITE);
