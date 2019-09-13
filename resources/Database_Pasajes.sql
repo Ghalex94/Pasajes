@@ -62,6 +62,8 @@ sede			varchar(50)
 
 create table tb_viaje(
 nviaje			int primary key auto_increment,
+codsocio		int,
+nombresocio		varchar(70),
 empresa			int,
 origen			varchar(50),
 destino			varchar(50),
@@ -92,6 +94,7 @@ primary key (nviaje, nboleto)
 create table tb_venta_temporal(
 id				int not null primary key,
 estado			int, -- 0Nuevo 1En creacion
+codsocio		int,
 empresa			int,  -- 0NULL 1MERMA 2SIGUEL
 dniconductor	int,
 placa			varchar(7),
@@ -112,8 +115,10 @@ horainicio2		varchar(5),
 dniconductor2	int,
 licencia2		varchar(30),
 horafin1		varchar(5),
-horafin2		varchar(5)
-);
+horafin2		varchar(5),
+modalidad		int,
+totalmodif		float
+);                                 
 
 create table tb_pasajeros_temporal(
 asiento 		int not null primary key,
@@ -155,18 +160,18 @@ insert into tb_sedes values(null, 'Sicuani');
 
 insert into tb_configuracion_inicial values(0, null, null, 1, 1);
 
-insert into tb_venta_temporal values(1, 0, 0, 0, null, 0, null, null, null, null, 0, -1, 1, 0, null, null, null, null, null, 0, null, null, null);
+insert into tb_venta_temporal values(1, 0, 0, 0, 0, null, 0, null, null, null, null, 0, -1, 1, 0, null, null, null, null, null, 0, null, null, null, 0, -1);
 
 -- ELIMINAR TABLAS Y DB -----------------------------------------------------------
-drop database db_venta_pasajes; -- ----------------------------------------------
+ drop database db_venta_pasajes; -- ----------------------------------------------
 -- drop table tb_usuario;
 -- drop table tb_conductor;
 -- drop table tb_modelo_vehiculo;
 -- drop table tb_vehiculo;
 -- drop table tb_pasajero;
 -- drop table tb_destinos;
--- drop table tb_viaje;
--- drop table tb_detalle_viaje;
+ drop table tb_viaje;
+ drop table tb_detalle_viaje;
 -- drop table tb_venta_temporal;
 -- drop table tb_pasajeros_temporal;
 
@@ -236,6 +241,8 @@ and e.idempresa = vt.empresa
 order by pt.asiento; 
 
 UPDATE tb_venta_temporal SET fpartida = concat(date(fpartida), ' 21:00:00') WHERE id=1;
+UPDATE tb_venta_temporal SET modalidad = 1 WHERE id=1;
+UPDATE tb_venta_temporal SET totalmodif = 54321 WHERE id=1;
 
 -- consulta para impresion ed boleto
 select p.nombre, pt.dnipasajero, p.razsocial, vt.fpartida, pt.prepasaje, vt.origen, vt.destino, vt.nviaje, pt.nboleto
@@ -276,7 +283,7 @@ where  vt.id = 1;
 
 -- consulta para contrato
 select vt.placa, DATE_FORMAT(vt.fpartida, '%d-%m-%Y') Fecha_Inicio, TIME(vt.fpartida) Hora_Salida, p.dnipasajero, p.nombre, vt.origen, vt.destino, 
-vt.puntoencuentro, vt.ciudaddesde, vt.ciudadhasta, mvh.casientos, round(sum(pt2.prepasaje)) totpasajes
+vt.puntoencuentro, vt.ciudaddesde, vt.ciudadhasta, mvh.casientos, round(sum(pt2.prepasaje)) totpasajes, round(pt2.totalmodif) totpasajesmodif, 
 from tb_venta_temporal vt
 inner join  tb_vehiculo vh
 on vh.placa = vt.placa

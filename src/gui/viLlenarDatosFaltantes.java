@@ -55,9 +55,6 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 	private JTextField txtNlicencia2;
 	private JLabel label_2;
 	private JLabel label_3;
-	private JComboBox <Conductor> cbConductor2;
-
-	vPrincipal vp = null;
 	private JButton btnGuardarCambios;
 	private JComboBox cbHinicio1;
 	private JComboBox cbMinicio1;
@@ -68,7 +65,12 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 	private JComboBox cbHfin2;
 	private JComboBox cbMfin2;
 	private JLabel lblTotalSboleta;
-	private JTextField textField;
+	private JTextField txtTotal;
+	private JLabel lblModalidadDeTransporte;
+	private JComboBox cbModalidad;
+	private JComboBox <Conductor> cbConductor2;
+
+	vPrincipal vp = null;
 	
 	/**
 	 * Launch the application.
@@ -188,7 +190,7 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		txtEscalasParadas.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtEscalasParadas.addKeyListener(this);
 		txtEscalasParadas.setText("Sin escalas ni paradas.");
-		txtEscalasParadas.setBounds(410, 363, 454, 75);
+		txtEscalasParadas.setBounds(410, 363, 454, 135);
 		getContentPane().add(txtEscalasParadas);
 		
 		lblConductor = new JLabel("Conductor 1:");
@@ -275,7 +277,7 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		btnGuardarCambios.setForeground(Color.WHITE);
 		btnGuardarCambios.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
 		btnGuardarCambios.setBackground(new Color(0, 139, 139));
-		btnGuardarCambios.setBounds(895, 451, 454, 75);
+		btnGuardarCambios.setBounds(895, 451, 454, 47);
 		getContentPane().add(btnGuardarCambios);
 		
 		cbHinicio1 = new JComboBox();
@@ -355,15 +357,27 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		lblTotalSboleta = new JLabel("<html>TOTAL S/ <br>(boleta, factura, itinerario, contrato)</html>");
 		lblTotalSboleta.setHorizontalAlignment(SwingConstants.LEFT);
 		lblTotalSboleta.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblTotalSboleta.setBounds(895, 342, 454, 52);
+		lblTotalSboleta.setBounds(894, 325, 454, 59);
 		getContentPane().add(lblTotalSboleta);
 		
-		textField = new JTextField();
-		textField.setText((String) null);
-		textField.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		textField.setColumns(10);
-		textField.setBounds(895, 395, 452, 43);
-		getContentPane().add(textField);
+		txtTotal = new JTextField();
+		txtTotal.setText((String) null);
+		txtTotal.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		txtTotal.setColumns(10);
+		txtTotal.setBounds(895, 395, 452, 43);
+		getContentPane().add(txtTotal);
+		
+		lblModalidadDeTransporte = new JLabel("Modalidad de transporte turistico:");
+		lblModalidadDeTransporte.setHorizontalAlignment(SwingConstants.LEFT);
+		lblModalidadDeTransporte.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		lblModalidadDeTransporte.setBounds(30, 417, 355, 38);
+		getContentPane().add(lblModalidadDeTransporte);
+		
+		cbModalidad = new JComboBox();
+		cbModalidad.setModel(new DefaultComboBoxModel(new String[] {"Traslado", "Visita local", "Excursi\u00F3n", "Gira", "Cicuito"}));
+		cbModalidad.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		cbModalidad.setBounds(30, 455, 355, 43);
+		getContentPane().add(cbModalidad);
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{chbxViajeStandar, chbxEscalasCom, txtDesde, txtHasta, txtPencuentro, cbConductor2, txtEscalasParadas, btnGuardarCambios}));
 		
 		cargar();
@@ -413,7 +427,26 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 							}
 						}
 					}
+					
+					if(rs.getInt("modalidad") != 0)
+						cbModalidad.setSelectedIndex(rs.getInt("modalidad"));
+					if(rs.getFloat("totalmodif") == -1){
+						try {
+							Consultas consultatot = new Consultas();
+							ResultSet rstot = consultatot.cargarPasajerosTemporal();
+							float tot = 0 ;
+							while(rstot.next()){
+								tot = tot + rstot.getFloat("prepasaje");
+							}
+							txtTotal.setText(""+tot);
+						}
+						catch (Exception e) {
+						}
+					}
 						
+					else
+						txtTotal.setText(""+rs.getFloat("totalmodif"));
+					
 					String fpartidaoriginal = "";
 					if(rs.getString("fpartida") != null){
 						fpartidaoriginal = rs.getString("fpartida");
@@ -494,33 +527,41 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		 }
 	}
 	protected void actionPerformedBtnGuardarInformacion(ActionEvent arg0) {
-		int vstandar = 0;
-		if(chbxViajeStandar.isSelected()) vstandar = 1;
-		int escalascom = 0;
-		if(chbxEscalasCom.isSelected()) escalascom = 1;
-		
-		String desde = null, hasta = null, pencuentro = null, escalasparadas = null, horafin1, licencia2 = null, horainicio2, horafin2, comentarios = null;
-		int dniconductor2 = 0;
-		if(txtDesde.getText().length() != 0)
-			desde = txtDesde.getText();
-		if(txtHasta.getText().length() != 0)
-			hasta = txtHasta.getText();
-		if(txtPencuentro.getText().length() != 0)
-			pencuentro = txtPencuentro.getText();
-		if(txtEscalasParadas.getText().length() != 0)
-			escalasparadas = txtEscalasParadas.getText();
-		horainicio2 = cbHinicio2.getSelectedItem().toString() + ":" + cbMinicio2.getSelectedItem().toString();
-		dniconductor2 = cbConductor2.getItemAt(cbConductor2.getSelectedIndex()).getDni();
-		if(txtNlicencia2.getText().length() != 0)
-			licencia2 = txtNlicencia2.getText();
-		horafin1 = cbHfin1.getSelectedItem().toString() + ":" + cbMfin1.getSelectedItem().toString();
-		horafin2 = cbHfin2.getSelectedItem().toString() + ":" + cbMfin2.getSelectedItem().toString();
-		
-		Consultas.actualizarVentaTemporal08(vstandar, escalascom, desde, hasta, pencuentro, escalasparadas,
-				horainicio2, dniconductor2, licencia2, horafin1, horafin2, comentarios);
-		vp.esconderVentanas();
-		vp.cerrarVentanas();
+		try {
+			int vstandar = 0;
+			if(chbxViajeStandar.isSelected()) vstandar = 1;
+			int escalascom = 0;
+			if(chbxEscalasCom.isSelected()) escalascom = 1;
+			
+			String desde = null, hasta = null, pencuentro = null, escalasparadas = null, horafin1, licencia2 = null, horainicio2, horafin2, comentarios = null;
+			int dniconductor2 = 0;
+			if(txtDesde.getText().length() != 0)
+				desde = txtDesde.getText();
+			if(txtHasta.getText().length() != 0)
+				hasta = txtHasta.getText();
+			if(txtPencuentro.getText().length() != 0)
+				pencuentro = txtPencuentro.getText();
+			if(txtEscalasParadas.getText().length() != 0)
+				escalasparadas = txtEscalasParadas.getText();
+			horainicio2 = cbHinicio2.getSelectedItem().toString() + ":" + cbMinicio2.getSelectedItem().toString();
+			dniconductor2 = cbConductor2.getItemAt(cbConductor2.getSelectedIndex()).getDni();
+			if(txtNlicencia2.getText().length() != 0)
+				licencia2 = txtNlicencia2.getText();
+			horafin1 = cbHfin1.getSelectedItem().toString() + ":" + cbMfin1.getSelectedItem().toString();
+			horafin2 = cbHfin2.getSelectedItem().toString() + ":" + cbMfin2.getSelectedItem().toString();
+			
+			int modalidad = cbModalidad.getSelectedIndex();
+			float totalmodif = Float.parseFloat(txtTotal.getText());
+			
+			Consultas.actualizarVentaTemporal08(vstandar, escalascom, desde, hasta, pencuentro, escalasparadas,
+					horainicio2, dniconductor2, licencia2, horafin1, horafin2, comentarios, modalidad, totalmodif);
+			vp.esconderVentanas();
+			vp.cerrarVentanas();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR al guardar: " + e);
+		}
 	}
+	
 	protected void actionPerformedCbHinicio2(ActionEvent e) {
 		if(cbHfin1.isEnabled()){
 			String hi2 = cbHinicio2.getSelectedItem().toString();

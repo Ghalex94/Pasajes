@@ -211,6 +211,7 @@ public class viDatos1 extends JInternalFrame implements ActionListener, KeyListe
 		if(txtPrePasaje.getText().length() <=0)
 			JOptionPane.showMessageDialog(null, "Ingrese el precio del pasaje");
 		else{
+			int codsocio = Integer.parseInt(cbSocio.getSelectedItem().toString());
 			int empresa = 0;
 			empresa = cbEmpresa.getItemAt(cbEmpresa.getSelectedIndex()).getIdempresa(); //1MERMA  2SIGUEL
 			//JOptionPane.showMessageDialog(null, ""+empresa);
@@ -220,7 +221,7 @@ public class viDatos1 extends JInternalFrame implements ActionListener, KeyListe
 			int dniconductor = cbConductor.getItemAt(cbConductor.getSelectedIndex()).getDni();
 			float prepasaje = Float.parseFloat(txtPrePasaje.getText());
 			Consultas consulta = new Consultas();
-			consulta.actualizarVentaTemporal01(1, empresa, dniconductor, placa, idmodelovh, prepasaje);
+			consulta.actualizarVentaTemporal01(1, codsocio, empresa, dniconductor, placa, idmodelovh, prepasaje);
 			vp.mntmCrearNuevaSalida.setEnabled(false);
 			vp.mntmContinuarPreparacion.setEnabled(true);
 			vp.mntmCancelarSalida.setEnabled(true);

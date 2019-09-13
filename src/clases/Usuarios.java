@@ -1,10 +1,18 @@
 package clases;
 
+import java.sql.ResultSet;
+
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+
+import mysql.Consultas;
+
 public class Usuarios {
 	String usuario;
 	String password;
 	String nombre;
 	int tipo;
+	ResultSet rs;
 	
 	public Usuarios(){}
 	public Usuarios(String id, String password, String nombre, int tipo){
@@ -12,6 +20,29 @@ public class Usuarios {
 		this.password = password;
 		this.nombre = nombre;
 		this.tipo = tipo;
+	}
+	
+	public void cargarUsuarios(JComboBox<Usuarios> cbUsuarios){
+		Consultas consult = new Consultas();
+		rs = consult.cargarUsuarios();
+		try {
+			while(rs.next())
+				cbUsuarios.addItem(
+						new Usuarios(
+								rs.getString("usuario"),
+								rs.getString("pass"),
+								rs.getString("nombre"),
+								rs.getInt("tipo")
+								)
+				);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}		
+	}
+	
+	@Override
+	public String toString(){
+		return usuario;
 	}
 	
 	public String getUsuario() {

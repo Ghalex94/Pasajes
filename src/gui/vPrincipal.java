@@ -666,7 +666,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			Map<String, Object> parameters = new HashMap();
 			parameters.put("cantPasajeros", cantPasajeros);
 			Connection con = MySQLConexion.getConection();
-			new AbstractJasperReports().createReport( con, "rManifiestoPasajerosM.jasper", parameters);
+			new AbstractJasperReports().createReport( con, "rManifiestoPasajerosMA5.jasper", parameters);
 			AbstractJasperReports.showViewer();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error:. "+ e.getStackTrace());			
@@ -677,7 +677,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		Consultas consulta = new Consultas();
 		try {
 			Connection con = MySQLConexion.getConection();
-			new AbstractJasperReports().createReport( con, "rHojaRutaA5.jasper");
+			new AbstractJasperReports().createReport( con, "rHojaRutaMA5.jasper");
 			AbstractJasperReports.showViewer();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error:. "+ e.getStackTrace());			

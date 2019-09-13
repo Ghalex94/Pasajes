@@ -71,7 +71,8 @@ public class viConfiguracionInicial extends JInternalFrame implements ActionList
 	 * Create the frame.
 	 */
 	public viConfiguracionInicial(vPrincipal temp, int temp2) {
-		tipo = temp2;		
+		tipo = temp2;
+		
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		setTitle("SELECCIONE");
 		vp = temp;

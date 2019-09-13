@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import clases.Conductor;
+import clases.Socio;
 import guiSecundarios.vdConductorNuevo;
 import mysql.Consultas;
 
@@ -41,7 +42,7 @@ public class vdConductor extends JDialog implements ActionListener, KeyListener 
 	private JTextField txtEmpresa;
 	private JLabel label;
 	private JLabel lblSocio;
-	private JTextField textField;
+	private JComboBox <Socio> cbSocio;
 	
 	public static void main(String[] args) {
 		try {
@@ -172,15 +173,11 @@ public class vdConductor extends JDialog implements ActionListener, KeyListener 
 			lblSocio.setBounds(43, 89, 132, 24);
 			getContentPane().add(lblSocio);
 		}
-		{
-			textField = new JTextField();
-			textField.setEditable(false);
-			textField.setText((String) null);
-			textField.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-			textField.setColumns(10);
-			textField.setBounds(185, 89, 422, 23);
-			getContentPane().add(textField);
-		}
+		
+		cbSocio = new JComboBox();
+		cbSocio.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		cbSocio.setBounds(185, 88, 422, 25);
+		getContentPane().add(cbSocio);
 		cargar();
 	}
 
@@ -199,6 +196,9 @@ public class vdConductor extends JDialog implements ActionListener, KeyListener 
 	public void cargar(){
 		this.setAlwaysOnTop(true);
 		setLocationRelativeTo(null);
+		
+		Socio socio = new Socio();
+		socio.cargarSocio(cbSocio);
 				
 		Conductor conductor = new Conductor();
 		conductor.cargarConductores(cbConductor);
@@ -220,6 +220,14 @@ public class vdConductor extends JDialog implements ActionListener, KeyListener 
 					i = cbConductor.getItemCount();
 				}
 			}
+			
+			for(int i = 0; i < cbSocio.getItemCount(); i++){
+				if(rs.getInt("codsocio") == cbSocio.getItemAt(i).getCodsocio()){
+					cbSocio.setSelectedIndex(i);
+					i = cbSocio.getItemCount();
+				}
+			}
+			
 			//txtPasaje.setText("" + (rs.getFloat("prepasaje")));
 			int prepas = Integer.parseInt(rs.getString("prepasaje"));
 			txtPasaje.setText(""+prepas);			
@@ -231,10 +239,11 @@ public class vdConductor extends JDialog implements ActionListener, KeyListener 
 		this.dispose();
 	}
 	protected void actionPerformedBtnGuardar(ActionEvent arg0) {
+		int codSocio = Integer.parseInt(cbSocio.getSelectedItem().toString());
 		int dniconductor = cbConductor.getItemAt(cbConductor.getSelectedIndex()).getDni();
 		float prepasaje = Float.parseFloat(txtPasaje.getText());
 		Consultas consulta = new Consultas();
-		consulta.actualizarVentaTemporal02(dniconductor, prepasaje);
+		consulta.actualizarVentaTemporal02(dniconductor, prepasaje, codSocio);
 		vp.enable(true);
 		this.dispose();
 	}

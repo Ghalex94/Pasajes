@@ -354,30 +354,32 @@ public class Consultas {
 	
 	//1MERMA 2SIGUEL
 	//VIENE DE DATOS1
-	public static void actualizarVentaTemporal01(int estado, int empresa, int dniconductor, String placa, int modelovh, float prepasaje){ 
+	public static void actualizarVentaTemporal01(int estado, int codsocio, int empresa, int dniconductor, String placa, int modelovh, float prepasaje){ 
 		Connection con = MySQLConexion.getConection();
 		try {
-			String sql = "update tb_venta_temporal set estado=? , empresa=?, dniconductor=?, placa=?, modelovh=?, prepasaje=? where id=1";
+			String sql = "update tb_venta_temporal set estado=?, codsocio=?, empresa=?, dniconductor=?, placa=?, modelovh=?, prepasaje=? where id=1";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setInt(1, estado);
-			prepareStmt.setInt(2, empresa);
-			prepareStmt.setInt(3, dniconductor);
-			prepareStmt.setString(4, placa);
-			prepareStmt.setInt(5, modelovh);
-			prepareStmt.setFloat(6, prepasaje);
+			prepareStmt.setInt(2, codsocio);
+			prepareStmt.setInt(3, empresa);
+			prepareStmt.setInt(4, dniconductor);
+			prepareStmt.setString(5, placa);
+			prepareStmt.setInt(6, modelovh);
+			prepareStmt.setFloat(7, prepasaje);
 			prepareStmt.execute();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
 	}
 	//VIENE DE MODIFICACION A CONDUCTOR
-	public static void actualizarVentaTemporal02(int dniconductor, float prepasaje){
+	public static void actualizarVentaTemporal02(int dniconductor, float prepasaje, int codsocio){
 		Connection con = MySQLConexion.getConection();
 		try {
-			String sql = "update tb_venta_temporal set dniconductor=?, prepasaje=? where id=1";
+			String sql = "update tb_venta_temporal set dniconductor=?, prepasaje=?, codsocio=? where id=1";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setInt(1, dniconductor);
 			prepareStmt.setFloat(2, prepasaje);
+			prepareStmt.setInt(3, codsocio);
 			prepareStmt.execute();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
@@ -440,11 +442,11 @@ public class Consultas {
 		}
 	}
 	public static void actualizarVentaTemporal08(int vstandar, int escalascom, String desde, String hasta, String pencuentro, String escalasparadas,
-			String horainicio2, int dniconductor2, String licencia2, String horafin1, String horafin2, String comentarios){ // Viene de LLenar Datos Faltantes
+			String horainicio2, int dniconductor2, String licencia2, String horafin1, String horafin2, String comentarios, int modalidad, float totalmodif){ // Viene de LLenar Datos Faltantes
 		
 		Connection con = MySQLConexion.getConection();
 		try {
-			String sql = "update tb_venta_temporal set standar=?, escalacom=?, ciudaddesde=?, ciudadhasta=?, puntoencuentro=?, escalas=?, horainicio2=?, dniconductor2=?, licencia2=?, horafin1=?, horafin2=? where id=1";
+			String sql = "update tb_venta_temporal set standar=?, escalacom=?, ciudaddesde=?, ciudadhasta=?, puntoencuentro=?, escalas=?, horainicio2=?, dniconductor2=?, licencia2=?, horafin1=?, horafin2=?, modalidad=?, totalmodif=? where id=1";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setInt(1, vstandar);
 			prepareStmt.setInt(2, escalascom);
@@ -457,6 +459,8 @@ public class Consultas {
 			prepareStmt.setString(9, licencia2);
 			prepareStmt.setString(10, horafin1);
 			prepareStmt.setString(11, horafin2);
+			prepareStmt.setInt(12, modalidad);
+			prepareStmt.setFloat(13, totalmodif);
 			prepareStmt.execute();
 			JOptionPane.showMessageDialog(null, "Cambios guardados correctamente");
 		} catch (Exception e) {
@@ -548,7 +552,7 @@ public class Consultas {
 		Connection con = MySQLConexion.getConection();
 		try {
 			String sql1 = "delete from tb_venta_temporal where id = 1";
-			String sql2 = "insert into tb_venta_temporal values(1, 0, 0, 0, null, 0, null, null, null, null, 0, -1, 1, 0, null, null, null, null, null, 0, null, null, null)";
+			String sql2 = "insert into tb_venta_temporal values(1, 0, 0, 0, 0, null, 0, null, null, null, null, 0, -1, 1, 0, null, null, null, null, null, 0, null, null, null, 0, -1)";
 			String sql3 = "delete from tb_pasajeros_temporal where asiento < 100";
 			PreparedStatement prepareStmt = con.prepareStatement(sql1);
 			prepareStmt.execute();
