@@ -9,16 +9,20 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import clases.AbstractJasperReports;
 import guiSecundarios.vdSocioModificar;
 import guiSecundarios.vdSocioNuevo;
 import guiSecundarios.vdVehiculoModificar;
 import guiSecundarios.vdVehiculoNuevo;
 import mysql.Consultas;
+import mysql.MySQLConexion;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
@@ -43,6 +47,7 @@ public class viListaSocios extends JInternalFrame implements ActionListener {
 	JTable tb;
 	ResultSet rs;
 	vPrincipal vp = null;
+	private JButton btnReporteSocios;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -118,6 +123,18 @@ public class viListaSocios extends JInternalFrame implements ActionListener {
 		
 		tbSocios = new JTable();
 		scrollPane.setViewportView(tbSocios);
+		
+		btnReporteSocios = new JButton("<html>Ver Reporte<br>\u00A0de Socios</html>");
+		btnReporteSocios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedBtnReporteSocios(e);
+			}
+		});
+		btnReporteSocios.setForeground(Color.WHITE);
+		btnReporteSocios.setFont(new Font("EngraversGothic BT", Font.BOLD, 35));
+		btnReporteSocios.setBackground(new Color(0, 139, 139));
+		btnReporteSocios.setBounds(957, 511, 364, 98);
+		getContentPane().add(btnReporteSocios);
 
 		cargar();
 	}	
@@ -179,6 +196,16 @@ public class viListaSocios extends JInternalFrame implements ActionListener {
 	}
 	
 	protected void actionPerformedBtnDeshabilitarVehiculo(ActionEvent arg0) {
+	}
+	
+	protected void actionPerformedBtnReporteSocios(ActionEvent e) {
+		try {
+			Connection con = MySQLConexion.getConection();
+			new AbstractJasperReports().createReport( con, "rListaSocios.jasper", null);
+			AbstractJasperReports.showViewer();
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, "Error al cargar reporte de Socios: "+ ex);			
+		}
 	}
 }
 

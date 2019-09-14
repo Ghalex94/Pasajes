@@ -912,24 +912,26 @@ public class Consultas {
 		return rs;
 	}
 	
-	public void registrarViaje(int nviaje, int empresa, String origen, String destino, String fpartida, String fllegada, String placa, int dniconductor, String conductor, String prepasaje, float total, int totalasientos, int asientosvendidos){
+	public void registrarViaje(int nviaje, int codsocio, String nombresocio, int empresa, String origen, String destino, String fpartida, String fllegada, String placa, int dniconductor, String conductor, String prepasaje, float total, int totalasientos, int asientosvendidos){
 		Connection con = MySQLConexion.getConection();
 		try {
-			String sql = "insert into tb_viaje (nviaje, empresa, origen, destino, fpartida, fllegada, placa, dniconductor, conductor, prepasaje, totpasajes, totalasientos, asientosven)" + " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String sql = "insert into tb_viaje (nviaje, codsocio, nombresocio, empresa, origen, destino, fpartida, fllegada, placa, dniconductor, conductor, prepasaje, totpasajes, totalasientos, asientosven)" + " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setInt(1, nviaje);
-			prepareStmt.setInt(2, empresa);
-			prepareStmt.setString(3, origen);
-			prepareStmt.setString(4, destino);
-			prepareStmt.setString(5, fpartida);
-			prepareStmt.setString(6, fllegada);
-			prepareStmt.setString(7, placa);
-			prepareStmt.setInt(8, dniconductor);
-			prepareStmt.setString(9, conductor);
-			prepareStmt.setString(10, prepasaje);
-			prepareStmt.setFloat(11, total);
-			prepareStmt.setInt(12, totalasientos);
-			prepareStmt.setInt(13, asientosvendidos);
+			prepareStmt.setInt(2, codsocio);
+			prepareStmt.setString(3, nombresocio);
+			prepareStmt.setInt(4, empresa);
+			prepareStmt.setString(5, origen);
+			prepareStmt.setString(6, destino);
+			prepareStmt.setString(7, fpartida);
+			prepareStmt.setString(8, fllegada);
+			prepareStmt.setString(9, placa);
+			prepareStmt.setInt(10, dniconductor);
+			prepareStmt.setString(11, conductor);
+			prepareStmt.setString(12, prepasaje);
+			prepareStmt.setFloat(13, total);
+			prepareStmt.setInt(14, totalasientos);
+			prepareStmt.setInt(15, asientosvendidos);
 			prepareStmt.execute();
 			//JOptionPane.showMessageDialog(null, "VENTA EXITOSA");
 			con.close();

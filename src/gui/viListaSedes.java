@@ -7,17 +7,25 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
+import clases.AbstractJasperReports;
 import guiSecundarios.vdSedeNueva;
 import guiSecundarios.vdVehiculoModificar;
 import guiSecundarios.vdVehiculoNuevo;
 import mysql.Consultas;
+import mysql.MySQLConexion;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
@@ -37,6 +45,7 @@ public class viListaSedes extends JInternalFrame implements ActionListener {
 	JTable tb;
 	ResultSet rs;
 	vPrincipal vp = null;
+	private JButton btnReporteSedes;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -95,7 +104,7 @@ public class viListaSedes extends JInternalFrame implements ActionListener {
 		btnEliminarDestino.setForeground(Color.WHITE);
 		btnEliminarDestino.setFont(new Font("EngraversGothic BT", Font.BOLD, 35));
 		btnEliminarDestino.setBackground(new Color(0, 139, 139));
-		btnEliminarDestino.setBounds(968, 227, 364, 98);
+		btnEliminarDestino.setBounds(968, 195, 364, 98);
 		getContentPane().add(btnEliminarDestino);
 		
 		scrollPane = new JScrollPane();
@@ -104,6 +113,18 @@ public class viListaSedes extends JInternalFrame implements ActionListener {
 		
 		tbDestinos = new JTable();
 		scrollPane.setViewportView(tbDestinos);
+		
+		btnReporteSedes = new JButton("<html>Ver Reporte<br>\u00A0de Sedes</html>");
+		btnReporteSedes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				actionPerformedBtnReporteSedes(arg0);
+			}
+		});
+		btnReporteSedes.setForeground(Color.WHITE);
+		btnReporteSedes.setFont(new Font("EngraversGothic BT", Font.BOLD, 35));
+		btnReporteSedes.setBackground(new Color(0, 139, 139));
+		btnReporteSedes.setBounds(968, 537, 364, 98);
+		getContentPane().add(btnReporteSedes);
 
 		cargar();
 	}
@@ -151,6 +172,7 @@ public class viListaSedes extends JInternalFrame implements ActionListener {
 		ldest.setVisible(true);
 		vp.setEnabled(false);
 	}
+	
 	protected void actionPerformedBtnEliminarDestino(ActionEvent arg0) {
 		int opc = JOptionPane.showConfirmDialog(null, "¿Eliminar destino?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (opc == 0){
@@ -158,6 +180,16 @@ public class viListaSedes extends JInternalFrame implements ActionListener {
 			Consultas.eliminarDestino(iddestino);
 			this.cargar();
 			JOptionPane.showMessageDialog(null, "Eliminado correctamente");
+		}
+	}
+	
+	protected void actionPerformedBtnReporteSedes(ActionEvent arg0) {
+		try {
+			Connection con = MySQLConexion.getConection();
+			new AbstractJasperReports().createReport( con, "rListaSedes.jasper", null);
+			AbstractJasperReports.showViewer();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error al cargar reporte de Sedes: "+ e);			
 		}
 	}
 }

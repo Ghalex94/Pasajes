@@ -960,12 +960,21 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "Error al buscar total de cantidad de asientos: " + e);
 				}
+				int codsocio = rs1.getInt("codsocio");
+				String nombresocio = "";
+				ResultSet rs42 = consulta.buscarSocio(codsocio);
+				try {
+					rs42.next();
+					nombresocio = rs42.getString("nombresocio");
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "EROR al buscar socio: " + e);
+				}
+				
 				//REGISTRAR LOS DATOS CORRESPONDIENTES EN VIAJE
-				consulta.registrarViaje(rs1.getInt("nviaje"), rs1.getInt("empresa"), rs1.getString("origen"), rs1.getString("destino"), rs1.getString("fpartida"), 
+				consulta.registrarViaje(rs1.getInt("nviaje"), codsocio, nombresocio, rs1.getInt("empresa"), rs1.getString("origen"), rs1.getString("destino"), rs1.getString("fpartida"), 
 						rs1.getString("fllegada"), rs1.getString("placa"), rs1.getInt("dniconductor"), conductor, rs1.getString("prepasaje"), 
 						total, totalasientos, asientosvendidos);
-				
-				
+								
 				//REGISTRAR LOS DATOS CORRESPONDIENTES EN DETALLE
 				ResultSet rs4 = consulta.cargarPasajerosTemporal(); // OBTENER TODOS LOS DATOS TEMPORALES
 				try {

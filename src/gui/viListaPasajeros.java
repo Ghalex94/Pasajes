@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
@@ -14,11 +15,14 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
+import clases.AbstractJasperReports;
 import guiSecundarios.vdSedeNueva;
 import guiSecundarios.vdPasajeroNuevo;
 import guiSecundarios.vdVehiculoModificar;
 import guiSecundarios.vdVehiculoNuevo;
 import mysql.Consultas;
+import mysql.MySQLConexion;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
@@ -39,6 +43,7 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 	ResultSet rs;
 	vPrincipal vp = null;
 	private JButton btnModificarCliente;
+	private JButton btnverReportedeClientes;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -97,7 +102,7 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 		btnEliminarPasajero.setForeground(Color.WHITE);
 		btnEliminarPasajero.setFont(new Font("EngraversGothic BT", Font.BOLD, 35));
 		btnEliminarPasajero.setBackground(new Color(0, 139, 139));
-		btnEliminarPasajero.setBounds(973, 333, 364, 98);
+		btnEliminarPasajero.setBounds(973, 304, 364, 98);
 		getContentPane().add(btnEliminarPasajero);
 		
 		scrollPane = new JScrollPane();
@@ -112,8 +117,20 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 		btnModificarCliente.setForeground(Color.WHITE);
 		btnModificarCliente.setFont(new Font("EngraversGothic BT", Font.BOLD, 35));
 		btnModificarCliente.setBackground(new Color(0, 139, 139));
-		btnModificarCliente.setBounds(973, 209, 364, 98);
+		btnModificarCliente.setBounds(973, 195, 364, 98);
 		getContentPane().add(btnModificarCliente);
+		
+		btnverReportedeClientes = new JButton("<html>Ver Reporte<br>de Clientes</html>");
+		btnverReportedeClientes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedBtnverReportedeClientes(e);
+			}
+		});
+		btnverReportedeClientes.setForeground(Color.WHITE);
+		btnverReportedeClientes.setFont(new Font("EngraversGothic BT", Font.BOLD, 35));
+		btnverReportedeClientes.setBackground(new Color(0, 139, 139));
+		btnverReportedeClientes.setBounds(973, 529, 364, 98);
+		getContentPane().add(btnverReportedeClientes);
 
 		cargar();
 	}
@@ -171,6 +188,16 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 			Consultas.eliminarPasajero(dniPasajero);
 			this.cargar();
 			JOptionPane.showMessageDialog(null, "Eliminado correctamente");
+		}
+	}
+	
+	protected void actionPerformedBtnverReportedeClientes(ActionEvent e) {
+		try {
+			Connection con = MySQLConexion.getConection();
+			new AbstractJasperReports().createReport( con, "rListaClientes.jasper", null);
+			AbstractJasperReports.showViewer();
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, "Error al cargar reporte de Clientes: "+ ex);		
 		}
 	}
 }

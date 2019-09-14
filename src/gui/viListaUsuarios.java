@@ -274,7 +274,7 @@ public class viListaUsuarios extends JInternalFrame {
 	protected void mouseClickedTbUsuarios(MouseEvent arg0) {
 		String nombre = tbUsuarios.getValueAt(tbUsuarios.getSelectedRow(), 0).toString();
 		String usuario = tbUsuarios.getValueAt(tbUsuarios.getSelectedRow(), 1).toString();
-		String pass = tbUsuarios.getValueAt(tbUsuarios.getSelectedRow(), 2).toString();
+		//String pass = tbUsuarios.getValueAt(tbUsuarios.getSelectedRow(), 2).toString();
 		String tipo = tbUsuarios.getValueAt(tbUsuarios.getSelectedRow(), 3).toString();
 		
 		txtNombre.setText(nombre);

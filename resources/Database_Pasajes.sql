@@ -170,8 +170,8 @@ insert into tb_venta_temporal values(1, 0, 0, 0, 0, null, 0, null, null, null, n
 -- drop table tb_vehiculo;
 -- drop table tb_pasajero;
 -- drop table tb_destinos;
- drop table tb_viaje;
- drop table tb_detalle_viaje;
+-- drop table tb_viaje;
+-- drop table tb_detalle_viaje;
 -- drop table tb_venta_temporal;
 -- drop table tb_pasajeros_temporal;
 
@@ -336,4 +336,6 @@ and c.dniconductor = vt.dniconductor
 and vh.placa = vt.placa
 and mvh.idmodelo = vh.idmodelo
 and e.idempresa = vt.empresa
-order by pt.asiento
+order by pt.asiento;
+
+select sc.codsocio, sc.nombresocio, sc.dnisocio, e.idempresa, e.empresa, c.conductor, c.dniconductor, sc.placa from tb_socio sc inner join tb_conductor c on c.dniconductor = sc.dniconductor inner join tb_empresa e on e.idempresa = sc.idempresa;

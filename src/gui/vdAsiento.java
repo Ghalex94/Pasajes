@@ -474,7 +474,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		vp.enable(true);
 		this.dispose();
 	}
-	protected void actionPerformedBtnGuardar(ActionEvent arg0) {
+	 protected void actionPerformedBtnGuardar(ActionEvent arg0) {
 		if(txtDni.getText().length() == 0 || txtNombre.getText().length() == 0 || txtEdad.getText().length() == 0 || txtPrecio.getText().length() == 0 || txtDni.getText().length() != 8 || txtNacionalidad.getText().length() == 0){
 			this.setAlwaysOnTop(false);		
 			JOptionPane.showMessageDialog(null, "Ingrese los datos necesarios correctamente");

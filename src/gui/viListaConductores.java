@@ -9,14 +9,18 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import clases.AbstractJasperReports;
 import guiSecundarios.vdVehiculoModificar;
 import guiSecundarios.vdVehiculoNuevo;
 import mysql.Consultas;
+import mysql.MySQLConexion;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
@@ -41,6 +45,7 @@ public class viListaConductores extends JInternalFrame implements ActionListener
 	JTable tb;
 	ResultSet rs;
 	vPrincipal vp = null;
+	private JButton btnReporteConductores;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -100,7 +105,7 @@ public class viListaConductores extends JInternalFrame implements ActionListener
 		btnModificarVehiculo.setForeground(Color.WHITE);
 		btnModificarVehiculo.setFont(new Font("EngraversGothic BT", Font.BOLD, 35));
 		btnModificarVehiculo.setBackground(new Color(0, 139, 139));
-		btnModificarVehiculo.setBounds(957, 224, 364, 98);
+		btnModificarVehiculo.setBounds(957, 197, 364, 98);
 		getContentPane().add(btnModificarVehiculo);
 		
 		btnDeshabilitarVehiculo = new JButton("Eliminar Vehiculo");
@@ -110,7 +115,7 @@ public class viListaConductores extends JInternalFrame implements ActionListener
 		btnDeshabilitarVehiculo.setForeground(Color.WHITE);
 		btnDeshabilitarVehiculo.setFont(new Font("EngraversGothic BT", Font.BOLD, 35));
 		btnDeshabilitarVehiculo.setBackground(new Color(0, 139, 139));
-		btnDeshabilitarVehiculo.setBounds(957, 365, 364, 98);
+		btnDeshabilitarVehiculo.setBounds(957, 306, 364, 98);
 		getContentPane().add(btnDeshabilitarVehiculo);
 		
 		scrollPane = new JScrollPane();
@@ -119,6 +124,18 @@ public class viListaConductores extends JInternalFrame implements ActionListener
 		
 		tbVehiculos = new JTable();
 		scrollPane.setViewportView(tbVehiculos);
+		
+		btnReporteConductores = new JButton("<html>Ver Reporte<br>de Conductores</html>");
+		btnReporteConductores.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedBtnReporteConductores(e);
+			}
+		});
+		btnReporteConductores.setForeground(Color.WHITE);
+		btnReporteConductores.setFont(new Font("EngraversGothic BT", Font.BOLD, 35));
+		btnReporteConductores.setBackground(new Color(0, 139, 139));
+		btnReporteConductores.setBounds(957, 513, 364, 98);
+		getContentPane().add(btnReporteConductores);
 
 		cargar();
 	}
@@ -143,6 +160,15 @@ public class viListaConductores extends JInternalFrame implements ActionListener
 	public void actionPerformed(ActionEvent arg0) {
 	}
 	
+	protected void actionPerformedBtnReporteConductores(ActionEvent e) {
+		try {
+			Connection con = MySQLConexion.getConection();
+			new AbstractJasperReports().createReport( con, "rListaConductores.jasper", null);
+			AbstractJasperReports.showViewer();
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, "Error al cargar reporte de Conductores: "+ ex);			
+		}
+	}
 }
 
 
