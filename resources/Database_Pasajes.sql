@@ -337,5 +337,3 @@ and vh.placa = vt.placa
 and mvh.idmodelo = vh.idmodelo
 and e.idempresa = vt.empresa
 order by pt.asiento;
-
-select sc.codsocio, sc.nombresocio, sc.dnisocio, e.idempresa, e.empresa, c.conductor, c.dniconductor, sc.placa from tb_socio sc inner join tb_conductor c on c.dniconductor = sc.dniconductor inner join tb_empresa e on e.idempresa = sc.idempresa;
