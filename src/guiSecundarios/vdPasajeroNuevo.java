@@ -52,6 +52,8 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener, KeyListe
 	int dni = 0;
 	private JLabel lblNacionalidad;
 	private JTextField txtNacionalidad;
+	private JLabel label_6;
+	private JTextField txtDireccion;
 	/**
 	 * Launch the application.
 	 */
@@ -207,6 +209,18 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener, KeyListe
 		txtNacionalidad.setColumns(10);
 		txtNacionalidad.setBounds(204, 266, 392, 23);
 		getContentPane().add(txtNacionalidad);
+		
+		label_6 = new JLabel("Direcci\u00F3n:");
+		label_6.setHorizontalAlignment(SwingConstants.LEFT);
+		label_6.setFont(new Font("Century Gothic", Font.PLAIN, 18));
+		label_6.setBounds(47, 302, 154, 20);
+		getContentPane().add(label_6);
+		
+		txtDireccion = new JTextField();
+		txtDireccion.setFont(new Font("Century Gothic", Font.PLAIN, 18));
+		txtDireccion.setColumns(10);
+		txtDireccion.setBounds(204, 301, 392, 23);
+		getContentPane().add(txtDireccion);
 		cargar();
 	}
 	
@@ -228,6 +242,7 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener, KeyListe
 				txtRazSocial.setText(rs.getString("razsocial"));
 				txtRuc.setText(rs.getString("ruc"));
 				txtNacionalidad.setText(rs.getString("nacionalidad"));
+				txtDireccion.setText(rs.getString("direccion"));
 				
 				String fnacimiento =  rs.getString("fnacimiento").toString();
 				String[] parts = fnacimiento.split("-");
@@ -269,9 +284,10 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener, KeyListe
 				String nombre = txtNombre.getText();
 				String razSocial = txtRazSocial.getText();
 				String nacionalidad = txtNacionalidad.getText();
+				String direccion = txtDireccion.getText();
 				
 				Consultas consulta = new Consultas();
-				consulta.crearPasajero(dni, ruc, fnacimiento, nombre, razSocial, nacionalidad);
+				consulta.crearPasajero(dni, ruc, fnacimiento, nombre, razSocial, nacionalidad, direccion);
 				this.setAlwaysOnTop(false);
 				JOptionPane.showMessageDialog(null, "Cliente creado correctamente.");
 			}
@@ -285,8 +301,9 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener, KeyListe
 				String nombre = txtNombre.getText();
 				String razSocial = txtRazSocial.getText();
 				String nacionalidad = txtNacionalidad.getText();
+				String direccion = txtDireccion.getText();
 				Consultas consulta = new Consultas();
-				consulta.actualizarPasajero(dni, ruc, fnacimiento, nombre, razSocial, nacionalidad);
+				consulta.actualizarPasajero(dni, ruc, fnacimiento, nombre, razSocial, nacionalidad, direccion);
 				this.setAlwaysOnTop(false);
 				JOptionPane.showMessageDialog(null, "Cliente modificado correctamente.");
 			}		

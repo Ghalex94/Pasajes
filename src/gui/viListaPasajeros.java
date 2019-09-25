@@ -140,12 +140,12 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 		tb = this.tbPasajeros;
 		tb.setRowHeight(40);
 		tb.setModel(dtm);
-		dtm.setColumnIdentifiers(new Object[]{"DNI", "RUC", "NOMBRE", "RAZ SOCIAL", "F. NACIMIENTO", "NACIONALIDAD"});
+		dtm.setColumnIdentifiers(new Object[]{"DNI", "RUC", "NOMBRE", "RAZ SOCIAL", "F. NACIMIENTO", "NACIONALIDAD", "DIRECCIÓN"});
 		Consultas consult = new Consultas();
 		rs = consult.cargarPasajeros();
 		try {
 			while(rs.next())
-				dtm.addRow(new Object[]{rs.getInt("dnipasajero"), rs.getString("ruc"), rs.getString("nombre"), rs.getString("razsocial"), rs.getString("fnacimiento"), rs.getString("nacionalidad")});
+				dtm.addRow(new Object[]{rs.getInt("dnipasajero"), rs.getString("ruc"), rs.getString("nombre"), rs.getString("razsocial"), rs.getString("fnacimiento"), rs.getString("nacionalidad"), rs.getString("direccion")});
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}

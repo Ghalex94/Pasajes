@@ -582,11 +582,11 @@ public class Consultas {
 		return rs;
 	}
 	
-	public static void crearPasajero(int dnipasajero, String ruc, String fnacimiento, String nombre, String razsocial, String nacionalidad){
+	public static void crearPasajero(int dnipasajero, String ruc, String fnacimiento, String nombre, String razsocial, String nacionalidad, String direccion){
 		Object fn = fnacimiento;
 		Connection con = MySQLConexion.getConection();
 		try {
-			String sql = "insert into tb_pasajero (dnipasajero, ruc, fnacimiento, nombre, razsocial, nacionalidad)" + " values (?, ?, ?, ?, ?, ?)";
+			String sql = "insert into tb_pasajero (dnipasajero, ruc, fnacimiento, nombre, razsocial, nacionalidad, direccion)" + " values (?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setInt(1, dnipasajero);
 			prepareStmt.setString(2, ruc);
@@ -594,27 +594,30 @@ public class Consultas {
 			prepareStmt.setString(4, nombre);
 			prepareStmt.setString(5, razsocial);
 			prepareStmt.setString(6, nacionalidad);
+			prepareStmt.setString(7, direccion);
 			prepareStmt.execute();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR" + e);
 		}
 	}
 	
-	public static void actualizarPasajero(int dnipasajero, String ruc, String fnacimiento, String nombre, String razsocial, String nacionalidad){
+	public static void actualizarPasajero(int dnipasajero, String ruc, String fnacimiento, String nombre, String razsocial, String nacionalidad, String direccion){
 		Object fn = fnacimiento;
 		Connection con = MySQLConexion.getConection();
 		try {
-			String sql = "update tb_pasajero set ruc=?, fnacimiento=?, nombre=?, razsocial=?, nacionalidad=? where dnipasajero=?";
+			String sql = "update tb_pasajero set ruc=?, fnacimiento=?, nombre=?, razsocial=?, nacionalidad=?, direccion=? where dnipasajero=?";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setString(1, ruc);
 			prepareStmt.setObject(2, fn);
 			prepareStmt.setString(3, nombre);
 			prepareStmt.setString(4, razsocial);
 			prepareStmt.setString(5, nacionalidad);
-			prepareStmt.setInt(6, dnipasajero);
+			prepareStmt.setString(6, direccion);
+			prepareStmt.setInt(7, dnipasajero);
 			prepareStmt.execute();
+			JOptionPane.showMessageDialog(null, "Modificad");
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "ERRORnbvnb: " + e);
+			JOptionPane.showMessageDialog(null, "ERROR al actualizar Pasajero: " + e);
 		}
 	}
 	

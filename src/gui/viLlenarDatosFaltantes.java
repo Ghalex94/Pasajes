@@ -429,7 +429,7 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 					}
 					
 					if(rs.getInt("modalidad") != 0)
-						cbModalidad.setSelectedIndex(rs.getInt("modalidad"));
+						cbModalidad.setSelectedIndex(rs.getInt("modalidad")-1);
 					if(rs.getFloat("totalmodif") == -1){
 						try {
 							Consultas consultatot = new Consultas();
@@ -550,7 +550,7 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 			horafin1 = cbHfin1.getSelectedItem().toString() + ":" + cbMfin1.getSelectedItem().toString();
 			horafin2 = cbHfin2.getSelectedItem().toString() + ":" + cbMfin2.getSelectedItem().toString();
 			
-			int modalidad = cbModalidad.getSelectedIndex();
+			int modalidad = cbModalidad.getSelectedIndex()+1;
 			float totalmodif = Float.parseFloat(txtTotal.getText());
 			
 			Consultas.actualizarVentaTemporal08(vstandar, escalascom, desde, hasta, pencuentro, escalasparadas,

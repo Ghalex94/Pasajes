@@ -89,7 +89,6 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
     private JMenu mnSedes;
     private JMenuItem mntmVerConductores;
     private JMenuItem mntmVerBoletaVenta;
-    private JMenuItem mntmVerFactura;
     
     
 	
@@ -188,7 +187,8 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		menuBar.add(mnFormatos);
 		
 		mntmLlenarInformacion = new JMenuItem("COMPLETAR INFORMACI\u00D3N");
-		mntmLlenarInformacion.setForeground(new Color(0, 139, 139));
+		mntmLlenarInformacion.setBackground(new Color(105, 105, 105));
+		mntmLlenarInformacion.setForeground(new Color(255, 255, 255));
 		mntmLlenarInformacion.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mntmLlenarInformacion.addActionListener(this);
 		mnFormatos.add(mntmLlenarInformacion);
@@ -213,13 +213,14 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mntmContrato.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mnFormatos.add(mntmContrato);
 		
-		mntmVerBoletaVenta = new JMenuItem("Ver Boleta de Venta");
+		mntmVerBoletaVenta = new JMenuItem("<html>Ver Ejemplo de <br>Boleta y Factura de Venta</html>");
+		mntmVerBoletaVenta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				actionPerformedMntmVerBoletaVenta(arg0);
+			}
+		});
 		mntmVerBoletaVenta.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mnFormatos.add(mntmVerBoletaVenta);
-		
-		mntmVerFactura = new JMenuItem("Ver Factura");
-		mntmVerFactura.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		mnFormatos.add(mntmVerFactura);
 		
 		mnVehiculosConductores = new JMenu("|Socios - vehiculos - conductores|");
 		mnVehiculosConductores.setForeground(Color.WHITE);
@@ -754,6 +755,27 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		desktopPane.add(ci);
 		ci.setLocation((ancho - FrameSize.width)/2, (alto - FrameSize.height)/4);
 		ci.show();
+	}
+	protected void actionPerformedMntmVerBoletaVenta(ActionEvent arg0) {
+		Consultas consulta = new Consultas();
+		ResultSet rs = consulta.cargarVentaTemporal();
+		int empresa = 0;
+		try {
+			rs.next();
+			empresa = rs.getInt("empresa");
+		} catch (SQLException e1) {
+			JOptionPane.showMessageDialog(null, "Error al cargar empresa: "+ e1.getStackTrace());
+			}
+		try {
+			Connection con = MySQLConexion.getConection();
+			if(empresa == 0)
+				new AbstractJasperReports().createReport( con, "rBoletaVentaM.jasper");
+			else
+				new AbstractJasperReports().createReport( con, "rBoletaVentaZ.jasper");
+			AbstractJasperReports.showViewer();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error al cargar boleta: "+ e.getStackTrace());			
+		}
 	}
 }
 

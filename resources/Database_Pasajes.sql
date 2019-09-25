@@ -52,7 +52,8 @@ ruc				varchar(11),
 fnacimiento		date,
 nombre			varchar(50),
 razsocial		varchar(80),
-nacionalidad	varchar(50)
+nacionalidad	varchar(50),
+direccion		varchar(80)
 );
 
 create table tb_sedes(
@@ -321,7 +322,7 @@ order by pt.asiento;
 
 
 -- boleta de venta
-select pt.dnipasajero, p.nombre, vt.origen, vt.destino, pt.prepasaje, vt.totalmodif
+select pt.dnipasajero, p.ruc, p.nombre, p.direccion, vt.origen, vt.destino, pt.prepasaje, vt.totalmodif, vt.escalas
 from  tb_pasajeros_temporal pt
 inner join  tb_pasajero p
 inner join  tb_venta_temporal vt
@@ -331,3 +332,27 @@ and  p.dnipasajero = pt.dnipasajero
 and vt.id = 1
 and vh.placa = vt.placa
 and pt.contratante = 1;
+
+
+select vt.placa, DATE_FORMAT(vt.fpartida, '%d-%m-%Y') Fecha_Inicio, TIME(vt.fpartida) Hora_Salida, p.dnipasajero, p.nombre, vt.origen, vt.destino, 
+vt.puntoencuentro, vt.ciudaddesde, vt.ciudadhasta, mvh.casientos,  round(sum(pt2.prepasaje)) totpasajes, vt.modalidad
+from tb_venta_temporal vt
+inner join  tb_vehiculo vh
+on vh.placa = vt.placa
+inner join  tb_modelo_vehiculo mvh
+on mvh.idmodelo = vh.idmodelo
+inner join tb_conductor c
+on c.dniconductor = vt.dniconductor
+left join tb_conductor c2
+on c2.dniconductor = vt.dniconductor2
+left join tb_pasajeros_temporal pt
+on pt.contratante = 1
+left join tb_pasajeros_temporal pt2
+on pt2.estado = 1
+left join tb_pasajero p
+on pt.dnipasajero = p.dnipasajero
+where  vt.id = 1;
+
+SELECT (ELT(WEEKDAY(fpartida) + 1, 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo')) AS DIA_SEMANA
+FROM tb_venta_temporal
+
