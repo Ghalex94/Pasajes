@@ -186,12 +186,16 @@ public class viListaSocios extends JInternalFrame implements ActionListener {
 	}
 	
 	protected void actionPerformedBtnModificarVehiculo(ActionEvent arg0) {
-		int codsocio = Integer.parseInt(tbSocios.getValueAt(tbSocios.getSelectedRow(), 0).toString());
-		int dnicondutcor = Integer.parseInt(tbSocios.getValueAt(tbSocios.getSelectedRow(), 5).toString());
-		String placa = tbSocios.getValueAt(tbSocios.getSelectedRow(), 6).toString();
-		vdSocioModificar vnsm = new vdSocioModificar(vp, this, codsocio, dnicondutcor, placa);
-		vnsm.setVisible(true);
-		vp.setEnabled(false);
+		try {
+			int codsocio = Integer.parseInt(tbSocios.getValueAt(tbSocios.getSelectedRow(), 0).toString());
+			int dnicondutcor = Integer.parseInt(tbSocios.getValueAt(tbSocios.getSelectedRow(), 5).toString());
+			String placa = tbSocios.getValueAt(tbSocios.getSelectedRow(), 6).toString();
+			vdSocioModificar vnsm = new vdSocioModificar(vp, this, codsocio, dnicondutcor, placa);
+			vnsm.setVisible(true);
+			vp.setEnabled(false);			
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Seleccione socio a modificar");
+		}
 		
 	}
 	

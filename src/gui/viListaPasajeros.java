@@ -173,12 +173,17 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 	}
 	
 	protected void actionPerformedBtnModificarCliente(ActionEvent arg0) {
-		int dniPasajero = Integer.parseInt(tbPasajeros.getValueAt(tbPasajeros.getSelectedRow(), 0).toString()); 
-		vdPasajeroNuevo vdp = new vdPasajeroNuevo(vp, this, 2, dniPasajero); // 1 NUEVO --  2 MODIFICAR
-		vdp.setVisible(true);
-		vdp.setAlwaysOnTop(true);
-		vdp.setLocationRelativeTo(null);
-		vp.setEnabled(false);
+		try {
+			int dniPasajero = Integer.parseInt(tbPasajeros.getValueAt(tbPasajeros.getSelectedRow(), 0).toString()); 
+			vdPasajeroNuevo vdp = new vdPasajeroNuevo(vp, this, 2, dniPasajero); // 1 NUEVO --  2 MODIFICAR
+			vdp.setVisible(true);
+			vdp.setAlwaysOnTop(true);
+			vdp.setLocationRelativeTo(null);
+			vp.setEnabled(false);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Seleccione cliente a modificar");
+		}
+		
 	}
 	
 	protected void actionPerformedBtnEliminarDestino(ActionEvent arg0) {

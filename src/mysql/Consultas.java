@@ -615,7 +615,6 @@ public class Consultas {
 			prepareStmt.setString(6, direccion);
 			prepareStmt.setInt(7, dnipasajero);
 			prepareStmt.execute();
-			JOptionPane.showMessageDialog(null, "Modificad");
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR al actualizar Pasajero: " + e);
 		}
