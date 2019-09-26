@@ -335,7 +335,7 @@ and pt.contratante = 1;
 
 
 select vt.placa, DATE_FORMAT(vt.fpartida, '%d-%m-%Y') Fecha_Inicio, TIME(vt.fpartida) Hora_Salida, p.dnipasajero, p.nombre, vt.origen, vt.destino, 
-vt.puntoencuentro, vt.ciudaddesde, vt.ciudadhasta, mvh.casientos,  round(sum(pt2.prepasaje)) totpasajes, vt.modalidad
+vt.puntoencuentro, vt.ciudaddesde, vt.ciudadhasta, mvh.casientos,  round(sum(pt2.prepasaje)) totpasajes, vt.modalidad, (ELT(WEEKDAY(vt.fpartida) + 1, 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo')) AS DIA_SEMANA
 from tb_venta_temporal vt
 inner join  tb_vehiculo vh
 on vh.placa = vt.placa
@@ -355,4 +355,6 @@ where  vt.id = 1;
 
 SELECT (ELT(WEEKDAY(fpartida) + 1, 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo')) AS DIA_SEMANA
 FROM tb_venta_temporal
+
+
 
