@@ -373,7 +373,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		btnA16.setHorizontalAlignment(SwingConstants.CENTER);
 		btnA16.setIcon(new ImageIcon(imgAsiento16));
 		btnA16.setBackground(Color.GREEN);
-		btnA16.setBounds(20, 552, 120, 83);
+		btnA16.setBounds(20, 552, 120, 71);
 		getContentPane().add(btnA16);
 
 		Image imgAsiento17 = new ImageIcon(this.getClass().getResource("/asiento17.png")).getImage();
