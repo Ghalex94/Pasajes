@@ -224,7 +224,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		btnA1.addActionListener(this);
 		btnA1.setBackground(Color.GREEN);
 		btnA1.setIcon(new ImageIcon(imgAsiento1));
-		btnA1.setBounds(20, 112, 140, 83);
+		btnA1.setBounds(20, 112, 140, 80);
 		getContentPane().add(btnA1);
 
 		Image imgAsiento2 = new ImageIcon(this.getClass().getResource("/asiento02.png")).getImage();
@@ -253,7 +253,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		btnA4.setBackground(Color.GREEN);
 		btnA4.setIcon(new ImageIcon(imgAsiento4));
 		btnA4.addActionListener(this);
-		btnA4.setBounds(20, 200, 140, 83);
+		btnA4.setBounds(20, 197, 140, 80);
 		getContentPane().add(btnA4);
 
 		Image imgAsiento5 = new ImageIcon(this.getClass().getResource("/asiento05.png")).getImage();
@@ -283,7 +283,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		btnA7.setIcon(new ImageIcon(imgAsiento7));
 		btnA7.addActionListener(this);
 		btnA7.setBackground(Color.GREEN);
-		btnA7.setBounds(20, 288, 140, 83);
+		btnA7.setBounds(20, 282, 140, 80);
 		getContentPane().add(btnA7);
 
 		Image imgAsiento8 = new ImageIcon(this.getClass().getResource("/asiento08.png")).getImage();
@@ -313,7 +313,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		btnA10.setIcon(new ImageIcon(imgAsiento10));
 		btnA10.addActionListener(this);
 		btnA10.setBackground(Color.GREEN);
-		btnA10.setBounds(20, 376, 140, 83);
+		btnA10.setBounds(20, 367, 140, 80);
 		getContentPane().add(btnA10);
 
 		Image imgAsiento11 = new ImageIcon(this.getClass().getResource("/asiento11.png")).getImage();
@@ -343,7 +343,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		btnA13.setIcon(new ImageIcon(imgAsiento13));
 		btnA13.addActionListener(this);
 		btnA13.setBackground(Color.GREEN);
-		btnA13.setBounds(20, 464, 140, 83);
+		btnA13.setBounds(20, 452, 140, 80);
 		getContentPane().add(btnA13);
 
 		Image imgAsiento14 = new ImageIcon(this.getClass().getResource("/asiento14.png")).getImage();
@@ -373,7 +373,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		btnA16.setHorizontalAlignment(SwingConstants.CENTER);
 		btnA16.setIcon(new ImageIcon(imgAsiento16));
 		btnA16.setBackground(Color.GREEN);
-		btnA16.setBounds(20, 552, 120, 71);
+		btnA16.setBounds(20, 537, 120, 80);
 		getContentPane().add(btnA16);
 
 		Image imgAsiento17 = new ImageIcon(this.getClass().getResource("/asiento17.png")).getImage();
