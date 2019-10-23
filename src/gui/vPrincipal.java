@@ -89,6 +89,9 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
     private JMenu mnSedes;
     private JMenuItem mntmVerConductores;
     private JMenuItem mntmVerBoletaVenta;
+    private JMenu mnRegristrarGastosRealizados;
+    private JMenu mnNewMenu;
+    private JMenu mnContabilidad;
     
     
 	
@@ -283,6 +286,15 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mnReportes.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		mnReportes.setEnabled(false);
 		menuBar.add(mnReportes);
+		
+		mnRegristrarGastosRealizados = new JMenu("Gastos");
+		mnReportes.add(mnRegristrarGastosRealizados);
+		
+		mnNewMenu = new JMenu("Viajes");
+		mnReportes.add(mnNewMenu);
+		
+		mnContabilidad = new JMenu("Contabilidad");
+		mnReportes.add(mnContabilidad);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
