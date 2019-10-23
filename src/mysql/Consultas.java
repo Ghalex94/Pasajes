@@ -3,9 +3,7 @@ package mysql;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import javax.swing.JOptionPane;
-
 import clases.Usuarios;
 import mysql.MySQLConexion;
 
@@ -25,7 +23,6 @@ public class Consultas {
 	
 	public ResultSet buscarUsuario(String usuario){
 		Connection con = MySQLConexion.getConection();
-		java.sql.Statement st;
 		ResultSet rs = null;
 		try {
 			String sql = "select * from tb_usuario where usuario=?";
