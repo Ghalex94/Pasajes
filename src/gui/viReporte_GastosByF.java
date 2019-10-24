@@ -91,7 +91,7 @@ public class viReporte_GastosByF extends JInternalFrame {
         int alto = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
         
 		txtEmisionDeBoletas = new JTextField();
-		txtEmisionDeBoletas.setText("BOLETAS Y FACTURAS EMITIDAS");
+		txtEmisionDeBoletas.setText("REPORTE DE BOLETAS Y FACTURAS EMITIDAS");
 		txtEmisionDeBoletas.setRequestFocusEnabled(false);
 		txtEmisionDeBoletas.setIgnoreRepaint(true);
 		txtEmisionDeBoletas.setHorizontalAlignment(SwingConstants.CENTER);
@@ -102,7 +102,7 @@ public class viReporte_GastosByF extends JInternalFrame {
 		txtEmisionDeBoletas.setEditable(false);
 		txtEmisionDeBoletas.setColumns(10);
 		txtEmisionDeBoletas.setBackground(Color.DARK_GRAY);
-		txtEmisionDeBoletas.setBounds(0, 0, 1920, 75);
+		txtEmisionDeBoletas.setBounds(0, 0, ancho, 75);
 		getContentPane().add(txtEmisionDeBoletas);
 		
 		panel1 = new JPanel();
@@ -123,7 +123,7 @@ public class viReporte_GastosByF extends JInternalFrame {
 		label_1.setHorizontalAlignment(SwingConstants.LEFT);
 		label_1.setForeground(Color.DARK_GRAY);
 		label_1.setFont(new Font("EngraversGothic BT", Font.PLAIN, 30));
-		label_1.setBounds(35, 124, 131, 23);
+		label_1.setBounds(35, 116, 131, 40);
 		panel1.add(label_1);
 		
 		cbOrigen1 = new JComboBox();
@@ -135,7 +135,7 @@ public class viReporte_GastosByF extends JInternalFrame {
 		label_2.setHorizontalAlignment(SwingConstants.LEFT);
 		label_2.setForeground(Color.DARK_GRAY);
 		label_2.setFont(new Font("EngraversGothic BT", Font.PLAIN, 30));
-		label_2.setBounds(35, 181, 131, 23);
+		label_2.setBounds(35, 171, 131, 40);
 		panel1.add(label_2);
 		
 		cbDestino1 = new JComboBox();
@@ -154,7 +154,7 @@ public class viReporte_GastosByF extends JInternalFrame {
 		lblDescripcin.setHorizontalAlignment(SwingConstants.LEFT);
 		lblDescripcin.setForeground(Color.DARK_GRAY);
 		lblDescripcin.setFont(new Font("EngraversGothic BT", Font.PLAIN, 30));
-		lblDescripcin.setBounds(35, 286, 239, 23);
+		lblDescripcin.setBounds(35, 279, 239, 33);
 		panel1.add(lblDescripcin);
 		
 		txtDescripcion1 = new JTextField();
@@ -169,7 +169,7 @@ public class viReporte_GastosByF extends JInternalFrame {
 		lblImporte.setHorizontalAlignment(SwingConstants.LEFT);
 		lblImporte.setForeground(Color.DARK_GRAY);
 		lblImporte.setFont(new Font("EngraversGothic BT", Font.PLAIN, 30));
-		lblImporte.setBounds(35, 379, 168, 23);
+		lblImporte.setBounds(35, 369, 168, 40);
 		panel1.add(lblImporte);
 		
 		txtImporte1 = new JTextField();
@@ -189,14 +189,14 @@ public class viReporte_GastosByF extends JInternalFrame {
 		lblFecha.setHorizontalAlignment(SwingConstants.LEFT);
 		lblFecha.setForeground(Color.DARK_GRAY);
 		lblFecha.setFont(new Font("EngraversGothic BT", Font.PLAIN, 30));
-		lblFecha.setBounds(35, 439, 168, 23);
+		lblFecha.setBounds(35, 428, 168, 40);
 		panel1.add(lblFecha);
 		
 		lblEmpresa = new JLabel("Empresa:");
 		lblEmpresa.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEmpresa.setForeground(Color.DARK_GRAY);
 		lblEmpresa.setFont(new Font("EngraversGothic BT", Font.PLAIN, 30));
-		lblEmpresa.setBounds(35, 64, 131, 23);
+		lblEmpresa.setBounds(35, 55, 131, 40);
 		panel1.add(lblEmpresa);
 		
 		cbEmpresa1 = new JComboBox();
@@ -226,7 +226,7 @@ public class viReporte_GastosByF extends JInternalFrame {
 			}
 		});
 		btnRegstrar1.setForeground(Color.WHITE);
-		btnRegstrar1.setFont(new Font("EngraversGothic BT", Font.BOLD, 35));
+		btnRegstrar1.setFont(new Font("Dialog", Font.BOLD, 25));
 		btnRegstrar1.setBackground(new Color(0, 139, 139));
 		btnRegstrar1.setBounds(35, 479, 562, 43);
 		panel1.add(btnRegstrar1);
@@ -236,7 +236,7 @@ public class viReporte_GastosByF extends JInternalFrame {
 		txtTitulo0.setForeground(Color.WHITE);
 		txtTitulo0.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
 		txtTitulo0.setHorizontalAlignment(SwingConstants.CENTER);
-		txtTitulo0.setText("REGISTRAR FACTURA O BOLETA EMITIDA");
+		txtTitulo0.setText("REGISTRAR FACTURA O BOLETA");
 		txtTitulo0.setBounds(0, 0, 625, 44);
 		panel1.add(txtTitulo0);
 		txtTitulo0.setColumns(10);
@@ -261,7 +261,7 @@ public class viReporte_GastosByF extends JInternalFrame {
 		label.setHorizontalAlignment(SwingConstants.LEFT);
 		label.setForeground(Color.DARK_GRAY);
 		label.setFont(new Font("EngraversGothic BT", Font.PLAIN, 30));
-		label.setBounds(37, 64, 131, 23);
+		label.setBounds(37, 55, 131, 40);
 		panel_2.add(label);
 		
 		cbEmpresa2 = new JComboBox();
@@ -278,7 +278,7 @@ public class viReporte_GastosByF extends JInternalFrame {
 		lblFechaInicial.setHorizontalAlignment(SwingConstants.LEFT);
 		lblFechaInicial.setForeground(Color.DARK_GRAY);
 		lblFechaInicial.setFont(new Font("EngraversGothic BT", Font.PLAIN, 30));
-		lblFechaInicial.setBounds(37, 207, 193, 23);
+		lblFechaInicial.setBounds(37, 197, 193, 33);
 		panel_2.add(lblFechaInicial);
 		
 		dchFechaFinal2 = new JDateChooser();
@@ -290,14 +290,14 @@ public class viReporte_GastosByF extends JInternalFrame {
 		lblFechaFinal.setHorizontalAlignment(SwingConstants.LEFT);
 		lblFechaFinal.setForeground(Color.DARK_GRAY);
 		lblFechaFinal.setFont(new Font("EngraversGothic BT", Font.PLAIN, 30));
-		lblFechaFinal.setBounds(37, 269, 193, 23);
+		lblFechaFinal.setBounds(37, 259, 193, 33);
 		panel_2.add(lblFechaFinal);
 		
 		lblVer = new JLabel("Documento:");
 		lblVer.setHorizontalAlignment(SwingConstants.LEFT);
 		lblVer.setForeground(Color.DARK_GRAY);
 		lblVer.setFont(new Font("EngraversGothic BT", Font.PLAIN, 30));
-		lblVer.setBounds(37, 135, 162, 23);
+		lblVer.setBounds(37, 127, 162, 40);
 		panel_2.add(lblVer);
 		
 		cbDocumento2 = new JComboBox();
@@ -313,7 +313,7 @@ public class viReporte_GastosByF extends JInternalFrame {
 			}
 		});
 		btnBuscar2.setForeground(Color.WHITE);
-		btnBuscar2.setFont(new Font("EngraversGothic BT", Font.BOLD, 35));
+		btnBuscar2.setFont(new Font("Dialog", Font.BOLD, 25));
 		btnBuscar2.setBackground(new Color(0, 139, 139));
 		btnBuscar2.setBounds(37, 481, 558, 43);
 		panel_2.add(btnBuscar2);
@@ -324,16 +324,20 @@ public class viReporte_GastosByF extends JInternalFrame {
 	}
 	
 	public void cargar(){
-		//Llenar cbos
-		Sedes destinos2 = new Sedes();// ORIGEN
-		destinos2.cargarDestinos(cbOrigen1);
-		Sedes destinos = new Sedes();// DESTINO
-		destinos.cargarDestinos(cbDestino1);
-		Empresa empresa = new Empresa();// EMPRESA
-		empresa.cargarEmpresas(cbEmpresa1);
-		Empresa e = new Empresa(-1, "0", "TODOS");
-		cbEmpresa2.addItem(e);
-		empresa.cargarEmpresas(cbEmpresa2);
+		//LLENAR COMBOS
+		Empresa empresa1 = new Empresa();// EMPRESA 1
+		empresa1.cargarEmpresas(cbEmpresa1);
+		
+		Empresa todEmpresas = new Empresa(-1, "0", "TODOS"); // EMPRESA 2
+		cbEmpresa2.addItem(todEmpresas);
+		Empresa empresa2 = new Empresa();
+		empresa2.cargarEmpresas(cbEmpresa2);
+		
+		Sedes origen1 = new Sedes();// ORIGEN
+		origen1.cargarDestinos(cbOrigen1);
+		
+		Sedes destino1 = new Sedes();// DESTINO
+		destino1.cargarDestinos(cbDestino1);
 	}
 	
 	protected void actionPerformedBtnRegstrar1(ActionEvent e) {

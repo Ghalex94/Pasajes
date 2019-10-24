@@ -68,7 +68,9 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	viLlenarDatosFaltantes datfalt = null;//Datosa Faltantes 
 	viListaSocios lsoc = null; 			  //Lista de Socios
 	viReporte_GastosByF r_fyb = null; 	  //Reporte Boleta y Facturas 
-	
+	viReporte_GastosOtros r_go = null;	  //Reporte Gastos Otros
+	viReporte_Viajes r_v = null;		  //Reporte Viajes
+
 	
 	ResultSet rs;
 	//RESOLUCION MONITOR
@@ -92,8 +94,8 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
     private JMenuItem mntmVerConductores;
     private JMenuItem mntmVerBoletaVenta;
     private JMenu mnRegristrarGastosRealizados;
-    private JMenu mnNewMenu;
-    private JMenu mnContabilidad;
+    private JMenuItem mntmViajes;
+    private JMenuItem mntmContabilidad;
     
     
 	
@@ -311,13 +313,14 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mntmOtros.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mnRegristrarGastosRealizados.add(mntmOtros);
 		
-		mnNewMenu = new JMenu("Viajes");
-		mnNewMenu.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		mnReportes.add(mnNewMenu);
+		mntmViajes = new JMenuItem("Viajes");
+		mntmViajes.addActionListener(this);
+		mntmViajes.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		mnReportes.add(mntmViajes);
 		
-		mnContabilidad = new JMenu("Contabilidad");
-		mnContabilidad.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		mnReportes.add(mnContabilidad);
+		mntmContabilidad = new JMenuItem("Contabilidad");
+		mntmContabilidad.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		mnReportes.add(mntmContabilidad);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -375,6 +378,9 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == mntmViajes) {
+			actionPerformedMntmViajes(arg0);
+		}
 		if (arg0.getSource() == mntmContrato) {
 			actionPerformedMntmContrato(arg0);
 		}
@@ -454,6 +460,10 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		lpjr = null;
 		datfalt = null;
 		lsoc = null;
+		r_fyb = null;
+		r_go = null;
+		r_v = null;
+		
 	}
 	
 	public void esconderVentanas(){
@@ -479,6 +489,12 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			datfalt.setVisible(false);
 		if (lsoc!=null)
 			lsoc.setVisible(false);
+		if (r_fyb!=null)
+			r_fyb.setVisible(false);
+		if (r_go!=null)
+			r_go.setVisible(false);
+		if (r_v!=null)
+			r_v.setVisible(false);
 	}
 	
 	public void desactivarMenu(){
@@ -825,7 +841,25 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	}
 	
 	protected void actionPerformedMntmOtros(ActionEvent e) {
-		
+		esconderVentanas();
+		cerrarVentanas();
+		r_go = new viReporte_GastosOtros(this);
+		desktopPane.add(r_go);
+		r_go.show();
+		try{
+			r_go.setMaximum(true);
+		}catch(Exception f){}
+	}
+	
+	protected void actionPerformedMntmViajes(ActionEvent arg0) {
+		esconderVentanas();
+		cerrarVentanas();
+		r_v = new viReporte_Viajes(this);
+		desktopPane.add(r_v);
+		r_v.show();
+		try{
+			r_v.setMaximum(true);
+		}catch(Exception f){}
 	}
 }
 
