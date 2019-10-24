@@ -53,20 +53,22 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
     public JMenuItem mntmContinuarPreparacion;
     public JMenuItem mntmCancelarSalida;
     
-    viConfiguracionInicial ci = null; // Configuracion inicial
-	viLogin lg = new viLogin(this);  	 //Login
-	viListaUsuarios lusu = null;		 //Usuarios
-	viDatos1 d1 = null;  				 //Datos1
-	viSeleccionAsientos1 sa1 = null;	 //Seleccion de asientos 1
-	viSeleccionAsientos2 sa2 = null;	 //Seleccion de asientos 2
-	viSeleccionAsientos3 sa3 = null;	 //Seleccion de asientos 3
-	viSeleccionAsientos4 sa4 = null;	 //Seleccion de asientos 4
-	viListaVehiculos lvc = null;		 //Lista de vehiculos
-	viListaConductores lcond = null;	 //Lista dde conductores
-	viListaSedes ldest = null;		 //Lista destinos 
-	viListaPasajeros lpjr = null;		 //Lista de pasajeros
+    viConfiguracionInicial ci = null; 	  //Configuracion inicial
+	viLogin lg = new viLogin(this);  	  //Login
+	viListaUsuarios lusu = null;		  //Usuarios
+	viDatos1 d1 = null;  				  //Datos1
+	viSeleccionAsientos1 sa1 = null;	  //Seleccion de asientos 1
+	viSeleccionAsientos2 sa2 = null;	  //Seleccion de asientos 2
+	viSeleccionAsientos3 sa3 = null;	  //Seleccion de asientos 3
+	viSeleccionAsientos4 sa4 = null;	  //Seleccion de asientos 4
+	viListaVehiculos lvc = null;		  //Lista de vehiculos
+	viListaConductores lcond = null;	  //Lista dde conductores
+	viListaSedes ldest = null;		 	  //Lista destinos 
+	viListaPasajeros lpjr = null;		  //Lista de pasajeros
 	viLlenarDatosFaltantes datfalt = null;//Datosa Faltantes 
 	viListaSocios lsoc = null; 			  //Lista de Socios
+	viReporte_GastosByF r_fyb = null; 	  //Reporte Boleta y Facturas 
+	
 	
 	ResultSet rs;
 	//RESOLUCION MONITOR
@@ -287,13 +289,34 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mnReportes.setEnabled(false);
 		menuBar.add(mnReportes);
 		
-		mnRegristrarGastosRealizados = new JMenu("Gastos");
+		mnRegristrarGastosRealizados = new JMenu("Pagos y Gastos");
+		mnRegristrarGastosRealizados.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mnReportes.add(mnRegristrarGastosRealizados);
 		
+		JMenuItem mntmFacturasYBoletas = new JMenuItem("Facturas y boletas");
+		mntmFacturasYBoletas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmFacturasYBoletas(e);
+			}
+		});
+		mntmFacturasYBoletas.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		mnRegristrarGastosRealizados.add(mntmFacturasYBoletas);
+		
+		JMenuItem mntmOtros = new JMenuItem("Otros");
+		mntmOtros.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmOtros(e);
+			}
+		});
+		mntmOtros.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		mnRegristrarGastosRealizados.add(mntmOtros);
+		
 		mnNewMenu = new JMenu("Viajes");
+		mnNewMenu.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mnReportes.add(mnNewMenu);
 		
 		mnContabilidad = new JMenu("Contabilidad");
+		mnContabilidad.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mnReportes.add(mnContabilidad);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
@@ -788,6 +811,21 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error al cargar boleta: "+ e.getStackTrace());			
 		}
+	}
+	
+	protected void actionPerformedMntmFacturasYBoletas(ActionEvent e) {
+		esconderVentanas();
+		cerrarVentanas();
+		r_fyb = new viReporte_GastosByF(this);
+		desktopPane.add(r_fyb);
+		r_fyb.show();
+		try{
+			r_fyb.setMaximum(true);
+		}catch(Exception f){}
+	}
+	
+	protected void actionPerformedMntmOtros(ActionEvent e) {
+		
 	}
 }
 
