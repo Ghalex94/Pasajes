@@ -64,19 +64,25 @@ sede			varchar(50)
 create table tb_viaje(
 nviaje			int primary key auto_increment,
 codsocio		int,
-nombresocio		varchar(70),
+-- nombresocio		varchar(70),
 empresa			int,
-origen			varchar(50),
-destino			varchar(50),
+-- origen			varchar(50),
+idorigen			int,
+-- destino			varchar(50),
+iddestino			int,
 fpartida		datetime,
 fllegada		datetime,
 placa			varchar(7),
 dniconductor	int,
-conductor		varchar(50),
+-- conductor		varchar(50),
 prepasaje		float,
 totpasajes		float,
 totalasientos	int,
-asientosven		int
+asientosven		int,
+foreign key (codsocio) references tb_socio(codsocio),
+foreign key (idorigen) references tb_sedes(idsede),
+foreign key (iddestino) references tb_sedes(idsede),
+foreign key (dniconductor) references tb_conductor(dniconductor)
 );
 
 create table tb_detalle_viaje(
@@ -87,9 +93,9 @@ asiento			int,
 edad			int,
 prepasaje 		float,
 contratante		int,
+primary key (nviaje, nboleto),
 foreign key (nviaje) references tb_viaje(nviaje),
-foreign key (dnipasajero) references tb_pasajero(dnipasajero),
-primary key (nviaje, nboleto)
+foreign key (dnipasajero) references tb_pasajero(dnipasajero)
 );
 
 create table tb_venta_temporal(
@@ -100,8 +106,8 @@ empresa			int,  -- 0NULL 1MERMA 2SIGUEL
 dniconductor	int,
 placa			varchar(7),
 modelovh		int,
-origen			varchar(50),
-destino			varchar(50),
+idorigen		int, -- modificado
+iddestino		int, -- modificado
 fpartida		datetime,
 fllegada		datetime,
 prepasaje		float,
@@ -134,7 +140,7 @@ foreign key (dnipasajero) references tb_pasajero(dnipasajero)
 
 create table tb_configuracion_inicial(
 estado			int primary key, -- 0Iniciando por primera vez 
-sede			varchar(50),
+idsede			int,
 nserie			varchar(3),
 nviajeinicial	int,
 nboletoinicial	int
@@ -156,6 +162,18 @@ foreign key (origen) references tb_sedes(idsede),
 foreign key (destino) references tb_sedes(idsede)
 );
 
+create table tb_gastos(
+idgasto			int primary key auto_increment,
+nserie1			varchar(10),
+nserie2			varchar(10),
+idempresa		int,
+origen			int,
+destino			int,
+descripcion		varchar(200),
+monto			float,
+fecha			date,
+foreign key (idempresa) references tb_empresa(idempresa)
+);
 
 
 insert into tb_usuario values('bxb', 'stand207', 'BYTE X BYTE', 2);
@@ -177,22 +195,23 @@ insert into tb_sedes values(null, 'Juliaca');
 insert into tb_sedes values(null, 'Puno');
 insert into tb_sedes values(null, 'Sicuani');
 
-insert into tb_configuracion_inicial values(0, null, null, 1, 1);
+insert into tb_configuracion_inicial values(0, -1, null, 1, 1);
 
-insert into tb_venta_temporal values(1, 0, 0, 0, 0, null, 0, null, null, null, null, 0, -1, 1, 0, null, null, null, null, null, 0, null, null, null, 0, -1);
+insert into tb_venta_temporal values(1, 0, 0, 0, 0, null, 0, 0, 0, null, null, 0, -1, 1, 0, null, null, null, null, null, 0, null, null, null, 0, -1);
 
 -- ELIMINAR TABLAS Y DB -----------------------------------------------------------
- drop database db_venta_pasajes; -- ----------------------------------------------
+ drop database db_venta_pasajes; 
 -- drop table tb_usuario;
 -- drop table tb_conductor;
 -- drop table tb_modelo_vehiculo;
 -- drop table tb_vehiculo;
 -- drop table tb_pasajero;
--- drop table tb_destinos;
+-- drop table tb_sedes;
 -- drop table tb_viaje;
 -- drop table tb_detalle_viaje;
 -- drop table tb_venta_temporal;
 -- drop table tb_pasajeros_temporal;
+-- drop table tb_configuracion_inicial;
 
 -- SELECT TABLAS -----------------------------------------------------------------
 use db_venta_pasajes;
@@ -209,7 +228,8 @@ select * from tb_detalle_viaje;
 select * from tb_venta_temporal;
 select * from tb_pasajeros_temporal;
 select * from tb_configuracion_inicial;
-
+select * from tb_comprobantes_emitidos;
+select * from tb_gastos;
 
 -- PRUEBAS ------------------------------------------------------------------------
 
@@ -230,7 +250,7 @@ order by vh.idmodelo;
 
 update tb_venta_temporal set estado = 0 where id = 1;
 
-delete from  tb_venta_temporal where id = 1;
+delete from  tb_sedes where idsede = 8;
 
 select * from tb_pasajeros_temporal where dni = 76784968;
 
@@ -372,7 +392,65 @@ on pt.dnipasajero = p.dnipasajero
 where  vt.id = 1;
 
 SELECT (ELT(WEEKDAY(fpartida) + 1, 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo')) AS DIA_SEMANA
-FROM tb_venta_temporal
+FROM tb_venta_temporal;
 
+-- BOLETA VENTA
+select pt.dnipasajero, p.ruc, p.nombre, vt.idorigen, orgn.sede Origen, vt.iddestino, dstn.sede Destino, pt.prepasaje, vt.totalmodif, vt.escalas, p.direccion
+from  tb_pasajeros_temporal pt
+inner join tb_pasajero p on p.dnipasajero = pt.dnipasajero
+inner join tb_venta_temporal vt on vt.id = 1
+inner join tb_vehiculo vh on vh.placa = vt.placa
+inner join tb_sedes orgn on orgn.idsede = vt.idorigen
+inner join tb_sedes dstn on dstn.idsede = vt.iddestino
+where pt.contratante = 1;
+
+-- BOLETO DE VIAJE
+select p.nombre, pt.dnipasajero, p.razsocial, p.ruc, vt.fpartida, pt.prepasaje, vt.idorigen, orgn.sede Origen, vt.iddestino, dstn.sede Destino, vt.nviaje, pt.nboleto
+from tb_pasajeros_temporal pt
+inner join tb_venta_temporal vt on vt.id = 1
+inner join tb_pasajero p on p.dnipasajero = pt.dnipasajero
+inner join tb_sedes orgn on orgn.idsede = vt.idorigen
+inner join tb_sedes dstn on dstn.idsede = vt.iddestino
+where pt.asiento = 3;
+
+-- CONTRATO
+select vt.placa, DATE_FORMAT(vt.fpartida, '%d-%m-%Y') Fecha_Inicio, TIME(vt.fpartida) Hora_Salida, p.dnipasajero, p.nombre, vt.idorigen, orgn.sede Origen, vt.iddestino, dstn.sede Destino, 
+vt.puntoencuentro, vt.ciudaddesde, vt.ciudadhasta, mvh.casientos,  round(sum(pt2.prepasaje)) totpasajes, vt.modalidad, (ELT(WEEKDAY(vt.fpartida) + 1, 'LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO', 'DOMINGO')) AS DIA_SEMANA
+from tb_venta_temporal vt
+inner join tb_sedes orgn on orgn.idsede = vt.idorigen
+inner join tb_sedes dstn on dstn.idsede = vt.iddestino
+inner join  tb_vehiculo vh on vh.placa = vt.placa
+inner join  tb_modelo_vehiculo mvh on mvh.idmodelo = vh.idmodelo
+inner join tb_conductor c on c.dniconductor = vt.dniconductor
+left join tb_conductor c2 on c2.dniconductor = vt.dniconductor2
+left join tb_pasajeros_temporal pt on pt.contratante = 1
+left join tb_pasajeros_temporal pt2 on pt2.estado = 1
+left join tb_pasajero p on pt.dnipasajero = p.dnipasajero
+where  vt.id = 1;
+
+-- HOJA DE RUTA
+select vt.placa, DATE_FORMAT(vt.fpartida, '%d-%m-%Y') Fecha_Inicio, DATE_FORMAT(vt.fllegada, '%d-%m-%Y') Fecha_Llegada, vt.standar, vt.escalacom, vt.idorigen, orgn.sede Origen, vt.iddestino, dstn.sede Destino,  
+TIME(vt.fpartida) Hora_Salida,  TIME(vt.fllegada) Hora_Llegada, c.conductor, c.licencia, TIME(vt.fpartida) Hora_Inicio_1, 
+vt.horainicio2, c2.conductor c2, c2.licencia l2, vt.horafin1, vt.horafin2
+from tb_venta_temporal vt
+inner join tb_sedes orgn on orgn.idsede = vt.idorigen
+inner join tb_sedes dstn on dstn.idsede = vt.iddestino
+inner join tb_conductor c on c.dniconductor = vt.dniconductor
+left join tb_conductor c2 on c2.dniconductor = vt.dniconductor2
+where  vt.id = 1;
+
+-- ITINERARIO
+select vt.placa, DATE_FORMAT(vt.fpartida, '%d-%m-%Y') Fecha_Inicio, DATE_FORMAT(vt.fllegada, '%d-%m-%Y') Fecha_Llegada, p.dnipasajero, p.nombre,  vt.standar, vt.escalacom, vt.idorigen, orgn.sede Origen, vt.iddestino, dstn.sede Destino, 
+TIME(vt.fpartida) Hora_Salida,  TIME(vt.fllegada) Hora_Llegada, c.conductor, c.licencia, TIME(vt.fpartida) Hora_Inicio_1, 
+vt.horainicio2, c2.conductor c2, c2.licencia l2, vt.horafin1, vt.horafin2, vt.puntoencuentro, vt.escalas, vt.ciudaddesde, vt.ciudadhasta,  round(sum(pt2.prepasaje)) totpasajes
+from tb_venta_temporal vt
+inner join tb_sedes orgn on orgn.idsede = vt.idorigen
+inner join tb_sedes dstn on dstn.idsede = vt.iddestino
+inner join tb_conductor c on c.dniconductor = vt.dniconductor
+left join tb_conductor c2 on c2.dniconductor = vt.dniconductor2
+left join tb_pasajeros_temporal pt on pt.contratante = 1
+left join tb_pasajeros_temporal pt2 on pt2.estado = 1
+left join tb_pasajero p on pt.dnipasajero = p.dnipasajero
+where  vt.id = 1
 
 
