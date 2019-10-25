@@ -64,17 +64,13 @@ sede			varchar(50)
 create table tb_viaje(
 nviaje			int primary key auto_increment,
 codsocio		int,
--- nombresocio		varchar(70),
 empresa			int,
--- origen			varchar(50),
-idorigen			int,
--- destino			varchar(50),
-iddestino			int,
+idorigen		int,
+iddestino		int,
 fpartida		datetime,
 fllegada		datetime,
 placa			varchar(7),
 dniconductor	int,
--- conductor		varchar(50),
 prepasaje		float,
 totpasajes		float,
 totalasientos	int,
@@ -451,6 +447,18 @@ left join tb_conductor c2 on c2.dniconductor = vt.dniconductor2
 left join tb_pasajeros_temporal pt on pt.contratante = 1
 left join tb_pasajeros_temporal pt2 on pt2.estado = 1
 left join tb_pasajero p on pt.dnipasajero = p.dnipasajero
-where  vt.id = 1
+where  vt.id = 1;
 
-
+-- MANIFIESTO DE PASAJEROS
+select vt.idorigen, orgn.sede Origen, vt.iddestino, dstn.sede Destino, DATE_FORMAT(vt.fpartida, '%d-%m-%Y') Fecha_Viaje,  TIME(vt.fpartida) Hora_Salida, mvh.casientos, c.conductor, c.licencia, vh.placa, mvh.modelo, vh.mtc, pt.asiento, p.nombre, pt.dnipasajero, pt.edad, pt.nboleto, p.nacionalidad, pt.prepasaje, vt.nviaje
+from  tb_pasajeros_temporal pt
+inner join  tb_pasajero p on p.dnipasajero = pt.dnipasajero
+inner join  tb_venta_temporal vt on  vt.id = 1
+inner join tb_sedes orgn on orgn.idsede = vt.idorigen
+inner join tb_sedes dstn on dstn.idsede = vt.iddestino
+inner join  tb_conductor c on c.dniconductor = vt.dniconductor
+inner join  tb_vehiculo vh on  vh.placa = vt.placa
+inner join  tb_modelo_vehiculo mvh on mvh.idmodelo = vh.idmodelo
+inner join  tb_empresa e on e.idempresa = vt.empresa
+where pt.estado = 1 
+order by pt.asiento

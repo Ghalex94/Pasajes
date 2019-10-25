@@ -550,7 +550,7 @@ public class Consultas {
 		Connection con = MySQLConexion.getConection();
 		try {
 			String sql1 = "delete from tb_venta_temporal where id = 1";
-			String sql2 = "insert into tb_venta_temporal values(1, 0, 0, 0, 0, null, 0, null, null, null, null, 0, -1, 1, 0, null, null, null, null, null, 0, null, null, null, 0, -1)";
+			String sql2 = "insert into tb_venta_temporal values(1, 0, 0, 0, 0, null, 0, 0, 0, null, null, 0, -1, 1, 0, null, null, null, null, null, 0, null, null, null, 0, -1)";
 			String sql3 = "delete from tb_pasajeros_temporal where asiento < 100";
 			PreparedStatement prepareStmt = con.prepareStatement(sql1);
 			prepareStmt.execute();
@@ -911,7 +911,7 @@ public class Consultas {
 	public void registrarViaje(int nviaje, int codsocio, int empresa, int origen, int destino, String fpartida, String fllegada, String placa, int dniconductor, String prepasaje, float total, int totalasientos, int asientosvendidos){
 		Connection con = MySQLConexion.getConection();
 		try {
-			String sql = "insert into tb_viaje (nviaje, codsocio, nombresocio, empresa, idorigen, iddestino, fpartida, fllegada, placa, dniconductor, conductor, prepasaje, totpasajes, totalasientos, asientosven)" + " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String sql = "insert into tb_viaje (nviaje, codsocio, empresa, idorigen, iddestino, fpartida, fllegada, placa, dniconductor, prepasaje, totpasajes, totalasientos, asientosven)" + " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setInt(1, nviaje);
 			prepareStmt.setInt(2, codsocio);
@@ -921,7 +921,7 @@ public class Consultas {
 			prepareStmt.setString(6, fpartida);
 			prepareStmt.setString(7, fllegada);
 			prepareStmt.setString(8, placa);
-			prepareStmt.setInt(19, dniconductor);
+			prepareStmt.setInt(9, dniconductor);
 			prepareStmt.setString(10, prepasaje);
 			prepareStmt.setFloat(11, total);
 			prepareStmt.setInt(12, totalasientos);

@@ -726,7 +726,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			Map<String, Object> parameters = new HashMap();
 			parameters.put("cantPasajeros", cantPasajeros);
 			Connection con = MySQLConexion.getConection();
-			new AbstractJasperReports().createReport( con, "rManifiestoPasajerosMA5.jasper", parameters);
+			new AbstractJasperReports().createReport( con, "rManifiestoPasajeros.jasper", parameters);
 			AbstractJasperReports.showViewer();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error:. "+ e.getStackTrace());			
