@@ -140,6 +140,24 @@ nviajeinicial	int,
 nboletoinicial	int
 );
 
+create table tb_comprobantes_emitidos(
+nserie1			varchar(10),
+nserie2			varchar(10),
+idempresa		int,
+origen			int,
+destino			int,
+descripcion		varchar(200),
+importe			float,
+fecha			date,
+comprobante		int, -- 1BOLETA 2FACTURA
+primary key (nserie1,nserie2),
+foreign key (idempresa) references tb_empresa(idempresa),
+foreign key (origen) references tb_sedes(idsede),
+foreign key (destino) references tb_sedes(idsede)
+);
+
+
+
 insert into tb_usuario values('bxb', 'stand207', 'BYTE X BYTE', 2);
 insert into tb_usuario values('alex', 'Aa123', 'Alexander Gamarra', 1);
 insert into tb_usuario values('admin', 'admin', 'ADMINISTRADOR', 0);

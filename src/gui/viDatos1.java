@@ -214,7 +214,6 @@ public class viDatos1 extends JInternalFrame implements ActionListener, KeyListe
 			int codsocio = Integer.parseInt(cbSocio.getSelectedItem().toString());
 			int empresa = 0;
 			empresa = cbEmpresa.getItemAt(cbEmpresa.getSelectedIndex()).getIdempresa(); //1MERMA  2SIGUEL
-			//JOptionPane.showMessageDialog(null, ""+empresa);
 			String placa = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getPlaca();
 			int idmodelovh = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getIdmodelo();
 			String modelovh = cbVehiculo.getItemAt(cbVehiculo.getSelectedIndex()).getModelo();
@@ -369,7 +368,7 @@ public class viDatos1 extends JInternalFrame implements ActionListener, KeyListe
 					JOptionPane.showMessageDialog(null, "ERROR Conductor: " + e);
 				}
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "ERROR: " + e);
+				JOptionPane.showMessageDialog(null, "ERROR al cargar datos del Socio: " + e);
 			}	
 		}
 	}

@@ -54,7 +54,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
     public JMenuItem mntmCancelarSalida;
     
     viConfiguracionInicial ci = null; 	  //Configuracion inicial
-	viLogin lg = new viLogin(this);  	  //Login
+	viLogin lg = new viLogin(this);		  //Login
 	viListaUsuarios lusu = null;		  //Usuarios
 	viDatos1 d1 = null;  				  //Datos1
 	viSeleccionAsientos1 sa1 = null;	  //Seleccion de asientos 1
@@ -70,6 +70,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	viReporte_GastosByF r_fyb = null; 	  //Reporte Boleta y Facturas 
 	viReporte_GastosOtros r_go = null;	  //Reporte Gastos Otros
 	viReporte_Viajes r_v = null;		  //Reporte Viajes
+	viReporte_Contabilidad r_c = null;	  //Reporte de Contabilidad
 
 	
 	ResultSet rs;
@@ -291,6 +292,11 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mnReportes.setEnabled(false);
 		menuBar.add(mnReportes);
 		
+		mntmViajes = new JMenuItem("Viajes");
+		mntmViajes.addActionListener(this);
+		mntmViajes.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		mnReportes.add(mntmViajes);
+		
 		mnRegristrarGastosRealizados = new JMenu("Pagos y Gastos");
 		mnRegristrarGastosRealizados.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mnReportes.add(mnRegristrarGastosRealizados);
@@ -313,12 +319,12 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mntmOtros.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mnRegristrarGastosRealizados.add(mntmOtros);
 		
-		mntmViajes = new JMenuItem("Viajes");
-		mntmViajes.addActionListener(this);
-		mntmViajes.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		mnReportes.add(mntmViajes);
-		
 		mntmContabilidad = new JMenuItem("Contabilidad");
+		mntmContabilidad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				actionPerformedMntmContabilidad(arg0);
+			}
+		});
 		mntmContabilidad.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mnReportes.add(mntmContabilidad);
 		contentPane = new JPanel();
@@ -463,7 +469,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		r_fyb = null;
 		r_go = null;
 		r_v = null;
-		
+		r_c = null;		
 	}
 	
 	public void esconderVentanas(){
@@ -495,6 +501,8 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			r_go.setVisible(false);
 		if (r_v!=null)
 			r_v.setVisible(false);
+		if (r_c!=null)
+			r_c.setVisible(false);
 	}
 	
 	public void desactivarMenu(){
@@ -807,6 +815,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		ci.setLocation((ancho - FrameSize.width)/2, (alto - FrameSize.height)/4);
 		ci.show();
 	}
+	
 	protected void actionPerformedMntmVerBoletaVenta(ActionEvent arg0) {
 		Consultas consulta = new Consultas();
 		ResultSet rs = consulta.cargarVentaTemporal();
@@ -859,6 +868,17 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		r_v.show();
 		try{
 			r_v.setMaximum(true);
+		}catch(Exception f){}
+	}
+	
+	protected void actionPerformedMntmContabilidad(ActionEvent arg0) {
+		esconderVentanas();
+		cerrarVentanas();
+		r_c = new viReporte_Contabilidad(this);
+		desktopPane.add(r_c);
+		r_c.show();
+		try{
+			r_c.setMaximum(true);
 		}catch(Exception f){}
 	}
 }

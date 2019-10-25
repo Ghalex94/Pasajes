@@ -394,8 +394,19 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 			Consultas consulta = new Consultas();
 			ResultSet rs = consulta.cargarVentaTemporal();
 			if(rs.next()){
-				int dniconductor = rs.getInt("dniconductor");
-				ResultSet rs2 = consulta.buscarConductor(dniconductor);
+				
+				ResultSet rs2 = consulta.buscarConductor(rs.getInt("dniconductor"));
+				
+				String origen, destino = null;
+				
+				ResultSet rs3 = consulta.buscarSede(rs.getInt("idorigen"));
+				rs3.next();
+				origen = rs3.getString("sede");
+				
+				ResultSet rs4 = consulta.buscarSede(rs.getInt("iddestino"));
+				rs4.next();
+				destino = rs4.getString("sede");
+				
 				if(rs2.next()){
 					txtConductor1.setText(rs2.getString("conductor"));
 					txtNlicencia1.setText(rs2.getString("licencia"));
@@ -404,15 +415,15 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 					if(rs.getInt("escalacom" ) == 1)
 						chbxEscalasCom.setSelected(true);
 					if(rs.getString("ciudaddesde") == null)
-						txtDesde.setText(rs.getString("origen"));
+						txtDesde.setText(origen);
 					else
 						txtDesde.setText(rs.getString("ciudaddesde"));
 					if(rs.getString("ciudadhasta") == null)
-						txtHasta.setText(rs.getString("destino"));
+						txtHasta.setText(destino);
 					else
 						txtHasta.setText(rs.getString("ciudadhasta"));
 					if(rs.getString("puntoencuentro") == null)
-						txtPencuentro.setText("Terminal de " + rs.getString("origen"));
+						txtPencuentro.setText("Terminal de " + origen);
 					else
 						txtPencuentro.setText(rs.getString("puntoencuentro"));
 					if(rs.getString("escalas") != null)

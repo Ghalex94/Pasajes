@@ -455,13 +455,27 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		try {
 			Consultas consulta = new Consultas();
 			ResultSet rs = consulta.cargarVentaTemporal();
-			String origen = null;
-			String destino = null;
+			int idorigen = 0;
+			int iddestino = 0;
 			if(rs.next()){
-				origen = rs.getString("origen");
-				destino = rs.getString("destino");
+				idorigen = rs.getInt("idorigen");
+				iddestino = rs.getInt("iddestino");
+				txtNviaje.setText(rs.getString("nviaje"));
 			}
+			
+			//Llenar cbos de Destinos
+			Sedes o = new Sedes();
+			o.cargarDestinos(cbOrigen);
+			Sedes d = new Sedes();
+			d.cargarDestinos(cbDestino);
 		
+			for(int i = 0; i < cbOrigen.getItemCount(); i++){
+				if(idorigen == cbOrigen.getItemAt(i).getIdsede())
+					cbOrigen.setSelectedIndex(i);
+				if(iddestino == cbDestino.getItemAt(i).getIdsede())
+					cbDestino.setSelectedIndex(i);
+			}
+			
 			//Actualizar asientos y total
 			try {
 				Consultas consulta2 = new Consultas();
@@ -475,20 +489,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 				}
 				sumarTotalPasajes();
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "Ningun pasajero registrado");
-			}
-			
-			//Llenar cbos de Destinos
-			Sedes destinos2 = new Sedes();
-			destinos2.cargarDestinos(cbOrigen);
-			Sedes destinos = new Sedes();
-			destinos.cargarDestinos(cbDestino);
-		
-			for(int i = 0; i < cbOrigen.getItemCount(); i++){
-				if(origen.equals(cbOrigen.getItemAt(i).getSede()))
-					cbOrigen.setSelectedIndex(i);
-				if(destino.equals(cbDestino.getItemAt(i).getSede()))
-					cbDestino.setSelectedIndex(i);
+				JOptionPane.showMessageDialog(null, "ERROR al cargar asientos y total: " + e);
 			}
 			
 			//Cargar Horas
@@ -523,15 +524,15 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 				String mind = partshorasd[1];
 				cbHoraDestino.setSelectedItem(horad);
 				cbMinutoDestino.setSelectedItem(mind);
-				
 			} catch (Exception e) {
 				//JOptionPane.showMessageDialog(null, "Ninguna fecha registrada" + e);
 			}
-		} catch (Exception e) {
-			//JOptionPane.showMessageDialog(null, "ERROR: " + e);
+			
 		}
-		//CARGAR NRO DE VIAJE
+		catch(Exception e){
+		}
 		
+		//CARGAR NRO DE VIAJE
 		try { //ASIGNAR N VIAJE 
 			
 			// BUSCAR SI EXISTE VENTA TEMPORAL
@@ -936,18 +937,11 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 			ResultSet rs1 = consulta.cargarVentaTemporal(); // OBTENER TODOS LOS DATOS TEMPORALES
 			try {
 				rs1.next();
-				String conductor = null;
 				int totalasientos = 0;
 				int asientosvendidos = 0;	
 				float total = Float.parseFloat(lblTotal.getText());
 				asientosvendidos = contarAsientosVendidos();
-				ResultSet rs2 = consulta.buscarConductor(rs1.getInt("dniconductor")); // BUSCAR NOMBRE DE CONDUCTOR 
-				try {
-					rs2.next();
-					conductor = rs2.getString("conductor");
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Error al buscar conductor: " + e);
-				}
+				
 				
 				ResultSet rs3 = consulta.buscarModeloVehiculo(rs1.getInt("modelovh")); // BUSCAR CANTIDAD DE ASIENTOS 
 				try {
@@ -956,20 +950,13 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "Error al buscar total de cantidad de asientos: " + e);
 				}
-				
+
 				int codsocio = rs1.getInt("codsocio");
-				String nombresocio = "";
-				ResultSet rs42 = consulta.buscarSocio(codsocio);
-				try {
-					rs42.next();
-					nombresocio = rs42.getString("nombresocio");
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "EROR al buscar socio: " + e);
-				}
+				
 				
 				//REGISTRAR LOS DATOS CORRESPONDIENTES EN VIAJE
-				consulta.registrarViaje(rs1.getInt("nviaje"), codsocio, nombresocio, rs1.getInt("empresa"), rs1.getString("origen"), rs1.getString("destino"), rs1.getString("fpartida"), 
-						rs1.getString("fllegada"), rs1.getString("placa"), rs1.getInt("dniconductor"), conductor, rs1.getString("prepasaje"), 
+				consulta.registrarViaje(rs1.getInt("nviaje"), codsocio, rs1.getInt("empresa"), rs1.getInt("idorigen"), rs1.getInt("iddestino"), rs1.getString("fpartida"), 
+						rs1.getString("fllegada"), rs1.getString("placa"), rs1.getInt("dniconductor"), rs1.getString("prepasaje"), 
 						total, totalasientos, asientosvendidos);
 				
 				

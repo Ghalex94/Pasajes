@@ -356,7 +356,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		txtDireccion.setColumns(10);
 		txtDireccion.setBounds(185, 329, 403, 23);
 		getContentPane().add(txtDireccion);
-		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtDni, txtNombre, txtRuc, txtRazsocial, txtNacionalidad, cbDia, cbMes, cbAnio, txtEdad, txtPrecio, btnGuardar, btnCancelar, btnEliminar}));
+		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtDni, txtNombre, txtRuc, txtRazsocial, txtNacionalidad, txtDireccion, cbDia, cbMes, cbAnio, txtEdad, txtPrecio, btnGuardar, btnCancelar, btnEliminar}));
 		cargar();
 	}
 

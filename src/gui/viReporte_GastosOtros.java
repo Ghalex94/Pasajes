@@ -11,15 +11,21 @@ import javax.swing.SwingConstants;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.SystemColor;
 import javax.swing.JComboBox;
 import com.toedter.calendar.JDateChooser;
 
 import clases.Empresa;
 import clases.Sedes;
+import mysql.Consultas;
+
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 
@@ -39,21 +45,21 @@ public class viReporte_GastosOtros extends JInternalFrame {
 	private JDateChooser dchFechaEmision1;
 	private JLabel lblFecha;
 	private JLabel lblEmpresa;
-	private JComboBox cbEmpresa1;
+	private JComboBox <Empresa> cbEmpresa1;
 	private JButton btnRegstrar1;
 	private JPanel panel_2;
 	private JTextField txtTitulo0;
 	private JTextField txtTitulo2;
 	private JLabel label;
-	private JComboBox cbEmpresa2;
+	private JComboBox <Empresa> cbEmpresa2;
 	private JDateChooser dchFechaInicial2;
 	private JLabel lblFechaInicial;
 	private JDateChooser dchFechaFinal2;
 	private JLabel lblFechaFinal;
 	private JButton btnBuscar2;
 	private JLabel label_3;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField txtNSerie1_1;
+	private JTextField txtNSerie1_2;
 	private JLabel label_4;
 	private JLabel lblDatosObligatorios;
 	private JLabel label_5;
@@ -194,8 +200,8 @@ public class viReporte_GastosOtros extends JInternalFrame {
 		
 		btnRegstrar1 = new JButton("REGISTRAR");
 		btnRegstrar1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				actionPerformedBtnRegstrar1(e);
+			public void actionPerformed(ActionEvent arg0) {
+				actionPerformedBtnRegstrar1(arg0);
 			}
 		});
 		btnRegstrar1.setForeground(Color.WHITE);
@@ -221,21 +227,21 @@ public class viReporte_GastosOtros extends JInternalFrame {
 		label_3.setBounds(35, 236, 289, 40);
 		panel1.add(label_3);
 		
-		textField = new JTextField();
-		textField.setHorizontalAlignment(SwingConstants.RIGHT);
-		textField.setForeground(Color.DARK_GRAY);
-		textField.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 22));
-		textField.setColumns(10);
-		textField.setBounds(324, 236, 57, 40);
-		panel1.add(textField);
+		txtNSerie1_1 = new JTextField();
+		txtNSerie1_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtNSerie1_1.setForeground(Color.DARK_GRAY);
+		txtNSerie1_1.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 22));
+		txtNSerie1_1.setColumns(10);
+		txtNSerie1_1.setBounds(324, 236, 57, 40);
+		panel1.add(txtNSerie1_1);
 		
-		textField_1 = new JTextField();
-		textField_1.setHorizontalAlignment(SwingConstants.LEFT);
-		textField_1.setForeground(Color.DARK_GRAY);
-		textField_1.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 22));
-		textField_1.setColumns(10);
-		textField_1.setBounds(412, 236, 181, 40);
-		panel1.add(textField_1);
+		txtNSerie1_2 = new JTextField();
+		txtNSerie1_2.setHorizontalAlignment(SwingConstants.LEFT);
+		txtNSerie1_2.setForeground(Color.DARK_GRAY);
+		txtNSerie1_2.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 22));
+		txtNSerie1_2.setColumns(10);
+		txtNSerie1_2.setBounds(412, 236, 181, 40);
+		panel1.add(txtNSerie1_2);
 		
 		label_4 = new JLabel("-");
 		label_4.setHorizontalAlignment(SwingConstants.CENTER);
@@ -367,9 +373,38 @@ public class viReporte_GastosOtros extends JInternalFrame {
 			Sedes destino1 = new Sedes();
 			destino1.cargarDestinos(cbDestino1);
 	}
-	     void actionPerformedBtnRegstrar1(ActionEvent e) {
+	
+	protected void actionPerformedBtnRegstrar1(ActionEvent arg0) {
+		try {
+			int idempresa = cbEmpresa1.getItemAt(cbEmpresa1.getSelectedIndex()).getIdempresa();
+			int idorigen = cbOrigen1.getItemAt(cbOrigen1.getSelectedIndex()).getIdsede();
+			int iddestino = cbDestino1.getItemAt(cbDestino1.getSelectedIndex()).getIdsede();
+			try {
+				String nserie1_1 = txtNSerie1_1.getText();
+				String nserie1_2 = txtNSerie1_2.getText();
+				String descripcion = txtDescripcion1.getText();
+				float monto = 0;
+				monto = Float.parseFloat(txtImporte1.getText());
+				String fGasto = "";
+				
+				Date dateGasto = dchFechaEmision1.getDate(); //FECHA
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				fGasto = String.valueOf(sdf.format(dateGasto));
+								
+				Consultas c = new Consultas();
+				c.registrarGasto(nserie1_1, nserie1_2, idempresa, idorigen, iddestino, descripcion, monto, fGasto);
+				JOptionPane.showMessageDialog(null, "REGISTRO EXITOSO");
+				vp.esconderVentanas();
+				vp.cerrarVentanas();
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(null, "Ingrese todo los datos obligatorios correctamente: " + e2);
+			}				
+		} catch (Exception e2) {
+			JOptionPane.showMessageDialog(null, "ERROR al guardar gasto: " + e2);
+		}		
 	}
 	
 	protected void actionPerformedBtnBuscar2(ActionEvent e) {
+		
 	}
 }
