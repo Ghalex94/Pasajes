@@ -735,23 +735,45 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	
 	protected void actionPerformedMntmHdR(ActionEvent arg0) {
 		Consultas consulta = new Consultas();
+		ResultSet rs = consulta.cargarVentaTemporal();
+		int empresa = 0;
+		try {
+			rs.next();
+			empresa = rs.getInt("empresa");
+		} catch (SQLException e1) {
+			JOptionPane.showMessageDialog(null, "Error al cargar empresa: "+ e1.getStackTrace());
+			}
 		try {
 			Connection con = MySQLConexion.getConection();
-			new AbstractJasperReports().createReport( con, "rHojaRutaMA5.jasper");
+			if(empresa == 1)
+				new AbstractJasperReports().createReport( con, "rHojaRutaMA5.jasper");
+			else
+				new AbstractJasperReports().createReport( con, "rHojaRutaZA5.jasper");
 			AbstractJasperReports.showViewer();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Error:. "+ e.getStackTrace());			
+			JOptionPane.showMessageDialog(null, "Error al cargar boleta: "+ e.getStackTrace());			
 		}
 	}
 	
 	protected void actionPerformedMntmIdV(ActionEvent arg0) {
 		Consultas consulta = new Consultas();
+		ResultSet rs = consulta.cargarVentaTemporal();
+		int empresa = 0;
+		try {
+			rs.next();
+			empresa = rs.getInt("empresa");
+		} catch (SQLException e1) {
+			JOptionPane.showMessageDialog(null, "Error al cargar empresa: "+ e1.getStackTrace());
+			}
 		try {
 			Connection con = MySQLConexion.getConection();
-			new AbstractJasperReports().createReport( con, "rItinerarioViajeMA5.jasper");
+			if(empresa == 1)
+				new AbstractJasperReports().createReport( con, "rItinerarioViajeMA5.jasper");
+			else
+				new AbstractJasperReports().createReport( con, "rItinerarioViajeZA5.jasper");
 			AbstractJasperReports.showViewer();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Error:. "+ e.getStackTrace());			
+			JOptionPane.showMessageDialog(null, "Error al cargar boleta: "+ e.getStackTrace());			
 		}
 	}
 	
@@ -792,18 +814,25 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		Consultas consulta = new Consultas();
 		ResultSet rs = consulta.cargarVentaTemporal();
 		int nViaje = 0;
+		int empresa = 0;
 		try {
 			rs.next();
+			empresa = rs.getInt("empresa");
 			nViaje = rs.getInt("nviaje");
-		} catch (SQLException e1) {	e1.printStackTrace(); }
+		} catch (SQLException e1) {
+			JOptionPane.showMessageDialog(null, "Error al cargar Empresa o N Viaje: "+ e1.getStackTrace());
+			}
 		try {
 			Map<String, Object> parameters = new HashMap();
 			parameters.put("prmtNViaje", nViaje);
 			Connection con = MySQLConexion.getConection();
-			new AbstractJasperReports().createReport( con, "rContratoMA5.jasper", parameters);
+			if(empresa == 1)
+				new AbstractJasperReports().createReport( con, "rContratoMA5.jasper", parameters);
+			else
+				new AbstractJasperReports().createReport( con, "rContratoZA5.jasper", parameters);
 			AbstractJasperReports.showViewer();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Error:. "+ e.getStackTrace());			
+			JOptionPane.showMessageDialog(null, "Error al cargar boleta: "+ e.getStackTrace());			
 		}
 	}
 	
