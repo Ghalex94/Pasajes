@@ -310,6 +310,8 @@ inner join  tb_empresa e on e.idempresa = vt.empresa
 where pt.estado = 1 
 order by pt.asiento;
 
+use db_venta_pasajes;
+
 -- VIAJES REALIZADOS
 select v.nviaje, v.codsocio, s.nombresocio, v.dniconductor, c.conductor, v.placa, e.empresa, orgn.sede Origen, dstn.sede Destino, v.fpartida, v.fllegada, v.asientosven, v.totalasientos, v.prepasaje, v.totpasajes
 from tb_viaje v
@@ -320,8 +322,13 @@ inner join tb_sedes dstn 	on dstn.idsede 	= v.iddestino
 inner join  tb_conductor c 	on c.dniconductor = v.dniconductor
 where fpartida between '2019-10-24 00:00:00'  and '2019-10-26 23:59:59';
 
-
-
+select * from tb_detalle_viaje;
+-- DETALLES DE VIAJE
+select dv.nviaje, dv.asiento, dv.nboleto, dv.dnipasajero, p.nombre, dv.prepasaje, dv.contratante 
+from tb_detalle_viaje dv
+inner join tb_pasajero p 	on p.dnipasajero = dv.dnipasajero
+where dv.nviaje = 1001
+order by dv.asiento;
 
 
 
