@@ -11,21 +11,34 @@ import javax.swing.SwingConstants;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.SystemColor;
 import javax.swing.JComboBox;
 import com.toedter.calendar.JDateChooser;
 
+import clases.AbstractJasperReports;
 import clases.Empresa;
 import clases.Sedes;
+import mysql.MySQLConexion;
+
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
 
-public class viReporte_Viajes extends JInternalFrame {
+public class viReporte_Viajes extends JInternalFrame implements ActionListener {
 	
 	vPrincipal vp = null;
 	private JTextField txtEmisionDeBoletas;
@@ -42,7 +55,7 @@ public class viReporte_Viajes extends JInternalFrame {
 	private JPanel panel_1;
 	private JButton btnVerPasajeros;
 	private JTextField txtPasajerosDeViaje;
-	private JTextField txtNviajePasajero;
+	private JTextField txtPasajerosViaje;
 	private JLabel label;
 	private JPanel panel_2;
 	private JButton btnDNI;
@@ -113,11 +126,7 @@ public class viReporte_Viajes extends JInternalFrame {
 		panel1.add(dchFechaInicio);
 		
 		btnVerViajesRealizados = new JButton("Ver");
-		btnVerViajesRealizados.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				actionPerformedBtnRegstrar1(e);
-			}
-		});
+		btnVerViajesRealizados.addActionListener(this);
 		btnVerViajesRealizados.setForeground(Color.WHITE);
 		btnVerViajesRealizados.setFont(new Font("Dialog", Font.BOLD, 25));
 		btnVerViajesRealizados.setBackground(new Color(0, 139, 139));
@@ -185,6 +194,7 @@ public class viReporte_Viajes extends JInternalFrame {
 		getContentPane().add(panel_1);
 		
 		btnVerPasajeros = new JButton("Ver");
+		btnVerPasajeros.addActionListener(this);
 		btnVerPasajeros.setForeground(Color.WHITE);
 		btnVerPasajeros.setFont(new Font("Dialog", Font.BOLD, 25));
 		btnVerPasajeros.setBackground(new Color(0, 139, 139));
@@ -201,13 +211,13 @@ public class viReporte_Viajes extends JInternalFrame {
 		txtPasajerosDeViaje.setBounds(0, 0, 625, 44);
 		panel_1.add(txtPasajerosDeViaje);
 		
-		txtNviajePasajero = new JTextField();
-		txtNviajePasajero.setHorizontalAlignment(SwingConstants.LEFT);
-		txtNviajePasajero.setForeground(Color.DARK_GRAY);
-		txtNviajePasajero.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 22));
-		txtNviajePasajero.setColumns(10);
-		txtNviajePasajero.setBounds(216, 68, 365, 40);
-		panel_1.add(txtNviajePasajero);
+		txtPasajerosViaje = new JTextField();
+		txtPasajerosViaje.setHorizontalAlignment(SwingConstants.LEFT);
+		txtPasajerosViaje.setForeground(Color.DARK_GRAY);
+		txtPasajerosViaje.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 22));
+		txtPasajerosViaje.setColumns(10);
+		txtPasajerosViaje.setBounds(216, 68, 365, 40);
+		panel_1.add(txtPasajerosViaje);
 		
 		label = new JLabel("N\u00B0 Viaje:");
 		label.setHorizontalAlignment(SwingConstants.LEFT);
@@ -293,6 +303,61 @@ public class viReporte_Viajes extends JInternalFrame {
 			Sedes sinDestino = new Sedes(-2, "Sin seleccionar");
 			Sedes destino1 = new Sedes();
 	}
-	     void actionPerformedBtnRegstrar1(ActionEvent e) {
+	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == btnVerPasajeros) {
+			actionPerformedBtnVerPasajeros(arg0);
+		}
+		if (arg0.getSource() == btnVerViajesRealizados) {
+			actionPerformedBtnVerViajesRealizados(arg0);
+		}
+	}
+	
+	protected void actionPerformedBtnVerViajesRealizados(ActionEvent arg0) {
+		Connection con = null;
+		try {
+			con = MySQLConexion.getConection();
+			
+			int añoi = dchFechaInicio.getCalendar().get(Calendar.YEAR);
+			int mesi = dchFechaInicio.getCalendar().get(Calendar.MARCH) + 1;
+			int diai = dchFechaInicio.getCalendar().get(Calendar.DAY_OF_MONTH);
+			String fechai = añoi + "-" + mesi + "-" + diai + " 00:00:00";
+
+			int añof = dchFechaFin.getCalendar().get(Calendar.YEAR);
+			int mesf = dchFechaFin.getCalendar().get(Calendar.MARCH) + 1;
+			int diaf = dchFechaFin.getCalendar().get(Calendar.DAY_OF_MONTH);
+			String fechaf = añof + "-" + mesf + "-" + diaf + " 23:59:59";
+			
+			DateFormat formatter;
+			formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			Date date = (Date) formatter.parse(fechai);
+			java.sql.Timestamp timeStampDateI = new Timestamp(date.getTime());
+			DateFormat formatter2;
+			formatter2 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			Date date2 = (Date) formatter2.parse(fechaf);
+			java.sql.Timestamp timeStampDateF = new Timestamp(date2.getTime());
+			
+			Map parameters = new HashMap();
+			parameters.put("prtFechaI", timeStampDateI);
+			parameters.put("prtFechaF", timeStampDateF);
+			new AbstractJasperReports().createReport(con, "rrViajesRealizados.jasper", parameters);
+			AbstractJasperReports.showViewer();
+			
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, "No se encontraron datos registrados en estas fechas" + ex);
+		}
+	}
+	
+	protected void actionPerformedBtnVerPasajeros(ActionEvent arg0) {
+		Connection con = null;
+		try {
+			con = MySQLConexion.getConection();
+			int nviaje = Integer.parseInt(txtPasajerosViaje.getText());
+			Map parameters = new HashMap();
+			parameters.put("nviaje", nviaje);
+			new AbstractJasperReports().createReport(con, "rrViajeDetalle.jasper", parameters);
+			AbstractJasperReports.showViewer();
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, "No se encontró el viaje. " + ex);
+		}
 	}
 }
