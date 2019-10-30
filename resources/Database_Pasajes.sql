@@ -94,6 +94,27 @@ foreign key (nviaje) references tb_viaje(nviaje),
 foreign key (dnipasajero) references tb_pasajero(dnipasajero)
 );
 
+create table tb_detalle_viaje_otros(
+nviaje			int primary key,
+standar			int, -- 0NO 1SI
+escalacom		int, -- 0NO 1SI
+ciudaddesde		varchar(50),
+ciudadhasta		varchar(50),
+puntoencuentro	varchar(60),
+escalas			varchar(150),
+dniconductor1	int,
+horainicio1		varchar(5),
+horainicio2		varchar(5),
+dniconductor2	int,
+horafin1		varchar(5),
+horafin2		varchar(5),
+modalidad		int,
+totalmodif		float, 
+foreign key (nviaje) 		references tb_viaje(nviaje),
+foreign key (dniconductor1) references tb_conductor(dniconductor),
+foreign key (dniconductor2) references tb_conductor(dniconductor)
+);
+
 create table tb_venta_temporal(
 id				int not null primary key,
 estado			int, -- 0Nuevo 1En creacion
@@ -113,7 +134,7 @@ escalacom		int, -- 0NO 1SI
 ciudaddesde		varchar(50),
 ciudadhasta		varchar(50),
 puntoencuentro	varchar(60),
-escalas			varchar(100),
+escalas			varchar(150),
 horainicio2		varchar(5),
 dniconductor2	int,
 licencia2		varchar(30),
@@ -329,13 +350,5 @@ from tb_detalle_viaje dv
 inner join tb_pasajero p 	on p.dnipasajero = dv.dnipasajero
 where dv.nviaje = 1001
 order by dv.asiento;
-
-
-
-
-
-
-
-
 
 

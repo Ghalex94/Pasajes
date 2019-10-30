@@ -646,7 +646,7 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		}
 	}
 	protected void keyTypedTxtEscalasParadas(KeyEvent e) {
-		if (txtEscalasParadas.getText().length() == 100){
+		if (txtEscalasParadas.getText().length() == 150){
 			e.consume();
 		}
 	}

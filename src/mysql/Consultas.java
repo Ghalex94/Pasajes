@@ -952,6 +952,20 @@ public class Consultas {
 		}
 	}
 	
+	public void registrarDetallesOtros(int nviaje, int standar, int escalacom, String ciudaddesde, String ciudadhasta, String puntoencuentro, String escalas, int dniconductor1,
+			String horainicio1, String horainicio2, int dniconductor2, String horafin1, String horafin2, int modalidad, float totalmodif){
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "insert into tb_detalle_viaje (nviaje, nboleto, dnipasajero, asiento, edad, prepasaje, contratante)" + " values (?, ?, ?, ?, ?, ?, ?)";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, nviaje);
+			prepareStmt.execute();
+			con.close();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR" + e);
+		}
+	}
+	
 	public void registrarComprobante(String nserie1_1, String nserie1_2, int idempresa, int idorigen, int iddestino, int comprobante, String descripcion, float importe, String fEmision){
 		Connection con = MySQLConexion.getConection();
 		try {

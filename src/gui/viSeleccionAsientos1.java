@@ -1112,6 +1112,14 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 					JOptionPane.showMessageDialog(null, "Error al buscar tabla pasajeros temporal: " + e);
 				}
 				
+				//REGISTRAR LOS DATOS CORRESPONDIENTES EN DETALLES OTROS
+				try {
+					while(rs4.next())
+						consulta.registrarDetallesOtros(rs1.getInt("nviaje"), rs4.getInt("standar"), rs4.getInt("escalacom"), rs4.getString("ciudaddesde"), rs4.getString("ciudadhasta"), rs4.getString("puntoencuentro"), rs4.getString("escalas"), rs4.getInt("dniconductor1"), rs4.getString("horainicio1"), rs4.getString("horainicio2"), rs4.getInt("dniconductor2"), rs4.getString("horafin1"), rs4.getString("horafin2"), rs4.getInt("modalidad"), rs4.getFloat("totalmodif"));
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Error al buscar tabla pasajeros temporal 2 : " + e);
+				}
+				
 				
 				JOptionPane.showMessageDialog(null, "VENTA EXITOSA");
 				consulta.eliminarSalidaVehiculo();
