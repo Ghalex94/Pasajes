@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="B:/Desarrollo/Eclipse/GIT/Venta_pasajes/resources/Librerias/JR/commons-collections-3.2.1-1.0.0.jar"/>
 	<classpathentry kind="lib" path="B:/Desarrollo/Eclipse/GIT/Venta_pasajes/resources/Librerias/JR/commons-digester-2.1.jar"/>
 	<classpathentry kind="lib" path="B:/Desarrollo/Eclipse/GIT/Venta_pasajes/resources/Librerias/JR/commons-logging-1.3.jar"/>
+	<classpathentry kind="lib" path="B:/Desarrollo/Eclipse/GIT/Venta_pasajes/resources/Librerias/AutoCompleter.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

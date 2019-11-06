@@ -669,9 +669,20 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	
 	protected void actionPerformedMntmCancelarSalida(ActionEvent arg0) {
 		int opc = JOptionPane.showConfirmDialog(null, "¿Cancelar salida?\nSi lo hace toda la preparación se eliminará permanentemente", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+		Consultas consulta0 = new Consultas();
+		ResultSet rs = consulta0.cargarVentaTemporal(); // OBTENER TODOS LOS DATOS TEMPORALES
+		String usuario = "";
+		try {
+			rs.next();
+			rs.getString("usuario");
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Error al buscar usuario registrado");
+		}
+		
 		if (opc == 0){
 			Consultas consulta = new Consultas();
-			consulta.eliminarSalidaVehiculo();
+			consulta.eliminarSalidaVehiculo(usuario);
 			esconderVentanas();
 			cerrarVentanas();
 			mntmCrearNuevaSalida.setEnabled(true);

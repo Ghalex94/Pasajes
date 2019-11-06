@@ -1077,6 +1077,8 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		int opc = JOptionPane.showConfirmDialog(null, "¿ESTÁ SEGURO DE FINALIZAR?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (opc == 0){
 			Consultas consulta = new Consultas();
+
+			JOptionPane.showMessageDialog(null, "Antes de cargar venta temporal");
 			ResultSet rs1 = consulta.cargarVentaTemporal(); // OBTENER TODOS LOS DATOS TEMPORALES
 			try {
 				rs1.next();
@@ -1085,7 +1087,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 				float total = Float.parseFloat(lblTotal.getText());
 				asientosvendidos = contarAsientosVendidos();
 				
-				
+
 				ResultSet rs3 = consulta.buscarModeloVehiculo(rs1.getInt("modelovh")); // BUSCAR CANTIDAD DE ASIENTOS 
 				try {
 					rs3.next();
@@ -1096,12 +1098,10 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 
 				int codsocio = rs1.getInt("codsocio");
 				
-				
 				//REGISTRAR LOS DATOS CORRESPONDIENTES EN VIAJE
 				consulta.registrarViaje(rs1.getInt("nviaje"), codsocio, rs1.getInt("empresa"), rs1.getInt("idorigen"), rs1.getInt("iddestino"), rs1.getString("fpartida"), 
 						rs1.getString("fllegada"), rs1.getString("placa"), rs1.getInt("dniconductor"), rs1.getString("prepasaje"), 
 						total, totalasientos, asientosvendidos);
-				
 				
 				//REGISTRAR LOS DATOS CORRESPONDIENTES EN DETALLE
 				ResultSet rs4 = consulta.cargarPasajerosTemporal(); // OBTENER TODOS LOS DATOS TEMPORALES
@@ -1113,16 +1113,34 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 				}
 				
 				//REGISTRAR LOS DATOS CORRESPONDIENTES EN DETALLES OTROS
+				ResultSet rs5 = consulta.cargarVentaTemporal(); // OBTENER TODOS LOS DATOS TEMPORALES
+				String fpartidaoriginal = "";
+				String horamin1 = "";
+				String horamin2 = "";
+				String usuario = "";
 				try {
-					while(rs4.next())
-						consulta.registrarDetallesOtros(rs1.getInt("nviaje"), rs4.getInt("standar"), rs4.getInt("escalacom"), rs4.getString("ciudaddesde"), rs4.getString("ciudadhasta"), rs4.getString("puntoencuentro"), rs4.getString("escalas"), rs4.getInt("dniconductor1"), rs4.getString("horainicio1"), rs4.getString("horainicio2"), rs4.getInt("dniconductor2"), rs4.getString("horafin1"), rs4.getString("horafin2"), rs4.getInt("modalidad"), rs4.getFloat("totalmodif"));
+					rs5.next();
+					usuario = rs5.getString("usuario");
+					if(rs5.getString("fpartida") != null){
+						fpartidaoriginal = rs5.getString("fpartida");
+						String[] arrayfecha1 = fpartidaoriginal.split(" ");
+						horamin1 = arrayfecha1[1]; // 00:00:00:00
+						
+						String[] arrayhora1 = horamin1.split(":");
+						String hora1 = arrayhora1[0];
+						String minuto1 = arrayhora1[1];
+						horamin2 = hora1 + ":" + minuto1; // 00:00
+						
+						consulta.registrarDetallesOtros(rs5.getInt("nviaje"), rs5.getInt("standar"), rs5.getInt("escalacom"), rs5.getString("ciudaddesde"), rs5.getString("ciudadhasta"), 
+								rs5.getString("puntoencuentro"), rs5.getString("escalas"), rs5.getInt("dniconductor"), horamin2, rs5.getString("horainicio2"), 
+								rs5.getInt("dniconductor2"), rs5.getString("horafin1"), rs5.getString("horafin2"), rs5.getInt("modalidad"), rs5.getFloat("totalmodif"), rs5.getString("usuario"));
+					}
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "Error al buscar tabla pasajeros temporal 2 : " + e);
 				}
 				
-				
 				JOptionPane.showMessageDialog(null, "VENTA EXITOSA");
-				consulta.eliminarSalidaVehiculo();
+				consulta.eliminarSalidaVehiculo(usuario);
 				vp.mntmCrearNuevaSalida.setEnabled(true);
 				vp.mntmContinuarPreparacion.setEnabled(false);
 				vp.mntmCancelarSalida.setEnabled(false);
@@ -1130,9 +1148,8 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 				vp.esconderVentanas();
 				vp.cerrarVentanas();
 			} catch (Exception e) {
-				// TODO: handle exception
-			}
-			
+				JOptionPane.showMessageDialog(null, "Error al finalizar: " + e);
+			}			
 		}
 	}
 }

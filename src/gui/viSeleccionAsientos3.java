@@ -972,9 +972,35 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 					JOptionPane.showMessageDialog(null, "Error al buscar tabla pasajeros temporal: " + e);
 				}
 				
+				//REGISTRAR LOS DATOS CORRESPONDIENTES EN DETALLES OTROS
+				ResultSet rs5 = consulta.cargarVentaTemporal(); // OBTENER TODOS LOS DATOS TEMPORALES
+				String fpartidaoriginal = "";
+				String horamin1 = "";
+				String horamin2 = "";
+				String usuario = "";
+				try {
+					rs5.next();
+					usuario = rs5.getString("usuario");
+					if(rs5.getString("fpartida") != null){
+						fpartidaoriginal = rs5.getString("fpartida");
+						String[] arrayfecha1 = fpartidaoriginal.split(" ");
+						horamin1 = arrayfecha1[1]; // 00:00:00:00
+						
+						String[] arrayhora1 = horamin1.split(":");
+						String hora1 = arrayhora1[0];
+						String minuto1 = arrayhora1[1];
+						horamin2 = hora1 + ":" + minuto1; // 00:00
+						
+						consulta.registrarDetallesOtros(rs5.getInt("nviaje"), rs5.getInt("standar"), rs5.getInt("escalacom"), rs5.getString("ciudaddesde"), rs5.getString("ciudadhasta"), 
+								rs5.getString("puntoencuentro"), rs5.getString("escalas"), rs5.getInt("dniconductor"), horamin2, rs5.getString("horainicio2"), 
+								rs5.getInt("dniconductor2"), rs5.getString("horafin1"), rs5.getString("horafin2"), rs5.getInt("modalidad"), rs5.getFloat("totalmodif"), rs5.getString("usuario"));
+					}
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Error al buscar tabla pasajeros temporal 2 : " + e);
+				}
 				
 				JOptionPane.showMessageDialog(null, "VENTA EXITOSA");
-				consulta.eliminarSalidaVehiculo();
+				consulta.eliminarSalidaVehiculo(usuario);
 				vp.mntmCrearNuevaSalida.setEnabled(true);
 				vp.mntmContinuarPreparacion.setEnabled(false);
 				vp.mntmCancelarSalida.setEnabled(false);
@@ -982,9 +1008,8 @@ public class viSeleccionAsientos3 extends JInternalFrame implements ActionListen
 				vp.esconderVentanas();
 				vp.cerrarVentanas();
 			} catch (Exception e) {
-				// TODO: handle exception
-			}
-			
+				JOptionPane.showMessageDialog(null, "Error al finalizar: " + e);
+			}			
 		}
 	}
 }

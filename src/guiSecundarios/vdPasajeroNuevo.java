@@ -100,7 +100,6 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener, KeyListe
 		
 		txtDni = new JTextField();
 		txtDni.addKeyListener(this);
-		txtDni.setText("0");
 		txtDni.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		txtDni.setColumns(10);
 		txtDni.setBounds(204, 94, 392, 23);

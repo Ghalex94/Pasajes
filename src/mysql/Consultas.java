@@ -206,12 +206,13 @@ public class Consultas {
 		ResultSet rs = null;
 		try {
 			st = con.createStatement();
-			String sql = "insert into tb_vehiculo (placa, idmodelo, detalle, mtc)" + " values (?, ?, ?, ?)";
+			String sql = "insert into tb_vehiculo (placa, idmodelo, detalle, mtc, estado)" + " values (?, ?, ?, ?, ?)";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setString(1, placa);
 			prepareStmt.setInt(2, modelo);
 			prepareStmt.setString(3, detalle);
 			prepareStmt.setString(4, mtc);
+			prepareStmt.setInt(5, 0);
 			prepareStmt.execute();
 			con.close();
 			//JOptionPane.showMessageDialog(null, "Conductor creado correctamente");			
@@ -219,6 +220,7 @@ public class Consultas {
 			JOptionPane.showMessageDialog(null, "ERROR al crear vehiculo: " + e);
 		}
 	}
+	
 	
 	public static void modificarVehiculo(String placa, int modelo, String detalle, String mtc){
 		Connection con = MySQLConexion.getConection();
@@ -232,6 +234,19 @@ public class Consultas {
 			prepareStmt.execute();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+	}
+
+	public static void actualizarVehiculoEstado(String placa, int estado){
+		Connection con = MySQLConexion.getConection();
+		try {
+			String sql = "update tb_vehiculo set estado=? where placa=?";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, estado);
+			prepareStmt.setString(2, placa);
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR al actualizar Socio de Vehiculo: " + e);
 		}
 	}
 	
@@ -350,6 +365,17 @@ public class Consultas {
 	}
 	
 	//1MERMA 2SIGUEL
+	public static void actualizarVentaTemporal00(String usuario){ 
+	Connection con = MySQLConexion.getConection();
+	try {
+		String sql = "update tb_venta_temporal set usuario=? where id=1";
+		PreparedStatement prepareStmt = con.prepareStatement(sql);
+		prepareStmt.setString(1, usuario);
+		prepareStmt.execute();
+	} catch (Exception e) {
+		JOptionPane.showMessageDialog(null, "ERROR al actualizar VentaTemporal 00: " + e);
+	}
+}
 	//VIENE DE DATOS1
 	public static void actualizarVentaTemporal01(int estado, int codsocio, int empresa, int dniconductor, String placa, int modelovh, float prepasaje){ 
 		Connection con = MySQLConexion.getConection();
@@ -480,11 +506,9 @@ public class Consultas {
 	
 	public ResultSet buscarSocio(int codsocio){
 		Connection con = MySQLConexion.getConection();
-		java.sql.Statement st;
 		ResultSet rs = null;
 		PreparedStatement pst = null;
 		try {
-			st = con.createStatement();
 			String sql = "select * from tb_socio where codsocio = ?";
 			pst = con.prepareStatement(sql);
 			pst.setInt(1, codsocio);
@@ -546,16 +570,38 @@ public class Consultas {
 		return rs;
 	}
 	
-	public static void eliminarSalidaVehiculo(){
+	public ResultSet buscarVehiculoActivo(String placa){
 		Connection con = MySQLConexion.getConection();
+		java.sql.Statement st;
+		ResultSet rs = null;
+		PreparedStatement pst = null;
+		try {
+			st = con.createStatement();
+			String sql = "select * from tb_vehiculo where placa = ?";
+			pst = con.prepareStatement(sql);
+			pst.setString(1, placa);
+			rs = pst.executeQuery();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR: " + e);
+		}
+		return rs;
+	}
+	
+	public static void eliminarSalidaVehiculo(String usuario){
+		Connection con = MySQLConexion.getConection();
+		PreparedStatement pst = null;
 		try {
 			String sql1 = "delete from tb_venta_temporal where id = 1";
-			String sql2 = "insert into tb_venta_temporal values(1, 0, 0, 0, 0, null, 0, 0, 0, null, null, 0, -1, 1, 0, null, null, null, null, null, 0, null, null, null, 0, -1)";
+			String sql2 = "insert into tb_venta_temporal values(1, 0, 0, 0, 0, null, 0, 0, 0, null, null, 0, -1, 1, 0, null, null, null, null, null, 0, null, null, null, 0, -1, ?)";
 			String sql3 = "delete from tb_pasajeros_temporal where asiento < 100";
 			PreparedStatement prepareStmt = con.prepareStatement(sql1);
 			prepareStmt.execute();
-			PreparedStatement prepareStmt2 = con.prepareStatement(sql2);
-			prepareStmt2.execute();
+			
+			pst = con.prepareStatement(sql2);
+			pst.setString(1, usuario);
+			
+			//PreparedStatement prepareStmt2 = con.prepareStatement(sql2);
+			pst.execute();
 			PreparedStatement prepareStmt3 = con.prepareStatement(sql3);
 			prepareStmt3.execute();
 		} catch (Exception e) {
@@ -870,7 +916,7 @@ public class Consultas {
 			prepareStmt.setInt(5, dniconductor);
 			prepareStmt.setString(6, placa);
 			prepareStmt.execute();
-			JOptionPane.showMessageDialog(null, "Socio creado correctamente.");
+			JOptionPane.showMessageDialog(null, "Socio creado correctamente.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
 			con.close();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR al crear socio" + e);
@@ -953,16 +999,33 @@ public class Consultas {
 	}
 	
 	public void registrarDetallesOtros(int nviaje, int standar, int escalacom, String ciudaddesde, String ciudadhasta, String puntoencuentro, String escalas, int dniconductor1,
-			String horainicio1, String horainicio2, int dniconductor2, String horafin1, String horafin2, int modalidad, float totalmodif){
+			String horainicio1, String horainicio2, int dniconductor2, String horafin1, String horafin2, int modalidad, float totalmodif, String usuario){
 		Connection con = MySQLConexion.getConection();
+
 		try {
-			String sql = "insert into tb_detalle_viaje (nviaje, nboleto, dnipasajero, asiento, edad, prepasaje, contratante)" + " values (?, ?, ?, ?, ?, ?, ?)";
+			String sql = "insert into tb_detalle_viaje_otros (nviaje, standar, escalacom, ciudaddesde, ciudadhasta, puntoencuentro,"
+					+ " escalas, dniconductor1, horainicio1, horainicio2, dniconductor2, horafin1, horafin2, modalidad, totalmodif, usuario) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setInt(1, nviaje);
+			prepareStmt.setInt(2, standar);
+			prepareStmt.setInt(3, escalacom);
+			prepareStmt.setString(4, ciudaddesde);
+			prepareStmt.setString(5, ciudadhasta);
+			prepareStmt.setString(6, puntoencuentro);
+			prepareStmt.setString(7, escalas);
+			prepareStmt.setInt(8, dniconductor1);
+			prepareStmt.setString(9, horainicio1);
+			prepareStmt.setString(10, horainicio2);
+			prepareStmt.setInt(11, dniconductor2);
+			prepareStmt.setString(12, horafin1);
+			prepareStmt.setString(13, horafin2);
+			prepareStmt.setInt(14, modalidad);
+			prepareStmt.setFloat(15, totalmodif);
+			prepareStmt.setString(16, usuario);
 			prepareStmt.execute();
 			con.close();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "ERROR" + e);
+			JOptionPane.showMessageDialog(null, "ERROR al registrarDetallesOtros: " + e);
 		}
 	}
 	

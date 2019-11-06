@@ -2,20 +2,17 @@ package guiSecundarios;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-
 import clases.Conductor;
 import clases.Empresa;
 import gui.vPrincipal;
 import gui.viListaSocios;
 import gui.viListaVehiculos;
 import mysql.Consultas;
-
 import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Font;
@@ -30,6 +27,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
+import com.mxrck.autocompleter.TextAutoCompleter;
 import java.awt.Component;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
@@ -37,6 +35,8 @@ import javax.swing.Box;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
+import javax.swing.JCheckBox;
+import java.awt.event.MouseAdapter;
 
 public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener {
 	private JTextField txtAgregarVehiculo;
@@ -44,11 +44,6 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 	private JButton btnGuardar;
 	private JButton btnCancelar;
 	private JLabel lblPlaca;
-	
-	vPrincipal vp = null;
-	viListaSocios ls = null;
-	
-	ResultSet rs;
 	private JTextField txtDniSocio;
 	private JLabel lblEmpresa;
 	private JComboBox cbEmpresa;
@@ -61,12 +56,12 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 	private JLabel label_3;
 	private JTextField txtMTC;
 	private JLabel lblConductor_1;
-	private JLabel lblDni;
+	private JLabel lblDniConductor;
 	private JTextField txtDniConductor;
-	private JLabel lblNombre;
+	private JLabel lblNombreConductor;
 	private JTextField txtNombreConductor;
-	private JLabel label_7;
-	private JTextField txtNlicencia;
+	private JLabel lblNlicenciaConductor;
+	private JTextField txtNlicenciaConductor;
 	private Component horizontalStrut;
 	private Component verticalStrut;
 	private Component horizontalStrut_1;
@@ -78,6 +73,13 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 	private JLabel label_6;
 	private JLabel label_8;
 	private JLabel label_4;
+	private JCheckBox chbxSocio;
+	private JLabel lblNlicenciaSocio;
+	private JTextField txtNlicenciaSocio;
+
+	vPrincipal vp = null;
+	viListaSocios ls = null;
+	ResultSet rs;
 	
 	public static void main(String[] args) {
 		try {
@@ -93,13 +95,12 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 	 * Create the dialog.
 	 */
 	public vdSocioNuevo(vPrincipal temp, viListaSocios temp2) {
+		setTitle("Socio Nuevo");
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		
 		vp = temp;
 		ls = temp2;
-		
-		setUndecorated(true);
-		setBounds(100, 100, 724, 709);
+		setBounds(100, 100, 724, 805);
 		getContentPane().setLayout(null);
 		{
 			txtAgregarVehiculo = new JTextField();
@@ -115,6 +116,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		}
 		{
 			lblPlaca = new JLabel("Codigo de socio:");
+			this.lblPlaca.setForeground(Color.BLACK);
 			lblPlaca.setVerticalAlignment(SwingConstants.BOTTOM);
 			lblPlaca.setHorizontalAlignment(SwingConstants.LEFT);
 			lblPlaca.setFont(new Font("Century Gothic", Font.PLAIN, 20));
@@ -132,6 +134,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		}
 		{
 			JLabel lblModelo = new JLabel("DNI:");
+			lblModelo.setForeground(Color.BLACK);
 			lblModelo.setVerticalAlignment(SwingConstants.BOTTOM);
 			lblModelo.setHorizontalAlignment(SwingConstants.LEFT);
 			lblModelo.setFont(new Font("Century Gothic", Font.PLAIN, 20));
@@ -140,10 +143,11 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		}
 		{
 			JLabel lblConductor = new JLabel("Veh\u00EDculo afiliado");
+			lblConductor.setForeground(Color.BLACK);
 			lblConductor.setVerticalAlignment(SwingConstants.BOTTOM);
 			lblConductor.setHorizontalAlignment(SwingConstants.LEFT);
 			lblConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-			lblConductor.setBounds(30, 246, 190, 34);
+			lblConductor.setBounds(30, 298, 190, 34);
 			getContentPane().add(lblConductor);
 		}
 		{
@@ -152,7 +156,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 			btnCancelar.setForeground(Color.WHITE);
 			btnCancelar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
 			btnCancelar.setBackground(new Color(0, 139, 139));
-			btnCancelar.setBounds(31, 634, 220, 53);
+			btnCancelar.setBounds(31, 706, 220, 53);
 			getContentPane().add(btnCancelar);
 		}
 		{
@@ -161,7 +165,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 			btnGuardar.setForeground(Color.WHITE);
 			btnGuardar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
 			btnGuardar.setBackground(new Color(0, 139, 139));
-			btnGuardar.setBounds(470, 634, 220, 53);
+			btnGuardar.setBounds(470, 706, 220, 53);
 			getContentPane().add(btnGuardar);
 		}
 		{
@@ -179,6 +183,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		}
 		
 		lblEmpresa = new JLabel("Empresa");
+		this.lblEmpresa.setForeground(Color.BLACK);
 		lblEmpresa.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblEmpresa.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEmpresa.setFont(new Font("Century Gothic", Font.PLAIN, 20));
@@ -191,9 +196,10 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		getContentPane().add(cbEmpresa);
 		
 		label = new JLabel("Placa:");
+		this.label.setForeground(Color.BLACK);
 		label.setHorizontalAlignment(SwingConstants.LEFT);
 		label.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		label.setBounds(70, 293, 95, 20);
+		label.setBounds(70, 345, 95, 20);
 		getContentPane().add(label);
 		
 		txtPlaca = new JTextField();
@@ -212,24 +218,26 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		});
 		txtPlaca.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtPlaca.setColumns(10);
-		txtPlaca.setBounds(226, 291, 464, 25);
+		txtPlaca.setBounds(226, 343, 464, 25);
 		getContentPane().add(txtPlaca);
 		
 		cbModeloV = new JComboBox();
 		cbModeloV.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		cbModeloV.setBounds(226, 331, 464, 25);
+		cbModeloV.setBounds(226, 383, 464, 25);
 		getContentPane().add(cbModeloV);
 		
 		label_1 = new JLabel("Modelo:");
+		this.label_1.setForeground(Color.BLACK);
 		label_1.setHorizontalAlignment(SwingConstants.LEFT);
 		label_1.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		label_1.setBounds(70, 336, 95, 20);
+		label_1.setBounds(70, 388, 95, 20);
 		getContentPane().add(label_1);
 		
 		label_2 = new JLabel("Detalles:");
+		this.label_2.setForeground(Color.BLACK);
 		label_2.setHorizontalAlignment(SwingConstants.LEFT);
 		label_2.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		label_2.setBounds(70, 377, 95, 20);
+		label_2.setBounds(70, 429, 95, 20);
 		getContentPane().add(label_2);
 		
 		txtDetalles = new JTextField();
@@ -241,13 +249,14 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		});
 		txtDetalles.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtDetalles.setColumns(10);
-		txtDetalles.setBounds(226, 372, 464, 25);
+		txtDetalles.setBounds(226, 424, 464, 25);
 		getContentPane().add(txtDetalles);
 		
 		label_3 = new JLabel("MTC:");
+		this.label_3.setForeground(Color.BLACK);
 		label_3.setHorizontalAlignment(SwingConstants.LEFT);
 		label_3.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		label_3.setBounds(70, 420, 95, 20);
+		label_3.setBounds(70, 472, 95, 20);
 		getContentPane().add(label_3);
 		
 		txtMTC = new JTextField();
@@ -259,20 +268,22 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		});
 		txtMTC.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtMTC.setColumns(10);
-		txtMTC.setBounds(226, 415, 464, 25);
+		txtMTC.setBounds(226, 467, 464, 25);
 		getContentPane().add(txtMTC);
 		
 		lblConductor_1 = new JLabel("Conductor");
+		this.lblConductor_1.setForeground(Color.BLACK);
 		lblConductor_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblConductor_1.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblConductor_1.setBounds(30, 484, 132, 20);
+		lblConductor_1.setBounds(30, 536, 132, 20);
 		getContentPane().add(lblConductor_1);
 		
-		lblDni = new JLabel("DNI:");
-		lblDni.setHorizontalAlignment(SwingConstants.LEFT);
-		lblDni.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblDni.setBounds(70, 518, 104, 20);
-		getContentPane().add(lblDni);
+		lblDniConductor = new JLabel("DNI:");
+		this.lblDniConductor.setForeground(Color.BLACK);
+		lblDniConductor.setHorizontalAlignment(SwingConstants.LEFT);
+		lblDniConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		lblDniConductor.setBounds(70, 570, 104, 20);
+		getContentPane().add(lblDniConductor);
 		
 		txtDniConductor = new JTextField();
 		txtDniConductor.setForeground(new Color(255, 69, 0));
@@ -290,14 +301,15 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		});
 		txtDniConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtDniConductor.setColumns(10);
-		txtDniConductor.setBounds(226, 515, 464, 25);
+		txtDniConductor.setBounds(226, 567, 464, 25);
 		getContentPane().add(txtDniConductor);
 		
-		lblNombre = new JLabel("Nombre:");
-		lblNombre.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNombre.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblNombre.setBounds(70, 553, 111, 20);
-		getContentPane().add(lblNombre);
+		lblNombreConductor = new JLabel("Nombre:");
+		this.lblNombreConductor.setForeground(Color.BLACK);
+		lblNombreConductor.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNombreConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		lblNombreConductor.setBounds(70, 605, 111, 20);
+		getContentPane().add(lblNombreConductor);
 		
 		txtNombreConductor = new JTextField();
 		txtNombreConductor.addKeyListener(new KeyAdapter() {
@@ -308,43 +320,43 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		});
 		txtNombreConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtNombreConductor.setColumns(10);
-		txtNombreConductor.setBounds(226, 550, 464, 25);
+		txtNombreConductor.setBounds(226, 602, 464, 25);
 		getContentPane().add(txtNombreConductor);
 		
-		label_7 = new JLabel("N Licencia:");
-		label_7.setHorizontalAlignment(SwingConstants.LEFT);
-		label_7.setForeground(new Color(0, 0, 0));
-		label_7.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		label_7.setBounds(70, 586, 132, 20);
-		getContentPane().add(label_7);
+		lblNlicenciaConductor = new JLabel("N Licencia:");
+		lblNlicenciaConductor.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNlicenciaConductor.setForeground(Color.BLACK);
+		lblNlicenciaConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		lblNlicenciaConductor.setBounds(70, 638, 132, 20);
+		getContentPane().add(lblNlicenciaConductor);
 		
-		txtNlicencia = new JTextField();
-		txtNlicencia.addKeyListener(new KeyAdapter() {
+		txtNlicenciaConductor = new JTextField();
+		txtNlicenciaConductor.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				keyTypedTxtNlicencia(e);
 			}
 		});
-		txtNlicencia.setForeground(Color.BLACK);
-		txtNlicencia.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		txtNlicencia.setColumns(10);
-		txtNlicencia.setBounds(226, 584, 464, 25);
-		getContentPane().add(txtNlicencia);
+		txtNlicenciaConductor.setForeground(Color.BLACK);
+		txtNlicenciaConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		txtNlicenciaConductor.setColumns(10);
+		txtNlicenciaConductor.setBounds(226, 636, 464, 25);
+		getContentPane().add(txtNlicenciaConductor);
 		
 		horizontalStrut = Box.createHorizontalStrut(20);
-		horizontalStrut.setBounds(22, 503, 40, 20);
+		horizontalStrut.setBounds(22, 555, 40, 20);
 		getContentPane().add(horizontalStrut);
 		
 		verticalStrut = Box.createVerticalStrut(20);
-		verticalStrut.setBounds(52, 513, 18, 110);
+		verticalStrut.setBounds(52, 565, 18, 110);
 		getContentPane().add(verticalStrut);
 		
 		horizontalStrut_1 = Box.createHorizontalStrut(20);
-		horizontalStrut_1.setBounds(22, 275, 40, 20);
+		horizontalStrut_1.setBounds(22, 327, 40, 20);
 		getContentPane().add(horizontalStrut_1);
 		
 		verticalStrut_1 = Box.createVerticalStrut(20);
-		verticalStrut_1.setBounds(52, 285, 18, 162);
+		verticalStrut_1.setBounds(52, 337, 18, 162);
 		getContentPane().add(verticalStrut_1);
 		
 		horizontalStrut_2 = Box.createHorizontalStrut(20);
@@ -356,6 +368,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		getContentPane().add(verticalStrut_2);
 		
 		JLabel Nombre = new JLabel("Nombre:");
+		Nombre.setForeground(Color.BLACK);
 		Nombre.setVerticalAlignment(SwingConstants.BOTTOM);
 		Nombre.setHorizontalAlignment(SwingConstants.LEFT);
 		Nombre.setFont(new Font("Century Gothic", Font.PLAIN, 20));
@@ -385,14 +398,14 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		label_6.setHorizontalAlignment(SwingConstants.CENTER);
 		label_6.setForeground(Color.RED);
 		label_6.setFont(new Font("Century Gothic", Font.PLAIN, 25));
-		label_6.setBounds(202, 291, 18, 20);
+		label_6.setBounds(202, 343, 18, 20);
 		getContentPane().add(label_6);
 		
 		label_8 = new JLabel("*");
 		label_8.setHorizontalAlignment(SwingConstants.CENTER);
 		label_8.setForeground(Color.RED);
 		label_8.setFont(new Font("Century Gothic", Font.PLAIN, 25));
-		label_8.setBounds(202, 518, 18, 20);
+		label_8.setBounds(202, 570, 18, 20);
 		getContentPane().add(label_8);
 		
 		label_4 = new JLabel("*");
@@ -401,7 +414,37 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		label_4.setFont(new Font("Century Gothic", Font.PLAIN, 25));
 		label_4.setBounds(202, 146, 18, 34);
 		getContentPane().add(label_4);
-		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtCodSocio, cbEmpresa, txtDniSocio, txtNombreSocio, txtPlaca, cbModeloV, txtDetalles, txtMTC, txtDniConductor, txtNombreConductor, txtNlicencia, btnGuardar, btnCancelar}));
+		
+		this.chbxSocio = new JCheckBox("Si el socio tambien har\u00E1 de conductor, marque esta casilla.");
+		this.chbxSocio.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				mouseClickedChbxSocio(arg0);
+			}
+		});
+		this.chbxSocio.setHorizontalAlignment(SwingConstants.RIGHT);
+		this.chbxSocio.setForeground(new Color(0, 139, 139));
+		this.chbxSocio.setFont(new Font("Tahoma", Font.ITALIC, 15));
+		this.chbxSocio.setBackground(Color.LIGHT_GRAY);
+		this.chbxSocio.setBounds(226, 268, 464, 23);
+		getContentPane().add(this.chbxSocio);
+		
+		this.lblNlicenciaSocio = new JLabel("N Licencia:");
+		this.lblNlicenciaSocio.setEnabled(false);
+		this.lblNlicenciaSocio.setHorizontalAlignment(SwingConstants.LEFT);
+		this.lblNlicenciaSocio.setForeground(Color.BLACK);
+		this.lblNlicenciaSocio.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		this.lblNlicenciaSocio.setBounds(70, 245, 132, 20);
+		getContentPane().add(this.lblNlicenciaSocio);
+		
+		this.txtNlicenciaSocio = new JTextField();
+		this.txtNlicenciaSocio.setEnabled(false);
+		this.txtNlicenciaSocio.setForeground(Color.BLACK);
+		this.txtNlicenciaSocio.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		this.txtNlicenciaSocio.setColumns(10);
+		this.txtNlicenciaSocio.setBounds(226, 243, 464, 25);
+		getContentPane().add(this.txtNlicenciaSocio);
+		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtCodSocio, cbEmpresa, txtDniSocio, txtNombreSocio, txtPlaca, cbModeloV, txtDetalles, txtMTC, txtDniConductor, txtNombreConductor, txtNlicenciaConductor, btnGuardar, btnCancelar}));
 		cargar();
 	}
 	
@@ -431,6 +474,48 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		}
 		
 		Conductor conductor = new Conductor();
+		
+		
+		// CARGAR AUTOCOMPLETADORES
+		//SOCIO
+		TextAutoCompleter acs;
+		acs = new TextAutoCompleter(txtDniSocio);
+		Consultas consultas = new Consultas();
+		ResultSet rss = consultas.cargarSocios();
+		acs.setMode(0);
+		try {
+			while (rss.next()) 
+				acs.addItem(rss.getInt("dnisocio"));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR al cargar Socios: " + e);
+		}
+		
+		//VEHICULOS
+		TextAutoCompleter acv;
+		acv = new TextAutoCompleter(txtPlaca);
+		Consultas consultav = new Consultas();
+		ResultSet rsv = consultav.cargarVehiculos();
+		acv.setMode(0);
+		try {
+			while (rsv.next()) 
+				acv.addItem(rsv.getString("placa"));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR al cargar placas: " + e);
+		}
+		
+		//CONDUCTOR
+		TextAutoCompleter acc;
+		acc = new TextAutoCompleter(txtDniConductor);
+		Consultas consultac = new Consultas();
+		ResultSet rsc = consultac.cargarConductores();
+		acc.setMode(0);
+		try {
+			while (rsc.next()) 
+				acc.addItem(rsc.getInt("dniconductor"));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR al cargar conductor: " + e);
+		}
+		
 	}
 	
 	protected void actionPerformedBtnCancelar(ActionEvent e) {
@@ -439,13 +524,22 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 	}
 	
 	protected void actionPerformedBtnGuardar(ActionEvent e) {
-		if(txtCodSocio.getText().length() == 0 || txtPlaca.getText().length() != 7 || txtDniConductor.getText().length() != 8){
+		int error = 0; // 0NO ERROR  1ERROR
+		if(txtCodSocio.getText().length() == 0 || txtDniSocio.getText().length() != 8 || txtPlaca.getText().length() != 7)
+			error = 1;
+		if(chbxSocio.isSelected())
+			if(txtNlicenciaSocio.getText().length() < 9)
+				error = 1;
+		if(!chbxSocio.isSelected())
+			if(txtNlicenciaConductor.getText().length() < 9)
+				error = 1;
+		
+		if(error == 1){
 			this.setAlwaysOnTop(false);		
 			JOptionPane.showMessageDialog(null, "Ingrese los datos necesarios correctamente");
 			this.setAlwaysOnTop(true);
-		}  
+		}
 		else{
-			
 			int codsocio = Integer.parseInt(txtCodSocio.getText());
 			int idempresa = cbEmpresa.getSelectedIndex() + 1;
 			int dnisocio = Integer.parseInt(txtDniSocio.getText());	
@@ -456,80 +550,135 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 			String detalles = txtDetalles.getText();
 			String mtc = txtMTC.getText();
 			
-			int dniconductor = Integer.parseInt(txtDniConductor.getText());
-			String nombreconductor = txtNombreConductor.getText();
-			String licencia = txtNlicencia.getText();
+			int dniconductor = 0;
+			String nombreconductor = "";
+			String licencia = "";
 			
-			/*
-			//VERIFICAR QUE NO EXISTA SOCIO, CONDUCTOR NI VEHICULO
-			int flag = 1;
-			this.setAlwaysOnTop(false);
-			
-			Consultas consult = new Consultas();
-			ResultSet rsconductor = null;
-			rsconductor = consult.buscarConductor(dniconductor);
-			if(rsconductor != null)
-				flag = 0;
-			else
-				flag = 1;
-			
-			ResultSet rsvehiculo = null;
-			rsconductor = consult.buscarVehiculo(placa);
-			if(rsvehiculo != null)
-				flag = 0;
-			else
-				flag = 1;
-			
-			ResultSet rssocio = null;
-			rssocio = consult.buscarSocio(codsocio);
-			if(rssocio != null)
-				flag = 0;
-			else
-				flag = 1;
-			
-			ResultSet rssocio2 = null;
-			rssocio2 = consult.buscarSocio2(dnisocio);
-			if(rssocio2 != null)
-				flag = 0;
-			else
-				flag = 1;
-			
-			
-			
-			if(flag == 0){
-				this.setAlwaysOnTop(false);
-				Consultas consulta1 = new Consultas();
-				consulta1.crearConductor(dniconductor, licencia, nombreconductor);
-				
-				Consultas consulta2 = new Consultas();
-				consulta2.crearVehiculo(placa, modelo, detalles, mtc);
-				
-				Consultas consulta = new Consultas();
-				this.setAlwaysOnTop(false);
-				consulta.crearSocio(codsocio, idempresa, dnisocio, nombresocio, dniconductor, placa);
-				
-				ls.cargar();
-				ls.seleccionarSocio(codsocio);
-				vp.setEnabled(true);
-				this.dispose();
+			if(chbxSocio.isSelected()){
+				dniconductor = Integer.parseInt(txtDniSocio.getText());
+				nombreconductor = txtNombreSocio.getText();
+				licencia = txtNlicenciaSocio.getText();
 			}
-			*/
+			else{
+				dniconductor = Integer.parseInt(txtDniConductor.getText());
+				nombreconductor = txtNombreConductor.getText();
+				licencia = txtNlicenciaConductor.getText();
+			}
 			
-			this.setAlwaysOnTop(false);
-			Consultas consulta1 = new Consultas();
-			consulta1.crearConductor(dniconductor, licencia, nombreconductor);
-			
-			Consultas consulta2 = new Consultas();
-			consulta2.crearVehiculo(placa, modelo, detalles, mtc);
-			
-			Consultas consulta = new Consultas();
-			this.setAlwaysOnTop(false);
-			consulta.crearSocio(codsocio, idempresa, dnisocio, nombresocio, dniconductor, placa);
-			
-			ls.cargar();
-			ls.seleccionarSocio(codsocio);
-			vp.setEnabled(true);
-			this.dispose();
+			String comprobador = null;
+			try {				
+				Consultas consult = new Consultas();
+
+				int existeconductor = 0; // 0NO 1SI
+				try {
+					ResultSet rsconductor = null;
+					rsconductor = consult.buscarConductor(dniconductor);
+					rsconductor.next();
+					//JOptionPane.showMessageDialog(null, rsconductor.getString("conductor"));
+					comprobador = rsconductor.getString("conductor");
+					existeconductor = 1;
+				} catch (Exception e2) {
+					//JOptionPane.showMessageDialog(null, "No existe conductor");
+					existeconductor = 0;
+				}
+				
+				int existevehiculo = 0; // 0NO 1SI
+				try {
+					ResultSet rsvehiculo = null;
+					rsvehiculo = consult.buscarVehiculo(placa);
+					rsvehiculo.next();
+					//JOptionPane.showMessageDialog(null, rsvehiculo.getString("mtc"));
+					comprobador = rsvehiculo.getString("mtc");
+					existevehiculo = 1;
+				} catch (Exception e2) {
+					//JOptionPane.showMessageDialog(null, "No existe vehiculo");
+					existevehiculo = 0;
+				}	
+				
+				int existecodsocio = 0; // 0NO 1SI
+				try {
+					ResultSet rssocio = null;
+					rssocio = consult.buscarSocio(codsocio);
+					rssocio.next();
+					//JOptionPane.showMessageDialog(null, "COD: " + rssocio.getString("nombresocio"));
+					comprobador = rssocio.getString("nombresocio");
+					existecodsocio = 1;
+				} catch (Exception e2) {
+					//JOptionPane.showMessageDialog(null, "No existe codigo  socio");
+					existecodsocio = 0;
+				}	
+				
+				int existednisocio = 0; // 0NO 1SI
+				try {
+					ResultSet rssocio2 = null;
+					rssocio2 = consult.buscarSocio2(dnisocio);
+					rssocio2.next();
+					//JOptionPane.showMessageDialog(null, "DNI: " + rssocio2.getString("nombresocio"));
+					comprobador = rssocio2.getString("nombresocio");
+					existednisocio = 1;
+				} catch (Exception e2) {
+					//JOptionPane.showMessageDialog(null, "No existe dni socio");
+					existednisocio = 0;
+				}
+				
+				if(existecodsocio == 1){
+					this.setAlwaysOnTop(false);
+					JOptionPane.showMessageDialog(null, "Ya existe un socio creado con el Codigo: " + codsocio, "Alerta", JOptionPane.ERROR_MESSAGE);
+					this.setAlwaysOnTop(true);
+				}
+				else{
+					//JOptionPane.showMessageDialog(null, "Entró a regristrar datos: " + codsocio, "Alerta", JOptionPane.INFORMATION_MESSAGE);
+					if(existevehiculo == 1){
+						ResultSet rsvehiculo = null;
+						rsvehiculo = consult.buscarVehiculo(placa);
+						rsvehiculo.next();//ENTRA AQUI SI EXISTE 
+						if(rsvehiculo.getInt("estado") == 0){ // SI ES 0 ES POR QUE ESTÁ ACTIVO, ENTONCES NO SE HACE NADA
+							this.setAlwaysOnTop(false);
+							JOptionPane.showMessageDialog(null, "El vehiculo ya existe y está relacionado a un socio. \nNo se puede registrar.", "Alerta", JOptionPane.ERROR_MESSAGE);
+							this.setAlwaysOnTop(true);
+						}
+						
+						else{ // ENTRA AQUÍ SI EXISTE PERO ESTÁ INACTIVO, SI SE REGISTRARÁ
+							Consultas consultaActualizarVehiculo = new Consultas();
+							consultaActualizarVehiculo.actualizarVehiculoEstado(placa, 0); // 0 = ACTIVO
+														
+							if(existeconductor == 0){
+								this.setAlwaysOnTop(false);
+								Consultas consulta1 = new Consultas();
+								consulta1.crearConductor(dniconductor, licencia, nombreconductor);
+							}
+							
+							Consultas consulta = new Consultas();
+							this.setAlwaysOnTop(false);
+							consulta.crearSocio(codsocio, idempresa, dnisocio, nombresocio, dniconductor, placa);
+							this.setAlwaysOnTop(true);
+						}							
+					}
+					else{
+						 // ENTRA AQUÍ SI EXISTE PERO ESTÁ INACTIVO, SI SE REGISTRARÁ
+						Consultas consulta2 = new Consultas();
+						consulta2.crearVehiculo(placa, modelo, detalles, mtc);
+													
+						if(existeconductor == 0){
+							this.setAlwaysOnTop(false);
+							Consultas consulta1 = new Consultas();
+							consulta1.crearConductor(dniconductor, licencia, nombreconductor);
+						}
+						
+						Consultas consulta = new Consultas();
+						this.setAlwaysOnTop(false);
+						consulta.crearSocio(codsocio, idempresa, dnisocio, nombresocio, dniconductor, placa);
+						this.setAlwaysOnTop(true);
+					}					
+					
+					ls.cargar();
+					ls.seleccionarSocio(codsocio);
+					vp.setEnabled(true);
+					this.dispose();
+				}	
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(null, "ERROR al guardar: " + e2);
+			}
 		}
 	}
 	
@@ -561,12 +710,22 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 			e.consume();
 	}
 	protected void keyTypedTxtDniSocio(KeyEvent e) {
-		
 		char c = e.getKeyChar();
 		if ((c<'0' || c>'9') && (c!=(char)KeyEvent.VK_DELETE) && (c!=(char)KeyEvent.VK_BACK_SPACE) && (c!=(char)KeyEvent.VK_ENTER))
 			e.consume();
 		if (txtDniSocio.getText().length() == 8)
 			e.consume();
+		
+		if (c == (char)KeyEvent.VK_ENTER){
+			try {
+			Consultas consulta = new Consultas();
+			ResultSet rs = consulta.buscarSocio2(Integer.parseInt(txtDniSocio.getText()));
+				rs.next();
+				txtNombreSocio.setText(rs.getString("nombresocio"));
+			} catch (Exception e2) {
+				txtNombreSocio.setText(null);
+			}
+		}		
 	}
 	protected void keyTypedTxtNombreSocio(KeyEvent e) {
 		if (txtNombreSocio.getText().length() == 50)
@@ -575,6 +734,22 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 	protected void keyTypedTxtPlaca(KeyEvent e) {
 		if (txtPlaca.getText().length() == 7)
 			e.consume();
+		
+		char c = e.getKeyChar();
+		if (c == (char)KeyEvent.VK_ENTER){
+			try {
+			Consultas consulta = new Consultas();
+			ResultSet rs = consulta.buscarVehiculo(txtPlaca.getText());
+				rs.next();
+				txtDetalles.setText(rs.getString("detalle"));
+				txtMTC.setText(rs.getString("mtc"));
+				cbModeloV.setSelectedIndex(rs.getInt("idmodelo")-1);
+			} catch (Exception e2) {
+				txtDetalles.setText(null);
+				txtMTC.setText(null);
+				cbModeloV.setSelectedIndex(0);
+			}
+		}
 	}
 	protected void keyTypedTxtDetalles(KeyEvent e) {
 		if (txtDetalles.getText().length() == 100)
@@ -591,13 +766,26 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		if (txtDniConductor.getText().length() == 8){
 			e.consume();
 		}
+		
+		if (c == (char)KeyEvent.VK_ENTER){
+			try {
+			Consultas consulta = new Consultas();
+			ResultSet rs = consulta.buscarConductor(Integer.parseInt(txtDniConductor.getText()));
+				rs.next();
+				txtNombreConductor.setText(rs.getString("conductor"));
+				txtNlicenciaConductor.setText(rs.getString("licencia"));
+			} catch (Exception e2) {
+				txtNombreConductor.setText(null);
+				txtNlicenciaConductor.setText(null);
+			}
+		}
 	}
 	protected void keyTypedTxtNombreConductor(KeyEvent e) {
 		if (txtNombreConductor.getText().length() == 50)
 			e.consume();
 	}
 	protected void keyTypedTxtNlicencia(KeyEvent e) {
-		if (txtNlicencia.getText().length() == 20)
+		if (txtNlicenciaConductor.getText().length() == 20)
 			e.consume();
 	}
 	
@@ -622,7 +810,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 			try {
 				rs.next();
 				txtNombreConductor.setText(rs.getString("conductor"));
-				txtNlicencia.setText(rs.getString("licencia"));				
+				txtNlicenciaConductor.setText(rs.getString("licencia"));				
 			} catch (SQLException ex) {
 				this.setAlwaysOnTop(false);
 				JOptionPane.showMessageDialog(null, "No existe el conductor, se creará uno nuevo.");
@@ -668,8 +856,50 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 	public void limpiarConductor(){
 		cbModeloV.setSelectedIndex(1);
 		txtNombreConductor.setText("");
-		txtNlicencia.setText("");
+		txtNlicenciaConductor.setText("");
 	} 
+	protected void mouseClickedChbxSocio(MouseEvent arg0) {
+		this.setAlwaysOnTop(false);
+		if(chbxSocio.isSelected()){
+			int opc = JOptionPane.showConfirmDialog(null, "¿Está seguro de que el socio será el conductor?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if (opc == 0){
+				txtNlicenciaSocio.setEnabled(true);
+				txtNlicenciaConductor.setEnabled(false);
+				txtNombreConductor.setEnabled(false);
+				txtDniConductor.setEnabled(false);
+				
+				lblNlicenciaSocio.setEnabled(true);
+				lblDniConductor.setEnabled(false);
+				lblNombreConductor.setEnabled(false);
+				lblNlicenciaConductor.setEnabled(false);
+				
+				txtNlicenciaConductor.setText(null);
+				txtNombreConductor.setText(null);
+				txtDniConductor.setText(null);
+			}
+			else
+				chbxSocio.setSelected(false);
+		}
+		else{
+			int opc = JOptionPane.showConfirmDialog(null, "¿Está seguro cancelar al socio como conductor?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if (opc == 0){
+				txtNlicenciaSocio.setEnabled(false);
+				txtNlicenciaConductor.setEnabled(true);
+				txtNombreConductor.setEnabled(true);
+				txtDniConductor.setEnabled(true);
+				
+				lblNlicenciaSocio.setEnabled(false);
+				lblDniConductor.setEnabled(true);
+				lblNombreConductor.setEnabled(true);
+				lblNlicenciaConductor.setEnabled(true);
+				
+				txtNlicenciaSocio.setText(null);
+			}
+			else
+				chbxSocio.setSelected(true);
+		}
+		this.setAlwaysOnTop(true);
+	}
 }
 
 

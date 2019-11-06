@@ -60,8 +60,7 @@ public class vdConductor extends JDialog implements ActionListener, KeyListener 
 		vp = temp;
 		
 		setLocationRelativeTo(null);
-		setUndecorated(true);
-		setBounds(100, 100, 658, 368);
+		setBounds(100, 100, 658, 399);
 		getContentPane().setLayout(null);
 		{
 			txtDatosDeConductor = new JTextField();

@@ -57,8 +57,7 @@ public class vdSedeNueva extends JDialog implements ActionListener, KeyListener 
 		ldest = temp2;
 		
 		getContentPane().setBackground(Color.LIGHT_GRAY);
-		setUndecorated(true);
-		setBounds(100, 100, 559, 253);
+		setBounds(100, 100, 559, 291);
 		getContentPane().setLayout(null);
 		
 		txtAgregarDestino = new JTextField();

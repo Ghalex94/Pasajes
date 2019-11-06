@@ -30,6 +30,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
+
+import com.mxrck.autocompleter.TextAutoCompleter;
+
 import java.awt.Component;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
@@ -102,6 +105,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 	 * Create the dialog.
 	 */
 	public vdSocioModificar(vPrincipal temp, viListaSocios temp2, int temp3, int temp4, String temp5) {
+		setTitle("Modificar Socio");
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		
 		vp = temp;
@@ -109,10 +113,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		codsocio = temp3;
 		antiguodniconductor = temp4;
 		antiguaplaca = temp5;
-		
-		
-		setUndecorated(true);
-		setBounds(100, 100, 724, 709);
+		setBounds(100, 100, 724, 741);
 		getContentPane().setLayout(null);
 		{
 			txtAgregarVehiculo = new JTextField();
@@ -546,7 +547,48 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 			nlicencia = rs4.getString("licencia");
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
-		}		
+		}
+		
+		// CARGAR AUTOCOMPLETADORES
+				//SOCIO
+				TextAutoCompleter acs;
+				acs = new TextAutoCompleter(txtDniSocio);
+				Consultas consultas = new Consultas();
+				ResultSet rss = consultas.cargarSocios();
+				acs.setMode(0);
+				try {
+					while (rss.next()) 
+						acs.addItem(rss.getInt("dnisocio"));
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "ERROR al cargar Socios: " + e);
+				}
+				
+				//VEHICULOS
+				TextAutoCompleter acv;
+				acv = new TextAutoCompleter(txtPlaca);
+				Consultas consultav = new Consultas();
+				ResultSet rsv = consultav.cargarVehiculos();
+				acv.setMode(0);
+				try {
+					while (rsv.next()) 
+						acv.addItem(rsv.getString("placa"));
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "ERROR al cargar placas: " + e);
+				}
+				
+				//CONDUCTOR
+				TextAutoCompleter acc;
+				acc = new TextAutoCompleter(txtDniConductor);
+				Consultas consultac = new Consultas();
+				ResultSet rsc = consultac.cargarConductores();
+				acc.setMode(0);
+				try {
+					while (rsc.next()) 
+						acc.addItem(rsc.getInt("dniconductor"));
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "ERROR al cargar conductor: " + e);
+				}
+		
 	}
 	
 	protected void actionPerformedBtnCancelar(ActionEvent e) {
@@ -555,7 +597,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 	}
 	
 	protected void actionPerformedBtnGuardar(ActionEvent e) {
-		if(txtCodSocio.getText().length() == 0 || txtPlaca.getText().length() != 7 || txtDniConductor.getText().length() != 8){
+		if(txtCodSocio.getText().length() == 0 || txtDniSocio.getText().length() != 8 || txtPlaca.getText().length() != 7 || txtDniConductor.getText().length() != 8){
 			this.setAlwaysOnTop(false);		
 			JOptionPane.showMessageDialog(null, "Ingrese los datos necesarios correctamente");
 			this.setAlwaysOnTop(true);
@@ -576,41 +618,93 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 			String licencia = txtNlicencia.getText();
 			
 			this.setAlwaysOnTop(false);
-			Consultas consulta = new Consultas();			
+			Consultas consulta = new Consultas();
 			
-			if(chbxVehiculo.isSelected() && chbxConductor.isSelected()){ // CREAR CONDUCTOR Y VEHICULO
-				consulta.crearVehiculo(newplaca, modelo, detalles, mtc);
-				consulta.crearConductor(newdniconductor, licencia, nombreconductor);
-				consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, newdniconductor, newplaca);
-				consulta.eliminarVehiculo(antiguaplaca);
-				consulta.eliminarConductor(antiguodniconductor);
+			
+			int estadoVehiculo = -1; // 0ACTIVO 1INACTIVO 2TEMPORAL -1NO EXISTE
+			try {
+				ResultSet rsvehiculo = null;
+				rsvehiculo = consulta.buscarVehiculo(newplaca);
+				rsvehiculo.next();
+				estadoVehiculo = rsvehiculo.getInt("estado");
+			} catch (Exception e2) {
 			}
 			
-			if(chbxConductor.isSelected() == false && chbxVehiculo.isSelected()){ // CREAR VEHICULO
-				consulta.crearVehiculo(newplaca, modelo, detalles, mtc);
-				consulta.modificarConductor(antiguodniconductor, licencia, nombreconductor);
-				consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, antiguodniconductor, newplaca);
-				consulta.eliminarVehiculo(antiguaplaca);
+			
+			int existeconductor = 0; // 0NO 1SI
+			String comprobador = null;
+			try {
+				ResultSet rsconductor = null;
+				rsconductor = consulta.buscarConductor(newdniconductor);
+				rsconductor.next();
+				comprobador = rsconductor.getString("conductor");
+				existeconductor = 1;
+			} catch (Exception e2) {
+				existeconductor = 0;
 			}
 			
-			if(chbxConductor.isSelected() && chbxVehiculo.isSelected() == false){ // CREAR CONDUCTOR
-				consulta.crearConductor(newdniconductor, licencia, nombreconductor);
-				consulta.modificarVehiculo(antiguaplaca, modelo, detalles, mtc);
-				consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, newdniconductor, antiguaplaca);
-				consulta.eliminarConductor(antiguodniconductor);
+			if(estadoVehiculo == 0 && chbxVehiculo.isSelected()){
+				this.setAlwaysOnTop(false);
+				JOptionPane.showMessageDialog(null, "El vehiculo ingresado ya está afiliado a un socio\nPor favor ingrese otro", "Alerta", JOptionPane.ERROR_MESSAGE);
+				this.setAlwaysOnTop(true);
 			}
-			
-			if(chbxConductor.isSelected() == false && chbxVehiculo.isSelected() == false){ // MODIFICAR CONDUCTOR Y VEHICULO
-				consulta.modificarConductor(antiguodniconductor, licencia, nombreconductor);
-				consulta.modificarVehiculo(antiguaplaca, modelo, detalles, mtc);
-				consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, antiguodniconductor, antiguaplaca);
-			}
+			else{
 
-			JOptionPane.showMessageDialog(null, "Datos modificados correctamente.");
-			ls.cargar();
-			ls.seleccionarSocio(codsocio);
-			vp.setEnabled(true);
-			this.dispose();
+				if(chbxVehiculo.isSelected() && chbxConductor.isSelected()){ // CREAR CONDUCTOR Y VEHICULO
+					if(estadoVehiculo == -1){ // NO EXISTE, SE CREARÁ
+						consulta.crearVehiculo(newplaca, modelo, detalles, mtc);
+						consulta.actualizarVehiculoEstado(antiguaplaca, 1); //1 INACTIVO
+					}
+					else{
+						consulta.actualizarVehiculoEstado(antiguaplaca, 1); //1 INACTIVO
+						consulta.actualizarVehiculoEstado(newplaca, 0); //0 ACTIVO
+						consulta.modificarVehiculo(newplaca, modelo, detalles, mtc);
+					}					  					
+					
+					if(existeconductor == 0) // NO EXISTE CONDUCTOR
+						consulta.crearConductor(newdniconductor, licencia, nombreconductor);
+					else
+						consulta.modificarConductor(newdniconductor, licencia, nombreconductor);
+					
+					consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, newdniconductor, newplaca);
+				}
+				
+				if(chbxConductor.isSelected() == false && chbxVehiculo.isSelected()){ // CREAR VEHICULO
+					if(estadoVehiculo == -1){ // NO EXISTE, SE CREARÁ
+						consulta.crearVehiculo(newplaca, modelo, detalles, mtc);
+						consulta.actualizarVehiculoEstado(antiguaplaca, 1); //1 INACTIVO
+					}
+					else{
+						consulta.actualizarVehiculoEstado(antiguaplaca, 1); //1 INACTIVO
+						consulta.actualizarVehiculoEstado(newplaca, 0); //0 ACTIVO
+						consulta.modificarVehiculo(newplaca, modelo, detalles, mtc);
+					}
+					
+					consulta.modificarConductor(antiguodniconductor, licencia, nombreconductor);
+					consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, antiguodniconductor, newplaca);
+				}
+				
+				if(chbxConductor.isSelected() && chbxVehiculo.isSelected() == false){ // CREAR CONDUCTOR
+					if(existeconductor == 0) // NO EXISTE CONDUCTOR
+						consulta.crearConductor(newdniconductor, licencia, nombreconductor);
+					else
+						consulta.modificarConductor(newdniconductor, licencia, nombreconductor);
+					consulta.modificarVehiculo(antiguaplaca, modelo, detalles, mtc);
+					consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, newdniconductor, antiguaplaca);
+				}
+				
+				if(chbxConductor.isSelected() == false && chbxVehiculo.isSelected() == false){ // MODIFICAR CONDUCTOR Y VEHICULO
+					consulta.modificarConductor(antiguodniconductor, licencia, nombreconductor);
+					consulta.modificarVehiculo(antiguaplaca, modelo, detalles, mtc);
+					consulta.modificarSocio(codsocio, idempresa, dnisocio, nombresocio, antiguodniconductor, antiguaplaca);
+				}
+
+				JOptionPane.showMessageDialog(null, "Datos modificados correctamente.");
+				ls.cargar();
+				ls.seleccionarSocio(codsocio);
+				vp.setEnabled(true);
+				this.dispose();
+			}			
 		}
 	}
 	
@@ -647,6 +741,17 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 			e.consume();
 		if (txtDniSocio.getText().length() == 8)
 			e.consume();
+		
+		if (c == (char)KeyEvent.VK_ENTER){
+			try {
+			Consultas consulta = new Consultas();
+			ResultSet rs = consulta.buscarSocio2(Integer.parseInt(txtDniSocio.getText()));
+				rs.next();
+				txtNombreSocio.setText(rs.getString("nombresocio"));
+			} catch (Exception e2) {
+				txtNombreSocio.setText(null);
+			}
+		}		
 	}
 	protected void keyTypedTxtNombreSocio(KeyEvent e) {
 		if (txtNombreSocio.getText().length() == 50)
@@ -655,6 +760,22 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 	protected void keyTypedTxtPlaca(KeyEvent e) {
 		if (txtPlaca.getText().length() == 7)
 			e.consume();
+		
+		char c = e.getKeyChar();
+		if (c == (char)KeyEvent.VK_ENTER){
+			try {
+			Consultas consulta = new Consultas();
+			ResultSet rs = consulta.buscarVehiculo(txtPlaca.getText());
+				rs.next();
+				txtDetalles.setText(rs.getString("detalle"));
+				txtMTC.setText(rs.getString("mtc"));
+				cbModeloV.setSelectedIndex(rs.getInt("idmodelo")-1);
+			} catch (Exception e2) {
+				txtDetalles.setText(null);
+				txtMTC.setText(null);
+				cbModeloV.setSelectedIndex(0);
+			}
+		}
 	}
 	protected void keyTypedTxtDetalles(KeyEvent e) {
 		if (txtDetalles.getText().length() == 100)
@@ -670,6 +791,19 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 			e.consume();
 		if (txtDniConductor.getText().length() == 8){
 			e.consume();
+		}
+		
+		if (c == (char)KeyEvent.VK_ENTER){
+			try {
+			Consultas consulta = new Consultas();
+			ResultSet rs = consulta.buscarConductor(Integer.parseInt(txtDniConductor.getText()));
+				rs.next();
+				txtNombreConductor.setText(rs.getString("conductor"));
+				txtNlicencia.setText(rs.getString("licencia"));
+			} catch (Exception e2) {
+				txtNombreConductor.setText(null);
+				txtNlicencia.setText(null);
+			}
 		}
 	}
 	protected void keyTypedTxtNombreConductor(KeyEvent e) {

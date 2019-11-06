@@ -156,6 +156,11 @@ public class viReporte_Viajes extends JInternalFrame implements ActionListener {
 		getContentPane().add(panel);
 		
 		btnVerDetalleViaje = new JButton("Ver");
+		this.btnVerDetalleViaje.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				actionPerformedBtnVerDetalleViaje(arg0);
+			}
+		});
 		btnVerDetalleViaje.setForeground(Color.WHITE);
 		btnVerDetalleViaje.setFont(new Font("Dialog", Font.BOLD, 25));
 		btnVerDetalleViaje.setBackground(new Color(0, 139, 139));
@@ -360,4 +365,9 @@ public class viReporte_Viajes extends JInternalFrame implements ActionListener {
 			JOptionPane.showMessageDialog(null, "No se encontró el viaje. " + ex);
 		}
 	}
+	
+	protected void actionPerformedBtnVerDetalleViaje(ActionEvent arg0) {
+		
+	}
+	
 }

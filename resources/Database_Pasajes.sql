@@ -32,18 +32,20 @@ placa			varchar(7) not null primary key,
 idmodelo		int,
 detalle			varchar(100),
 mtc				varchar(20),
+estado			int, -- 0ACTIVO 1INACTIVO 2TEMPORAL(se utilizó en un solo viaje)
 foreign key (idmodelo) references tb_modelo_vehiculo(idmodelo)
 );
 
 create table tb_socio(
-codsocio		int primary key,
+codsocio		int,
 idempresa		int,
 dnisocio		int,
 nombresocio		varchar(70),
 dniconductor	int,
 placa			varchar(7),
 foreign key (dniconductor) references tb_conductor(dniconductor),
-foreign key (placa) references tb_vehiculo(placa)
+foreign key (placa) references tb_vehiculo(placa),
+primary key (codsocio, dnisocio)
 );
 
 create table tb_pasajero(
@@ -78,6 +80,7 @@ asientosven		int,
 foreign key (codsocio) references tb_socio(codsocio),
 foreign key (idorigen) references tb_sedes(idsede),
 foreign key (iddestino) references tb_sedes(idsede),
+foreign key (placa) references tb_vehiculo(placa),
 foreign key (dniconductor) references tb_conductor(dniconductor)
 );
 
@@ -109,10 +112,9 @@ dniconductor2	int,
 horafin1		varchar(5),
 horafin2		varchar(5),
 modalidad		int,
-totalmodif		float, 
-foreign key (nviaje) 		references tb_viaje(nviaje),
-foreign key (dniconductor1) references tb_conductor(dniconductor),
-foreign key (dniconductor2) references tb_conductor(dniconductor)
+totalmodif		float,
+usuario			varchar(50),
+foreign key (nviaje) 		references tb_viaje(nviaje)
 );
 
 create table tb_venta_temporal(
@@ -141,7 +143,8 @@ licencia2		varchar(30),
 horafin1		varchar(5),
 horafin2		varchar(5),
 modalidad		int,
-totalmodif		float
+totalmodif		float,
+usuario			varchar(50)
 );                                 
 
 create table tb_pasajeros_temporal(
@@ -209,12 +212,16 @@ insert into tb_modelo_vehiculo values(null, 'Wolkswagen Crafter 20+1',    21); -
 
 insert into tb_sedes values(null, 'Arequipa');
 insert into tb_sedes values(null, 'Juliaca');
-insert into tb_sedes values(null, 'Puno');
+insert into tb_sedes values(null, 'Espinar');
 insert into tb_sedes values(null, 'Sicuani');
 
 insert into tb_configuracion_inicial values(0, -1, null, 1, 1);
 
-insert into tb_venta_temporal values(1, 0, 0, 0, 0, null, 0, 0, 0, null, null, 0, -1, 1, 0, null, null, null, null, null, 0, null, null, null, 0, -1);
+insert into tb_venta_temporal values(1, 0, 0, 0, 0, null, 0, 0, 0, null, null, 0, -1, 1, 0, null, null, null, null, null, 0, null, null, null, 0, -1, null);
+
+
+-- JECUTAR HASTA AQUÍ PARA QUE FUNCIONE EL SISTEMA
+
 
 -- ELIMINAR TABLAS Y DB -----------------------------------------------------------
  drop database db_venta_pasajes; 
@@ -244,6 +251,7 @@ select * from tb_pasajero;
 select * from tb_sedes;
 select * from tb_viaje;
 select * from tb_detalle_viaje;
+select * from tb_detalle_viaje_otros;
 select * from tb_venta_temporal;
 select * from tb_pasajeros_temporal;
 select * from tb_configuracion_inicial;
@@ -252,7 +260,10 @@ select * from tb_gastos;
 
 -- PRUEBAS ------------------------------------------------------------------------
 
-delete from tb_pasajeros_temporal where asiento = 11;
+alter table tb_vehiculo
+  add codsocioantiguo int;
+
+delete from tb_vehiculo where placa = 'BBB-222';
 
 UPDATE tb_venta_temporal SET fpartida = concat(date(fpartida), ' 21:00:00') WHERE id=1;
 UPDATE tb_venta_temporal SET modalidad = 1 WHERE id=1;
@@ -343,12 +354,44 @@ inner join tb_sedes dstn 	on dstn.idsede 	= v.iddestino
 inner join  tb_conductor c 	on c.dniconductor = v.dniconductor
 where fpartida between '2019-10-24 00:00:00'  and '2019-10-26 23:59:59';
 
-select * from tb_detalle_viaje;
 -- DETALLES DE VIAJE
 select dv.nviaje, dv.asiento, dv.nboleto, dv.dnipasajero, p.nombre, dv.prepasaje, dv.contratante 
 from tb_detalle_viaje dv
 inner join tb_pasajero p 	on p.dnipasajero = dv.dnipasajero
-where dv.nviaje = 1001
+where dv.nviaje = 1000
 order by dv.asiento;
+
+-- DETALLES VIAJE OTROS
+select * from tb_detalle_viaje_otros dvo;
+select dvo.standar, dvo.escalacom, dvo.ciudaddesde, dvo.ciudadhasta, dvo.puntoencuentro, dvo.escalas, dvo.dniconductor1, c1.conductor, dvo.horainicio1, dvo.horainicio2, dvo.dniconductor2,
+c2.conductor, dvo.horafin1, dvo.horafin2, dvo.modalidad, dvo.totalmodif
+from tb_detalle_viaje_otros dvo
+inner join  tb_conductor c1	on c1.dniconductor = dvo.dniconductor1
+inner join  tb_conductor c2	on c2.dniconductor = dvo.dniconductor2;
+
+-- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

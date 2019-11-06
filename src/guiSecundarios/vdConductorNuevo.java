@@ -23,6 +23,7 @@ import javax.swing.JOptionPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyListener;
+import java.sql.ResultSet;
 import java.awt.event.KeyEvent;
 import java.awt.SystemColor;
 
@@ -56,6 +57,7 @@ public class vdConductorNuevo extends JDialog implements ActionListener, KeyList
 	 * Create the dialog.
 	 */
 	public vdConductorNuevo(vdVehiculoNuevo temp, vdVehiculoModificar temp2, vdConductor temp3) {
+		setResizable(false);
 		vnvh = temp;
 		vmvh = temp2;
 		cndtr = temp3;
@@ -171,43 +173,62 @@ public class vdConductorNuevo extends JDialog implements ActionListener, KeyList
 			String nlicencia = txtNlicencia.getText();
 			String nomconductor = txtConductor.getText();
 			
-			if(txtDni.getText().length() == 0 || txtNlicencia.getText().length() == 0 || txtConductor.getText().length() == 0){
+			if(txtDni.getText().length() == 0 || txtConductor.getText().length() == 0){
 				this.setAlwaysOnTop(false);
 				JOptionPane.showMessageDialog(null, "Por favor, complete los datos");
 				this.setAlwaysOnTop(true);
 			}
 			else{
 				this.setAlwaysOnTop(false);
-				Consultas.crearConductor(dni, nlicencia, nomconductor);
-				Conductor conductor = new Conductor(dni, nlicencia, nomconductor);
-				if(vnvh != null){
-					vnvh.cbConductor.addItem(conductor);
-					int cantitems = vnvh.cbConductor.getItemCount();
-					vnvh.cbConductor.setSelectedIndex(cantitems-1);
-					vnvh.setVisible(true);
-					vnvh.setAlwaysOnTop(true);
+				
+
+				Consultas consulta = new Consultas();
+				int existeconductor = 0; // 0NO 1SI
+				String comprobador = null;
+				try {
+					ResultSet rsconductor = null;
+					rsconductor = consulta.buscarConductor(dni);
+					rsconductor.next();
+					comprobador = rsconductor.getString("conductor");
+					existeconductor = 1;
+				} catch (Exception e2) {
+					existeconductor = 0;
 				}
-				if(vmvh != null){
-					vmvh.cbConductor.addItem(conductor);
-					int cantitems = vmvh.cbConductor.getItemCount();
-					vmvh.cbConductor.setSelectedIndex(cantitems-1);
-					vmvh.setVisible(true);
-					vmvh.setAlwaysOnTop(true);
+				
+				if(existeconductor == 0){
+					Consultas.crearConductor(dni, nlicencia, nomconductor);
+					Conductor conductor = new Conductor(dni, nlicencia, nomconductor);
+					if(vnvh != null){
+						vnvh.cbConductor.addItem(conductor);
+						int cantitems = vnvh.cbConductor.getItemCount();
+						vnvh.cbConductor.setSelectedIndex(cantitems-1);
+						vnvh.setVisible(true);
+						vnvh.setAlwaysOnTop(true);
+					}
+					if(vmvh != null){
+						vmvh.cbConductor.addItem(conductor);
+						int cantitems = vmvh.cbConductor.getItemCount();
+						vmvh.cbConductor.setSelectedIndex(cantitems-1);
+						vmvh.setVisible(true);
+						vmvh.setAlwaysOnTop(true);
+					}
+					if(cndtr != null){
+						cndtr.cbConductor.addItem(conductor);
+						int cantitems = cndtr.cbConductor.getItemCount();
+						cndtr.cbConductor.setSelectedIndex(cantitems-1);
+						cndtr.setVisible(true);
+						cndtr.setAlwaysOnTop(true);
+					}
+					this.dispose();
 				}
-				if(cndtr != null){
-					cndtr.cbConductor.addItem(conductor);
-					int cantitems = cndtr.cbConductor.getItemCount();
-					cndtr.cbConductor.setSelectedIndex(cantitems-1);
-					cndtr.setVisible(true);
-					cndtr.setAlwaysOnTop(true);
-				}
-				this.dispose();
+				else
+					JOptionPane.showMessageDialog(null, "El conductor ya existe", "ERROR", JOptionPane.ERROR_MESSAGE);
+				
 			}
 		}
 		catch(Exception ex){
-		}
-		
-		
+			JOptionPane.showMessageDialog(null, "Error al guardar nuevo conductor");
+		}		
 	}
 	public void keyPressed(KeyEvent e) {
 	}

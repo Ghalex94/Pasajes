@@ -159,7 +159,7 @@ public class viLogin extends JInternalFrame implements ActionListener, KeyListen
 			JOptionPane.showMessageDialog(null, "Bienvenido: " + ingresante.getNombre());
 			txtUsuario.setText(null);
 			txtPass.setText(null);
-			
+			Consultas.actualizarVentaTemporal00(ingresante.getNombre());
 			if(ingresante.getTipo() == 0){
 				vp.lg.setVisible(false);
 				vp.activarMenu(0);//admin
