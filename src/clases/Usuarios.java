@@ -24,6 +24,7 @@ public class Usuarios {
 	
 	public void cargarUsuarios(JComboBox<Usuarios> cbUsuarios){
 		Consultas consult = new Consultas();
+		consult.iniciar();
 		rs = consult.cargarUsuarios();
 		try {
 			while(rs.next())
@@ -38,6 +39,7 @@ public class Usuarios {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}		
+		consult.reset();
 	}
 	
 	@Override

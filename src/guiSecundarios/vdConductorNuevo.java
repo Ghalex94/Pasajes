@@ -183,6 +183,8 @@ public class vdConductorNuevo extends JDialog implements ActionListener, KeyList
 				
 
 				Consultas consulta = new Consultas();
+				consulta.iniciar();
+
 				int existeconductor = 0; // 0NO 1SI
 				String comprobador = null;
 				try {
@@ -196,7 +198,7 @@ public class vdConductorNuevo extends JDialog implements ActionListener, KeyList
 				}
 				
 				if(existeconductor == 0){
-					Consultas.crearConductor(dni, nlicencia, nomconductor);
+					consulta.crearConductor(dni, nlicencia, nomconductor);
 					Conductor conductor = new Conductor(dni, nlicencia, nomconductor);
 					if(vnvh != null){
 						vnvh.cbConductor.addItem(conductor);
@@ -223,7 +225,7 @@ public class vdConductorNuevo extends JDialog implements ActionListener, KeyList
 				}
 				else
 					JOptionPane.showMessageDialog(null, "El conductor ya existe", "ERROR", JOptionPane.ERROR_MESSAGE);
-				
+				consulta.reset();
 			}
 		}
 		catch(Exception ex){

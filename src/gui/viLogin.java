@@ -147,6 +147,7 @@ public class viLogin extends JInternalFrame implements ActionListener, KeyListen
 		String usuIngre = txtUsuario.getText();
 		String passIngre = String.valueOf(txtPass.getPassword());
 		Consultas consulta = new Consultas();
+		consulta.iniciar();
 		Usuarios ingresante = new Usuarios();
 		ingresante.setUsuario(usuIngre);
 		ingresante.setPassword(passIngre);
@@ -159,7 +160,7 @@ public class viLogin extends JInternalFrame implements ActionListener, KeyListen
 			JOptionPane.showMessageDialog(null, "Bienvenido: " + ingresante.getNombre());
 			txtUsuario.setText(null);
 			txtPass.setText(null);
-			Consultas.actualizarVentaTemporal00(ingresante.getNombre());
+			consulta.actualizarVentaTemporal00(ingresante.getNombre());
 			if(ingresante.getTipo() == 0){
 				vp.lg.setVisible(false);
 				vp.activarMenu(0);//admin
@@ -172,7 +173,9 @@ public class viLogin extends JInternalFrame implements ActionListener, KeyListen
 				vp.lg.setVisible(false);
 				vp.activarMenu(2);//admin
 			}
-		}	
+		}
+		consulta.reset();
+
 	}
 	
 }

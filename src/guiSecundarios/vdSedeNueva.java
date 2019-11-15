@@ -130,11 +130,14 @@ public class vdSedeNueva extends JDialog implements ActionListener, KeyListener 
 				this.setAlwaysOnTop(true);
 			}
 			else{
-				Consultas.crearSede(sede);
+				Consultas consulta = new Consultas();
+				consulta.iniciar();
+				consulta.crearSede(sede);
 				this.setAlwaysOnTop(false);
 				ldest.cargar();
 				selecionarSede();
 				this.setAlwaysOnTop(false);
+				consulta.reset();
 				JOptionPane.showMessageDialog(null, "Creado correctamente");
 				vp.enable(true);
 				this.dispose();

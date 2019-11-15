@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.Image;
@@ -220,6 +221,7 @@ public class viDatos1 extends JInternalFrame implements ActionListener, KeyListe
 			int dniconductor = cbConductor.getItemAt(cbConductor.getSelectedIndex()).getDni();
 			float prepasaje = Float.parseFloat(txtPrePasaje.getText());
 			Consultas consulta = new Consultas();
+			consulta.iniciar();
 			consulta.actualizarVentaTemporal01(1, codsocio, empresa, dniconductor, placa, idmodelovh, prepasaje);
 			vp.mntmCrearNuevaSalida.setEnabled(false);
 			vp.mntmContinuarPreparacion.setEnabled(true);
@@ -228,6 +230,8 @@ public class viDatos1 extends JInternalFrame implements ActionListener, KeyListe
 
 			vp.esconderVentanas();
 			vp.cerrarVentanas();
+			
+			consulta.reset();
 			
 			switch(idmodelovh){
 			case 1:
@@ -320,9 +324,10 @@ public class viDatos1 extends JInternalFrame implements ActionListener, KeyListe
 			cbVehiculo.setEnabled(true);
 			cbConductor.setEnabled(true);
 			btnContinuar.setEnabled(true);
-			Consultas consult = new Consultas();
+			Consultas consulta = new Consultas();
+			consulta.iniciar();
 			ResultSet rs;
-			rs = consult.buscarSocio(Integer.parseInt(cbSocio.getSelectedItem().toString()));
+			rs = consulta.buscarSocio(Integer.parseInt(cbSocio.getSelectedItem().toString()));
 			try {
 				rs.next();
 				if(rs.getInt("idempresa") == 1)
@@ -333,21 +338,21 @@ public class viDatos1 extends JInternalFrame implements ActionListener, KeyListe
 				int dniconductor = rs.getInt("dniconductor");
 				String placa = rs.getString("placa");
 				String modelovehiculo = null;
-	
-				ResultSet rs2 = consult.buscarVehiculo(placa);
+				
+				ResultSet rs2 = consulta.buscarVehiculo(placa);
 				try {
 					rs2.next();
 					int idmodelovehiculo = rs2.getInt("idmodelo");
 					
-					ResultSet rs3 = consult.buscarModeloVehiculo(idmodelovehiculo);
+					ResultSet rs3 = consulta.buscarModeloVehiculo(idmodelovehiculo);
 					try {
 						rs3.next();
 						modelovehiculo = rs3.getString("modelo");
 					} catch (Exception e) {
-						JOptionPane.showMessageDialog(null, "ERROR Modelo Vehiculo: " + e);
+						JOptionPane.showMessageDialog(null, "ERROR Modelo Vehiculo: " + e.getMessage());
 					}
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "ERROR Vehiculo: " + e);
+					JOptionPane.showMessageDialog(null, "ERROR Vehiculo: " + e.getMessage());
 				}
 				String temp = placa + " (" + modelovehiculo + ")";
 				for(int i = 0; i<cbVehiculo.getItemCount(); i++){
@@ -356,7 +361,7 @@ public class viDatos1 extends JInternalFrame implements ActionListener, KeyListe
 					}
 				}
 				
-				ResultSet rs4 = consult.buscarConductor(dniconductor);
+				ResultSet rs4 = consulta.buscarConductor(dniconductor);
 				try {
 					rs4.next();
 					for(int i = 0; i<cbConductor.getItemCount(); i++){
@@ -365,11 +370,13 @@ public class viDatos1 extends JInternalFrame implements ActionListener, KeyListe
 						}
 					}
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "ERROR Conductor: " + e);
+					JOptionPane.showMessageDialog(null, "ERROR Conductor: " + e.getMessage());
 				}
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "ERROR al cargar datos del Socio: " + e);
-			}	
+				JOptionPane.showMessageDialog(null, "ERROR al cargar datos del Socio: " + e.getMessage());
+			}
+			
+			consulta.reset();
 		}
 	}
 }

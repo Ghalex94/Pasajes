@@ -383,6 +383,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		setLocationRelativeTo(null);
 		lblNAsiento.setText(""+asiento);
 		Consultas consulta = new Consultas();
+		consulta.iniciar();
 		ResultSet rs = consulta.cargarVentaTemporal();
 		try {
 			rs.next();
@@ -401,8 +402,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		
 		
 		try {
-			Consultas consulta2 = new Consultas();
-			ResultSet rs2 = consulta2.buscarPasajerosTemporal(asiento);
+			ResultSet rs2 = consulta.buscarPasajerosTemporal(asiento);
 			rs2.next();
 			txtNboleto.setText("" + rs2.getInt("nboleto"));
 			int dnipasajero = rs2.getInt("dnipasajero");
@@ -413,8 +413,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			int contratante = rs2.getInt("contratante");
 			if(contratante == 1)
 				chckbxContratante.setSelected(true);
-			Consultas consulta3 = new Consultas();
-			ResultSet rs3 = consulta3.buscarPasajero(dnipasajero);
+			ResultSet rs3 = consulta.buscarPasajero(dnipasajero);
 			rs3.next();
 			txtRuc.setText(rs3.getString("ruc"));
 			txtNombre.setText(rs3.getString("nombre"));
@@ -450,36 +449,43 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 				btnEliminar.setVisible(true);
 				chckbxContratante.setEnabled(false);
 			}
-			
+			rs2.close();
+			rs3.close();
 			
 		} catch (Exception e) {
 			try { //ASIGNAR N BOLETO SI EL ASIENTO ESTÁ VACIO
-				Consultas consulta4 = new Consultas();
-				ResultSet rs4 = consulta4.ultimoNboleto();
+				ResultSet rs4 = consulta.ultimoNboleto();
 				rs4.next();
 				int ultimoNboleto = rs4.getInt("nboleto");
 				txtNboleto.setText("" + (ultimoNboleto+1));
+				rs4.close();
 			} catch (SQLException e1) {
 				// SI NO EXISTE ALGUN BOLETO EN TABLA PASAJERO TEMPORAL, BUSCAR EN LA ANTERIOR VENTA
 				try {
-					Consultas consulta5 = new Consultas();
-					ResultSet rs5 = consulta5.ultboletoUltVenta();
+					ResultSet rs5 = consulta.ultboletoUltVenta();
 					rs5.next();
 					int ultimoNboleto = rs5.getInt("nboleto");
 					txtNboleto.setText("" + (ultimoNboleto+1));
+					rs5.close();
 				} catch (Exception e2) {
 					//SI NO EXISTE NINGUNA VENTA, BUSCARA LA SERIE DE LA CONFGURACION PRINCIPAL
 					try {
-						Consultas consulta6 = new Consultas();
-						ResultSet rs6 = consulta6.nasientoCInicial();
+						ResultSet rs6 = consulta.nasientoCInicial();
 						rs6.next();
 						int ultimoNboleto = rs6.getInt("nboletoinicial");
 						txtNboleto.setText("" + (ultimoNboleto));
+						rs6.close();
 					} catch (Exception e3) {
-						// TODO: handle exception
 					}
 				}
 			}
+		}
+		
+		try {
+			rs.close();
+			consulta.reset();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -521,16 +527,20 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 					contratante = 1;
 				try {
 					Consultas consulta = new Consultas();
+					consulta.iniciar();
 					ResultSet rs = consulta.buscarPasajero(dnipasajero);
 					if(rs.next()){// SE ACTUALIZARÁ LOS DATOS DEL PASAJERO
 						Consultas consulta2 = new Consultas();
+						consulta2.iniciar();
 						consulta2.actualizarPasajero(dnipasajero, ruc, fnacimiento, nombre, razsocial, nacionalidad, direccion);
+						consulta2.reset();
 					}
 					else{// SE CREARÁ UN PASAJERO NUEVO
 						this.setAlwaysOnTop(false);
-						Consultas consulta2 = new Consultas();
-						consulta2.crearPasajero(dnipasajero, ruc, fnacimiento, nombre, razsocial, nacionalidad, direccion);					
+						consulta.crearPasajero(dnipasajero, ruc, fnacimiento, nombre, razsocial, nacionalidad, direccion);					
 					}
+					rs.close();
+					consulta.reset();
 				} catch (SQLException ex) {
 					this.setAlwaysOnTop(false);
 					JOptionPane.showMessageDialog(null, "ERROR: " + ex);
@@ -539,6 +549,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 				
 				try {
 					Consultas consulta3 = new Consultas();
+					consulta3.iniciar();
 					this.setAlwaysOnTop(false);
 					consulta3.asignarAsiento(asiento, dnipasajero, edad, prepasaje, nboleto, contratante);
 					
@@ -551,6 +562,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 					if(vsa4 != null)
 						vsa4.cambiarColorAsiento(asiento, contratante);
 					vp.enable(true);
+					consulta3.reset();
 					this.dispose();
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "ERROR: " + e);
@@ -574,6 +586,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 						String precioLetras = solesLetras + " CON " + centimos + "/100 SOLES";
 						Connection con = MySQLConexion.getConection();
 						int asiento = Integer.parseInt(lblNAsiento.getText());
+						
 						//IMPRIMIR TICKET
 						try {
 							Map<String, Object> parameters = new HashMap();
@@ -597,7 +610,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 						} catch (Exception e) {
 							JOptionPane.showMessageDialog(null, "ERROR2 "+ e);
 						}				
-						
+						con.close();
 					} catch (Exception e) {
 						JOptionPane.showMessageDialog(null,"ERROR1 " + e);
 					}
@@ -610,6 +623,8 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 	public void sumarTotalPasajes(){
 		try {
 			Consultas consulta = new Consultas();
+
+			consulta.iniciar();
 			ResultSet rs = consulta.cargarPasajerosTemporal();
 			float tot = 0 ;
 			while(rs.next()){
@@ -623,6 +638,8 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 				vsa3.lblTotal.setText(""+tot);
 			if(vsa4!= null)
 				vsa4.lblTotal.setText(""+tot);
+
+			consulta.reset();
 		}
 		catch (Exception e) {
 		}
@@ -672,6 +689,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			else{
 				dni = Integer.parseInt(txtDni.getText());
 				Consultas consulta = new Consultas();
+				consulta.iniciar();
 				ResultSet rs = consulta.buscarPasajero(dni);
 				try {
 					rs.next();
@@ -708,6 +726,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 					txtEdad.setText(null);
 					txtPrecio.setText(""+prepasajeoriginal);
 				}
+				consulta.reset();
 			}
 		}
 	}
@@ -763,6 +782,8 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		this.setAlwaysOnTop(true);
 		if (opc == 0){
 			Consultas consulta = new Consultas();
+
+			consulta.iniciar();
 			consulta.eliminarAsiento(asiento);
 			this.setAlwaysOnTop(false);
 			JOptionPane.showMessageDialog(null, "Asiento Liberado");
@@ -778,6 +799,8 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			sumarTotalPasajes();
 			vp.enable(true);
 			this.dispose();
+
+			consulta.reset();
 		}
 	}
 	protected void keyTypedTxtNombre(KeyEvent arg0) {

@@ -219,6 +219,7 @@ public class viListaUsuarios extends JInternalFrame {
 		tb.setModel(dtm);
 		dtm.setColumnIdentifiers(new Object[]{"NOMBRE", "USUARIO", "CONTRASEÑA", "TIPO"});
 		Consultas consult = new Consultas();
+		consult.iniciar();
 		rs = consult.cargarUsuarios();
 		try {
 			while(rs.next()){
@@ -235,7 +236,8 @@ public class viListaUsuarios extends JInternalFrame {
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR al cargar usuarios: " + e);
-		}		
+		}	
+		consult.reset();
 		ajustarAnchoColumnas();
 	}
 	
@@ -293,6 +295,7 @@ public class viListaUsuarios extends JInternalFrame {
 			int tipo = cbTipo.getSelectedIndex(); 
 			
 			Consultas consult = new Consultas();
+			consult.iniciar();
 			ResultSet rs2 = null;
 			rs2 = consult.buscarUsuario(usuario);
 			try {
@@ -315,7 +318,8 @@ public class viListaUsuarios extends JInternalFrame {
 					limpiar();
 					
 				}
-			}	
+			}
+			consult.reset();
 		}
 	}
 	
@@ -337,6 +341,7 @@ public class viListaUsuarios extends JInternalFrame {
 			}
 		}
 	}
+	
 	protected void actionPerformedChckbxMostrarPass(ActionEvent e) {
 		if(chckbxMostrarPass.isSelected())
 			txtPass.setEchoChar((char)0);

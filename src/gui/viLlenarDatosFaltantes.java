@@ -7,10 +7,8 @@ import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.SwingConstants;
-
 import clases.Conductor;
 import mysql.Consultas;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JCheckBox;
@@ -388,10 +386,12 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		cbConductor2.addItem(new Conductor(0, "", ""));
 		conductor.cargarConductores(cbConductor2);
 		cbConductor2.setSelectedIndex(0);
+		Consultas consulta = new Consultas();
+		consulta.iniciar();
 		
 		//Cargar venta temporal
 		try {
-			Consultas consulta = new Consultas();
+			
 			ResultSet rs = consulta.cargarVentaTemporal();
 			if(rs.next()){
 				
@@ -443,8 +443,8 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 						cbModalidad.setSelectedIndex(rs.getInt("modalidad")-1);
 					if(rs.getFloat("totalmodif") == -1){
 						try {
-							Consultas consultatot = new Consultas();
-							ResultSet rstot = consultatot.cargarPasajerosTemporal();
+							consulta.iniciar();
+							ResultSet rstot = consulta.cargarPasajerosTemporal();
 							float tot = 0 ;
 							while(rstot.next()){
 								tot = tot + rstot.getFloat("prepasaje");
@@ -517,6 +517,7 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		catch(Exception e){
 			JOptionPane.showMessageDialog(null, e);
 		}
+		consulta.reset();
 	}
 	
 	public void actionPerformed(ActionEvent arg0) {
@@ -564,8 +565,11 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 			int modalidad = cbModalidad.getSelectedIndex()+1;
 			float totalmodif = Float.parseFloat(txtTotal.getText());
 			
-			Consultas.actualizarVentaTemporal08(vstandar, escalascom, desde, hasta, pencuentro, escalasparadas,
+			Consultas consulta = new Consultas();
+			consulta.iniciar();
+			consulta.actualizarVentaTemporal08(vstandar, escalascom, desde, hasta, pencuentro, escalasparadas,
 					horainicio2, dniconductor2, licencia2, horafin1, horafin2, comentarios, modalidad, totalmodif);
+			consulta.reset();
 			vp.esconderVentanas();
 			vp.cerrarVentanas();
 		} catch (Exception e) {
@@ -578,6 +582,7 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 			String hi2 = cbHinicio2.getSelectedItem().toString();
 			cbHfin1.setSelectedItem(hi2);
 			Consultas consulta = new Consultas();
+			consulta.iniciar();
 			ResultSet rs = consulta.cargarVentaTemporal();
 			String fllegadaoriginal = "";					
 			try {
@@ -595,6 +600,7 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 			} catch (SQLException e1) {
 				JOptionPane.showMessageDialog(null, e1);
 			}
+			consulta.reset();
 		}
 	}
 	protected void actionPerformedCbMinicio2(ActionEvent e) {

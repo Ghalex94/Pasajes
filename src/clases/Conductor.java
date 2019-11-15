@@ -20,6 +20,7 @@ public class Conductor {
 	
 	public void cargarConductores(JComboBox<Conductor> cbConductor){
 		Consultas consult = new Consultas();
+		consult.iniciar();
 		rs = consult.cargarConductores();
 		try {
 			while(rs.next())
@@ -32,7 +33,8 @@ public class Conductor {
 				);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
-		}		
+		}
+		consult.reset();
 	}
 	
 	@Override

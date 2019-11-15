@@ -146,13 +146,15 @@ public class viListaSocios extends JInternalFrame implements ActionListener {
 		tb.setModel(dtm);
 		dtm.setColumnIdentifiers(new Object[]{"CODIGO DE SOCIO", "SOCIO", "DNI SOCIO", "EMPRESA", "CONDUCTOR", "DNI CONDUCTOR", "PLACA",});
 		Consultas consult = new Consultas();
+		consult.iniciar();
 		rs = consult.cargarSocios();
 		try {
 			while(rs.next())
 				dtm.addRow(new Object[]{rs.getInt("codsocio"), rs.getString("nombresocio"), rs.getInt("dnisocio"), rs.getString("empresa"), rs.getString("conductor"), rs.getInt("dniconductor"), rs.getString("placa")});
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
-		}	
+		}
+		consult.reset();
 	}
 	
 	public void seleccionarSocio(int codsocio){
@@ -192,7 +194,7 @@ public class viListaSocios extends JInternalFrame implements ActionListener {
 			String placa = tbSocios.getValueAt(tbSocios.getSelectedRow(), 6).toString();
 			vdSocioModificar vnsm = new vdSocioModificar(vp, this, codsocio, dnicondutcor, placa);
 			vnsm.setVisible(true);
-			vp.setEnabled(false);			
+			vp.setEnabled(false);		
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Seleccione socio a modificar");
 		}

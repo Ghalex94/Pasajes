@@ -342,7 +342,9 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	
 	public void cargar(){
 		Consultas consulta = new Consultas();
+		consulta.iniciar();
 		ResultSet rs1 = consulta.cargarConfiguracionInicial();  
+		
 		try {
 			rs1.next();
 			int estado = rs1.getInt("estado");
@@ -379,8 +381,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
+		consulta.reset();
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
@@ -463,6 +464,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		sa4 = null;
 		lvc = null;
 		ldest = null;
+		lcond = null;
 		lpjr = null;
 		datfalt = null;
 		lsoc = null;
@@ -487,6 +489,8 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			sa4.setVisible(false);
 		if (lvc!=null)
 			lvc.setVisible(false);
+		if (lcond!=null)
+			lcond.setVisible(false);
 		if (ldest!=null)
 			ldest.setVisible(false);
 		if (lpjr!=null)
@@ -514,6 +518,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mnClientes.setEnabled(false);
 		mnReportes.setEnabled(false);
 		mntmOpcionesAvanzadas.setEnabled(false);
+		
 	}
 	
 	public void activarMenu(int tipo){
@@ -536,6 +541,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		}
 		
 		Consultas consulta = new Consultas();
+		consulta.iniciar();
 		rs = consulta.cargarVentaTemporal();
 		int estado;
 		try {
@@ -549,6 +555,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			}
 		} catch (SQLException e) {
 		}
+		consulta.reset();
 		
 	}
 	
@@ -585,6 +592,8 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	
 	protected void actionPerformedMntmContinuarPreparacion(ActionEvent arg0) {
 		Consultas consulta = new Consultas();
+		
+		consulta.iniciar();
 		rs = consulta.cargarVentaTemporal();
 		int idmodelovh = 0;
 		String modelovh = null;
@@ -600,6 +609,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			rs.next();
 			modelovh = rs.getString("modelo");
 		} catch (SQLException e1) {	e1.printStackTrace(); }
+		consulta.reset();
 		
 		switch(idmodelovh){
 		case 1:
@@ -671,6 +681,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		int opc = JOptionPane.showConfirmDialog(null, "¿Cancelar salida?\nSi lo hace toda la preparación se eliminará permanentemente", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 		Consultas consulta0 = new Consultas();
+		consulta0.iniciar();
 		ResultSet rs = consulta0.cargarVentaTemporal(); // OBTENER TODOS LOS DATOS TEMPORALES
 		String usuario = "";
 		try {
@@ -679,9 +690,11 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Error al buscar usuario registrado");
 		}
+		consulta0.reset();
 		
 		if (opc == 0){
 			Consultas consulta = new Consultas();
+			consulta.iniciar();
 			consulta.eliminarSalidaVehiculo(usuario);
 			esconderVentanas();
 			cerrarVentanas();
@@ -689,6 +702,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			mntmContinuarPreparacion.setEnabled(false);
 			mntmCancelarSalida.setEnabled(false);
 			mnFormatos.setEnabled(false);
+			consulta.reset();
 			JOptionPane.showMessageDialog(null, "Salida cancelada");
 		}
 	}
@@ -726,19 +740,22 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	
 	protected void actionPerformedMntmMDP(ActionEvent arg0) {
 		Consultas consulta = new Consultas();
+		consulta.iniciar();		
 		rs = consulta.cantPasajeros();
 		int cantPasajeros = 0;
 		try {
 			rs.next();
 			cantPasajeros = rs.getInt("cantPasajeros");
 		} catch (SQLException e1) {	e1.printStackTrace(); }
-		
+		consulta.reset();
+
 		try {
 			Map<String, Object> parameters = new HashMap();
 			parameters.put("cantPasajeros", cantPasajeros);
 			Connection con = MySQLConexion.getConection();
 			new AbstractJasperReports().createReport( con, "rManifiestoPasajeros.jasper", parameters);
 			AbstractJasperReports.showViewer();
+			con.close();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error:. "+ e.getStackTrace());			
 		}
@@ -746,6 +763,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	
 	protected void actionPerformedMntmHdR(ActionEvent arg0) {
 		Consultas consulta = new Consultas();
+		consulta.iniciar();
 		ResultSet rs = consulta.cargarVentaTemporal();
 		int empresa = 0;
 		try {
@@ -753,7 +771,9 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			empresa = rs.getInt("empresa");
 		} catch (SQLException e1) {
 			JOptionPane.showMessageDialog(null, "Error al cargar empresa: "+ e1.getStackTrace());
-			}
+		}
+		consulta.reset();
+		
 		try {
 			Connection con = MySQLConexion.getConection();
 			if(empresa == 1)
@@ -761,6 +781,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			else
 				new AbstractJasperReports().createReport( con, "rHojaRutaZA5.jasper");
 			AbstractJasperReports.showViewer();
+			con.close();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error al cargar boleta: "+ e.getStackTrace());			
 		}
@@ -768,6 +789,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	
 	protected void actionPerformedMntmIdV(ActionEvent arg0) {
 		Consultas consulta = new Consultas();
+		consulta.iniciar();
 		ResultSet rs = consulta.cargarVentaTemporal();
 		int empresa = 0;
 		try {
@@ -775,7 +797,9 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			empresa = rs.getInt("empresa");
 		} catch (SQLException e1) {
 			JOptionPane.showMessageDialog(null, "Error al cargar empresa: "+ e1.getStackTrace());
-			}
+		}
+		consulta.reset();
+		
 		try {
 			Connection con = MySQLConexion.getConection();
 			if(empresa == 1)
@@ -783,6 +807,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			else
 				new AbstractJasperReports().createReport( con, "rItinerarioViajeZA5.jasper");
 			AbstractJasperReports.showViewer();
+			con.close();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error al cargar boleta: "+ e.getStackTrace());			
 		}
@@ -823,6 +848,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	}
 	protected void actionPerformedMntmContrato(ActionEvent arg0) {
 		Consultas consulta = new Consultas();
+		consulta.iniciar();
 		ResultSet rs = consulta.cargarVentaTemporal();
 		int nViaje = 0;
 		int empresa = 0;
@@ -832,7 +858,9 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			nViaje = rs.getInt("nviaje");
 		} catch (SQLException e1) {
 			JOptionPane.showMessageDialog(null, "Error al cargar Empresa o N Viaje: "+ e1.getStackTrace());
-			}
+		}
+		consulta.reset();
+		
 		try {
 			Map<String, Object> parameters = new HashMap();
 			parameters.put("prmtNViaje", nViaje);
@@ -842,6 +870,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			else
 				new AbstractJasperReports().createReport( con, "rContratoZA5.jasper", parameters);
 			AbstractJasperReports.showViewer();
+			con.close();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error al cargar boleta: "+ e.getStackTrace());			
 		}
@@ -858,6 +887,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	
 	protected void actionPerformedMntmVerBoletaVenta(ActionEvent arg0) {
 		Consultas consulta = new Consultas();
+		consulta.iniciar();
 		ResultSet rs = consulta.cargarVentaTemporal();
 		int empresa = 0;
 		try {
@@ -865,7 +895,9 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			empresa = rs.getInt("empresa");
 		} catch (SQLException e1) {
 			JOptionPane.showMessageDialog(null, "Error al cargar empresa: "+ e1.getStackTrace());
-			}
+		}
+		consulta.reset();
+		
 		try {
 			Connection con = MySQLConexion.getConection();
 			if(empresa == 0)
@@ -873,6 +905,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			else
 				new AbstractJasperReports().createReport( con, "rBoletaVentaZ.jasper");
 			AbstractJasperReports.showViewer();
+			con.close();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error al cargar boleta: "+ e.getStackTrace());			
 		}

@@ -392,7 +392,9 @@ public class viReporte_GastosOtros extends JInternalFrame {
 				fGasto = String.valueOf(sdf.format(dateGasto));
 								
 				Consultas c = new Consultas();
+				c.iniciar();
 				c.registrarGasto(nserie1_1, nserie1_2, idempresa, idorigen, iddestino, descripcion, monto, fGasto);
+				c.reset();
 				JOptionPane.showMessageDialog(null, "REGISTRO EXITOSO");
 				vp.esconderVentanas();
 				vp.cerrarVentanas();

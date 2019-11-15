@@ -380,7 +380,9 @@ public class viReporte_GastosByF extends JInternalFrame {
 				fEmision = String.valueOf(sdf.format(dateEmision));
 								
 				Consultas c = new Consultas();
+				c.iniciar();
 				c.registrarComprobante(nserie1_1, nserie1_2, idempresa, idorigen, iddestino, comprobante, descripcion, importe, fEmision);
+				c.reset();
 				JOptionPane.showMessageDialog(null, "REGISTRO EXITOSO");
 				vp.esconderVentanas();
 				vp.cerrarVentanas();

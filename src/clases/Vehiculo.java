@@ -1,4 +1,4 @@
-package clases;
+	package clases;
 
 import java.sql.ResultSet;
 import javax.swing.JComboBox;
@@ -25,6 +25,7 @@ public class Vehiculo {
 	
 	public void cargarVehiculo(JComboBox<Vehiculo> cbVehiculo){
 		Consultas consult = new Consultas();
+		consult.iniciar();
 		rs = consult.cargarVehiculos();
 		try {
 			while(rs.next())
@@ -40,6 +41,7 @@ public class Vehiculo {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}		
+		consult.reset();
 	}
 	
 	

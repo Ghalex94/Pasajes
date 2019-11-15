@@ -146,15 +146,16 @@ public class viListaConductores extends JInternalFrame implements ActionListener
 		tb.setRowHeight(40);
 		tb.setModel(dtm);
 		dtm.setColumnIdentifiers(new Object[]{"DNI", "CONDUCTOR", "LICENCIA"});
-		Consultas consult = new Consultas();
-		rs = consult.cargarConductores();
+		Consultas consulta = new Consultas();
+		consulta.iniciar();
+		rs = consulta.cargarConductores();
 		try {
 			while(rs.next())
 				dtm.addRow(new Object[]{rs.getInt("dniconductor"), rs.getString("conductor"), rs.getString("licencia")});
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
-		
+		consulta.reset();
 	}
 	
 	public void actionPerformed(ActionEvent arg0) {

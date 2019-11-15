@@ -35,14 +35,14 @@ public class vdConductor extends JDialog implements ActionListener, KeyListener 
 	private JButton btnGuardar;
 	public JComboBox <Conductor> cbConductor ;
 	private JButton btnNewConductor;
-	
-	vPrincipal vp;
-	viSeleccionAsientos3 vsa1;
 	private JLabel lblEmpresa;
 	private JTextField txtEmpresa;
 	private JLabel label;
 	private JLabel lblSocio;
 	private JComboBox <Socio> cbSocio;
+	
+	vPrincipal vp;
+	viSeleccionAsientos3 vsa1;
 	
 	public static void main(String[] args) {
 		try {
@@ -203,6 +203,7 @@ public class vdConductor extends JDialog implements ActionListener, KeyListener 
 		conductor.cargarConductores(cbConductor);
 		
 		Consultas consulta = new Consultas();
+		consulta.iniciar();
 		ResultSet rs = consulta.cargarVentaTemporal();
 		
 		try {
@@ -230,7 +231,16 @@ public class vdConductor extends JDialog implements ActionListener, KeyListener 
 			//txtPasaje.setText("" + (rs.getFloat("prepasaje")));
 			int prepas = Integer.parseInt(rs.getString("prepasaje"));
 			txtPasaje.setText(""+prepas);			
-		} catch (SQLException e) {e.printStackTrace();}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			}
+		try {
+			rs.close();
+			consulta.reset();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	protected void actionPerformedBtnCancelar(ActionEvent arg0) {
@@ -242,7 +252,9 @@ public class vdConductor extends JDialog implements ActionListener, KeyListener 
 		int dniconductor = cbConductor.getItemAt(cbConductor.getSelectedIndex()).getDni();
 		float prepasaje = Float.parseFloat(txtPasaje.getText());
 		Consultas consulta = new Consultas();
+		consulta.iniciar();
 		consulta.actualizarVentaTemporal02(dniconductor, prepasaje, codSocio);
+		consulta.reset();
 		vp.enable(true);
 		this.dispose();
 	}

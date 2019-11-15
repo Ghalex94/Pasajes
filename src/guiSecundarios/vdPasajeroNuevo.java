@@ -233,6 +233,7 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener, KeyListe
 			txtDni.setEditable(false);
 			try {
 				Consultas consulta = new Consultas();
+				consulta.iniciar();
 				ResultSet rs = null;
 				rs = consulta.buscarPasajero(dni);
 				rs.next();
@@ -251,7 +252,7 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener, KeyListe
 				cbDia.setSelectedIndex(d-1);
 				cbMes.setSelectedIndex(m-1);
 				cbAnio.setSelectedItem(a);
-				
+				consulta.reset();
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(null, "ERROR: " + e);
 			}
@@ -286,7 +287,9 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener, KeyListe
 				String direccion = txtDireccion.getText();
 				
 				Consultas consulta = new Consultas();
+				consulta.iniciar();
 				consulta.crearPasajero(dni, ruc, fnacimiento, nombre, razSocial, nacionalidad, direccion);
+				consulta.reset();
 				this.setAlwaysOnTop(false);
 				JOptionPane.showMessageDialog(null, "Cliente creado correctamente.");
 			}
@@ -302,7 +305,9 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener, KeyListe
 				String nacionalidad = txtNacionalidad.getText();
 				String direccion = txtDireccion.getText();
 				Consultas consulta = new Consultas();
+				consulta.iniciar();
 				consulta.actualizarPasajero(dni, ruc, fnacimiento, nombre, razSocial, nacionalidad, direccion);
+				consulta.reset();
 				this.setAlwaysOnTop(false);
 				JOptionPane.showMessageDialog(null, "Cliente modificado correctamente.");
 			}		

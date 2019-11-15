@@ -147,6 +147,7 @@ public class viListaVehiculos extends JInternalFrame implements ActionListener {
 		tb.setModel(dtm);
 		dtm.setColumnIdentifiers(new Object[]{"PLACA", "MODELO", "DETALLE", "MTC"});
 		Consultas consult = new Consultas();
+		consult.iniciar();
 		rs = consult.cargarVehiculos();
 		try {
 			while(rs.next())
@@ -154,7 +155,7 @@ public class viListaVehiculos extends JInternalFrame implements ActionListener {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
-		
+		consult.reset();		
 	}
 	
 	public void actionPerformed(ActionEvent arg0) {
@@ -192,9 +193,12 @@ public class viListaVehiculos extends JInternalFrame implements ActionListener {
 		int opc = JOptionPane.showConfirmDialog(null, "Si elimina el producto, se borraran todos los registros de este.\nSe recomienda hacerlo solo si es muy necesario\n¿Eliminar Producto?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (opc == 0){
 			String placa = tbVehiculos.getValueAt(tbVehiculos.getSelectedRow(), 0).toString();
-			Consultas.eliminarHistorialVehiculo(placa);
-			Consultas.eliminarVehiculo(placa);
+			Consultas consulta = new Consultas();
+			consulta.iniciar();
+			consulta.eliminarHistorialVehiculo(placa);
+			consulta.eliminarVehiculo(placa);
 			this.cargar();
+			consulta.reset();
 			JOptionPane.showMessageDialog(null, "Eliminado correctamente");
 		}
 	}

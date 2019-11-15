@@ -138,6 +138,7 @@ public class viListaSedes extends JInternalFrame implements ActionListener {
 		tb.setModel(dtm);
 		dtm.setColumnIdentifiers(new Object[]{"ID", "SEDE"});
 		Consultas consult = new Consultas();
+		consult.iniciar();
 		rs = consult.cargarSedes();
 		try {
 			while(rs.next())
@@ -145,9 +146,10 @@ public class viListaSedes extends JInternalFrame implements ActionListener {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
+		consult.reset();
 		ajustarAnchoColumnas();
-		
 	}
+	
 	private int anchoColumna(int porcentaje) {
 		return porcentaje * scrollPane.getWidth() / 100;
 	}
@@ -177,8 +179,11 @@ public class viListaSedes extends JInternalFrame implements ActionListener {
 		int opc = JOptionPane.showConfirmDialog(null, "¿Eliminar destino?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (opc == 0){
 			int iddestino = Integer.parseInt(tbDestinos.getValueAt(tbDestinos.getSelectedRow(), 0).toString());
-			Consultas.eliminarDestino(iddestino);
+			Consultas consulta = new Consultas();
+			consulta.iniciar();
+			consulta.eliminarDestino(iddestino);
 			this.cargar();
+			consulta.reset();
 			JOptionPane.showMessageDialog(null, "Eliminado correctamente");
 		}
 	}

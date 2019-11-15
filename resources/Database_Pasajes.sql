@@ -117,6 +117,7 @@ usuario			varchar(50),
 foreign key (nviaje) 		references tb_viaje(nviaje)
 );
 
+
 create table tb_venta_temporal(
 id				int not null primary key,
 estado			int, -- 0Nuevo 1En creacion
@@ -220,6 +221,27 @@ insert into tb_configuracion_inicial values(0, -1, null, 1, 1);
 insert into tb_venta_temporal values(1, 0, 0, 0, 0, null, 0, 0, 0, null, null, 0, -1, 1, 0, null, null, null, null, null, 0, null, null, null, 0, -1, null);
 
 
+insert into tb_vehiculo values('AAA-111', 1, 'Detalle1', 'MTC1', 0);
+insert into tb_vehiculo values('BBB-222', 2, 'Detalle2', 'MTC2', 0);
+insert into tb_vehiculo values('CCC-333', 3, 'Detalle3', 'MTC3', 0);
+insert into tb_vehiculo values('DDD-444', 4, 'Detalle4', 'MTC4', 0);
+insert into tb_vehiculo values('EEE-555', 5, 'Detalle5', 'MTC5', 0);
+insert into tb_vehiculo values('FFF-666', 6, 'Detalle6', 'MTC6', 0);
+
+insert into tb_conductor values(76782001, 'F76782001', 'Conductor1');
+insert into tb_conductor values(76782002, 'F76782002', 'Conductor2');
+insert into tb_conductor values(76782003, 'F76782003', 'Conductor3');
+insert into tb_conductor values(76782004, 'F76782004', 'Conductor4');
+insert into tb_conductor values(76782005, 'F76782005', 'Conductor5');
+insert into tb_conductor values(76782006, 'F76782006', 'Conductor6');
+
+insert into tb_socio values(1001, 1, 76781001, 'Socio1', 76782001, 'AAA-111');
+insert into tb_socio values(1002, 2, 76781002, 'Socio2', 76782002, 'BBB-222');
+insert into tb_socio values(1003, 1, 76781003, 'Socio3', 76782003, 'CCC-333');
+insert into tb_socio values(1004, 2, 76781004, 'Socio4', 76782004, 'DDD-444');
+insert into tb_socio values(1005, 1, 76781005, 'Socio5', 76782005, 'EEE-555');
+insert into tb_socio values(1006, 2, 76781006, 'Socio6', 76782006, 'FFF-666');
+
 -- JECUTAR HASTA AQUÍ PARA QUE FUNCIONE EL SISTEMA
 
 
@@ -233,6 +255,7 @@ insert into tb_venta_temporal values(1, 0, 0, 0, 0, null, 0, 0, 0, null, null, 0
 -- drop table tb_sedes;
 -- drop table tb_viaje;
 -- drop table tb_detalle_viaje;
+-- drop table tb_detalle_viaje_otros;
 -- drop table tb_venta_temporal;
 -- drop table tb_pasajeros_temporal;
 -- drop table tb_configuracion_inicial;
@@ -257,6 +280,9 @@ select * from tb_pasajeros_temporal;
 select * from tb_configuracion_inicial;
 select * from tb_comprobantes_emitidos;
 select * from tb_gastos;
+
+
+show status like 'Threads%';
 
 -- PRUEBAS ------------------------------------------------------------------------
 

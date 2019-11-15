@@ -148,7 +148,8 @@ public class viConductorNuevo extends JInternalFrame implements ActionListener, 
 				JOptionPane.showMessageDialog(null, "Por favor, complete los datos");
 			}
 			else{
-				Consultas.crearConductor(dni, nlicencia, nomconductor);
+				Consultas consulta = new Consultas();
+				consulta.crearConductor(dni, nlicencia, nomconductor);
 				Conductor conductor = new Conductor(dni, nlicencia, nomconductor);
 				if(vnvh != null){
 					vnvh.cbConductor.addItem(conductor);

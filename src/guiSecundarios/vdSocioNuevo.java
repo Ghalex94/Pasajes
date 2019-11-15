@@ -464,8 +464,9 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		Empresa empresa = new Empresa();
 		empresa.cargarEmpresas(cbEmpresa);
 		
-		Consultas consult = new Consultas();
-		rs = consult.cargarModelosVehiculos();
+		Consultas consulta = new Consultas();
+		consulta.iniciar();
+		rs = consulta.cargarModelosVehiculos();
 		try {
 			while(rs.next())
 				cbModeloV.addItem(rs.getString("modelo"));
@@ -480,8 +481,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		//SOCIO
 		TextAutoCompleter acs;
 		acs = new TextAutoCompleter(txtDniSocio);
-		Consultas consultas = new Consultas();
-		ResultSet rss = consultas.cargarSocios();
+		ResultSet rss = consulta.cargarSocios();
 		acs.setMode(0);
 		try {
 			while (rss.next()) 
@@ -493,8 +493,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		//VEHICULOS
 		TextAutoCompleter acv;
 		acv = new TextAutoCompleter(txtPlaca);
-		Consultas consultav = new Consultas();
-		ResultSet rsv = consultav.cargarVehiculos();
+		ResultSet rsv = consulta.cargarVehiculos();
 		acv.setMode(0);
 		try {
 			while (rsv.next()) 
@@ -506,8 +505,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		//CONDUCTOR
 		TextAutoCompleter acc;
 		acc = new TextAutoCompleter(txtDniConductor);
-		Consultas consultac = new Consultas();
-		ResultSet rsc = consultac.cargarConductores();
+		ResultSet rsc = consulta.cargarConductores();
 		acc.setMode(0);
 		try {
 			while (rsc.next()) 
@@ -515,6 +513,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR al cargar conductor: " + e);
 		}
+		consulta.reset();
 		
 	}
 	
@@ -568,7 +567,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 			String comprobador = null;
 			try {				
 				Consultas consult = new Consultas();
-
+				consult.iniciar();
 				int existeconductor = 0; // 0NO 1SI
 				try {
 					ResultSet rsconductor = null;
@@ -639,35 +638,29 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 						}
 						
 						else{ // ENTRA AQUÍ SI EXISTE PERO ESTÁ INACTIVO, SI SE REGISTRARÁ
-							Consultas consultaActualizarVehiculo = new Consultas();
-							consultaActualizarVehiculo.actualizarVehiculoEstado(placa, 0); // 0 = ACTIVO
+							consult.actualizarVehiculoEstado(placa, 0); // 0 = ACTIVO
 														
 							if(existeconductor == 0){
 								this.setAlwaysOnTop(false);
-								Consultas consulta1 = new Consultas();
-								consulta1.crearConductor(dniconductor, licencia, nombreconductor);
+								consult.crearConductor(dniconductor, licencia, nombreconductor);
 							}
 							
-							Consultas consulta = new Consultas();
 							this.setAlwaysOnTop(false);
-							consulta.crearSocio(codsocio, idempresa, dnisocio, nombresocio, dniconductor, placa);
+							consult.crearSocio(codsocio, idempresa, dnisocio, nombresocio, dniconductor, placa);
 							this.setAlwaysOnTop(true);
 						}							
 					}
 					else{
 						 // ENTRA AQUÍ SI EXISTE PERO ESTÁ INACTIVO, SI SE REGISTRARÁ
-						Consultas consulta2 = new Consultas();
-						consulta2.crearVehiculo(placa, modelo, detalles, mtc);
+						consult.crearVehiculo(placa, modelo, detalles, mtc);
 													
 						if(existeconductor == 0){
 							this.setAlwaysOnTop(false);
-							Consultas consulta1 = new Consultas();
-							consulta1.crearConductor(dniconductor, licencia, nombreconductor);
+							consult.crearConductor(dniconductor, licencia, nombreconductor);
 						}
 						
-						Consultas consulta = new Consultas();
 						this.setAlwaysOnTop(false);
-						consulta.crearSocio(codsocio, idempresa, dnisocio, nombresocio, dniconductor, placa);
+						consult.crearSocio(codsocio, idempresa, dnisocio, nombresocio, dniconductor, placa);
 						this.setAlwaysOnTop(true);
 					}					
 					
@@ -675,7 +668,9 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 					ls.seleccionarSocio(codsocio);
 					vp.setEnabled(true);
 					this.dispose();
-				}	
+				}
+				
+				consult.reset();	
 			} catch (Exception e2) {
 				JOptionPane.showMessageDialog(null, "ERROR al guardar: " + e2);
 			}
@@ -719,9 +714,11 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		if (c == (char)KeyEvent.VK_ENTER){
 			try {
 			Consultas consulta = new Consultas();
+			consulta.iniciar();
 			ResultSet rs = consulta.buscarSocio2(Integer.parseInt(txtDniSocio.getText()));
 				rs.next();
 				txtNombreSocio.setText(rs.getString("nombresocio"));
+			consulta.reset();
 			} catch (Exception e2) {
 				txtNombreSocio.setText(null);
 			}
@@ -739,11 +736,13 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		if (c == (char)KeyEvent.VK_ENTER){
 			try {
 			Consultas consulta = new Consultas();
+			consulta.iniciar();
 			ResultSet rs = consulta.buscarVehiculo(txtPlaca.getText());
 				rs.next();
 				txtDetalles.setText(rs.getString("detalle"));
 				txtMTC.setText(rs.getString("mtc"));
 				cbModeloV.setSelectedIndex(rs.getInt("idmodelo")-1);
+				consulta.reset();
 			} catch (Exception e2) {
 				txtDetalles.setText(null);
 				txtMTC.setText(null);
@@ -770,10 +769,12 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		if (c == (char)KeyEvent.VK_ENTER){
 			try {
 			Consultas consulta = new Consultas();
+			consulta.iniciar();
 			ResultSet rs = consulta.buscarConductor(Integer.parseInt(txtDniConductor.getText()));
 				rs.next();
 				txtNombreConductor.setText(rs.getString("conductor"));
 				txtNlicenciaConductor.setText(rs.getString("licencia"));
+				consulta.reset();
 			} catch (Exception e2) {
 				txtNombreConductor.setText(null);
 				txtNlicenciaConductor.setText(null);
@@ -806,6 +807,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		else{
 			dniConductor = Integer.parseInt(txtDniConductor.getText());
 			Consultas consulta = new Consultas();
+			consulta.iniciar();
 			ResultSet rs = consulta.buscarConductor(dniConductor);
 			try {
 				rs.next();
@@ -817,6 +819,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 				limpiarConductor();
 				this.setAlwaysOnTop(true);
 			}
+			consulta.reset();
 		}
 	}
 	
@@ -830,6 +833,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		else{
 			placa = txtPlaca.getText();
 			Consultas consulta = new Consultas();
+			consulta.iniciar();
 			ResultSet rs = consulta.buscarVehiculo(placa);
 			try {
 				rs.next();
@@ -844,6 +848,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 				JOptionPane.showMessageDialog(null, "No existe el vehiculo, se creará uno nuevo.");
 				limpiarVehiculo();
 			}
+			consulta.reset();
 		}
 	}
 	

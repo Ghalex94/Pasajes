@@ -36,7 +36,6 @@ import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.JSeparator;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
-
 import clases.Conductor;
 import clases.Sedes;
 import mysql.Consultas;
@@ -519,8 +518,11 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 	
 	public void cargar(){
 		//seleccionar cbos
+
+		Consultas consulta = new Consultas();
+		consulta.iniciar();
+		
 		try {
-			Consultas consulta = new Consultas();
 			ResultSet rs = consulta.cargarVentaTemporal();
 			int idorigen = 0;
 			int iddestino = 0;
@@ -545,8 +547,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 			
 			//Actualizar asientos y total
 			try {
-				Consultas consulta2 = new Consultas();
-				ResultSet rs2 = consulta2.cargarPasajerosTemporal();
+				ResultSet rs2 = consulta.cargarPasajerosTemporal();
 				while(rs2.next()){
 					if(rs2.getInt("estado") == 1);{
 						int asiento = rs2.getInt("asiento");
@@ -561,15 +562,15 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 			
 			//Cargar Horas
 			try {
-				Consultas consulta3 = new Consultas();
-				ResultSet rs3 = consulta3.cargarVentaTemporal();
+				ResultSet rs3 = consulta.cargarVentaTemporal();
 				rs3.next();
 				String fooriginal = rs3.getString("fpartida");  // FECHA ORIGEN ORIGINAL
 				String fdoriginal = rs3.getString("fllegada"); //  FECHA DESTINO ORIGIAL
 				
+				
 				String[] partso = fooriginal.split(" ");
 				String diao = partso[0]; // 123
-				String horaso = partso[1]; // 654321
+				//String horaso = partso[1]; // 654321
 				java.util.Date fechaParseadaOrigen= new SimpleDateFormat("yyyy-MM-dd").parse(diao);
 				dchOrigen.setDate(fechaParseadaOrigen);	
 				
@@ -582,7 +583,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 				
 				String[] partsd = fdoriginal.split(" ");
 				String diad = partsd[0]; // 123
-				String horasd = partsd[1]; // 654321
+				//String horasd = partsd[1]; // 654321
 				java.util.Date fechaParseadaDestino= new SimpleDateFormat("yyyy-MM-dd").parse(diad);
 				dchDestino.setDate(fechaParseadaDestino);	
 				
@@ -595,32 +596,33 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 				//JOptionPane.showMessageDialog(null, "Ninguna fecha registrada" + e);
 			}
 			
+			
 		}
 		catch(Exception e){
 		}
+		
 		
 		//CARGAR NRO DE VIAJE
 		try { //ASIGNAR N VIAJE 
 			
 			// BUSCAR SI EXISTE VENTA TEMPORAL
-			Consultas consult = new Consultas();
-			ResultSet rs4 = consult.cargarVentaTemporal();
+			ResultSet rs4 = consulta.cargarVentaTemporal();
 			rs4.next();
 			int nviajeventemp = rs4.getInt("nviaje");
 			if(nviajeventemp == -1){// SI ES = -1 ENTRA AQUÍ ES POR QUE SE CREARÁ UN NUEVO VIAJE
-				ResultSet rs5 = consult.cargarUltimoViaje();
+				ResultSet rs5 = consulta.cargarUltimoViaje();
 				try {// SI ENTRA AQUÍ ES POR QUE HUBO VIAJES ANTERIORES
 					rs5.next();
 					int ultviajeregistrado = rs5.getInt("nviaje");
 					txtNviaje.setText(""+ (ultviajeregistrado+1));
-					consult.actualizarVentaTemporal09((ultviajeregistrado+1));
+					consulta.actualizarVentaTemporal09((ultviajeregistrado+1));
 					
 				} catch (Exception e) { // SI ENTRA AQUÍ ES POR QUE ES EL PRIMER VIAJE QUE SE HARÁ Y CARGAMOS EL DE LA PRIMERA CONFIGURACIÓN
-					ResultSet rs6 = consult.cargarConfiguracionInicial();
+					ResultSet rs6 = consulta.cargarConfiguracionInicial();
 					rs6.next();
 					int nviajeconfiginicial = rs6.getInt("nviajeinicial");
 					txtNviaje.setText("" + nviajeconfiginicial);
-					consult.actualizarVentaTemporal09((nviajeconfiginicial));
+					consulta.actualizarVentaTemporal09((nviajeconfiginicial));
 				}
 			}
 			else{ // SI ENTRA AQUÍ ES POR QUE YA EXISTE UNA PREPARACIÓN
@@ -632,8 +634,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		}
 		
 		// CARGAR NRO SERIE
-		Consultas consult = new Consultas();
-		ResultSet rs7 = consult.cargarConfiguracionInicial();
+		ResultSet rs7 = consulta.cargarConfiguracionInicial();
 		try {
 			rs7.next();
 			String nSerie = rs7.getString("nserie");
@@ -641,17 +642,21 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error al cargar nSerie: " + e);
 		}
+		
+		consulta.reset();
 	}
 	
 	public void sumarTotalPasajes(){
 		try {
 			Consultas consulta = new Consultas();
+			consulta.iniciar();
 			ResultSet rs = consulta.cargarPasajerosTemporal();
 			float tot = 0 ;
 			while(rs.next()){
 				tot = tot + rs.getFloat("prepasaje");
 			}
 			lblTotal.setText(""+tot);
+			consulta.reset();
 		}
 		catch (Exception e) {
 		}
@@ -924,14 +929,17 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		int idorigen = cbOrigen.getItemAt(cbOrigen.getSelectedIndex()).getIdsede();
 		String origen = cbOrigen.getItemAt(cbOrigen.getSelectedIndex()).getSede();
 		Consultas consulta = new Consultas();
+		consulta.iniciar();
 		consulta.actualizarVentaTemporal03(idorigen, origen);
-		
+		consulta.reset();		
 	}
 	protected void actionPerformedCbDestino(ActionEvent e) {
 		int iddestino = cbDestino.getItemAt(cbDestino.getSelectedIndex()).getIdsede();
 		String destino = cbDestino.getItemAt(cbDestino.getSelectedIndex()).getSede();
 		Consultas consulta = new Consultas();
+		consulta.iniciar();
 		consulta.actualizarVentaTemporal04(iddestino, destino);
+		consulta.reset();		
 		
 	}
 	protected void mouseClickedLblCuentaTotal(MouseEvent e) {
@@ -964,7 +972,9 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 			}*/
 			fOrigen = fOrigen + " " + horao+":"+mino+":00";
 			Consultas consulta = new Consultas();
+			consulta.iniciar();
 			consulta.actualizarVentaTemporal05(fOrigen);
+			consulta.reset();		
 			
 			} catch (Exception e) {	}
 	}
@@ -999,7 +1009,9 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 			}*/
 			fDestino = fDestino + " " + horad+":"+mind+":00";
 			Consultas consulta = new Consultas();
+			consulta.iniciar();		
 			consulta.actualizarVentaTemporal06(fDestino);	
+			consulta.reset();		
 			} catch (Exception e) {	}
 	}
 	public void keyPressed(KeyEvent arg0) {
@@ -1023,7 +1035,9 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		try {
 			int nViaje = Integer.parseInt(txtNviaje.getText());
 			Consultas consulta = new Consultas();
+			consulta.iniciar();		
 			consulta.actualizarVentaTemporal07(nViaje);	
+			consulta.reset();		
 		} catch (Exception e) {	
 		}
 	}
@@ -1077,8 +1091,8 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		int opc = JOptionPane.showConfirmDialog(null, "¿ESTÁ SEGURO DE FINALIZAR?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (opc == 0){
 			Consultas consulta = new Consultas();
-
-			JOptionPane.showMessageDialog(null, "Antes de cargar venta temporal");
+			consulta.iniciar();
+			JOptionPane.showMessageDialog(null, "Antes de cargar venta temporalhfhg");
 			ResultSet rs1 = consulta.cargarVentaTemporal(); // OBTENER TODOS LOS DATOS TEMPORALES
 			try {
 				rs1.next();
@@ -1086,7 +1100,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 				int asientosvendidos = 0;	
 				float total = Float.parseFloat(lblTotal.getText());
 				asientosvendidos = contarAsientosVendidos();
-				
+				int nviaje = rs1.getInt("nviaje");
 
 				ResultSet rs3 = consulta.buscarModeloVehiculo(rs1.getInt("modelovh")); // BUSCAR CANTIDAD DE ASIENTOS 
 				try {
@@ -1099,7 +1113,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 				int codsocio = rs1.getInt("codsocio");
 				
 				//REGISTRAR LOS DATOS CORRESPONDIENTES EN VIAJE
-				consulta.registrarViaje(rs1.getInt("nviaje"), codsocio, rs1.getInt("empresa"), rs1.getInt("idorigen"), rs1.getInt("iddestino"), rs1.getString("fpartida"), 
+				consulta.registrarViaje(nviaje, codsocio, rs1.getInt("empresa"), rs1.getInt("idorigen"), rs1.getInt("iddestino"), rs1.getString("fpartida"), 
 						rs1.getString("fllegada"), rs1.getString("placa"), rs1.getInt("dniconductor"), rs1.getString("prepasaje"), 
 						total, totalasientos, asientosvendidos);
 				
@@ -1107,9 +1121,9 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 				ResultSet rs4 = consulta.cargarPasajerosTemporal(); // OBTENER TODOS LOS DATOS TEMPORALES
 				try {
 					while(rs4.next())
-						consulta.registrarDetallesViaje(rs1.getInt("nviaje"), rs4.getInt("nboleto"), rs4.getInt("dnipasajero"), rs4.getInt("asiento"), rs4.getInt("edad"), rs4.getFloat("prepasaje"), rs4.getInt("contratante"));
+						consulta.registrarDetallesViaje(nviaje, rs4.getInt("nboleto"), rs4.getInt("dnipasajero"), rs4.getInt("asiento"), rs4.getInt("edad"), rs4.getFloat("prepasaje"), rs4.getInt("contratante"));
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Error al buscar tabla pasajeros temporal: " + e);
+					JOptionPane.showMessageDialog(null, "Error al buscar tabla pasajeros temporal: " + e.getMessage());
 				}
 				
 				//REGISTRAR LOS DATOS CORRESPONDIENTES EN DETALLES OTROS
@@ -1147,9 +1161,11 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 				vp.mnFormatos.setEnabled(false);
 				vp.esconderVentanas();
 				vp.cerrarVentanas();
+				
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "Error al finalizar: " + e);
-			}			
+			}
+			consulta.reset();
 		}
 	}
 }

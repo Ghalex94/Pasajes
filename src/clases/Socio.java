@@ -27,6 +27,7 @@ public class Socio {
 	
 	public void cargarSocio(JComboBox<Socio> cbSocio){
 		Consultas consult = new Consultas();
+		consult.iniciar();
 		rs = consult.cargarSocios();
 		try {
 			while(rs.next())
@@ -43,6 +44,8 @@ public class Socio {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}		
+		consult.reset();
+
 	}
 	
 	

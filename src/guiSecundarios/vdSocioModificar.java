@@ -469,6 +469,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		
 		//CARGAR MODELOS DE VEHICULOS  A COMBOBOX
 		Consultas consult = new Consultas();
+		consult.iniciar();
 		ResultSet rs1;
 		rs1 = consult.cargarModelosVehiculos();
 		try {
@@ -484,9 +485,8 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		txtPlaca.setText(antiguaplaca);
 		
 		//SOCIO
-		Consultas consult2 = new Consultas();
 		ResultSet rs2;
-		rs2 = consult2.buscarSocio(codsocio);
+		rs2 = consult.buscarSocio(codsocio);
 		int idEmpresa = 0;
 		try {
 			rs2.next();
@@ -509,9 +509,8 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		}*/
 		
 		//VEHICULO
-		Consultas consult3 = new Consultas();
 		ResultSet rs3;
-		rs3 = consult3.buscarVehiculo(antiguaplaca);
+		rs3 = consult.buscarVehiculo(antiguaplaca);
 		int idmodelovehiculo = 0;
 		try {
 			rs3.next();
@@ -523,10 +522,9 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
-		
-		Consultas consultas35 = new Consultas();
+		;
 		ResultSet rs35;
-		rs35 = consultas35.buscarModeloVehiculo(idmodelovehiculo);
+		rs35 = consult.buscarModeloVehiculo(idmodelovehiculo);
 		try {
 			rs35.next();
 			cbModeloV.setSelectedItem(rs35.getString("modelo"));
@@ -536,9 +534,8 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		}
 		
 		//CONDUCTOR
-		Consultas consult4 = new Consultas();
 		ResultSet rs4;
-		rs4 = consult4.buscarConductor(antiguodniconductor);
+		rs4 = consult.buscarConductor(antiguodniconductor);
 		try {
 			rs4.next();
 			txtNombreConductor.setText(rs4.getString("conductor"));
@@ -550,44 +547,42 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		}
 		
 		// CARGAR AUTOCOMPLETADORES
-				//SOCIO
-				TextAutoCompleter acs;
-				acs = new TextAutoCompleter(txtDniSocio);
-				Consultas consultas = new Consultas();
-				ResultSet rss = consultas.cargarSocios();
-				acs.setMode(0);
-				try {
-					while (rss.next()) 
-						acs.addItem(rss.getInt("dnisocio"));
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "ERROR al cargar Socios: " + e);
-				}
-				
-				//VEHICULOS
-				TextAutoCompleter acv;
-				acv = new TextAutoCompleter(txtPlaca);
-				Consultas consultav = new Consultas();
-				ResultSet rsv = consultav.cargarVehiculos();
-				acv.setMode(0);
-				try {
-					while (rsv.next()) 
-						acv.addItem(rsv.getString("placa"));
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "ERROR al cargar placas: " + e);
-				}
-				
-				//CONDUCTOR
-				TextAutoCompleter acc;
-				acc = new TextAutoCompleter(txtDniConductor);
-				Consultas consultac = new Consultas();
-				ResultSet rsc = consultac.cargarConductores();
-				acc.setMode(0);
-				try {
-					while (rsc.next()) 
-						acc.addItem(rsc.getInt("dniconductor"));
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "ERROR al cargar conductor: " + e);
-				}
+		//SOCIO
+		TextAutoCompleter acs;
+		acs = new TextAutoCompleter(txtDniSocio);
+		ResultSet rss = consult.cargarSocios();
+		acs.setMode(0);
+		try {
+			while (rss.next()) 
+				acs.addItem(rss.getInt("dnisocio"));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR al cargar Socios: " + e);
+		}
+		
+		//VEHICULOS
+		TextAutoCompleter acv;
+		acv = new TextAutoCompleter(txtPlaca);
+		ResultSet rsv = consult.cargarVehiculos();
+		acv.setMode(0);
+		try {
+			while (rsv.next()) 
+				acv.addItem(rsv.getString("placa"));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR al cargar placas: " + e);
+		}
+		
+		//CONDUCTOR
+		TextAutoCompleter acc;
+		acc = new TextAutoCompleter(txtDniConductor);
+		ResultSet rsc = consult.cargarConductores();
+		acc.setMode(0);
+		try {
+			while (rsc.next()) 
+				acc.addItem(rsc.getInt("dniconductor"));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR al cargar conductor: " + e);
+		}
+		consult.reset();
 		
 	}
 	
@@ -619,7 +614,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 			
 			this.setAlwaysOnTop(false);
 			Consultas consulta = new Consultas();
-			
+			consulta.iniciar();
 			
 			int estadoVehiculo = -1; // 0ACTIVO 1INACTIVO 2TEMPORAL -1NO EXISTE
 			try {
@@ -704,7 +699,8 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 				ls.seleccionarSocio(codsocio);
 				vp.setEnabled(true);
 				this.dispose();
-			}			
+			}
+			consulta.reset();
 		}
 	}
 	
@@ -765,16 +761,19 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		if (c == (char)KeyEvent.VK_ENTER){
 			try {
 			Consultas consulta = new Consultas();
+			consulta.iniciar();
 			ResultSet rs = consulta.buscarVehiculo(txtPlaca.getText());
 				rs.next();
 				txtDetalles.setText(rs.getString("detalle"));
 				txtMTC.setText(rs.getString("mtc"));
 				cbModeloV.setSelectedIndex(rs.getInt("idmodelo")-1);
+				consulta.reset();
 			} catch (Exception e2) {
 				txtDetalles.setText(null);
 				txtMTC.setText(null);
 				cbModeloV.setSelectedIndex(0);
 			}
+			
 		}
 	}
 	protected void keyTypedTxtDetalles(KeyEvent e) {
@@ -796,10 +795,12 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		if (c == (char)KeyEvent.VK_ENTER){
 			try {
 			Consultas consulta = new Consultas();
+			consulta.iniciar();
 			ResultSet rs = consulta.buscarConductor(Integer.parseInt(txtDniConductor.getText()));
 				rs.next();
 				txtNombreConductor.setText(rs.getString("conductor"));
 				txtNlicencia.setText(rs.getString("licencia"));
+				consulta.reset();
 			} catch (Exception e2) {
 				txtNombreConductor.setText(null);
 				txtNlicencia.setText(null);
@@ -832,6 +833,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		else{
 			dniConductor = Integer.parseInt(txtDniConductor.getText());
 			Consultas consulta = new Consultas();
+			consulta.iniciar();
 			ResultSet rs = consulta.buscarConductor(dniConductor);
 			try {
 				rs.next();
@@ -843,6 +845,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 				limpiarConductor();
 				this.setAlwaysOnTop(true);
 			}
+			consulta.reset();
 		}
 	}
 	
@@ -856,6 +859,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		else{
 			placa = txtPlaca.getText();
 			Consultas consulta = new Consultas();
+			consulta.iniciar();
 			ResultSet rs = consulta.buscarVehiculo(placa);
 			try {
 				rs.next();
@@ -870,6 +874,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 				JOptionPane.showMessageDialog(null, "No existe el vehiculo, se creará uno nuevo.");
 				limpiarVehiculo();
 			}
+			consulta.reset();
 		}
 	}
 	

@@ -20,6 +20,7 @@ public class Empresa {
 	
 	public void cargarEmpresas(JComboBox<Empresa> cbEmpresa){
 		Consultas consult = new Consultas();
+		consult.iniciar();
 		rs = consult.cargarEmpresas();
 		try {
 			while(rs.next())
@@ -33,6 +34,7 @@ public class Empresa {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}		
+		consult.reset();
 	}
 	
 	@Override

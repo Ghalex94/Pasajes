@@ -18,6 +18,7 @@ public class Sedes {
 	
 	public void cargarDestinos(JComboBox<Sedes> cbDestinos){
 		Consultas consult = new Consultas();
+		consult.iniciar();
 		rs = consult.cargarSedes();
 		try {
 			while(rs.next())
@@ -30,6 +31,7 @@ public class Sedes {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}		
+		consult.reset();
 	}
 	
 	@Override

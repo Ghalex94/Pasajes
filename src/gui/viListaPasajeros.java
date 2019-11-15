@@ -141,15 +141,16 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 		tb.setRowHeight(40);
 		tb.setModel(dtm);
 		dtm.setColumnIdentifiers(new Object[]{"DNI", "RUC", "NOMBRE", "RAZ SOCIAL", "F. NACIMIENTO", "NACIONALIDAD", "DIRECCIÓN"});
-		Consultas consult = new Consultas();
-		rs = consult.cargarPasajeros();
+		Consultas consulta = new Consultas();
+		consulta.iniciar();
+		rs = consulta.cargarPasajeros();
 		try {
 			while(rs.next())
 				dtm.addRow(new Object[]{rs.getInt("dnipasajero"), rs.getString("ruc"), rs.getString("nombre"), rs.getString("razsocial"), rs.getString("fnacimiento"), rs.getString("nacionalidad"), rs.getString("direccion")});
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}
-		
+		consulta.reset();		
 	}
 	
 	public void actionPerformed(ActionEvent arg0) {
@@ -190,9 +191,12 @@ public class viListaPasajeros extends JInternalFrame implements ActionListener {
 		int opc = JOptionPane.showConfirmDialog(null, "¿Eliminar Cliente?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (opc == 0){
 			int dniPasajero = Integer.parseInt(tbPasajeros.getValueAt(tbPasajeros.getSelectedRow(), 0).toString());
-			Consultas.eliminarPasajero(dniPasajero);
+			Consultas consulta = new Consultas();
+			consulta.iniciar();	
+			consulta.eliminarPasajero(dniPasajero);
 			this.cargar();
 			JOptionPane.showMessageDialog(null, "Eliminado correctamente");
+			consulta.reset();
 		}
 	}
 	

@@ -158,6 +158,7 @@ public class viConfiguracionInicial extends JInternalFrame implements ActionList
 		
 		if(tipo == 2){
 			Consultas consulta = new Consultas();
+			consulta.iniciar();
 			ResultSet rs = consulta.cargarConfiguracionInicial();
 			try {
 				rs.next();
@@ -182,6 +183,7 @@ public class viConfiguracionInicial extends JInternalFrame implements ActionList
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "Error al cargar Configuracion inicial: " + e);
 			}
+			consulta.reset(); 
 		}
 		
 	}
@@ -211,7 +213,9 @@ public class viConfiguracionInicial extends JInternalFrame implements ActionList
 			int nasientoinicial = Integer.parseInt(txtNAsientoInicial.getText());			
 			
 			Consultas consulta = new Consultas();
+			consulta.iniciar();
 			consulta.actualizarConfiguracionInicial(idsede, nserie, nviajeinicial, nasientoinicial);
+			consulta.reset();
 			this.hide();
 			vp.esconderVentanas();
 			vp.cerrarVentanas();
