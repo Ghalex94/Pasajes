@@ -270,7 +270,7 @@ public class viLlenarDatosFaltantes extends JInternalFrame implements ActionList
 		cbConductor2.setBounds(895, 132, 452, 38);
 		getContentPane().add(cbConductor2);
 		
-		btnGuardarCambios = new JButton("GUARDAR CAMBIOS");
+		btnGuardarCambios = new JButton("ACTUALIZAR CAMBIOS");
 		btnGuardarCambios.addActionListener(this);
 		btnGuardarCambios.setForeground(Color.WHITE);
 		btnGuardarCambios.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));

@@ -10,10 +10,18 @@ import javax.swing.border.EmptyBorder;
 import clases.AbstractJasperReports;
 import mysql.Consultas;
 import mysql.MySQLConexion;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -97,6 +105,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
     private JMenu mnRegristrarGastosRealizados;
     private JMenuItem mntmViajes;
     private JMenuItem mntmContabilidad;
+    private JMenuItem mntmVerListaPasajeros;
     
     
 	
@@ -227,6 +236,15 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 				actionPerformedMntmVerBoletaVenta(arg0);
 			}
 		});
+		
+		mntmVerListaPasajeros = new JMenuItem("Ver Lista Pasajeros (Contrato)");
+		mntmVerListaPasajeros.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				actionPerformedMntmVerListaPasajeros(arg0);
+			}
+		});
+		mntmVerListaPasajeros.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		mnFormatos.add(mntmVerListaPasajeros);
 		mntmVerBoletaVenta.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mnFormatos.add(mntmVerBoletaVenta);
 		
@@ -874,6 +892,62 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error al cargar boleta: "+ e.getStackTrace());			
 		}
+	}
+
+	protected void actionPerformedMntmVerListaPasajeros(ActionEvent arg0) {
+		/*Consultas consulta = new Consultas();
+		consulta.iniciar();
+		ResultSet rs = consulta.cargarVentaTemporal();
+		int empresa = 0;
+		try {
+			rs.next();
+			empresa = rs.getInt("empresa");
+		} catch (SQLException e1) {
+			JOptionPane.showMessageDialog(null, "Error al cargar Empresa o N Viaje: "+ e1.getStackTrace());
+		}
+		consulta.reset();
+		
+		try {
+			Connection con = MySQLConexion.getConection();
+			if(empresa == 1)
+				new AbstractJasperReports().createReport( con, "rContratoPasajerosM.jasper");
+			else
+				new AbstractJasperReports().createReport( con, "rContratoPasajerosZ.jasper");
+			AbstractJasperReports.showViewer();
+			con.close();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error al cargar boleta: "+ e.getStackTrace());			
+		}*/
+		Connection con = MySQLConexion.getConection();
+		JasperReport jasperReport;
+        //JasperPrint jasperPrint;                
+       /* try
+        {
+          //se carga el reporte
+          //URL  in=this.getClass().getResource( "rContratoPasajerosZ.jasper" );
+          //jasperReport=(JasperReport)JRLoader.loadObject(in);
+          JasperReport reporte =(JasperReport) JRLoader.loadObjectFromFile("D:\\ INFORMACION_DEL_SISTEMA\\rContratoPasajerosZ.jasper");
+          //se procesa el archivo jasper
+          jasperPrint = JasperFillManager.fillReport(reporte, new HashMap(), con );
+          //se crea el archivo PDF
+          JasperExportManager.exportReportToPdfFile( jasperPrint, "D:\\ INFORMACION_DEL_SISTEMA\\reporte.pdf");
+          
+        }*/
+        
+        try {
+			con = MySQLConexion.getConection();
+			JasperReport reporte = (JasperReport) JRLoader.loadObjectFromFile("D:\\ INFORMACION_DEL_SISTEMA\\rContratoPasajerosZ.jasper");
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null,con);
+			// AbstractJasperReports.showViewer();
+			JasperExportManager.exportReportToPdfFile( jasperPrint, "D:\\ INFORMACION_DEL_SISTEMA\\reporte.pdf");
+			//JasperPrintManager.printReport(jasperPrint, false);
+		
+        }
+        catch (JRException ex)
+        {
+          System.err.println( "Error iReport: " + ex.getMessage() );
+        }
+		
 	}
 	
 	protected void actionPerformedMntmOpcionesAvanzadas(ActionEvent e) {
