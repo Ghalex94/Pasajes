@@ -7,6 +7,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.printing.PDFPageable;
+
+import com.itextpdf.text.log.Level;
+
 import clases.AbstractJasperReports;
 import mysql.Consultas;
 import mysql.MySQLConexion;
@@ -21,12 +27,14 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
+import java.io.File;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
@@ -894,10 +902,13 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		}
 	}
 
+	private final static Logger LOGGER = Logger.getLogger("mx.hash.impresionpdf.Impresor");
+	
 	protected void actionPerformedMntmVerListaPasajeros(ActionEvent arg0) {
-		/*Consultas consulta = new Consultas();
+		Consultas consulta = new Consultas();
 		consulta.iniciar();
-		ResultSet rs = consulta.cargarVentaTemporal();
+		
+		/*ResultSet rs = consulta.cargarVentaTemporal();
 		int empresa = 0;
 		try {
 			rs.next();
@@ -918,36 +929,37 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error al cargar boleta: "+ e.getStackTrace());			
 		}*/
-		Connection con = MySQLConexion.getConection();
+		
+		/*
+		PDDocument document = PDDocument.load(new File("./documento.pdf"));
+
+        PrinterJob job = PrinterJob.getPrinterJob();
+
+        LOGGER.log(Level.INFO, "Mostrando el dialogo de impresion");
+        if (job.printDialog() == true) {            
+            job.setPageable(new PDFPageable(document));
+
+            LOGGER.log(Level.INFO, "Imprimiendo documento");
+            job.print();
+        }
+		*/
+		
+		
+		/*Connection con = MySQLConexion.getConection();
 		JasperReport jasperReport;
-        //JasperPrint jasperPrint;                
-       /* try
+        JasperPrint jasperPrint;                
+        try
         {
-          //se carga el reporte
-          //URL  in=this.getClass().getResource( "rContratoPasajerosZ.jasper" );
-          //jasperReport=(JasperReport)JRLoader.loadObject(in);
-          JasperReport reporte =(JasperReport) JRLoader.loadObjectFromFile("D:\\ INFORMACION_DEL_SISTEMA\\rContratoPasajerosZ.jasper");
-          //se procesa el archivo jasper
-          jasperPrint = JasperFillManager.fillReport(reporte, new HashMap(), con );
-          //se crea el archivo PDF
-          JasperExportManager.exportReportToPdfFile( jasperPrint, "D:\\ INFORMACION_DEL_SISTEMA\\reporte.pdf");
-          
-        }*/
+          JasperReport reporte = (JasperReport) JRLoader.loadObjectFromFile("bin/rContratoPasajerosZ.jasper");
+          jasperPrint = JasperFillManager.fillReport(reporte, null, con );
+          JasperExportManager.exportReportToPdfFile( jasperPrint, "D:/reporte.pdf");
+        }
+        catch (JRException ex){
+         // System.err.println( "Error iReport: " + ex.getMessage() );
+        }
+        */
         
-        try {
-			con = MySQLConexion.getConection();
-			JasperReport reporte = (JasperReport) JRLoader.loadObjectFromFile("D:\\ INFORMACION_DEL_SISTEMA\\rContratoPasajerosZ.jasper");
-			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null,con);
-			// AbstractJasperReports.showViewer();
-			JasperExportManager.exportReportToPdfFile( jasperPrint, "D:\\ INFORMACION_DEL_SISTEMA\\reporte.pdf");
-			//JasperPrintManager.printReport(jasperPrint, false);
-		
-        }
-        catch (JRException ex)
-        {
-          System.err.println( "Error iReport: " + ex.getMessage() );
-        }
-		
+        
 	}
 	
 	protected void actionPerformedMntmOpcionesAvanzadas(ActionEvent e) {
