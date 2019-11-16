@@ -238,6 +238,11 @@ public class viReporte_Viajes extends JInternalFrame implements ActionListener {
 		getContentPane().add(panel_2);
 		
 		btnDNI = new JButton("Ver");
+		this.btnDNI.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				actionPerformedBtnDNI(arg0);
+			}
+		});
 		btnDNI.setForeground(Color.WHITE);
 		btnDNI.setFont(new Font("Dialog", Font.BOLD, 25));
 		btnDNI.setBackground(new Color(0, 139, 139));
@@ -285,6 +290,11 @@ public class viReporte_Viajes extends JInternalFrame implements ActionListener {
 		panel_2.add(lblRuc);
 		
 		btnRUC = new JButton("Ver");
+		this.btnRUC.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedBtnRUC(e);
+			}
+		});
 		btnRUC.setForeground(Color.WHITE);
 		btnRUC.setFont(new Font("Dialog", Font.BOLD, 25));
 		btnRUC.setBackground(new Color(0, 139, 139));
@@ -367,7 +377,43 @@ public class viReporte_Viajes extends JInternalFrame implements ActionListener {
 	}
 	
 	protected void actionPerformedBtnVerDetalleViaje(ActionEvent arg0) {
-		
+		Connection con = null;
+		try {
+			con = MySQLConexion.getConection();
+			int nviaje = Integer.parseInt(txtNviajeDetalles.getText());
+			Map parameters = new HashMap();
+			parameters.put("nviaje", nviaje);
+			new AbstractJasperReports().createReport(con, "rrViajesDetallesOtro.jasper", parameters);
+			AbstractJasperReports.showViewer();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "No se encontró el viaje. " + e);
+		}
 	}
 	
+	protected void actionPerformedBtnDNI(ActionEvent arg0) {
+		Connection con = null;
+		try {
+			con = MySQLConexion.getConection();
+			int dnipasajero = Integer.parseInt(txtDniPasajero.getText());
+			Map parameters = new HashMap();
+			parameters.put("dnipasajero", dnipasajero);
+			new AbstractJasperReports().createReport(con, "rPasajeroDNI.jasper", parameters);
+			AbstractJasperReports.showViewer();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "No se encontró el viaje. " + e);
+		}
+	}
+	protected void actionPerformedBtnRUC(ActionEvent e) {
+		Connection con = null;
+		try {
+			con = MySQLConexion.getConection();
+			int ruc = Integer.parseInt(txtRucPasajero.getText());
+			Map parameters = new HashMap();
+			parameters.put("ruc", ruc);
+			new AbstractJasperReports().createReport(con, "rPasajeroRUC.jasper", parameters);
+			AbstractJasperReports.showViewer();
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, "No se encontró el viaje. " + ex);
+		}
+	}
 }

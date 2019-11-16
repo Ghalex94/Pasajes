@@ -17,15 +17,23 @@ import java.awt.SystemColor;
 import javax.swing.JComboBox;
 import com.toedter.calendar.JDateChooser;
 
+import clases.AbstractJasperReports;
 import clases.Empresa;
 import clases.Sedes;
 import mysql.Consultas;
+import mysql.MySQLConexion;
 
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 
@@ -407,6 +415,46 @@ public class viReporte_GastosOtros extends JInternalFrame {
 	}
 	
 	protected void actionPerformedBtnBuscar2(ActionEvent e) {
+		int empresa = cbEmpresa2.getSelectedIndex();
 		
+		Connection con = null;
+		try {
+			con = MySQLConexion.getConection();
+			
+			int añoi = dchFechaInicial2.getCalendar().get(Calendar.YEAR);
+			int mesi = dchFechaInicial2.getCalendar().get(Calendar.MARCH) + 1;
+			int diai = dchFechaInicial2.getCalendar().get(Calendar.DAY_OF_MONTH);
+			String fechai = añoi + "-" + mesi + "-" + diai + " 00:00:00";
+
+			int añof = dchFechaFinal2.getCalendar().get(Calendar.YEAR);
+			int mesf = dchFechaFinal2.getCalendar().get(Calendar.MARCH) + 1;
+			int diaf = dchFechaFinal2.getCalendar().get(Calendar.DAY_OF_MONTH);
+			String fechaf = añof + "-" + mesf + "-" + diaf + " 23:59:59";
+			
+			DateFormat formatter;
+			formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			Date date = (Date) formatter.parse(fechai);
+			java.sql.Timestamp timeStampDateI = new Timestamp(date.getTime());
+			DateFormat formatter2;
+			formatter2 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			Date date2 = (Date) formatter2.parse(fechaf);
+			java.sql.Timestamp timeStampDateF = new Timestamp(date2.getTime());
+			
+			Map parameters = new HashMap();
+			if (empresa != 0) {
+				parameters.put("idempresa", empresa);
+				parameters.put("fechaI", timeStampDateI);
+				parameters.put("fechaF", timeStampDateF);
+				new AbstractJasperReports().createReport(con, "rGastos.jasper", parameters);
+				AbstractJasperReports.showViewer();						
+			} else {
+				parameters.put("fechaI", timeStampDateI);
+				parameters.put("fechaF", timeStampDateF);
+				new AbstractJasperReports().createReport(con, "rGastosSinEmpresa.jasper", parameters);
+				AbstractJasperReports.showViewer();
+			}
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, "No se encontraron reportes con estos parámetros" + ex);
+		}				
 	}
 }
