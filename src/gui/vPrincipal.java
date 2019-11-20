@@ -32,6 +32,10 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -945,19 +949,36 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		*/
 		
 		
-		/*Connection con = MySQLConexion.getConection();
+		Connection con = MySQLConexion.getConection();
 		JasperReport jasperReport;
-        JasperPrint jasperPrint;                
+        JasperPrint jasperPrint;
+        ResultSet rs = null;
         try
         {
-          JasperReport reporte = (JasperReport) JRLoader.loadObjectFromFile("bin/rContratoPasajerosZ.jasper");
-          jasperPrint = JasperFillManager.fillReport(reporte, null, con );
-          JasperExportManager.exportReportToPdfFile( jasperPrint, "D:/reporte.pdf");
+        	consulta.cargarVentaTemporal();
+        	rs = consulta.cargarVentaTemporal();
+        	rs.next();
+        	
+        	String fpartida = rs.getString("fpartida");
+        	
+        	DateFormat df = new SimpleDateFormat("dd.MM.yyyy  HH.mm.ss");
+			Date today = Calendar.getInstance().getTime();       
+			String reportDate = df.format(today);
+        	
+	    	/*File directorio=new File("D:\\0 Documentos del Sistema"); 
+			directorio.mkdirs(); */
+			
+			/*File directorio2=new File("D:\\0 Documentos del Sistema\\" + fpartida); 
+			directorio2.mkdirs(); */
+
+			JasperReport reporte = (JasperReport) JRLoader.loadObjectFromFile("bin/rContratoPasajerosZ.jasper");
+			jasperPrint = JasperFillManager.fillReport(reporte, null, con );
+			JasperExportManager.exportReportToPdfFile( jasperPrint, "D:/0 Documentos del Sistema/reporte"+fpartida+".pdf");
         }
-        catch (JRException ex){
+        catch (JRException | SQLException ex){
          // System.err.println( "Error iReport: " + ex.getMessage() );
         }
-        */
+        
         
         
 	}
