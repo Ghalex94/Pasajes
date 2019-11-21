@@ -396,13 +396,25 @@ inner join  tb_conductor c1	on c1.dniconductor = dvo.dniconductor1
 inner join  tb_conductor c2	on c2.dniconductor = dvo.dniconductor2;
 
 -- 
+use db_colas;
+select distinct ventanilla, case 	when estado = 2 then 'No atendidos'
+									when estado = 3 then 'Atendidos'
+									else null
+                                    end as Detalle, count(*) from tb_colas 
+where estado = 2 or estado = 3						
+group by ventanilla,estado;
+
+select distinct ventanilla, case 	when estado = 2 then 'No atendidos'
+									when estado = 3 then 'Atendidos'
+									else null
+                                    end as Detalle, count(*), fecha from tb_colas
+where 
+fecha between  '2019-11-01'  and  '2019-12-12'
+and (estado = 2 or estado = 3)
+group by ventanilla,estado;
 
 
-
-
-
-
-
+select * from tb_colas;
 
 
 
