@@ -432,26 +432,26 @@ public class viReporte_GastosByF extends JInternalFrame {
 			if (empresa == 0 && documento == 0) {
 				parameters.put("fecha1", timeStampDateI);
 				parameters.put("fechaf", timeStampDateF);
-				new AbstractJasperReports().createReport(con, "rBoletasyFacturasemitidasSinParameter.jasper", parameters);
+				new AbstractJasperReports().createReport(con, "rrBoletasyFacturasemitidasSinParameter.jasper", parameters);
 				AbstractJasperReports.showViewer();
 			}else if (empresa == 0 && documento != 0) {
 				parameters.put("comprobante", documento);
 				parameters.put("fecha1", timeStampDateI);
 				parameters.put("fechaf", timeStampDateF);
-				new AbstractJasperReports().createReport(con, "rBoletasyFacturasSinEmpresa.jasper", parameters);
+				new AbstractJasperReports().createReport(con, "rrBoletasyFacturasSinEmpresa.jasper", parameters);
 				AbstractJasperReports.showViewer();
 			}else if (empresa != 0 && documento == 0) {
 				parameters.put("idempresa", empresa);
 				parameters.put("fecha1", timeStampDateI);
 				parameters.put("fechaf", timeStampDateF);
-				new AbstractJasperReports().createReport(con, "rBoletasyFacturasSinDocumento.jasper", parameters);
+				new AbstractJasperReports().createReport(con, "rrBoletasyFacturasSinDocumento.jasper", parameters);
 				AbstractJasperReports.showViewer();
 			}else {
 				parameters.put("idempresa", empresa);
 				parameters.put("comprobante", documento);
 				parameters.put("fecha1", timeStampDateI);
 				parameters.put("fechaf", timeStampDateF);
-				new AbstractJasperReports().createReport(con, "rBoletasyFacturasemitidas.jasper", parameters);
+				new AbstractJasperReports().createReport(con, "rrBoletasyFacturasemitidas.jasper", parameters);
 				AbstractJasperReports.showViewer();				
 			}
 			

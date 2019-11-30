@@ -912,7 +912,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		Consultas consulta = new Consultas();
 		consulta.iniciar();
 		
-		/*ResultSet rs = consulta.cargarVentaTemporal();
+		ResultSet rs = consulta.cargarVentaTemporal();
 		int empresa = 0;
 		try {
 			rs.next();
@@ -932,55 +932,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 			con.close();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error al cargar boleta: "+ e.getStackTrace());			
-		}*/
-		
-		/*
-		PDDocument document = PDDocument.load(new File("./documento.pdf"));
-
-        PrinterJob job = PrinterJob.getPrinterJob();
-
-        LOGGER.log(Level.INFO, "Mostrando el dialogo de impresion");
-        if (job.printDialog() == true) {            
-            job.setPageable(new PDFPageable(document));
-
-            LOGGER.log(Level.INFO, "Imprimiendo documento");
-            job.print();
-        }
-		*/
-		
-		
-		Connection con = MySQLConexion.getConection();
-		JasperReport jasperReport;
-        JasperPrint jasperPrint;
-        ResultSet rs = null;
-        try
-        {
-        	consulta.cargarVentaTemporal();
-        	rs = consulta.cargarVentaTemporal();
-        	rs.next();
-        	
-        	String fpartida = rs.getString("fpartida");
-        	
-        	DateFormat df = new SimpleDateFormat("dd.MM.yyyy  HH.mm.ss");
-			Date today = Calendar.getInstance().getTime();       
-			String reportDate = df.format(today);
-        	
-	    	/*File directorio=new File("D:\\0 Documentos del Sistema"); 
-			directorio.mkdirs(); */
-			
-			/*File directorio2=new File("D:\\0 Documentos del Sistema\\" + fpartida); 
-			directorio2.mkdirs(); */
-
-			JasperReport reporte = (JasperReport) JRLoader.loadObjectFromFile("bin/rContratoPasajerosZ.jasper");
-			jasperPrint = JasperFillManager.fillReport(reporte, null, con );
-			JasperExportManager.exportReportToPdfFile( jasperPrint, "D:/0 Documentos del Sistema/reporte"+fpartida+".pdf");
-        }
-        catch (JRException | SQLException ex){
-         // System.err.println( "Error iReport: " + ex.getMessage() );
-        }
-        
-        
-        
+		}
 	}
 	
 	protected void actionPerformedMntmOpcionesAvanzadas(ActionEvent e) {

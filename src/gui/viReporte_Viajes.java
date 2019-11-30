@@ -397,7 +397,7 @@ public class viReporte_Viajes extends JInternalFrame implements ActionListener {
 			int dnipasajero = Integer.parseInt(txtDniPasajero.getText());
 			Map parameters = new HashMap();
 			parameters.put("dnipasajero", dnipasajero);
-			new AbstractJasperReports().createReport(con, "rPasajeroDNI.jasper", parameters);
+			new AbstractJasperReports().createReport(con, "rrPasajeroDNI.jasper", parameters);
 			AbstractJasperReports.showViewer();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "No se encontró el viaje. " + e);
@@ -410,7 +410,7 @@ public class viReporte_Viajes extends JInternalFrame implements ActionListener {
 			int ruc = Integer.parseInt(txtRucPasajero.getText());
 			Map parameters = new HashMap();
 			parameters.put("ruc", ruc);
-			new AbstractJasperReports().createReport(con, "rPasajeroRUC.jasper", parameters);
+			new AbstractJasperReports().createReport(con, "rrPasajeroRUC.jasper", parameters);
 			AbstractJasperReports.showViewer();
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(null, "No se encontró el viaje. " + ex);

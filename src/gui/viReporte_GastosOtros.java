@@ -445,12 +445,12 @@ public class viReporte_GastosOtros extends JInternalFrame {
 				parameters.put("idempresa", empresa);
 				parameters.put("fechaI", timeStampDateI);
 				parameters.put("fechaF", timeStampDateF);
-				new AbstractJasperReports().createReport(con, "rGastos.jasper", parameters);
+				new AbstractJasperReports().createReport(con, "rrGastos.jasper", parameters);
 				AbstractJasperReports.showViewer();						
 			} else {
 				parameters.put("fechaI", timeStampDateI);
 				parameters.put("fechaF", timeStampDateF);
-				new AbstractJasperReports().createReport(con, "rGastosSinEmpresa.jasper", parameters);
+				new AbstractJasperReports().createReport(con, "rrGastosSinEmpresa.jasper", parameters);
 				AbstractJasperReports.showViewer();
 			}
 		} catch (Exception ex) {
