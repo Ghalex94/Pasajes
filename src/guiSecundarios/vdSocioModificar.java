@@ -47,8 +47,10 @@ import java.beans.PropertyChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import java.awt.event.MouseAdapter;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowEvent;
 
-public class vdSocioModificar extends JDialog implements ActionListener, KeyListener {
+public class vdSocioModificar extends JDialog implements ActionListener, KeyListener, WindowListener {
 	private JTextField txtAgregarVehiculo;
 	private JTextField txtCodSocio;
 	private JButton btnGuardar;
@@ -105,6 +107,8 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 	 * Create the dialog.
 	 */
 	public vdSocioModificar(vPrincipal temp, viListaSocios temp2, int temp3, int temp4, String temp5) {
+		addWindowListener(this);
+		setResizable(false);
 		setTitle("Modificar Socio");
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		
@@ -117,6 +121,7 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		getContentPane().setLayout(null);
 		{
 			txtAgregarVehiculo = new JTextField();
+			txtAgregarVehiculo.setBounds(0, 0, 724, 46);
 			txtAgregarVehiculo.setEditable(false);
 			txtAgregarVehiculo.setText("MODIFICAR SOCIO");
 			txtAgregarVehiculo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -124,63 +129,63 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 			txtAgregarVehiculo.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
 			txtAgregarVehiculo.setColumns(10);
 			txtAgregarVehiculo.setBackground(new Color(0, 139, 139));
-			txtAgregarVehiculo.setBounds(0, 0, 724, 46);
 			getContentPane().add(txtAgregarVehiculo);
 		}
 		{
 			lblPlaca = new JLabel("Codigo de socio:");
+			lblPlaca.setBounds(30, 57, 190, 34);
 			lblPlaca.setVerticalAlignment(SwingConstants.BOTTOM);
 			lblPlaca.setHorizontalAlignment(SwingConstants.LEFT);
 			lblPlaca.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-			lblPlaca.setBounds(30, 57, 190, 34);
 			getContentPane().add(lblPlaca);
 		}
 		{
 			txtCodSocio = new JTextField();
+			txtCodSocio.setBounds(226, 69, 464, 25);
 			txtCodSocio.setEditable(false);
 			txtCodSocio.setForeground(new Color(255, 69, 0));
 			txtCodSocio.addKeyListener(this);
 			txtCodSocio.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 			txtCodSocio.setColumns(10);
-			txtCodSocio.setBounds(226, 69, 464, 25);
 			getContentPane().add(txtCodSocio);
 		}
 		{
 			JLabel lblModelo = new JLabel("DNI:");
+			lblModelo.setBounds(70, 146, 105, 34);
 			lblModelo.setVerticalAlignment(SwingConstants.BOTTOM);
 			lblModelo.setHorizontalAlignment(SwingConstants.LEFT);
 			lblModelo.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-			lblModelo.setBounds(70, 146, 105, 34);
 			getContentPane().add(lblModelo);
 		}
 		{
 			JLabel lblConductor = new JLabel("Veh\u00EDculo afiliado");
+			lblConductor.setBounds(30, 246, 190, 34);
 			lblConductor.setVerticalAlignment(SwingConstants.BOTTOM);
 			lblConductor.setHorizontalAlignment(SwingConstants.LEFT);
 			lblConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-			lblConductor.setBounds(30, 246, 190, 34);
 			getContentPane().add(lblConductor);
 		}
 		{
 			btnCancelar = new JButton("Cancelar");
+			btnCancelar.setBounds(31, 634, 220, 53);
 			btnCancelar.addActionListener(this);
 			btnCancelar.setForeground(Color.WHITE);
 			btnCancelar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
 			btnCancelar.setBackground(new Color(0, 139, 139));
-			btnCancelar.setBounds(31, 634, 220, 53);
 			getContentPane().add(btnCancelar);
 		}
 		{
 			btnGuardar = new JButton("<html>Guardar</html>");
+			btnGuardar.setBounds(470, 634, 220, 53);
 			btnGuardar.addActionListener(this);
 			btnGuardar.setForeground(Color.WHITE);
 			btnGuardar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
 			btnGuardar.setBackground(new Color(0, 139, 139));
-			btnGuardar.setBounds(470, 634, 220, 53);
 			getContentPane().add(btnGuardar);
 		}
 		{
 			txtDniSocio = new JTextField();
+			txtDniSocio.setBounds(226, 155, 464, 25);
 			txtDniSocio.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyTyped(KeyEvent arg0) {
@@ -189,29 +194,29 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 			});
 			txtDniSocio.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 			txtDniSocio.setColumns(10);
-			txtDniSocio.setBounds(226, 155, 464, 25);
 			getContentPane().add(txtDniSocio);
 		}
 		
 		lblEmpresa = new JLabel("Empresa");
+		lblEmpresa.setBounds(70, 102, 105, 34);
 		lblEmpresa.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblEmpresa.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEmpresa.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblEmpresa.setBounds(70, 102, 105, 34);
 		getContentPane().add(lblEmpresa);
 		
 		cbEmpresa = new JComboBox();
-		cbEmpresa.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		cbEmpresa.setBounds(226, 112, 464, 25);
+		cbEmpresa.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		getContentPane().add(cbEmpresa);
 		
 		label = new JLabel("Placa:");
+		label.setBounds(70, 293, 95, 20);
 		label.setHorizontalAlignment(SwingConstants.LEFT);
 		label.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		label.setBounds(70, 293, 95, 20);
 		getContentPane().add(label);
 		
 		txtPlaca = new JTextField();
+		txtPlaca.setBounds(226, 291, 464, 25);
 		txtPlaca.setEditable(false);
 		txtPlaca.setForeground(new Color(255, 69, 0));
 		txtPlaca.addKeyListener(new KeyAdapter() {
@@ -228,27 +233,27 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		});
 		txtPlaca.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtPlaca.setColumns(10);
-		txtPlaca.setBounds(226, 291, 464, 25);
 		getContentPane().add(txtPlaca);
 		
 		cbModeloV = new JComboBox();
-		cbModeloV.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		cbModeloV.setBounds(226, 331, 464, 25);
+		cbModeloV.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		getContentPane().add(cbModeloV);
 		
 		label_1 = new JLabel("Modelo:");
+		label_1.setBounds(70, 336, 95, 20);
 		label_1.setHorizontalAlignment(SwingConstants.LEFT);
 		label_1.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		label_1.setBounds(70, 336, 95, 20);
 		getContentPane().add(label_1);
 		
 		label_2 = new JLabel("Detalles:");
+		label_2.setBounds(70, 377, 95, 20);
 		label_2.setHorizontalAlignment(SwingConstants.LEFT);
 		label_2.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		label_2.setBounds(70, 377, 95, 20);
 		getContentPane().add(label_2);
 		
 		txtDetalles = new JTextField();
+		txtDetalles.setBounds(226, 372, 464, 25);
 		txtDetalles.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -257,16 +262,16 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		});
 		txtDetalles.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtDetalles.setColumns(10);
-		txtDetalles.setBounds(226, 372, 464, 25);
 		getContentPane().add(txtDetalles);
 		
 		label_3 = new JLabel("MTC:");
+		label_3.setBounds(70, 420, 95, 20);
 		label_3.setHorizontalAlignment(SwingConstants.LEFT);
 		label_3.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		label_3.setBounds(70, 420, 95, 20);
 		getContentPane().add(label_3);
 		
 		txtMTC = new JTextField();
+		txtMTC.setBounds(226, 415, 464, 25);
 		txtMTC.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -275,22 +280,22 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		});
 		txtMTC.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtMTC.setColumns(10);
-		txtMTC.setBounds(226, 415, 464, 25);
 		getContentPane().add(txtMTC);
 		
 		lblConductor_1 = new JLabel("Conductor");
+		lblConductor_1.setBounds(30, 484, 132, 20);
 		lblConductor_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblConductor_1.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblConductor_1.setBounds(30, 484, 132, 20);
 		getContentPane().add(lblConductor_1);
 		
 		lblDni = new JLabel("DNI:");
+		lblDni.setBounds(70, 518, 104, 20);
 		lblDni.setHorizontalAlignment(SwingConstants.LEFT);
 		lblDni.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblDni.setBounds(70, 518, 104, 20);
 		getContentPane().add(lblDni);
 		
 		txtDniConductor = new JTextField();
+		txtDniConductor.setBounds(226, 515, 464, 25);
 		txtDniConductor.setEditable(false);
 		txtDniConductor.setForeground(new Color(255, 69, 0));
 		txtDniConductor.addKeyListener(new KeyAdapter() {
@@ -307,16 +312,16 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		});
 		txtDniConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtDniConductor.setColumns(10);
-		txtDniConductor.setBounds(226, 515, 464, 25);
 		getContentPane().add(txtDniConductor);
 		
 		lblNombre = new JLabel("Nombre:");
+		lblNombre.setBounds(70, 553, 111, 20);
 		lblNombre.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNombre.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblNombre.setBounds(70, 553, 111, 20);
 		getContentPane().add(lblNombre);
 		
 		txtNombreConductor = new JTextField();
+		txtNombreConductor.setBounds(226, 550, 464, 25);
 		txtNombreConductor.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -325,17 +330,17 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		});
 		txtNombreConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtNombreConductor.setColumns(10);
-		txtNombreConductor.setBounds(226, 550, 464, 25);
 		getContentPane().add(txtNombreConductor);
 		
 		label_7 = new JLabel("N Licencia:");
+		label_7.setBounds(70, 586, 132, 20);
 		label_7.setHorizontalAlignment(SwingConstants.LEFT);
 		label_7.setForeground(new Color(0, 0, 0));
 		label_7.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		label_7.setBounds(70, 586, 132, 20);
 		getContentPane().add(label_7);
 		
 		txtNlicencia = new JTextField();
+		txtNlicencia.setBounds(226, 584, 464, 25);
 		txtNlicencia.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -345,7 +350,6 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		txtNlicencia.setForeground(Color.BLACK);
 		txtNlicencia.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtNlicencia.setColumns(10);
-		txtNlicencia.setBounds(226, 584, 464, 25);
 		getContentPane().add(txtNlicencia);
 		
 		horizontalStrut = Box.createHorizontalStrut(20);
@@ -373,13 +377,14 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		getContentPane().add(verticalStrut_2);
 		
 		JLabel Nombre = new JLabel("Nombre:");
+		Nombre.setBounds(70, 191, 105, 34);
 		Nombre.setVerticalAlignment(SwingConstants.BOTTOM);
 		Nombre.setHorizontalAlignment(SwingConstants.LEFT);
 		Nombre.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		Nombre.setBounds(70, 191, 105, 34);
 		getContentPane().add(Nombre);
 		
 		txtNombreSocio = new JTextField();
+		txtNombreSocio.setBounds(226, 200, 464, 25);
 		txtNombreSocio.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -388,31 +393,31 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		});
 		txtNombreSocio.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtNombreSocio.setColumns(10);
-		txtNombreSocio.setBounds(226, 200, 464, 25);
 		getContentPane().add(txtNombreSocio);
 		
 		label_5 = new JLabel("*");
+		label_5.setBounds(202, 70, 18, 20);
 		label_5.setForeground(new Color(255, 0, 0));
 		label_5.setHorizontalAlignment(SwingConstants.CENTER);
 		label_5.setFont(new Font("Century Gothic", Font.PLAIN, 25));
-		label_5.setBounds(202, 70, 18, 20);
 		getContentPane().add(label_5);
 		
 		label_6 = new JLabel("*");
+		label_6.setBounds(202, 291, 18, 20);
 		label_6.setHorizontalAlignment(SwingConstants.CENTER);
 		label_6.setForeground(Color.RED);
 		label_6.setFont(new Font("Century Gothic", Font.PLAIN, 25));
-		label_6.setBounds(202, 291, 18, 20);
 		getContentPane().add(label_6);
 		
 		label_8 = new JLabel("*");
+		label_8.setBounds(202, 518, 18, 20);
 		label_8.setHorizontalAlignment(SwingConstants.CENTER);
 		label_8.setForeground(Color.RED);
 		label_8.setFont(new Font("Century Gothic", Font.PLAIN, 25));
-		label_8.setBounds(202, 518, 18, 20);
 		getContentPane().add(label_8);
 		
 		chbxVehiculo = new JCheckBox("Si el Vehiculo afiliado ser\u00E1 uno nuevo, marque esta casilla.");
+		chbxVehiculo.setBounds(226, 257, 464, 23);
 		chbxVehiculo.setHorizontalAlignment(SwingConstants.RIGHT);
 		chbxVehiculo.addMouseListener(new MouseAdapter() {
 			@Override
@@ -423,10 +428,10 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		chbxVehiculo.setForeground(new Color(255, 0, 0));
 		chbxVehiculo.setBackground(Color.LIGHT_GRAY);
 		chbxVehiculo.setFont(new Font("Tahoma", Font.ITALIC, 15));
-		chbxVehiculo.setBounds(226, 257, 464, 23);
 		getContentPane().add(chbxVehiculo);
 		
 		chbxConductor = new JCheckBox("Si el Conductor afiliado ser\u00E1 uno nuevo, marque esta casilla.");
+		chbxConductor.setBounds(226, 484, 464, 23);
 		chbxConductor.setHorizontalAlignment(SwingConstants.RIGHT);
 		chbxConductor.addMouseListener(new MouseAdapter() {
 			@Override
@@ -437,7 +442,6 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		chbxConductor.setForeground(new Color(255, 0, 0));
 		chbxConductor.setFont(new Font("Tahoma", Font.ITALIC, 15));
 		chbxConductor.setBackground(Color.LIGHT_GRAY);
-		chbxConductor.setBounds(226, 484, 464, 23);
 		getContentPane().add(chbxConductor);
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtCodSocio, cbEmpresa, txtDniSocio, txtNombreSocio, txtPlaca, cbModeloV, txtDetalles, txtMTC, txtDniConductor, txtNombreConductor, txtNlicencia, btnGuardar, btnCancelar}));
 		cargar();
@@ -741,9 +745,11 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 		if (c == (char)KeyEvent.VK_ENTER){
 			try {
 			Consultas consulta = new Consultas();
+			consulta.iniciar();
 			ResultSet rs = consulta.buscarSocio2(Integer.parseInt(txtDniSocio.getText()));
 				rs.next();
 				txtNombreSocio.setText(rs.getString("nombresocio"));
+				consulta.reset();
 			} catch (Exception e2) {
 				txtNombreSocio.setText(null);
 			}
@@ -932,6 +938,26 @@ public class vdSocioModificar extends JDialog implements ActionListener, KeyList
 			}
 		}
 		this.setAlwaysOnTop(true);
+	}
+	public void windowActivated(WindowEvent arg0) {
+	}
+	public void windowClosed(WindowEvent arg0) {
+	}
+	public void windowClosing(WindowEvent arg0) {
+		if (arg0.getSource() == this) {
+			windowClosingThis(arg0);
+		}
+	}
+	public void windowDeactivated(WindowEvent arg0) {
+	}
+	public void windowDeiconified(WindowEvent arg0) {
+	}
+	public void windowIconified(WindowEvent arg0) {
+	}
+	public void windowOpened(WindowEvent arg0) {
+	}
+	protected void windowClosingThis(WindowEvent arg0) {
+		vp.setEnabled(true);
 	}
 }
 

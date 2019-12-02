@@ -53,9 +53,11 @@ import java.awt.event.WindowEvent;
 import java.awt.Color;
 import java.awt.Insets;
 import java.awt.Font;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 
 
-public class vPrincipal extends JFrame implements ActionListener, WindowListener {
+public class vPrincipal extends JFrame implements ActionListener, WindowListener, MouseListener {
 	
 	public JDesktopPane desktopPane;
 	private JPanel contentPane;
@@ -152,7 +154,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		setJMenuBar(menuBar);
 		
 		mnArchivo = new JMenu("|Archivo|");
-		mnArchivo.setForeground(Color.WHITE);
+		mnArchivo.setForeground(new Color(144, 238, 144));
 		mnArchivo.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		mnArchivo.setEnabled(false);
 		menuBar.add(mnArchivo);
@@ -210,13 +212,14 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mnSalidas.add(mntmCancelarSalida);
 		
 		mnFormatos = new JMenu("Formatos|");
+		mnFormatos.addMouseListener(this);
 		mnFormatos.setForeground(Color.WHITE);
 		mnFormatos.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		mnFormatos.setEnabled(false);
 		menuBar.add(mnFormatos);
 		
-		mntmLlenarInformacion = new JMenuItem("COMPLETAR INFORMACI\u00D3N");
-		mntmLlenarInformacion.setBackground(new Color(105, 105, 105));
+		mntmLlenarInformacion = new JMenuItem("COMPLETAR INFORMACI\u00D3N SECUNDARIA");
+		mntmLlenarInformacion.setBackground(new Color(220, 20, 60));
 		mntmLlenarInformacion.setForeground(new Color(255, 255, 255));
 		mntmLlenarInformacion.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mntmLlenarInformacion.addActionListener(this);
@@ -242,7 +245,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mntmContrato.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mnFormatos.add(mntmContrato);
 		
-		mntmVerBoletaVenta = new JMenuItem("<html>Ver Ejemplo de <br>Boleta y Factura de Venta</html>");
+		mntmVerBoletaVenta = new JMenuItem("<html>Ver Ejemplo de Boleta y Factura de Venta</html>");
 		mntmVerBoletaVenta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				actionPerformedMntmVerBoletaVenta(arg0);
@@ -261,7 +264,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		mnFormatos.add(mntmVerBoletaVenta);
 		
 		mnVehiculosConductores = new JMenu("|Socios - vehiculos - conductores|");
-		mnVehiculosConductores.setForeground(Color.WHITE);
+		mnVehiculosConductores.setForeground(new Color(144, 238, 144));
 		mnVehiculosConductores.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		mnVehiculosConductores.setEnabled(false);
 		menuBar.add(mnVehiculosConductores);
@@ -301,7 +304,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		});
 		
 		mnClientes = new JMenu("|Clientes|");
-		mnClientes.setForeground(Color.WHITE);
+		mnClientes.setForeground(new Color(144, 238, 144));
 		mnClientes.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		mnClientes.setEnabled(false);
 		menuBar.add(mnClientes);
@@ -357,6 +360,20 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		});
 		mntmContabilidad.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		mnReportes.add(mntmContabilidad);
+		
+		mnAyuda = new JMenu("|Ayuda|");
+		mnAyuda.setForeground(new Color(144, 238, 144));
+		mnAyuda.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		mnAyuda.setBackground(Color.DARK_GRAY);
+		menuBar.add(mnAyuda);
+		
+		mntmVerPdf = new JMenuItem("Ver gu\u00EDa en PDF");
+		mntmVerPdf.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		mnAyuda.add(mntmVerPdf);
+		
+		mntmVerVideo = new JMenuItem("Ver gu\u00EDa en Video");
+		mntmVerVideo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		mnAyuda.add(mntmVerVideo);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -907,6 +924,9 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 	}
 
 	private final static Logger LOGGER = Logger.getLogger("mx.hash.impresionpdf.Impresor");
+	private JMenu mnAyuda;
+	private JMenuItem mntmVerPdf;
+	private JMenuItem mntmVerVideo;
 	
 	protected void actionPerformedMntmVerListaPasajeros(ActionEvent arg0) {
 		Consultas consulta = new Consultas();
@@ -959,7 +979,7 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		
 		try {
 			Connection con = MySQLConexion.getConection();
-			if(empresa == 0)
+			if(empresa == 1)
 				new AbstractJasperReports().createReport( con, "rBoletaVentaM.jasper");
 			else
 				new AbstractJasperReports().createReport( con, "rBoletaVentaZ.jasper");
@@ -1012,6 +1032,37 @@ public class vPrincipal extends JFrame implements ActionListener, WindowListener
 		try{
 			r_c.setMaximum(true);
 		}catch(Exception f){}
+	}
+	public void mouseClicked(MouseEvent arg0) {
+		if (arg0.getSource() == mnFormatos) {
+			mouseClickedMnFormatos(arg0);
+		}
+	}
+	public void mouseEntered(MouseEvent arg0) {
+	}
+	public void mouseExited(MouseEvent arg0) {
+	}
+	public void mousePressed(MouseEvent arg0) {
+	}
+	public void mouseReleased(MouseEvent arg0) {
+	}
+	protected void mouseClickedMnFormatos(MouseEvent arg0) {
+		Consultas consulta = new Consultas();
+		consulta.iniciar();
+		ResultSet rs = consulta.cargarVentaTemporal();
+		int verificarInfAdi = 0;
+		try {
+			rs.next();
+			verificarInfAdi = rs.getInt("verificarInfAdi");
+		} catch (SQLException e1) {
+			JOptionPane.showMessageDialog(null, "Error al cargar verificarInfAdi: "+ e1.getStackTrace());
+		}
+		consulta.reset();
+		
+		if(verificarInfAdi == 0)
+			mntmLlenarInformacion.setBackground(new Color(220, 20, 60));
+		if(verificarInfAdi == 1)
+			mntmLlenarInformacion.setBackground(Color.BLUE);
 	}
 }
 

@@ -93,6 +93,7 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 	private JLabel label;
 	private JTextField txtNviaje;
 	private JLabel lblNSerie;
+	private JCheckBox chbxVerTotal;
 
 	
 	public static void main(String[] args) {
@@ -164,16 +165,10 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		getContentPane().add(lblDestino);
 		
 		lblCuentaTotal = new JLabel("Cuenta Total:");
-		lblCuentaTotal.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				mouseClickedLblCuentaTotal(e);
-			}
-		});
 		lblCuentaTotal.setForeground(Color.WHITE);
 		lblCuentaTotal.setHorizontalAlignment(SwingConstants.LEFT);
 		lblCuentaTotal.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblCuentaTotal.setBounds(1049, 160, 258, 32);
+		lblCuentaTotal.setBounds(1049, 157, 210, 32);
 		getContentPane().add(lblCuentaTotal);
 		
 		btnfinalizarEImprimir = new JButton("<html>FINALIZAR E <br>\u00A0\u00A0IMPRIMIR </html>");
@@ -445,11 +440,17 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		lblNSerie.setBounds(1049, 116, 105, 40);
 		getContentPane().add(lblNSerie);
 		
+		chbxVerTotal = new JCheckBox("");
+		chbxVerTotal.addActionListener(this);
+		chbxVerTotal.setBackground(Color.DARK_GRAY);
+		chbxVerTotal.setBounds(1306, 166, 25, 26);
+		getContentPane().add(chbxVerTotal);
+		
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtTitulo, cbOrigen, btnfinalizarEImprimir, cbDestino, btnConductor, btnA3, btnA4, btnA5, btnA6, btnA7, btnA8, btnA9, btnA10, btnA11, btnA12, btnA13, btnA14, btnA15, btnA1, btnA2}));
 		cargar();
 		}
 	
-	public void cargar(){
+	public void cargar(){		
 		//seleccionar cbos
 		Consultas consulta = new Consultas();
 		consulta.iniciar();
@@ -591,6 +592,9 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 	}
 	
 	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == chbxVerTotal) {
+			actionPerformedChbxVerTotal(arg0);
+		}
 		if (arg0.getSource() == cbMinutoDestino) {
 			actionPerformedCbMinutoDestino(arg0);
 		}
@@ -812,12 +816,6 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		consulta.actualizarVentaTemporal04(iddestino, destino);
 		consulta.reset();		
 	}
-	protected void mouseClickedLblCuentaTotal(MouseEvent e) {
-		if(lblTotal.isVisible())
-			lblTotal.setVisible(false);
-		else
-			lblTotal.setVisible(true);
-	}
 	protected void propertyChangeDchOrigen(PropertyChangeEvent arg0) {
 		actualizarFechaOrigen();
 	}
@@ -868,7 +866,8 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 		try {
 			Date dater = dchDestino.getDate();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			String fDestino= String.valueOf(sdf.format(dater));
+			String fDestino = String.valueOf(sdf.format(dater));
+			String hDestino = null;
 			int horad = Integer.parseInt(cbHoraDestino.getSelectedItem().toString());
 			int mind = Integer.parseInt(cbMinutoDestino.getSelectedItem().toString());
 			/*if(cbMOrigen.getSelectedItem().toString().equals("pm")){
@@ -878,10 +877,14 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 					horao = horao + 12;
 			}*/
 			fDestino = fDestino + " " + horad+":"+mind+":00";
+			hDestino = horad+":"+mind;
 			Consultas consulta = new Consultas();
-			consulta.iniciar();
-			consulta.actualizarVentaTemporal06(fDestino);	
-			consulta.reset();
+			consulta.iniciar();		
+			consulta.actualizarVentaTemporal06(fDestino);
+			
+			consulta.actualizarVentaTemporal062(hDestino);
+			
+			consulta.reset();		
 			} catch (Exception e) {	}
 	}
 	public void keyPressed(KeyEvent e) {
@@ -1019,5 +1022,12 @@ public class viSeleccionAsientos4 extends JInternalFrame implements ActionListen
 			}	
 			consulta.reset();
 		}
+	}
+	 	
+	protected void actionPerformedChbxVerTotal(ActionEvent arg0) {
+		if(lblTotal.isVisible())
+			lblTotal.setVisible(false);
+		else
+			lblTotal.setVisible(true);
 	}
 }

@@ -134,6 +134,7 @@ public class viReporte_Viajes extends JInternalFrame implements ActionListener {
 		panel1.add(btnVerViajesRealizados);
 		
 		txtViajesRealizados = new JTextField();
+		txtViajesRealizados.setEditable(false);
 		txtViajesRealizados.setText("VER VIAJES REALIZADOS");
 		txtViajesRealizados.setHorizontalAlignment(SwingConstants.CENTER);
 		txtViajesRealizados.setForeground(Color.WHITE);
@@ -168,6 +169,7 @@ public class viReporte_Viajes extends JInternalFrame implements ActionListener {
 		panel.add(btnVerDetalleViaje);
 		
 		txtDetalleDeViaje = new JTextField();
+		txtDetalleDeViaje.setEditable(false);
 		txtDetalleDeViaje.setText("VER DETALLE DE VIAJE");
 		txtDetalleDeViaje.setHorizontalAlignment(SwingConstants.CENTER);
 		txtDetalleDeViaje.setForeground(Color.WHITE);
@@ -207,6 +209,7 @@ public class viReporte_Viajes extends JInternalFrame implements ActionListener {
 		panel_1.add(btnVerPasajeros);
 		
 		txtPasajerosDeViaje = new JTextField();
+		txtPasajerosDeViaje.setEditable(false);
 		txtPasajerosDeViaje.setText("VER PASAJEROS DE VIAJE");
 		txtPasajerosDeViaje.setHorizontalAlignment(SwingConstants.CENTER);
 		txtPasajerosDeViaje.setForeground(Color.WHITE);
@@ -250,6 +253,7 @@ public class viReporte_Viajes extends JInternalFrame implements ActionListener {
 		panel_2.add(btnDNI);
 		
 		txtVerViajesDe = new JTextField();
+		txtVerViajesDe.setEditable(false);
 		txtVerViajesDe.setText("VER VIAJES DE PASAJERO");
 		txtVerViajesDe.setHorizontalAlignment(SwingConstants.CENTER);
 		txtVerViajesDe.setForeground(Color.WHITE);
@@ -317,6 +321,12 @@ public class viReporte_Viajes extends JInternalFrame implements ActionListener {
 			
 			Sedes sinDestino = new Sedes(-2, "Sin seleccionar");
 			Sedes destino1 = new Sedes();
+			
+			// CARGAR FECHA ACTUAL EN CALENDARS
+			java.util.Date date = new Date();
+			date.getTime();
+			dchFechaInicio.setDate(date);
+			dchFechaFin.setDate(date);
 	}
 	public void actionPerformed(ActionEvent arg0) {
 		if (arg0.getSource() == btnVerPasajeros) {
@@ -371,6 +381,7 @@ public class viReporte_Viajes extends JInternalFrame implements ActionListener {
 			parameters.put("nviaje", nviaje);
 			new AbstractJasperReports().createReport(con, "rrViajeDetalle.jasper", parameters);
 			AbstractJasperReports.showViewer();
+			txtPasajerosViaje.setText(null);
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(null, "No se encontró el viaje. " + ex);
 		}
@@ -385,6 +396,7 @@ public class viReporte_Viajes extends JInternalFrame implements ActionListener {
 			parameters.put("nviaje", nviaje);
 			new AbstractJasperReports().createReport(con, "rrViajesDetallesOtro.jasper", parameters);
 			AbstractJasperReports.showViewer();
+			txtNviajeDetalles.setText(null);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "No se encontró el viaje. " + e);
 		}
@@ -399,19 +411,22 @@ public class viReporte_Viajes extends JInternalFrame implements ActionListener {
 			parameters.put("dnipasajero", dnipasajero);
 			new AbstractJasperReports().createReport(con, "rrPasajeroDNI.jasper", parameters);
 			AbstractJasperReports.showViewer();
+			txtDniPasajero.setText(null);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "No se encontró el viaje. " + e);
 		}
 	}
+	
 	protected void actionPerformedBtnRUC(ActionEvent e) {
 		Connection con = null;
 		try {
 			con = MySQLConexion.getConection();
-			int ruc = Integer.parseInt(txtRucPasajero.getText());
+			String ruc = txtRucPasajero.getText();
 			Map parameters = new HashMap();
 			parameters.put("ruc", ruc);
 			new AbstractJasperReports().createReport(con, "rrPasajeroRUC.jasper", parameters);
 			AbstractJasperReports.showViewer();
+			txtRucPasajero.setText(null);
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(null, "No se encontró el viaje. " + ex);
 		}

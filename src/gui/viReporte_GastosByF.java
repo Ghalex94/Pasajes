@@ -248,6 +248,7 @@ public class viReporte_GastosByF extends JInternalFrame {
 		panel1.add(btnRegistrar1);
 		
 		txtTitulo0 = new JTextField();
+		txtTitulo0.setEditable(false);
 		txtTitulo0.setBackground(Color.DARK_GRAY);
 		txtTitulo0.setForeground(Color.WHITE);
 		txtTitulo0.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
@@ -277,6 +278,7 @@ public class viReporte_GastosByF extends JInternalFrame {
 		panel_2.setLayout(null);
 		
 		txtTitulo2 = new JTextField();
+		txtTitulo2.setEditable(false);
 		txtTitulo2.setText("CONSULTAS");
 		txtTitulo2.setHorizontalAlignment(SwingConstants.CENTER);
 		txtTitulo2.setForeground(Color.WHITE);
@@ -367,6 +369,13 @@ public class viReporte_GastosByF extends JInternalFrame {
 		
 		Sedes destino1 = new Sedes();// DESTINO
 		destino1.cargarDestinos(cbDestino1);
+		
+		// CARGAR FECHA ACTUAL EN CALENDARS
+		java.util.Date date = new Date();
+		date.getTime();
+		dchFechaEmision1.setDate(date);
+		dchFechaInicial2.setDate(date);
+		dchFechaFinal2.setDate(date);
 	}
 	
 	protected void actionPerformedBtnRegstrar1(ActionEvent e) {

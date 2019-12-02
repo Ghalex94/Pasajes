@@ -232,6 +232,8 @@ public class viDatos1 extends JInternalFrame implements ActionListener, KeyListe
 			vp.cerrarVentanas();
 			
 			consulta.reset();
+
+			JOptionPane.showMessageDialog(null, "A continuación los pasos a seguir son:\n1) Indicar Lugares y Fechas de Origen y Destino(Puede hacerlo en cualquier momento).\n2) Vender los pasajes en los asientos deseados.\n3) Puede cambiar de Conductor u otros datos desde el asiento del Conductor.\n4) En cualquier momento, vaya a la pestaña FORMATOS y Complete los Datos Faltantes.\n5) Imprima sus documentos cuando crea tenerlos listos.\n6) Finalice la venta.", "INFORMACIÓN IMPORTANTE", JOptionPane.INFORMATION_MESSAGE);
 			
 			switch(idmodelovh){
 			case 1:

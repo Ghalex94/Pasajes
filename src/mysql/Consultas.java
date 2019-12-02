@@ -301,7 +301,7 @@ public class Consultas {
 			st = con.createStatement();
 			rs = st.executeQuery("select * from tb_configuracion_inicial");
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "ERROR al cargar configuracion inicial: " + e.getMessage());
+			//JOptionPane.showMessageDialog(null, "ERROR al cargar configuracion inicial: " + e.getMessage());
 		}
 		return rs;
 	}
@@ -311,7 +311,7 @@ public class Consultas {
 			st = con.createStatement();
 			rs = st.executeQuery("select * from tb_venta_temporal");
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "ERROR al cargar venta temporarl : " + e.getMessage());
+			//JOptionPane.showMessageDialog(null, "ERROR al cargar venta temporarl : " + e.getMessage());
 		}
 		return rs;
 	}
@@ -416,6 +416,22 @@ public class Consultas {
 			JOptionPane.showMessageDialog(null, "ERROR al actualizar VentaTemporal 06: " + e.getMessage());
 		}
 	}
+	public   void actualizarVentaTemporal062(String hDestino){
+		try {
+			String sql = "UPDATE tb_venta_temporal SET horainicio2 = IF(horafin1 = '00:00', ?, horainicio2);";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setString(1, hDestino);
+			prepareStmt.execute();
+			
+			String sql2 = "UPDATE tb_venta_temporal SET horafin2 = IF(horafin1 != '00:00', ?, '00:00');";
+			PreparedStatement prepareStmt2 = con.prepareStatement(sql2);
+			prepareStmt2.setString(1, hDestino);
+			prepareStmt2.execute();
+			
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR al actualizar VentaTemporal 062: " + e.getMessage());
+		}
+	}
 	public   void actualizarVentaTemporal07(int nViaje){
 		try {
 			String sql = "update tb_venta_temporal set nviaje=? where id=1";
@@ -426,10 +442,11 @@ public class Consultas {
 			JOptionPane.showMessageDialog(null, "ERROR al actualizar VentaTemporal 07: " + e.getMessage());
 		}
 	}
+	//VIENE DE INFORMACION ADICIONAL
 	public   void actualizarVentaTemporal08(int vstandar, int escalascom, String desde, String hasta, String pencuentro, String escalasparadas,
 		String horainicio2, int dniconductor2, String licencia2, String horafin1, String horafin2, String comentarios, int modalidad, float totalmodif){ // Viene de LLenar Datos Faltantes
 		try {
-			String sql = "update tb_venta_temporal set standar=?, escalacom=?, ciudaddesde=?, ciudadhasta=?, puntoencuentro=?, escalas=?, horainicio2=?, dniconductor2=?, licencia2=?, horafin1=?, horafin2=?, modalidad=?, totalmodif=? where id=1";
+			String sql = "update tb_venta_temporal set standar=?, escalacom=?, ciudaddesde=?, ciudadhasta=?, puntoencuentro=?, escalas=?, horainicio2=?, dniconductor2=?, licencia2=?, horafin1=?, horafin2=?, modalidad=?, totalmodif=?, verificarInfAdi=1 where id=1";
 			PreparedStatement prepareStmt = con.prepareStatement(sql);
 			prepareStmt.setInt(1, vstandar);
 			prepareStmt.setInt(2, escalascom);
@@ -528,7 +545,7 @@ public class Consultas {
 	public   void eliminarSalidaVehiculo(String usuario){
 		try {
 			String sql1 = "delete from tb_venta_temporal where id = 1";
-			String sql2 = "insert into tb_venta_temporal values(1, 0, 0, 0, 0, null, 0, 0, 0, null, null, 0, -1, 1, 0, null, null, null, null, null, 0, null, null, null, 0, -1, ?)";
+			String sql2 = "insert into tb_venta_temporal values(1, 0, 0, 0, 0, null, 0, 0, 0, null, null, 0, -1, 1, 0, null, null, null, null, null, 0, null, null, null, 0, -1, ?, 0)";
 			String sql3 = "delete from tb_pasajeros_temporal where asiento < 100";
 			PreparedStatement prepareStmt = con.prepareStatement(sql1);
 			prepareStmt.execute();
@@ -630,6 +647,18 @@ public class Consultas {
 			prepareStmt.execute();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR" + e.getMessage());
+		}
+	}
+	
+	public   void actualizarContratante(int asiento, int contratante){
+		try {
+			String sql = "update tb_pasajeros_temporal set contratante=? where asiento=?";
+			PreparedStatement prepareStmt = con.prepareStatement(sql);
+			prepareStmt.setInt(1, contratante);
+			prepareStmt.setInt(2, asiento);
+			prepareStmt.execute();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERROR al actualizar Pasajero: " + e.getMessage());
 		}
 	}
 	

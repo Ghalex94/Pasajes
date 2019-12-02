@@ -26,8 +26,10 @@ import java.awt.event.KeyListener;
 import java.sql.ResultSet;
 import java.awt.event.KeyEvent;
 import java.awt.SystemColor;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowEvent;
 
-public class vdConductorNuevo extends JDialog implements ActionListener, KeyListener {
+public class vdConductorNuevo extends JDialog implements ActionListener, KeyListener, WindowListener {
 	private JTextField txtAgregarConductor;
 	private JLabel lblDni;
 	private JTextField txtDni;
@@ -57,6 +59,8 @@ public class vdConductorNuevo extends JDialog implements ActionListener, KeyList
 	 * Create the dialog.
 	 */
 	public vdConductorNuevo(vdVehiculoNuevo temp, vdVehiculoModificar temp2, vdConductor temp3) {
+		setTitle("Ingrese los siguientes datos");
+		addWindowListener(this);
 		setResizable(false);
 		vnvh = temp;
 		vmvh = temp2;
@@ -265,6 +269,26 @@ public class vdConductorNuevo extends JDialog implements ActionListener, KeyList
 		if (txtConductor.getText().length() == 50){
 			e.consume();
 		}
+	}
+	public void windowActivated(WindowEvent arg0) {
+	}
+	public void windowClosed(WindowEvent arg0) {
+	}
+	public void windowClosing(WindowEvent arg0) {
+		if (arg0.getSource() == this) {
+			windowClosingThis(arg0);
+		}
+	}
+	public void windowDeactivated(WindowEvent arg0) {
+	}
+	public void windowDeiconified(WindowEvent e) {
+	}
+	public void windowIconified(WindowEvent e) {
+	}
+	public void windowOpened(WindowEvent e) {
+	}
+	protected void windowClosingThis(WindowEvent arg0) {
+		cndtr.setVisible(true);
 	}
 }
 

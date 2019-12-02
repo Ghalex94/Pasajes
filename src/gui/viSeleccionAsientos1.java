@@ -99,6 +99,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 	private JLabel lblViajeN;
 	private JTextField txtNviaje;
 	private JLabel lblNSerie;
+	private JCheckBox chbxVerTotal;
 
 	
 	public static void main(String[] args) {
@@ -170,16 +171,10 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		getContentPane().add(lblDestino);
 		
 		lblCuentaTotal = new JLabel("Cuenta Total:");
-		lblCuentaTotal.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				mouseClickedLblCuentaTotal(e);
-			}
-		});
 		lblCuentaTotal.setForeground(Color.WHITE);
 		lblCuentaTotal.setHorizontalAlignment(SwingConstants.LEFT);
 		lblCuentaTotal.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblCuentaTotal.setBounds(1051, 151, 258, 32);
+		lblCuentaTotal.setBounds(1051, 151, 205, 32);
 		getContentPane().add(lblCuentaTotal);
 		
 		btnfinalizarEImprimir = new JButton("FINALIZAR");
@@ -205,7 +200,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		lblS.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblS.setHorizontalAlignment(SwingConstants.LEFT);
 		lblS.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblS.setBounds(1051, 180, 52, 32);
+		lblS.setBounds(1051, 183, 52, 32);
 		getContentPane().add(lblS);
 		
 		Image imgChofer = new ImageIcon(this.getClass().getResource("/chofer.png")).getImage();
@@ -441,7 +436,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		lblTotal.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblTotal.setHorizontalAlignment(SwingConstants.LEFT);
 		lblTotal.setFont(new Font("EngraversGothic BT", Font.BOLD, 30));
-		lblTotal.setBounds(1096, 180, 213, 32);
+		lblTotal.setBounds(1096, 183, 213, 32);
 		getContentPane().add(lblTotal);
 		
 		
@@ -511,14 +506,19 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		lblNSerie.setBounds(1051, 100, 105, 40);
 		getContentPane().add(lblNSerie);
 		
+		chbxVerTotal = new JCheckBox("");
+		chbxVerTotal.addActionListener(this);
+		chbxVerTotal.setBackground(Color.DARK_GRAY);
+		chbxVerTotal.setBounds(1302, 157, 25, 26);
+		getContentPane().add(chbxVerTotal);
+		
 		
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtTitulo, cbOrigen, btnfinalizarEImprimir, cbDestino, btnConductor, btnA3, btnA4, btnA5, btnA6, btnA7, btnA8, btnA9, btnA10, btnA11, btnA12, btnA13, btnA14, btnA15, btnA1, btnA2}));
 		cargar();
 		}
 	
 	public void cargar(){
-		//seleccionar cbos
-
+		//seleccionar cbos		
 		Consultas consulta = new Consultas();
 		consulta.iniciar();
 		
@@ -644,6 +644,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		}
 		
 		consulta.reset();
+		
 	}
 	
 	public void sumarTotalPasajes(){
@@ -655,7 +656,7 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 			while(rs.next()){
 				tot = tot + rs.getFloat("prepasaje");
 			}
-			lblTotal.setText(""+tot);
+			lblTotal.setText("00.00");
 			consulta.reset();
 		}
 		catch (Exception e) {
@@ -663,6 +664,9 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 	}
 	
 	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == chbxVerTotal) {
+			actionPerformedChbxVerTotal(arg0);
+		}
 		if (arg0.getSource() == btnA20) {
 			actionPerformedBtnA20(arg0);
 		}
@@ -942,12 +946,6 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		consulta.reset();		
 		
 	}
-	protected void mouseClickedLblCuentaTotal(MouseEvent e) {
-		if(lblTotal.isVisible())
-			lblTotal.setVisible(false);
-		else
-			lblTotal.setVisible(true);
-	}
 	protected void propertyChangeDchOrigen(PropertyChangeEvent arg0) {
 		actualizarFechaOrigen();
 	}
@@ -998,7 +996,8 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 		try {
 			Date dater = dchDestino.getDate();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			String fDestino= String.valueOf(sdf.format(dater));
+			String fDestino = String.valueOf(sdf.format(dater));
+			String hDestino = null;
 			int horad = Integer.parseInt(cbHoraDestino.getSelectedItem().toString());
 			int mind = Integer.parseInt(cbMinutoDestino.getSelectedItem().toString());
 			/*if(cbMOrigen.getSelectedItem().toString().equals("pm")){
@@ -1008,9 +1007,13 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 					horao = horao + 12;
 			}*/
 			fDestino = fDestino + " " + horad+":"+mind+":00";
+			hDestino = horad+":"+mind;
 			Consultas consulta = new Consultas();
 			consulta.iniciar();		
-			consulta.actualizarVentaTemporal06(fDestino);	
+			consulta.actualizarVentaTemporal06(fDestino);
+			
+			consulta.actualizarVentaTemporal062(hDestino);
+			
 			consulta.reset();		
 			} catch (Exception e) {	}
 	}
@@ -1167,5 +1170,11 @@ public class viSeleccionAsientos1 extends JInternalFrame implements ActionListen
 			}
 			consulta.reset();
 		}
+	}
+	protected void actionPerformedChbxVerTotal(ActionEvent arg0) {
+		if(lblTotal.isVisible())
+			lblTotal.setVisible(false);
+		else
+			lblTotal.setVisible(true);
 	}
 }

@@ -145,8 +145,11 @@ horafin1		varchar(5),
 horafin2		varchar(5),
 modalidad		int,
 totalmodif		float,
-usuario			varchar(50)
-);                                 
+usuario			varchar(50),
+verificarInfAdi	int
+);
+alter table tb_venta_temporal
+  add verificarInfAdi int;        
 
 create table tb_pasajeros_temporal(
 asiento 		int not null primary key,
@@ -242,7 +245,7 @@ insert into tb_socio values(1004, 2, 76781004, 'Socio4', 76782004, 'DDD-444');
 insert into tb_socio values(1005, 1, 76781005, 'Socio5', 76782005, 'EEE-555');
 insert into tb_socio values(1006, 2, 76781006, 'Socio6', 76782006, 'FFF-666');
 
--- JECUTAR HASTA AQUÍ PARA QUE FUNCIONE EL SISTEMA
+-- EJECUTAR HASTA AQUÍ PARA QUE FUNCIONE EL SISTEMA
 
 
 -- ELIMINAR TABLAS Y DB -----------------------------------------------------------

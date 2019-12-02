@@ -37,8 +37,10 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import javax.swing.JCheckBox;
 import java.awt.event.MouseAdapter;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowEvent;
 
-public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener {
+public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener, WindowListener {
 	private JTextField txtAgregarVehiculo;
 	private JTextField txtCodSocio;
 	private JButton btnGuardar;
@@ -95,12 +97,14 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 	 * Create the dialog.
 	 */
 	public vdSocioNuevo(vPrincipal temp, viListaSocios temp2) {
+		addWindowListener(this);
+		setResizable(false);
 		setTitle("Socio Nuevo");
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		
 		vp = temp;
 		ls = temp2;
-		setBounds(100, 100, 724, 805);
+		setBounds(100, 100, 724, 755);
 		getContentPane().setLayout(null);
 		{
 			txtAgregarVehiculo = new JTextField();
@@ -156,7 +160,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 			btnCancelar.setForeground(Color.WHITE);
 			btnCancelar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
 			btnCancelar.setBackground(new Color(0, 139, 139));
-			btnCancelar.setBounds(31, 706, 220, 53);
+			btnCancelar.setBounds(30, 669, 220, 53);
 			getContentPane().add(btnCancelar);
 		}
 		{
@@ -165,7 +169,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 			btnGuardar.setForeground(Color.WHITE);
 			btnGuardar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
 			btnGuardar.setBackground(new Color(0, 139, 139));
-			btnGuardar.setBounds(470, 706, 220, 53);
+			btnGuardar.setBounds(469, 669, 220, 53);
 			getContentPane().add(btnGuardar);
 		}
 		{
@@ -348,7 +352,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		getContentPane().add(horizontalStrut);
 		
 		verticalStrut = Box.createVerticalStrut(20);
-		verticalStrut.setBounds(52, 565, 18, 110);
+		verticalStrut.setBounds(52, 565, 18, 93);
 		getContentPane().add(verticalStrut);
 		
 		horizontalStrut_1 = Box.createHorizontalStrut(20);
@@ -415,7 +419,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		label_4.setBounds(202, 146, 18, 34);
 		getContentPane().add(label_4);
 		
-		this.chbxSocio = new JCheckBox("Si el socio tambien har\u00E1 de conductor, marque esta casilla.");
+		this.chbxSocio = new JCheckBox("Si el socio tambien ser\u00E1 el conductor, marque esta casilla.");
 		this.chbxSocio.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -424,7 +428,7 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 		});
 		this.chbxSocio.setHorizontalAlignment(SwingConstants.RIGHT);
 		this.chbxSocio.setForeground(new Color(0, 139, 139));
-		this.chbxSocio.setFont(new Font("Tahoma", Font.ITALIC, 15));
+		this.chbxSocio.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 15));
 		this.chbxSocio.setBackground(Color.LIGHT_GRAY);
 		this.chbxSocio.setBounds(226, 268, 464, 23);
 		getContentPane().add(this.chbxSocio);
@@ -904,6 +908,26 @@ public class vdSocioNuevo extends JDialog implements ActionListener, KeyListener
 				chbxSocio.setSelected(true);
 		}
 		this.setAlwaysOnTop(true);
+	}
+	public void windowActivated(WindowEvent arg0) {
+	}
+	public void windowClosed(WindowEvent arg0) {
+	}
+	public void windowClosing(WindowEvent arg0) {
+		if (arg0.getSource() == this) {
+			windowClosingThis(arg0);
+		}
+	}
+	public void windowDeactivated(WindowEvent arg0) {
+	}
+	public void windowDeiconified(WindowEvent arg0) {
+	}
+	public void windowIconified(WindowEvent arg0) {
+	}
+	public void windowOpened(WindowEvent arg0) {
+	}
+	protected void windowClosingThis(WindowEvent arg0) {
+		vp.setEnabled(true);
 	}
 }
 

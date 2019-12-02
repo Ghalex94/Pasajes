@@ -1,6 +1,8 @@
 package clases;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import mysql.Consultas;
@@ -31,7 +33,12 @@ public class Sedes {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "ERROR: " + e);
 		}		
-		consult.reset();
+		try {
+			rs.close();
+			consult.reset();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override

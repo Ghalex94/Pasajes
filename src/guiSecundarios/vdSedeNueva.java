@@ -28,8 +28,10 @@ import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowEvent;
 
-public class vdSedeNueva extends JDialog implements ActionListener, KeyListener {
+public class vdSedeNueva extends JDialog implements ActionListener, KeyListener, WindowListener {
 	private JTextField txtAgregarDestino;
 	private JButton btnCancelar;
 	private JButton btnGuardar;
@@ -53,11 +55,14 @@ public class vdSedeNueva extends JDialog implements ActionListener, KeyListener 
 	 * Create the dialog.
 	 */
 	public vdSedeNueva(vPrincipal temp, viListaSedes temp2) {
+		setTitle("Sede");
+		addWindowListener(this);
+		setResizable(false);
 		vp = temp;
 		ldest = temp2;
 		
 		getContentPane().setBackground(Color.LIGHT_GRAY);
-		setBounds(100, 100, 559, 291);
+		setBounds(100, 100, 559, 244);
 		getContentPane().setLayout(null);
 		
 		txtAgregarDestino = new JTextField();
@@ -76,7 +81,7 @@ public class vdSedeNueva extends JDialog implements ActionListener, KeyListener 
 		btnCancelar.setForeground(Color.WHITE);
 		btnCancelar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
 		btnCancelar.setBackground(new Color(0, 139, 139));
-		btnCancelar.setBounds(30, 179, 220, 53);
+		btnCancelar.setBounds(30, 129, 220, 53);
 		getContentPane().add(btnCancelar);
 		
 		btnGuardar = new JButton("<html>Guardar</html>");
@@ -84,20 +89,20 @@ public class vdSedeNueva extends JDialog implements ActionListener, KeyListener 
 		btnGuardar.setForeground(Color.WHITE);
 		btnGuardar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
 		btnGuardar.setBackground(new Color(0, 139, 139));
-		btnGuardar.setBounds(303, 182, 220, 53);
+		btnGuardar.setBounds(303, 128, 220, 53);
 		getContentPane().add(btnGuardar);
 		
 		lblConductor = new JLabel("Sede:");
 		lblConductor.setHorizontalAlignment(SwingConstants.LEFT);
 		lblConductor.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblConductor.setBounds(30, 98, 132, 20);
+		lblConductor.setBounds(30, 82, 132, 20);
 		getContentPane().add(lblConductor);
 		
 		txtDestino = new JTextField();
 		txtDestino.addKeyListener(this);
 		txtDestino.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		txtDestino.setColumns(10);
-		txtDestino.setBounds(119, 93, 404, 25);
+		txtDestino.setBounds(119, 77, 404, 25);
 		getContentPane().add(txtDestino);
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtDestino, btnGuardar, btnCancelar}));
 		cargar();
@@ -172,6 +177,26 @@ public class vdSedeNueva extends JDialog implements ActionListener, KeyListener 
 			e.consume();
 		}
 		
+	}
+	public void windowActivated(WindowEvent e) {
+	}
+	public void windowClosed(WindowEvent e) {
+	}
+	public void windowClosing(WindowEvent e) {
+		if (e.getSource() == this) {
+			windowClosingThis(e);
+		}
+	}
+	public void windowDeactivated(WindowEvent e) {
+	}
+	public void windowDeiconified(WindowEvent e) {
+	}
+	public void windowIconified(WindowEvent e) {
+	}
+	public void windowOpened(WindowEvent e) {
+	}
+	protected void windowClosingThis(WindowEvent e) {
+		vp.setEnabled(true);
 	}
 }
 

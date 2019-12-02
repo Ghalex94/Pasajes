@@ -26,8 +26,10 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowEvent;
 
-public class vdConductor extends JDialog implements ActionListener, KeyListener {
+public class vdConductor extends JDialog implements ActionListener, KeyListener, WindowListener {
 	private JTextField txtDatosDeConductor;
 	private JTextField txtPlaca;
 	private JTextField txtPasaje;
@@ -55,6 +57,8 @@ public class vdConductor extends JDialog implements ActionListener, KeyListener 
 	}
 
 	public vdConductor(vPrincipal temp, viSeleccionAsientos3 temp2, viSeleccionAsientos4 temp3, viSeleccionAsientos2 temp4, viSeleccionAsientos1 temp5) {
+		addWindowListener(this);
+		setResizable(false);
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		vsa1 = temp2;
 		vp = temp;
@@ -281,5 +285,25 @@ public class vdConductor extends JDialog implements ActionListener, KeyListener 
 		if (txtPasaje.getText().length() == 4){
 			arg0.consume();
 		}
+	}
+	public void windowActivated(WindowEvent arg0) {
+	}
+	public void windowClosed(WindowEvent arg0) {
+	}
+	public void windowClosing(WindowEvent arg0) {
+		if (arg0.getSource() == this) {
+			windowClosingThis(arg0);
+		}
+	}
+	public void windowDeactivated(WindowEvent arg0) {
+	}
+	public void windowDeiconified(WindowEvent arg0) {
+	}
+	public void windowIconified(WindowEvent arg0) {
+	}
+	public void windowOpened(WindowEvent arg0) {
+	}
+	protected void windowClosingThis(WindowEvent arg0) {
+		vp.setEnabled(true);
 	}
 }

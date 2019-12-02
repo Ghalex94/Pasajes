@@ -43,8 +43,10 @@ import clases.AbstractJasperReports;
 import clases.NumeroLetras;
 import java.awt.Component;
 import javax.swing.JCheckBox;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowEvent;
 
-public class vdAsiento extends JDialog implements ActionListener, KeyListener {
+public class vdAsiento extends JDialog implements ActionListener, KeyListener, WindowListener {
 	private JTextField textField;
 	private JTextField txtDni;
 	private JTextField txtPrecio;
@@ -94,6 +96,9 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 	}
 
 	public vdAsiento(vPrincipal temp, int temp2, viSeleccionAsientos3 temp3, viSeleccionAsientos4 temp4, viSeleccionAsientos2 temp5, viSeleccionAsientos1 temp6) {
+		setTitle("Ingrese la informaci\u00F3n del pasajero");
+		addWindowListener(this);
+		setResizable(false);
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		vp = temp;
 		asiento = temp2;
@@ -104,8 +109,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		
 		
 		setLocationRelativeTo(null);
-		setUndecorated(true);
-		setBounds(100, 100, 649, 560);
+		setBounds(100, 100, 649, 595);
 		getContentPane().setLayout(null);
 		{
 			textField = new JTextField();
@@ -151,12 +155,12 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			getContentPane().add(txtPrecio);
 		}
 		{
-			btnGuardar = new JButton("<html>Guardar e<br>imprimir</html>");
+			btnGuardar = new JButton("<html><center>Guardar e<br>imprimir</center></html>");
 			btnGuardar.addActionListener(this);
 			btnGuardar.setForeground(Color.WHITE);
-			btnGuardar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
+			btnGuardar.setFont(new Font("Dialog", Font.BOLD, 22));
 			btnGuardar.setBackground(new Color(0, 139, 139));
-			btnGuardar.setBounds(368, 496, 220, 53);
+			btnGuardar.setBounds(368, 496, 220, 59);
 			getContentPane().add(btnGuardar);
 		}
 		{
@@ -195,7 +199,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			btnCancelar.setForeground(Color.WHITE);
 			btnCancelar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
 			btnCancelar.setBackground(new Color(0, 139, 139));
-			btnCancelar.setBounds(39, 496, 220, 53);
+			btnCancelar.setBounds(39, 496, 220, 59);
 			getContentPane().add(btnCancelar);
 		}
 		{
@@ -207,11 +211,11 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		}
 		{
 			lblNAsiento = new JLabel("");
-			lblNAsiento.setForeground(new Color(220, 20, 60));
+			lblNAsiento.setForeground(new Color(255, 0, 0));
 			lblNAsiento.setBackground(Color.WHITE);
 			lblNAsiento.setHorizontalAlignment(SwingConstants.LEFT);
-			lblNAsiento.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-			lblNAsiento.setBounds(185, 81, 173, 20);
+			lblNAsiento.setFont(new Font("Century Gothic", Font.BOLD, 25));
+			lblNAsiento.setBounds(185, 75, 173, 26);
 			getContentPane().add(lblNAsiento);
 		}
 		{
@@ -286,7 +290,7 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		btnEliminar.setForeground(Color.WHITE);
 		btnEliminar.setFont(new Font("EngraversGothic BT", Font.BOLD, 25));
 		btnEliminar.setBackground(Color.RED);
-		btnEliminar.setBounds(269, 496, 89, 53);
+		btnEliminar.setBounds(269, 496, 89, 59);
 		getContentPane().add(btnEliminar);
 		{
 			lblNacionalidad = new JLabel("Pa\u00EDs:");
@@ -329,10 +333,10 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		chckbxImprimir.setBounds(446, 471, 142, 23);
 		getContentPane().add(chckbxImprimir);
 		{
-			chckbxContratante = new JCheckBox("\u00BFCONTRATANTE?");
+			chckbxContratante = new JCheckBox("\u00BFES CONTRATANTE?");
 			chckbxContratante.setForeground(new Color(255, 255, 0));
 			chckbxContratante.setHorizontalAlignment(SwingConstants.CENTER);
-			chckbxContratante.setFont(new Font("Century Gothic", Font.PLAIN, 18));
+			chckbxContratante.setFont(new Font("Century Gothic", Font.BOLD, 18));
 			chckbxContratante.setBackground(Color.LIGHT_GRAY);
 			chckbxContratante.setBounds(198, 442, 240, 35);
 			getContentPane().add(chckbxContratante);
@@ -445,9 +449,10 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 				cbDia.setEnabled(false);
 				cbMes.setEnabled(false);
 				cbAnio.setEnabled(false);
-				btnGuardar.setEnabled(false);
+				btnGuardar.setEnabled(true);
+				btnGuardar.setText("Actualizar");
 				btnEliminar.setVisible(true);
-				chckbxContratante.setEnabled(false);
+				chckbxContratante.setEnabled(true);
 			}
 			rs2.close();
 			rs3.close();
@@ -501,123 +506,161 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 			this.setAlwaysOnTop(true);
 		}
 		else{
-			this.setAlwaysOnTop(false);
-			int opc = JOptionPane.showConfirmDialog(null, "¿Vender pasaje?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-			this.setAlwaysOnTop(true);
-			if (opc == 0){
-				int nboleto = Integer.parseInt(txtNboleto.getText());
-				int dnipasajero = Integer.parseInt(txtDni.getText());
-				String ruc = "";
-				if(txtRuc.getText().length()>0)
-					ruc = txtRuc.getText();
-				String nombre = txtNombre.getText();
-				String razsocial = null;
-				if(txtRazsocial.getText().length()>0)
-					razsocial = txtRazsocial.getText();
-				int dia = Integer.parseInt(cbDia.getSelectedItem().toString());
-				int mes = cbMes.getSelectedIndex() + 1;
-				int anio = Integer.parseInt(cbAnio.getSelectedItem().toString());
-				int edad = Integer.parseInt(txtEdad.getText());
-				String fnacimiento = "" + anio + "-" + mes + "-" + dia;
-				float prepasaje = Float.parseFloat(txtPrecio.getText() + ".00");
-				String nacionalidad = txtNacionalidad.getText();
-				String direccion = txtDireccion.getText();
-				int contratante = 0;
-				if(chckbxContratante.isSelected())
-					contratante = 1;
-				try {
-					Consultas consulta = new Consultas();
-					consulta.iniciar();
-					ResultSet rs = consulta.buscarPasajero(dnipasajero);
-					if(rs.next()){// SE ACTUALIZARÁ LOS DATOS DEL PASAJERO
-						Consultas consulta2 = new Consultas();
-						consulta2.iniciar();
-						consulta2.actualizarPasajero(dnipasajero, ruc, fnacimiento, nombre, razsocial, nacionalidad, direccion);
-						consulta2.reset();
-					}
-					else{// SE CREARÁ UN PASAJERO NUEVO
-						this.setAlwaysOnTop(false);
-						consulta.crearPasajero(dnipasajero, ruc, fnacimiento, nombre, razsocial, nacionalidad, direccion);					
-					}
-					rs.close();
-					consulta.reset();
-				} catch (SQLException ex) {
-					this.setAlwaysOnTop(false);
-					JOptionPane.showMessageDialog(null, "ERROR: " + ex);
-					this.setAlwaysOnTop(true);
-				}
-				
-				try {
-					Consultas consulta3 = new Consultas();
-					consulta3.iniciar();
-					this.setAlwaysOnTop(false);
-					consulta3.asignarAsiento(asiento, dnipasajero, edad, prepasaje, nboleto, contratante);
-					
-					if(vsa1 != null)
-						vsa1.cambiarColorAsiento(asiento, contratante);
-					if(vsa2 != null)
-						vsa2.cambiarColorAsiento(asiento, contratante);
-					if(vsa3 != null)
-						vsa3.cambiarColorAsiento(asiento, contratante);
-					if(vsa4 != null)
-						vsa4.cambiarColorAsiento(asiento, contratante);
-					vp.enable(true);
-					consulta3.reset();
-					this.dispose();
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "ERROR: " + e);
-				}
-				
-				
-				sumarTotalPasajes();
-				//IMPRIMIR
-				if(chckbxImprimir.isSelected()){
+			
+			if(btnEliminar.isVisible())
+				actualizarPasajero();
+			else{
+				this.setAlwaysOnTop(false);
+				int opc = JOptionPane.showConfirmDialog(null, "¿Vender pasaje?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				this.setAlwaysOnTop(true);
+				if (opc == 0){
+					int nboleto = Integer.parseInt(txtNboleto.getText());
+					int dnipasajero = Integer.parseInt(txtDni.getText());
+					String ruc = "";
+					if(txtRuc.getText().length()>0)
+						ruc = txtRuc.getText();
+					String nombre = txtNombre.getText();
+					String razsocial = null;
+					if(txtRazsocial.getText().length()>0)
+						razsocial = txtRazsocial.getText();
+					int dia = Integer.parseInt(cbDia.getSelectedItem().toString());
+					int mes = cbMes.getSelectedIndex() + 1;
+					int anio = Integer.parseInt(cbAnio.getSelectedItem().toString());
+					int edad = Integer.parseInt(txtEdad.getText());
+					String fnacimiento = "" + anio + "-" + mes + "-" + dia;
+					float prepasaje = Float.parseFloat(txtPrecio.getText() + ".00");
+					String nacionalidad = txtNacionalidad.getText();
+					String direccion = txtDireccion.getText();
+					int contratante = 0;
+					if(chckbxContratante.isSelected())
+						contratante = 1;
 					try {
+						Consultas consulta = new Consultas();
+						consulta.iniciar();
+						ResultSet rs = consulta.buscarPasajero(dnipasajero);
+						if(rs.next()){// SE ACTUALIZARÁ LOS DATOS DEL PASAJERO
+							Consultas consulta2 = new Consultas();
+							consulta2.iniciar();
+							consulta2.actualizarPasajero(dnipasajero, ruc, fnacimiento, nombre, razsocial, nacionalidad, direccion);
+							consulta2.reset();
+						}
+						else{// SE CREARÁ UN PASAJERO NUEVO
+							this.setAlwaysOnTop(false);
+							consulta.crearPasajero(dnipasajero, ruc, fnacimiento, nombre, razsocial, nacionalidad, direccion);					
+						}
+						rs.close();
+						consulta.reset();
+					} catch (SQLException ex) {
 						this.setAlwaysOnTop(false);
+						JOptionPane.showMessageDialog(null, "ERROR: " + ex);
+						this.setAlwaysOnTop(true);
+					}
+					
+					try {
+						Consultas consulta3 = new Consultas();
+						consulta3.iniciar();
+						this.setAlwaysOnTop(false);
+						consulta3.asignarAsiento(asiento, dnipasajero, edad, prepasaje, nboleto, contratante);
 						
-						String precio = txtPrecio.getText();
-						precio = precio + ".00";
-						String[] arrayprecio = precio.split("\\.");
-						String soles = arrayprecio[0];
-						String centimos = arrayprecio[1];
-						//JOptionPane.showMessageDialog(null, soles + "   -   " + centimos);
-						String solesLetras = new NumeroLetras().convertir(Integer.parseInt(soles));
-						//JOptionPane.showMessageDialog(null, solesLetras + " CON " + centimos);
-						String precioLetras = solesLetras + " CON " + centimos + "/100 SOLES";
-						Connection con = MySQLConexion.getConection();
-						int asiento = Integer.parseInt(lblNAsiento.getText());
-						
-						//IMPRIMIR TICKET
-						try {
-							Map<String, Object> parameters = new HashMap();
-							parameters.put("prmtNasiento", asiento);
-							parameters.put("prmtPrecioLetras", precioLetras);
-							/*new AbstractJasperReports().createReport( con.getConn(), "rPrueba.jasper", null);
-							AbstractJasperReports.showViewer();*/
-							try{
-								//JasperReport reporte=(JasperReport) JRLoader.loadObjectFromFile("D:\\ INFORMACION_DEL_SISTEMA\\rBoleto.jasper");
-								//JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, con);
-								JasperPrint impressao = JasperFillManager.fillReport(getClass().getClassLoader().getResourceAsStream("rBoleto.jasper"), parameters, con);
-	
-								//AbstractJasperReports.showViewer();
-								JasperPrintManager.printReport(impressao, false);
-								JOptionPane.showMessageDialog(null, "VENTA CORRECTA");          
-							}
-							catch (JRException ex){
-								System.err.println( "Error iReport: " + ex.getMessage() );
-							}
-							
-						} catch (Exception e) {
-							JOptionPane.showMessageDialog(null, "ERROR2 "+ e);
-						}				
-						con.close();
+						if(vsa1 != null)
+							vsa1.cambiarColorAsiento(asiento, contratante);
+						if(vsa2 != null)
+							vsa2.cambiarColorAsiento(asiento, contratante);
+						if(vsa3 != null)
+							vsa3.cambiarColorAsiento(asiento, contratante);
+						if(vsa4 != null)
+							vsa4.cambiarColorAsiento(asiento, contratante);
+						vp.enable(true);
+						consulta3.reset();
+						this.dispose();
 					} catch (Exception e) {
-						JOptionPane.showMessageDialog(null,"ERROR1 " + e);
+						JOptionPane.showMessageDialog(null, "ERROR: " + e);
+					}
+					
+					
+					sumarTotalPasajes();
+					//IMPRIMIR
+					if(chckbxImprimir.isSelected()){
+						try {
+							this.setAlwaysOnTop(false);
+							
+							String precio = txtPrecio.getText();
+							precio = precio + ".00";
+							String[] arrayprecio = precio.split("\\.");
+							String soles = arrayprecio[0];
+							String centimos = arrayprecio[1];
+							//JOptionPane.showMessageDialog(null, soles + "   -   " + centimos);
+							String solesLetras = new NumeroLetras().convertir(Integer.parseInt(soles));
+							//JOptionPane.showMessageDialog(null, solesLetras + " CON " + centimos);
+							String precioLetras = solesLetras + " CON " + centimos + "/100 SOLES";
+							Connection con = MySQLConexion.getConection();
+							int asiento = Integer.parseInt(lblNAsiento.getText());
+							
+							//IMPRIMIR TICKET
+							try {
+								Map<String, Object> parameters = new HashMap();
+								parameters.put("prmtNasiento", asiento);
+								parameters.put("prmtPrecioLetras", precioLetras);
+								/*new AbstractJasperReports().createReport( con.getConn(), "rPrueba.jasper", null);
+								AbstractJasperReports.showViewer();*/
+								try{
+									//JasperReport reporte=(JasperReport) JRLoader.loadObjectFromFile("D:\\ INFORMACION_DEL_SISTEMA\\rBoleto.jasper");
+									//JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parameters, con);
+									JasperPrint impressao = JasperFillManager.fillReport(getClass().getClassLoader().getResourceAsStream("rBoleto.jasper"), parameters, con);
+		
+									//AbstractJasperReports.showViewer();
+									JasperPrintManager.printReport(impressao, false);
+									this.setAlwaysOnTop(false);
+									JOptionPane.showMessageDialog(null, "VENTA CORRECTA");  
+									this.setAlwaysOnTop(true);
+								}
+								catch (JRException ex){
+									System.err.println( "Error iReport: " + ex.getMessage() );
+								}
+								
+							} catch (Exception e) {
+								this.setAlwaysOnTop(false);
+								JOptionPane.showMessageDialog(null,"ERROR2 " + e);
+								this.setAlwaysOnTop(true);
+							}				
+							con.close();
+						} catch (Exception e) {
+							this.setAlwaysOnTop(false);
+							JOptionPane.showMessageDialog(null,"ERROR1 " + e);
+							this.setAlwaysOnTop(true);
+						}
 					}
 				}
-				
 			}
 		}
+	}
+	
+	public void actualizarPasajero(){
+		int nboleto = Integer.parseInt(txtNboleto.getText());
+		
+		Consultas consulta = new Consultas();
+		consulta.iniciar();
+		this.setAlwaysOnTop(false);
+		int contratante = 0;
+		if(chckbxContratante.isSelected())
+			contratante = 1;
+		else
+			contratante = 0;
+		consulta.actualizarContratante(asiento, contratante);
+		JOptionPane.showMessageDialog(null, "Contratante actualizado");		
+		consulta.reset();
+		
+		if(vsa1 != null)
+			vsa1.cambiarColorAsiento(asiento, contratante);
+		if(vsa2 != null)
+			vsa2.cambiarColorAsiento(asiento, contratante);
+		if(vsa3 != null)
+			vsa3.cambiarColorAsiento(asiento, contratante);
+		if(vsa4 != null)
+			vsa4.cambiarColorAsiento(asiento, contratante);
+		vp.setEnabled(true);
+		
+		this.dispose();
 	}
 	
 	public void sumarTotalPasajes(){
@@ -836,6 +879,26 @@ public class vdAsiento extends JDialog implements ActionListener, KeyListener {
 		if (txtPrecio.getText().length() == 4){
 			arg0.consume();
 		}
+	}
+	public void windowActivated(WindowEvent arg0) {
+	}
+	public void windowClosed(WindowEvent arg0) {
+	}
+	public void windowClosing(WindowEvent arg0) {
+		if (arg0.getSource() == this) {
+			windowClosingThis(arg0);
+		}
+	}
+	public void windowDeactivated(WindowEvent arg0) {
+	}
+	public void windowDeiconified(WindowEvent arg0) {
+	}
+	public void windowIconified(WindowEvent arg0) {
+	}
+	public void windowOpened(WindowEvent arg0) {
+	}
+	protected void windowClosingThis(WindowEvent arg0) {
+		vp.setEnabled(true);
 	}
 }
 

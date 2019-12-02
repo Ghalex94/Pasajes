@@ -72,13 +72,12 @@ public class vdVehiculoNuevo extends JDialog implements ActionListener, KeyListe
 	 * Create the dialog.
 	 */
 	public vdVehiculoNuevo(vPrincipal temp, viListaVehiculos temp2) {
+		setResizable(false);
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		
 		vp = temp;
 		vnvh = temp2;
-		
-		setUndecorated(true);
-		setBounds(100, 100, 591, 475);
+		setBounds(100, 100, 591, 495);
 		getContentPane().setLayout(null);
 		{
 			txtAgregarVehiculo = new JTextField();

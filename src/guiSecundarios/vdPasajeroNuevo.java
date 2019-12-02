@@ -27,8 +27,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowEvent;
 
-public class vdPasajeroNuevo extends JDialog implements ActionListener, KeyListener {
+public class vdPasajeroNuevo extends JDialog implements ActionListener, KeyListener, WindowListener {
 	private JTextField textField;
 	private JLabel label;
 	private JTextField txtDni;
@@ -71,6 +73,8 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener, KeyListe
 	 * Create the dialog.
 	 */
 	public vdPasajeroNuevo(vPrincipal temp, viListaPasajeros temp1, int temp2, int temp3) {
+		setTitle("Pasajero");
+		addWindowListener(this);
 		vp = temp;
 		vilp = temp1;
 		opc = temp2;
@@ -376,5 +380,25 @@ public class vdPasajeroNuevo extends JDialog implements ActionListener, KeyListe
 		if (txtNacionalidad.getText().length() == 50){
 			e.consume();
 		}
+	}
+	public void windowActivated(WindowEvent arg0) {
+	}
+	public void windowClosed(WindowEvent arg0) {
+	}
+	public void windowClosing(WindowEvent arg0) {
+		if (arg0.getSource() == this) {
+			windowClosingThis(arg0);
+		}
+	}
+	public void windowDeactivated(WindowEvent arg0) {
+	}
+	public void windowDeiconified(WindowEvent arg0) {
+	}
+	public void windowIconified(WindowEvent arg0) {
+	}
+	public void windowOpened(WindowEvent arg0) {
+	}
+	protected void windowClosingThis(WindowEvent arg0) {
+		vp.setEnabled(true);
 	}
 }
