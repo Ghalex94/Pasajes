@@ -6,7 +6,7 @@ create table tb_usuario(
 usuario 		varchar(20) not null primary key,
 pass			varchar(20),
 nombre			varchar(50),
-tipo 		 	int
+tipo 		 	int -- 0ADMIN 1TRABAJADOR 2BXB
 );
 
 create table tb_empresa(
@@ -146,11 +146,11 @@ horafin2		varchar(5),
 modalidad		int,
 totalmodif		float,
 usuario			varchar(50),
-verificarInfAdi	int
+verificarInfAdi	int -- 0No se guardó  1Si se guardo
 );
-alter table tb_venta_temporal
-  add verificarInfAdi int;        
-
+/* alter table tb_venta_temporal
+  add verificarInfAdi int;        */
+  
 create table tb_pasajeros_temporal(
 asiento 		int not null primary key,
 estado			int, -- 0Libre 1Ocupado
@@ -221,7 +221,7 @@ insert into tb_sedes values(null, 'Sicuani');
 
 insert into tb_configuracion_inicial values(0, -1, null, 1, 1);
 
-insert into tb_venta_temporal values(1, 0, 0, 0, 0, null, 0, 0, 0, null, null, 0, -1, 1, 0, null, null, null, null, null, 0, null, null, null, 0, -1, null);
+insert into tb_venta_temporal values(1, 0, 0, 0, 0, null, 0, 0, 0, null, null, 0, -1, 1, 0, null, null, null, null, null, 0, null, null, null, 0, -1, null, 0);
 
 
 insert into tb_vehiculo values('AAA-111', 1, 'Detalle1', 'MTC1', 0);
@@ -296,7 +296,7 @@ delete from tb_vehiculo where placa = 'BBB-222';
 
 UPDATE tb_venta_temporal SET fpartida = concat(date(fpartida), ' 21:00:00') WHERE id=1;
 UPDATE tb_venta_temporal SET modalidad = 1 WHERE id=1;
-UPDATE tb_venta_temporal SET totalmodif = 54321 WHERE id=1;
+UPDATE tb_pasajeros_temporal SET contratante = 1 WHERE asiento=13;
 
 -- BOLETA VENTA
 select pt.dnipasajero, p.ruc, p.nombre, vt.idorigen, orgn.sede Origen, vt.iddestino, dstn.sede Destino, pt.prepasaje, vt.totalmodif, vt.escalas, p.direccion
@@ -399,26 +399,15 @@ inner join  tb_conductor c1	on c1.dniconductor = dvo.dniconductor1
 inner join  tb_conductor c2	on c2.dniconductor = dvo.dniconductor2;
 
 -- 
-use db_colas;
-select distinct ventanilla, case 	when estado = 2 then 'No atendidos'
-									when estado = 3 then 'Atendidos'
-									else null
-                                    end as Detalle, count(*) from tb_colas 
-where estado = 2 or estado = 3						
-group by ventanilla,estado;
-
-select distinct ventanilla, case 	when estado = 2 then 'No atendidos'
-									when estado = 3 then 'Atendidos'
-									else null
-                                    end as Detalle, count(*), fecha from tb_colas
-where 
-fecha between  '2019-11-01'  and  '2019-12-12'
-and (estado = 2 or estado = 3)
-group by ventanilla,estado;
+select * from tb_venta_temporal;
+UPDATE tb_venta_temporal SET horainicio2 = IF(horafin1 = '00:00', '17:36', horainicio2);
 
 
-select * from tb_colas;
-
+select dv.nviaje, dv.asiento, dv.nboleto, dv.dnipasajero, p.nombre, dv.prepasaje, dv.contratante 
+from tb_detalle_viaje dv
+inner join tb_pasajero p 	on p.dnipasajero = dv.dnipasajero
+where dv.nviaje =  1000 
+order by dv.asiento
 
 
 
